@@ -53,7 +53,7 @@ function headers(): Record<string, string> {
   }
 }
 
-async function post(path: string, body: unknown): Promise<any> {
+async function post<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${base()}${path}`, {
     method: 'POST',
     headers: headers(),
@@ -92,7 +92,7 @@ async function embed(texts: string[]): Promise<number[][]> {
   const out: number[][] = []
   for (let i = 0; i < texts.length; i += EMBED_BATCH) {
     const batch = texts.slice(i, i + EMBED_BATCH).map((t) => t.slice(0, 4096))
-    const json = await post('/api/v2/cortex/inference:embed', {
+    const json = await post<{ data?: unknown[] }>('/api/v2/cortex/inference:embed', {
       model: EMBED_MODEL,
       text: batch,
     })
@@ -125,8 +125,10 @@ Reply with JSON only, no prose, no code fences:
 {"results":[{"i":0,"score":0.0,"reason":"under 8 words"}]}
 One entry per candidate, in the order given.`
 
+type RerankRow = { i: number; score: number; reason: string }
+
 /** Pull the first JSON object out of a reply, tolerating fences or stray prose. */
-function parseJson(text: string): any {
+function parseJson(text: string): unknown {
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/)
   const body = fenced ? fenced[1] : text
   const start = body.indexOf('{')
@@ -142,7 +144,7 @@ async function rerank(
   if (candidates.length === 0) return []
 
   const listed = candidates.map((c, i) => `${i}. ${c}`).join('\n')
-  const json = await post('/api/v2/cortex/v1/chat/completions', {
+  const json = await post<{ choices?: { message?: { content?: string } }[] }>('/api/v2/cortex/v1/chat/completions', {
     model: CHAT_MODEL,
     max_completion_tokens: 900,
     temperature: 0,
@@ -153,9 +155,9 @@ async function rerank(
   })
 
   const content: string = json?.choices?.[0]?.message?.content ?? ''
-  let results: { i: number; score: number; reason: string }[]
+  let results: RerankRow[]
   try {
-    results = parseJson(content)?.results ?? []
+    results = (parseJson(content) as { results?: RerankRow[] } | null)?.results ?? []
   } catch {
     // match.ts falls back to the raw cosine when an entry is missing, which is
     // the right behaviour — a bad reply must not zero out a real candidate.
