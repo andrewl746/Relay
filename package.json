@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start -p 4287",
     "lint": "eslint",
-    "seed": "node scripts/seed.ts",
-    "pipeline": "node scripts/prepare.ts",
-    "chains": "node scripts/chains.ts",
+    "seed": "node --experimental-strip-types scripts/seed.ts",
+    "pipeline": "node --experimental-strip-types scripts/prepare.ts",
+    "chains": "node --experimental-strip-types scripts/chains.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
