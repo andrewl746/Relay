@@ -1,26 +1,38 @@
 import type { MatchProvider } from '../types.ts'
 
 /**
- * Snowflake Cortex provider. Two endpoints, one bearer token, no SDK.
+ * Snowflake Cortex provider, over the SQL API.
  *
- *   embed   POST /api/v2/cortex/inference:embed
- *   rerank  POST /api/v2/cortex/v1/chat/completions   (OpenAI-compatible)
+ *   POST /api/v2/statements   AI_EMBED(...) and AI_COMPLETE(...)
  *
  * Auth is a Programmatic Access Token — generated in Snowsight, pasted into
  * .env.local. Deliberately not keypair JWT: that needs RSA signing, a key pair
  * on disk, and a crypto dependency, to end up at the same Bearer header.
  *
- * Note we use AI_EMBED / chat-completions rather than SNOWFLAKE.CORTEX.COMPLETE
- * over the SQL API. The legacy COMPLETE function is deprecated at the end of
- * 2026, and the inference endpoints are lower latency than round-tripping SQL.
+ * NOT the Cortex REST inference endpoints (/api/v2/cortex/inference:embed and
+ * /api/v2/cortex/v1/chat/completions). Those are a separately entitled service
+ * surface and this account is not on it — they answer 403 "This account is not
+ * allowed to access this endpoint" with a token that the SQL API accepts on the
+ * same request. The SQL functions are entitled and are what the data sits next
+ * to anyway, which is the whole reason to be on Snowflake rather than an LLM
+ * API. If you get a 403 on embed, do not go hunting for a token problem — check
+ * which endpoint you are calling.
+ *
+ * Two more things that will cost you an hour each if you don't know them:
+ *   - A warehouse is required. Without one every statement fails 422 "You must
+ *     specify the warehouse to use", including ones that never touch a table.
+ *   - Model names go legacy and are then rejected outright. claude-3-5-sonnet,
+ *     claude-4-sonnet, mistral-large2 and openai-gpt-4.1 are all dead already.
+ *     A bad name fails as a 422 on the external function, not as a bad answer.
  */
 
 const ACCOUNT = process.env.SNOWFLAKE_ACCOUNT ?? ''
 const TOKEN = process.env.SNOWFLAKE_PAT ?? ''
-const EMBED_MODEL = process.env.SNOWFLAKE_EMBED_MODEL ?? 'snowflake-arctic-embed-l-v2.0'
+const WAREHOUSE = process.env.SNOWFLAKE_WAREHOUSE ?? 'SNOWFLAKE_LEARNING_WH'
+const EMBED_MODEL = process.env.SNOWFLAKE_EMBED_MODEL ?? 'snowflake-arctic-embed-m-v1.5'
 const CHAT_MODEL = process.env.SNOWFLAKE_CHAT_MODEL ?? 'claude-sonnet-4-5'
 
-/** Dimensions per embedding model, so a mismatch fails loudly. See DIM_GUARD. */
+/** Dimensions per embedding model, so a mismatch fails loudly. See check-provider. */
 export const EMBED_DIMS: Record<string, number> = {
   'snowflake-arctic-embed-l-v2.0': 1024,
   'snowflake-arctic-embed-m-v1.5': 768,
@@ -28,7 +40,7 @@ export const EMBED_DIMS: Record<string, number> = {
   'e5-base-v2': 768,
 }
 
-/** Max strings per embed request. The API allows 1280; we stay well under. */
+/** Strings per statement. One round trip embeds the whole board. */
 const EMBED_BATCH = 96
 
 function base(): string {
@@ -44,6 +56,14 @@ function base(): string {
   return `https://${host}`
 }
 
+type Binding = { type: 'TEXT'; value: string }
+
+type StatementResponse = {
+  statementHandle?: string
+  data?: string[][]
+  resultSetMetaData?: { partitionInfo?: unknown[] }
+}
+
 function headers(): Record<string, string> {
   return {
     Authorization: `Bearer ${TOKEN}`,
@@ -53,19 +73,50 @@ function headers(): Record<string, string> {
   }
 }
 
-async function post<T>(path: string, body: unknown): Promise<T> {
-  const res = await fetch(`${base()}${path}`, {
-    method: 'POST',
-    headers: headers(),
-    body: JSON.stringify(body),
-  })
+async function read(res: Response): Promise<StatementResponse> {
+  const text = await res.text()
   if (!res.ok) {
-    const text = await res.text().catch(() => '')
-    throw new Error(
-      `Snowflake ${path} → ${res.status} ${res.statusText}\n${text.slice(0, 400)}`,
-    )
+    throw new Error(`Snowflake SQL → ${res.status} ${res.statusText}\n${text.slice(0, 400)}`)
   }
-  return res.json()
+  return JSON.parse(text) as StatementResponse
+}
+
+/**
+ * Run one statement and hand back ALL of its rows as arrays of strings.
+ *
+ * The POST only returns partition 0. Snowflake splits a result by response
+ * SIZE, not row count, so this is invisible until the rows get big: four
+ * 768-float embeddings come back whole, nineteen come back as two rows and a
+ * promise. Every remaining partition has to be fetched by handle, or you
+ * silently embed a fraction of the board.
+ */
+async function sql(statement: string, bindings: string[] = []): Promise<string[][]> {
+  const first = await read(
+    await fetch(`${base()}/api/v2/statements`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({
+        statement,
+        timeout: 60,
+        warehouse: WAREHOUSE,
+        bindings: Object.fromEntries(
+          bindings.map((value, i): [string, Binding] => [String(i + 1), { type: 'TEXT', value }]),
+        ),
+      }),
+    }),
+  )
+
+  const rows = first.data ?? []
+  const partitions = first.resultSetMetaData?.partitionInfo?.length ?? 1
+  for (let p = 1; p < partitions; p++) {
+    const next = await read(
+      await fetch(`${base()}/api/v2/statements/${first.statementHandle}?partition=${p}`, {
+        headers: headers(),
+      }),
+    )
+    rows.push(...(next.data ?? []))
+  }
+  return rows
 }
 
 /** L2-normalize, because lib/vector.cosine is a bare dot product. */
@@ -77,36 +128,33 @@ function normalize(v: number[]): number[] {
 }
 
 /**
- * Cortex returns `data[i].embedding`. Some responses nest it one level deeper
- * as `[[...]]`, so unwrap defensively rather than trusting one shape.
+ * AI_EMBED returns a VECTOR, which the SQL API cannot serialise — hence the
+ * ::ARRAY cast, which arrives as a JSON string. FLATTEN over a bound JSON array
+ * embeds the whole batch in one statement; INDEX carries the original position,
+ * because row order off a warehouse is not the order you sent.
  */
-function unwrap(raw: unknown): number[] {
-  const v = Array.isArray(raw) && Array.isArray(raw[0]) ? raw[0] : raw
-  if (!Array.isArray(v) || typeof v[0] !== 'number') {
-    throw new Error('Snowflake embed: unexpected embedding shape')
-  }
-  return v as number[]
-}
-
 async function embed(texts: string[]): Promise<number[][]> {
   const out: number[][] = []
   for (let i = 0; i < texts.length; i += EMBED_BATCH) {
     const batch = texts.slice(i, i + EMBED_BATCH).map((t) => t.slice(0, 4096))
-    const json = await post<{ data?: unknown[] }>('/api/v2/cortex/inference:embed', {
-      model: EMBED_MODEL,
-      text: batch,
-    })
-    const rows = (json?.data ?? []) as { embedding: unknown; index?: number }[]
+    const rows = await sql(
+      `SELECT f.index, AI_EMBED('${EMBED_MODEL}', f.value::VARCHAR)::ARRAY
+         FROM TABLE(FLATTEN(input => PARSE_JSON(?))) f
+        ORDER BY f.index`,
+      [JSON.stringify(batch)],
+    )
     if (rows.length !== batch.length) {
-      throw new Error(
-        `Snowflake embed: asked for ${batch.length} vectors, got ${rows.length}`,
-      )
+      throw new Error(`Snowflake embed: asked for ${batch.length} vectors, got ${rows.length}`)
     }
-    // Sort by `index` when present; do not assume the API preserves order.
-    const ordered = rows.every((r) => typeof r.index === 'number')
-      ? [...rows].sort((a, b) => (a.index! - b.index!))
-      : rows
-    for (const r of ordered) out.push(normalize(unwrap(r.embedding)))
+    // Sort on the carried index rather than trusting the order rows arrive in
+    // across partitions.
+    for (const [, vector] of [...rows].sort((a, b) => Number(a[0]) - Number(b[0]))) {
+      const v = JSON.parse(vector) as number[]
+      if (!Array.isArray(v) || typeof v[0] !== 'number') {
+        throw new Error('Snowflake embed: unexpected embedding shape')
+      }
+      out.push(normalize(v))
+    }
   }
   return out
 }
@@ -127,6 +175,20 @@ One entry per candidate, in the order given.`
 
 type RerankRow = { i: number; score: number; reason: string }
 
+/**
+ * One prompt in, the model's text out, through Cortex.
+ *
+ * AI_COMPLETE's VARCHAR arrives already JSON-serialised: the cell literally
+ * starts with a quote character and carries \n and \" as escape sequences, so
+ * it has to be unwrapped once before it is text at all. SHOW's text columns do
+ * NOT do this, so don't assume one rule for every column.
+ */
+export async function complete(prompt: string): Promise<string> {
+  const rows = await sql(`SELECT AI_COMPLETE('${CHAT_MODEL}', ?)`, [prompt])
+  const cell = rows[0]?.[0] ?? ''
+  return cell.startsWith('"') ? (JSON.parse(cell) as string) : cell
+}
+
 /** Pull the first JSON object out of a reply, tolerating fences or stray prose. */
 function parseJson(text: string): unknown {
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/)
@@ -144,17 +206,9 @@ async function rerank(
   if (candidates.length === 0) return []
 
   const listed = candidates.map((c, i) => `${i}. ${c}`).join('\n')
-  const json = await post<{ choices?: { message?: { content?: string } }[] }>('/api/v2/cortex/v1/chat/completions', {
-    model: CHAT_MODEL,
-    max_completion_tokens: 900,
-    temperature: 0,
-    messages: [
-      { role: 'system', content: RERANK_SYSTEM },
-      { role: 'user', content: `Request: "${need}"\n\nCandidates:\n${listed}` },
-    ],
-  })
-
-  const content: string = json?.choices?.[0]?.message?.content ?? ''
+  const content = await complete(
+    `${RERANK_SYSTEM}\n\nRequest: "${need}"\n\nCandidates:\n${listed}`,
+  )
   let results: RerankRow[]
   try {
     results = (parseJson(content) as { results?: RerankRow[] } | null)?.results ?? []

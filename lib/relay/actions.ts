@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { cosine } from '../vector.ts'
-import { getProvider } from '../providers/index.ts'
+import { asQuery, getProvider } from '../providers/index.ts'
 import { TOP_K } from '../match.ts'
 import { dataset, matches } from '../data.ts'
 import { config } from '../config.ts'
@@ -146,7 +146,7 @@ export async function addNeed(input: {
   // extractNeedMetadata never throws — it returns defaults when Backboard is
   // unset or down, which is the only acceptable behaviour on a form submit.
   const [[embedding], meta] = await Promise.all([
-    getProvider().embed([text]),
+    getProvider().embed([asQuery(text)]),
     extractNeedMetadata(text),
   ])
   // Only urgency lands today. Backboard also returns the times of day the text

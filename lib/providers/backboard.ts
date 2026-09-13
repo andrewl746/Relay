@@ -1,4 +1,6 @@
 import { BackboardClient } from 'backboard-sdk'
+import { providerName } from './index.ts'
+import { complete } from './snowflake.ts'
 
 /**
  * Backboard — pulls urgency and pickup windows out of what someone actually
@@ -66,6 +68,48 @@ export type NeedMetadata = {
 
 const DEFAULTS: NeedMetadata = { urgency: 'medium', pickupWindows: [] }
 
+/** Coerce whatever a model returned into the only two fields we trust. */
+function coerce(args: Record<string, unknown>): NeedMetadata {
+  const URGENCIES: NeedMetadata['urgency'][] = ['low', 'medium', 'high']
+  const WINDOWS: NeedMetadata['pickupWindows'] = ['morning', 'afternoon', 'evening']
+  const mentioned: unknown[] = Array.isArray(args.pickupWindows) ? args.pickupWindows : []
+  return {
+    urgency: URGENCIES.find((u) => u === args.urgency) ?? 'medium',
+    pickupWindows: WINDOWS.filter((w) => mentioned.includes(w)),
+  }
+}
+
+/**
+ * Second try, through Snowflake Cortex.
+ *
+ * Backboard's free credit covers Memory & RAG and refuses LLM chat outright, so
+ * on the free tier the primary path above ALWAYS returns the defaults — every
+ * need silently comes out urgency:medium with no pickup window, and the DP then
+ * schedules against constraints nobody expressed. Cortex is already configured
+ * for matching and its AI_COMPLETE is not separately billed here, so it covers
+ * the gap. Backboard keeps the job its free tier is actually good at — the
+ * wants memory in the second half of this file, which is live.
+ *
+ * Returns null (not the defaults) when it can't answer, so the caller can tell
+ * "no signal" from "we never asked".
+ */
+async function viaCortex(text: string): Promise<NeedMetadata | null> {
+  if (providerName() !== 'snowflake') return null
+  try {
+    const reply = await complete(
+      `${SYSTEM_PROMPT}\n\nReply with JSON only, no prose, no code fences: ` +
+        `{"urgency":"low|medium|high","pickupWindows":["morning"]}\n\nMessage: "${text}"`,
+    )
+    const start = reply.indexOf('{')
+    const end = reply.lastIndexOf('}')
+    if (start === -1 || end === -1) return null
+    return coerce(JSON.parse(reply.slice(start, end + 1)) as Record<string, unknown>)
+  } catch (err) {
+    console.error('[cortex] need extraction failed, using defaults:', err)
+    return null
+  }
+}
+
 /** Cached per process. Creating one assistant per extraction would be wrong and slow. */
 let assistantIdPromise: Promise<string> | null = null
 
@@ -94,7 +138,7 @@ async function ensureAssistant(bb: BackboardClient): Promise<string> {
  */
 export async function extractNeedMetadata(text: string): Promise<NeedMetadata> {
   const bb = getBackboardClient()
-  if (!bb) return DEFAULTS
+  if (!bb) return (await viaCortex(text)) ?? DEFAULTS
 
   try {
     assistantIdPromise ??= ensureAssistant(bb)
@@ -113,8 +157,8 @@ export async function extractNeedMetadata(text: string): Promise<NeedMetadata> {
     // the previous 422 went unnoticed for so long.
     const failed = res.messages?.find((m) => m?.status === 'FAILED')
     if (failed) {
-      console.error('[backboard] run FAILED:', String(failed.content ?? '').slice(0, 200))
-      return DEFAULTS
+      console.warn('[backboard] chat unavailable, falling back to Cortex:', String(failed.content ?? '').slice(0, 120))
+      return (await viaCortex(text)) ?? DEFAULTS
     }
 
     const call = res.toolCalls?.find((t) => t?.function?.name === 'extract_metadata')
@@ -124,20 +168,14 @@ export async function extractNeedMetadata(text: string): Promise<NeedMetadata> {
         ? JSON.parse(call.function.arguments)
         : undefined)
 
-    if (!args) return DEFAULTS
+    if (!args) return (await viaCortex(text)) ?? DEFAULTS
 
-    const URGENCIES: NeedMetadata['urgency'][] = ['low', 'medium', 'high']
-    const WINDOWS: NeedMetadata['pickupWindows'] = ['morning', 'afternoon', 'evening']
-    const urgency = URGENCIES.find((u) => u === args.urgency) ?? 'medium'
-    const mentioned: unknown[] = Array.isArray(args.pickupWindows) ? args.pickupWindows : []
-    const windows = WINDOWS.filter((w) => mentioned.includes(w))
-
-    return { urgency, pickupWindows: windows }
+    return coerce(args)
   } catch (err) {
     // Reset so a transient failure doesn't poison the cached assistant forever.
     assistantIdPromise = null
-    console.error('[backboard] extraction failed, using defaults:', err)
-    return DEFAULTS
+    console.error('[backboard] extraction failed, trying Cortex:', err)
+    return (await viaCortex(text)) ?? DEFAULTS
   }
 }
 

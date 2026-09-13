@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { PencilIcon } from "@/components/hub/icons";
 import { PickupMap } from "@/components/hub/pickup-map";
@@ -19,6 +20,31 @@ import {
 } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
 
+/**
+ * Back goes where you actually came from. A listing is linked from five places
+ * — the home board, /browse (with your filters still on), /wants, /posts and
+ * /notifications — and always sending people home is wrong from four of them.
+ *
+ * The Referer is the only signal that survives an App Router soft navigation:
+ * document.referrer does NOT update on client-side nav, but every RSC request
+ * is a real HTTP request and carries one. A refresh, a direct link, or an
+ * origin we don't recognise falls back to the board.
+ */
+const BACK_LABEL: Record<string, string> = {
+  "/": "All listings",
+  "/browse": "Browse",
+  "/wants": "My list",
+  "/posts": "My posts",
+  "/notifications": "Notifications",
+};
+
+async function backToOrigin(): Promise<{ href: string; label: string }> {
+  const referer = (await headers()).get("referer");
+  const from = referer && URL.canParse(referer) ? new URL(referer) : null;
+  const label = from && BACK_LABEL[from.pathname];
+  return label ? { href: from.pathname + from.search, label } : { href: "/", label: "All listings" };
+}
+
 export async function generateMetadata({ params }: PageProps<"/listings/[id]">) {
   const listing = await getListing((await params).id);
   return { title: listing?.title ?? "Listing" };
@@ -26,7 +52,12 @@ export async function generateMetadata({ params }: PageProps<"/listings/[id]">) 
 
 export default async function ListingPage({ params }: PageProps<"/listings/[id]">) {
   const { id } = await params;
-  const [listing, user, university] = await Promise.all([getListing(id), getCurrentUser(), getUniversity()]);
+  const [listing, user, university, back] = await Promise.all([
+    getListing(id),
+    getCurrentUser(),
+    getUniversity(),
+    backToOrigin(),
+  ]);
   if (!listing || listing.parentId) notFound();
 
   const seller = listing.seller;
@@ -46,7 +77,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
 
   return (
     <PageShell>
-      <BackLink href="/">All listings</BackLink>
+      <BackLink href={back.href}>{back.label}</BackLink>
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         <Thumb

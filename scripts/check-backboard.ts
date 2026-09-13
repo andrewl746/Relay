@@ -36,5 +36,5 @@ for (const c of CASES) {
 }
 
 console.log(failures === 0
-  ? '\nOK — Backboard is extracting real metadata.'
+  ? '\nOK — need extraction is returning real metadata.\n   (A "[backboard] chat unavailable" line above is expected on the free credit:\n    Backboard refuses LLM chat, and Snowflake Cortex answered instead.)'
   : `\n${failures}/${CASES.length} case(s) off. Extraction runs but the model read them differently.`)
