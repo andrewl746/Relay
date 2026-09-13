@@ -1,13 +1,13 @@
 "use client";
 
 import { useActionState } from "react";
-import { completeOnboarding, type ActionState } from "@/app/(onboarding)/actions";
+import { saveInterests, type ActionState } from "@/app/(onboarding)/actions";
 import { INTERESTS } from "@/lib/onboarding/interests";
 
 const initialState: ActionState = { status: "idle" };
 
 export function InterestsForm({ defaultInterests }: { defaultInterests: string[] }) {
-  const [state, formAction, pending] = useActionState(completeOnboarding, initialState);
+  const [state, formAction, pending] = useActionState(saveInterests, initialState);
 
   return (
     <form action={formAction} className="space-y-5">
@@ -36,7 +36,7 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
       {state.status === "error" && <p className="gh-flash-error">{state.message}</p>}
 
       <button type="submit" disabled={pending} className="gh-btn gh-btn-primary">
-        {pending ? "Finishing up…" : "Complete"}
+        {pending ? "Saving…" : "Next"}
       </button>
     </form>
   );
