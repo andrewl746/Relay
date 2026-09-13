@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { setDevUser } from "@/lib/hub/dev-login";
 
 const SIGN_IN = "__sign-in";
-const SIGN_OUT = "__sign-out";
 
 export function UserSwitcher({
   users,
@@ -26,16 +25,6 @@ export function UserSwitcher({
             router.push("/login");
             return;
           }
-          if (e.target.value === SIGN_OUT) {
-            // A real navigation, not fetch — the response is a redirect and
-            // this is the request that needs to carry the cleared cookie.
-            const form = document.createElement("form");
-            form.method = "POST";
-            form.action = "/auth/signout";
-            document.body.appendChild(form);
-            form.submit();
-            return;
-          }
           setDevUser(e.target.value);
           router.refresh();
         }}
@@ -46,8 +35,7 @@ export function UserSwitcher({
             {u.label}
           </option>
         ))}
-        <option value={SIGN_IN}>Sign in with a school email…</option>
-        <option value={SIGN_OUT}>Sign out</option>
+        <option value={SIGN_IN}>Sign in with Google…</option>
       </select>
     </label>
   );

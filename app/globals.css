@@ -1,16 +1,65 @@
 @import "tailwindcss";
 
-/*
- * One committed light theme. A projector in a judging room is not a place to
- * discover that the demo machine was set to dark mode.
- */
 html {
-  color-scheme: light;
+  color-scheme: dark;
+}
+
+:root {
+  --chassis: #0D0E12;
+  --panel: #16181D;
+  --bezel: #2A2D35;
+  --text-primary: #E4E7EB;
+  --text-muted: #828896;
+  
+  --active-route: #FF5C00;
+  --secured: #00E5FF;
+  --alert: #FFE600;
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-data: 'JetBrains Mono', monospace;
+}
+
+@theme inline {
+  --color-chassis: var(--chassis);
+  --color-panel: var(--panel);
+  --color-bezel: var(--bezel);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  
+  --color-active-route: var(--active-route);
+  --color-secured: var(--secured);
+  --color-alert: var(--alert);
+
+  --font-display: var(--font-display);
+  --font-ui: var(--font-ui);
+  --font-data: var(--font-data);
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
 }
 
 body {
-  background: #ffffff;
-  color: #171717;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
+  background: var(--chassis);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+}
+
+.data {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+}
+
+.display-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+/* Tactical input and focus styles */
+input, button, textarea {
+  outline: none;
+}
+input:focus-visible, button:focus-visible, textarea:focus-visible {
+  box-shadow: 0 0 0 2px var(--chassis), 0 0 0 4px var(--active-route);
 }

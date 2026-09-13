@@ -90,17 +90,25 @@ an inspection. A suitcase twice a year. So:
 ## Pivot 3 — 12:00
 
 **What dropped:**
+The simplistic binary location matching (same neighbourhood vs different). The assumption that anyone is available to pick up or hand off an item at any time.
 
 **What we considered:**
+Leaving availability to text processing, hoping the NLP would catch "only mornings". Leaving distance as abstract.
 
 **What we chose:**
+Hard constraints on time and space. 
+- **Distance:** Added real-world mock coordinates for neighbourhoods and introduced a Haversine distance penalty.
+- **Availability & Pickup Windows:** An item handoff simply cannot happen if either the giver or receiver is marked as "away", or if they do not share an overlapping "pickup window" (morning, afternoon, evening).
+- **Urgency:** Needs now have urgency ('low', 'medium', 'high'), applying a scaling multiplier to the DP match score to prioritize urgent requests.
 
 **What we deliberately did NOT change, and why:**
+The `chainForItem` DP core structure. The DP already elegantly loops through intervals. By injecting `sharePickupWindow` and `isAvailable` checks right inside the DP transitions, impossible chains get structurally pruned (`-Infinity`) without redesigning the algorithm. The date is still the primary key.
 
 **Time spent adapting:**
+~25m on typing constraints, config and algorithm updates.
 
-> Also decide here: **Snowflake track, in or out.** Half-entering costs real hours and
-> scores nothing. The provider seam means it's a one-file change either way.
+> Also decide here: **Snowflake track, in or out.** We are wiring Snowflake.
+
 
 ---
 

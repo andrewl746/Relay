@@ -35,14 +35,33 @@ const MAX_IDLE = config.constraints.maxIdleDays
  */
 const MIN_SCORE = config.constraints.minMatchScore
 
-/**
- * Crude location penalty: 0 if the handoff stays in one neighbourhood, 1 if it
- * crosses. A maps API would add latency and a key for a term that is already
- * dominated by the storage-gap term.
- */
 function distance(a: Person | undefined, b: Person | undefined): number {
   if (!a || !b) return 0
-  return a.location === b.location ? 0 : 1
+  if (a.location === b.location) return 0
+  const coordsA = config.locationCoords[a.location as keyof typeof config.locationCoords]
+  const coordsB = config.locationCoords[b.location as keyof typeof config.locationCoords]
+  if (!coordsA || !coordsB) return 1
+  
+  const R = 6371 // Radius of the earth in km
+  const dLat = (coordsB.lat - coordsA.lat) * Math.PI / 180
+  const dLon = (coordsB.lon - coordsA.lon) * Math.PI / 180
+  const lat1 = coordsA.lat * Math.PI / 180
+  const lat2 = coordsB.lat * Math.PI / 180
+  
+  const aVal = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2)
+  const c = 2 * Math.atan2(Math.sqrt(aVal), Math.sqrt(1-aVal))
+  return R * c
+}
+
+function isAvailable(person: Person, dateStr: string): boolean {
+  if (!person.awayFrom || !person.awayUntil) return true
+  return dateStr < person.awayFrom || dateStr >= person.awayUntil
+}
+
+function sharePickupWindow(a: Person, b: Person): boolean {
+  if (!a.pickupWindows || !b.pickupWindows) return true
+  return a.pickupWindows.some(w => b.pickupWindows.includes(w))
 }
 
 export type AssignOptions = {
@@ -78,7 +97,11 @@ export function chainForItem(
   )
   const n = cands.length
   const score = cands.map(
-    (need) => table[`${need.id}|${item.id}`]?.score ?? 0,
+    (need) => {
+      const base = table[`${need.id}|${item.id}`]?.score ?? 0;
+      const mult = (config.penalties as any).urgencyMultipliers?.[need.urgency] ?? 1;
+      return base * mult;
+    },
   )
 
   const dp = new Array<number>(n).fill(-Infinity)
@@ -87,8 +110,14 @@ export function chainForItem(
   for (let i = 0; i < n; i++) {
     // Base case: this need is the first hop, taken straight from the holder.
     const gap0 = Math.max(0, days(item.freeFrom, cands[i].needFrom))
-    const dist0 = distance(holder, peopleById.get(cands[i].personId))
-    dp[i] = score[i] - lambda * gap0 - mu * dist0
+    const candPerson = peopleById.get(cands[i].personId)
+    const dist0 = distance(holder, candPerson)
+    const canPickup0 = holder && candPerson &&
+      isAvailable(holder, cands[i].needFrom) &&
+      isAvailable(candPerson, cands[i].needFrom) &&
+      sharePickupWindow(holder, candPerson)
+      
+    dp[i] = canPickup0 ? (score[i] - lambda * gap0 - mu * dist0) : -Infinity
 
     // A sale transfers the object permanently, so THIS routing ends at the
     // first hop — there is no second loan to schedule. That makes it exactly
@@ -104,17 +133,27 @@ export function chainForItem(
       if (cands[j].needUntil > cands[i].needFrom) continue // overlap
       const gap = Math.max(0, days(cands[j].needUntil, cands[i].needFrom))
       // Two ways to get from one loan to the next:
-      //   direct   — the previous borrower hands straight to the next one.
-      //              Saves the owner two trips, but only if the wait is short
-      //              enough that someone can keep it (MAX_IDLE).
-      //   via home — it goes back to the owner in between. Always available,
-      //              and the trip out is measured from the owner.
-      const dist = gap <= maxIdle
-        ? distance(
-            peopleById.get(cands[j].personId),
-            peopleById.get(cands[i].personId),
-          )
-        : distance(holder, peopleById.get(cands[i].personId))
+      const prevPerson = peopleById.get(cands[j].personId)
+      const candPerson = peopleById.get(cands[i].personId)
+      
+      const direct = gap <= maxIdle && prevPerson && candPerson &&
+        isAvailable(prevPerson, cands[i].needFrom) &&
+        isAvailable(candPerson, cands[i].needFrom) &&
+        sharePickupWindow(prevPerson, candPerson)
+        
+      const viaOwner = holder && prevPerson && candPerson &&
+        isAvailable(prevPerson, cands[j].needUntil) &&
+        isAvailable(holder, cands[j].needUntil) &&
+        sharePickupWindow(prevPerson, holder) &&
+        isAvailable(holder, cands[i].needFrom) &&
+        isAvailable(candPerson, cands[i].needFrom) &&
+        sharePickupWindow(holder, candPerson)
+      
+      if (!direct && !viaOwner) continue
+      
+      const dist = direct
+        ? distance(prevPerson, candPerson)
+        : distance(holder, candPerson)
       const v = dp[j] + score[i] - lambda * gap - mu * dist
       if (v > dp[i]) {
         dp[i] = v
@@ -142,14 +181,19 @@ export function chainForItem(
     const gapDays = prevNeed
       ? Math.max(0, days(prevNeed.needUntil, need.needFrom))
       : Math.max(0, days(item.freeFrom, need.needFrom))
-    // Direct only when the previous borrower could hold it until this one.
-    const direct = prevNeed != null && gapDays <= maxIdle
+      
+    const prevPerson = prevNeed ? peopleById.get(prevNeed.personId) : undefined
+    const candPerson = peopleById.get(need.personId)
+    
+    // Direct only when the previous borrower could hold it until this one, and both are available with overlapping windows.
+    const direct = prevNeed != null && gapDays <= maxIdle && prevPerson && candPerson &&
+      isAvailable(prevPerson, need.needFrom) &&
+      isAvailable(candPerson, need.needFrom) &&
+      sharePickupWindow(prevPerson, candPerson)
+      
     const dist = direct
-      ? distance(
-          peopleById.get(prevNeed!.personId),
-          peopleById.get(need.personId),
-        )
-      : distance(holder, peopleById.get(need.personId))
+      ? distance(prevPerson, candPerson)
+      : distance(holder, candPerson)
     const m = table[`${need.id}|${item.id}`]
     return {
       needId: need.id,

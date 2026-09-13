@@ -1327,1833 +1327,1969 @@
     {
       "id": "n0",
       "personId": "p46",
-      "rawText": "hoping someone has a shoe rack. for one project then im done",
-      "needFrom": "2026-12-22",
-      "needUntil": "2026-12-28",
+      "rawText": "hoping someone has a cooler",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-03",
       "embedding": []
     },
     {
       "id": "n1",
       "personId": "p53",
-      "rawText": "iso a moving straps. i have no car so closer the better. im in beechwood",
-      "needFrom": "2026-12-01",
-      "needUntil": "2026-12-18",
-      "embedding": []
-    },
-    {
-      "id": "n2",
-      "personId": "p47",
-      "rawText": "does anyone own a raclette grill",
-      "needFrom": "2026-10-09",
-      "needUntil": "2026-10-15",
-      "embedding": []
-    },
-    {
-      "id": "n4",
-      "personId": "p4",
-      "rawText": "HOPING SOMEONE HAS A MOVING BLANKETS, JUST FOR THE WEEKEND",
-      "needFrom": "2026-11-04",
-      "needUntil": "2026-11-22",
-      "embedding": []
-    },
-    {
-      "id": "n5",
-      "personId": "p26",
-      "rawText": "ISO a rice cooker, would rather not buy one tbh, im in beechwood",
-      "needFrom": "2026-10-20",
-      "needUntil": "2026-10-30",
-      "embedding": []
-    },
-    {
-      "id": "n6",
-      "personId": "p10",
-      "rawText": "hoping someone has a shower caddy.",
-      "needFrom": "2026-09-05",
-      "needUntil": "2026-09-14",
-      "embedding": []
-    },
-    {
-      "id": "n7",
-      "personId": "p9",
-      "rawText": "looking to borrow a food processor. im in beechwood",
-      "needFrom": "2026-11-03",
-      "needUntil": "2026-11-20",
-      "embedding": []
-    },
-    {
-      "id": "n9",
-      "personId": "p19",
-      "rawText": "can i borrow a rice cooker. nothing fancy. im in beechwood",
-      "needFrom": "2026-09-05",
-      "needUntil": "2026-09-13",
-      "embedding": []
-    },
-    {
-      "id": "n10",
-      "personId": "p2",
-      "rawText": "trying to find a power bar with surge protection",
-      "needFrom": "2026-09-16",
-      "needUntil": "2026-09-24",
-      "embedding": []
-    },
-    {
-      "id": "n11",
-      "personId": "p16",
-      "rawText": "trying to find a jumper cables. im in king st n",
-      "needFrom": "2026-10-11",
-      "needUntil": "2026-10-13",
-      "embedding": []
-    },
-    {
-      "id": "n13",
-      "personId": "p21",
-      "rawText": "need a bluetooth speaker, would rather not buy one tbh",
-      "needFrom": "2026-10-08",
-      "needUntil": "2026-10-11",
-      "embedding": []
-    },
-    {
-      "id": "n14",
-      "personId": "p24",
-      "rawText": "hoping someone has a shoe rack. cant justify buying one for this. im in northdale",
-      "needFrom": "2026-12-03",
-      "needUntil": "2026-12-19",
-      "embedding": []
-    },
-    {
-      "id": "n15",
-      "personId": "p42",
-      "rawText": "anyone have a bedside table. cant justify buying one for this",
-      "needFrom": "2026-09-17",
-      "needUntil": "2026-10-02",
-      "embedding": []
-    },
-    {
-      "id": "n16",
-      "personId": "p24",
-      "rawText": "need a steam mop. can pick up anytime",
-      "needFrom": "2026-10-02",
-      "needUntil": "2026-10-18",
-      "embedding": []
-    },
-    {
-      "id": "n17",
-      "personId": "p22",
-      "rawText": "ISO a large suitcase, would rather not buy one tbh",
-      "needFrom": "2026-11-10",
-      "needUntil": "2026-11-17",
-      "embedding": []
-    },
-    {
-      "id": "n20",
-      "personId": "p47",
-      "rawText": "hoping someone has a camping stove, for one project then im done",
-      "needFrom": "2026-10-15",
-      "needUntil": "2026-10-23",
-      "embedding": []
-    },
-    {
-      "id": "n21",
-      "personId": "p52",
-      "rawText": "hoping someone has a cordless drill. would rather not buy one tbh",
-      "needFrom": "2026-10-11",
-      "needUntil": "2026-10-18",
-      "embedding": []
-    },
-    {
-      "id": "n22",
-      "personId": "p48",
-      "rawText": "looking to borrow a storage bins, 3 stackable",
-      "needFrom": "2026-10-11",
-      "needUntil": "2026-10-14",
-      "embedding": []
-    },
-    {
-      "id": "n24",
-      "personId": "p5",
-      "rawText": "ISO a bed risers, for one project then im done",
-      "needFrom": "2026-09-07",
-      "needUntil": "2026-09-12",
-      "embedding": []
-    },
-    {
-      "id": "n25",
-      "personId": "p29",
-      "rawText": "ISO a shoe rack. can pick up anytime. im in sunnydale",
-      "needFrom": "2026-11-21",
-      "needUntil": "2026-12-06",
-      "embedding": []
-    },
-    {
-      "id": "n26",
-      "personId": "p6",
-      "rawText": "does anyone own a moving blankets",
-      "needFrom": "2026-09-18",
-      "needUntil": "2026-09-23",
-      "embedding": []
-    },
-    {
-      "id": "n27",
-      "personId": "p32",
-      "rawText": "trying to find a serving platters, cant justify buying one for this",
-      "needFrom": "2026-09-05",
-      "needUntil": "2026-09-22",
-      "embedding": []
-    },
-    {
-      "id": "n28",
-      "personId": "p50",
-      "rawText": "LOOKING TO BORROW A TIRE LEVERS + PATCH KIT, MY ROOM IS TINY SO I CANT KEEP IT, IM IN BEECHWOOD",
-      "needFrom": "2026-12-08",
-      "needUntil": "2026-12-23",
-      "embedding": []
-    },
-    {
-      "id": "n29",
-      "personId": "p35",
-      "rawText": "ISO a box fan. ill give it back same day",
-      "needFrom": "2026-09-08",
-      "needUntil": "2026-09-19",
-      "embedding": []
-    },
-    {
-      "id": "n30",
-      "personId": "p46",
-      "rawText": "looking to borrow a toolkit",
-      "needFrom": "2026-10-21",
-      "needUntil": "2026-11-05",
-      "embedding": []
-    },
-    {
-      "id": "n31",
-      "personId": "p48",
-      "rawText": "trying to find a duffel bag, for one project then im done",
-      "needFrom": "2026-09-08",
-      "needUntil": "2026-09-23",
-      "embedding": []
-    },
-    {
-      "id": "n32",
-      "personId": "p7",
-      "rawText": "anyone have a plates & bowls, set of 4. my room is tiny so i cant keep it.",
-      "needFrom": "2026-12-05",
-      "needUntil": "2026-12-22",
-      "embedding": []
-    },
-    {
-      "id": "n33",
-      "personId": "p33",
-      "rawText": "hoping someone has a plates and bowls, set of 4",
-      "needFrom": "2026-11-17",
-      "needUntil": "2026-11-19",
-      "embedding": []
-    },
-    {
-      "id": "n34",
-      "personId": "p45",
-      "rawText": "trying to find a stand mixer. ill give it back same day",
-      "needFrom": "2026-09-13",
-      "needUntil": "2026-09-26",
-      "embedding": []
-    },
-    {
-      "id": "n36",
-      "personId": "p1",
-      "rawText": "need a space heater. ill give it back same day",
-      "needFrom": "2026-10-18",
+      "rawText": "ANYONE HAVE A MICROWAVE, I HAVE NO CAR SO CLOSER THE BETTER",
+      "needFrom": "2026-10-13",
       "needUntil": "2026-10-26",
       "embedding": []
     },
     {
-      "id": "n37",
-      "personId": "p10",
-      "rawText": "anyone have a ladder, cant justify buying one for this, im in sunnydale.",
-      "needFrom": "2026-09-12",
-      "needUntil": "2026-09-30",
+      "id": "n2",
+      "personId": "p19",
+      "rawText": "does anyone own a paper shredder. moving out so its kind of urgent.",
+      "needFrom": "2026-11-10",
+      "needUntil": "2026-11-13",
       "embedding": []
     },
     {
-      "id": "n38",
-      "personId": "p47",
-      "rawText": "need a sewing machine. my room is tiny so i cant keep it",
-      "needFrom": "2026-11-23",
-      "needUntil": "2026-12-10",
+      "id": "n3",
+      "personId": "p59",
+      "rawText": "anyone have a shower caddy, just for the weekend",
+      "needFrom": "2026-12-29",
+      "needUntil": "2026-12-31",
       "embedding": []
     },
     {
-      "id": "n39",
-      "personId": "p56",
-      "rawText": "need a power bar with surge protection, for one project then im done",
+      "id": "n4",
+      "personId": "p26",
+      "rawText": "TRYING TO FIND A BRITA WATER FILTER. IM IN BEECHWOOD",
+      "needFrom": "2026-11-11",
+      "needUntil": "2026-11-13",
+      "embedding": []
+    },
+    {
+      "id": "n5",
+      "personId": "p2",
+      "rawText": "does anyone own a garment steamer, would rather not buy one tbh",
+      "needFrom": "2026-09-22",
+      "needUntil": "2026-09-25",
+      "embedding": []
+    },
+    {
+      "id": "n7",
+      "personId": "p46",
+      "rawText": "need a serving platters, any condition really",
+      "needFrom": "2026-12-07",
+      "needUntil": "2026-12-14",
+      "embedding": []
+    },
+    {
+      "id": "n8",
+      "personId": "p13",
+      "rawText": "can i borrow a bluetooth speaker, can pick up anytime",
+      "needFrom": "2026-12-04",
+      "needUntil": "2026-12-05",
+      "embedding": []
+    },
+    {
+      "id": "n9",
+      "personId": "p45",
+      "rawText": "ISO a air pump, im in northdale",
+      "needFrom": "2026-12-20",
+      "needUntil": "2026-12-21",
+      "embedding": []
+    },
+    {
+      "id": "n10",
+      "personId": "p54",
+      "rawText": "need a humidifier",
       "needFrom": "2026-11-12",
       "needUntil": "2026-11-16",
       "embedding": []
     },
     {
-      "id": "n41",
-      "personId": "p48",
-      "rawText": "trying to find a camera tripod, nothing fancy",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-09-15",
-      "embedding": []
-    },
-    {
-      "id": "n42",
-      "personId": "p50",
-      "rawText": "trying to find a steam mop",
-      "needFrom": "2026-12-20",
-      "needUntil": "2026-12-26",
-      "embedding": []
-    },
-    {
-      "id": "n43",
-      "personId": "p57",
-      "rawText": "does anyone own a stud finder, would rather not buy one tbh",
-      "needFrom": "2026-11-01",
-      "needUntil": "2026-11-19",
-      "embedding": []
-    },
-    {
-      "id": "n44",
-      "personId": "p57",
-      "rawText": "anyone have a hand truck, would rather not buy one tbh",
-      "needFrom": "2026-09-22",
-      "needUntil": "2026-09-29",
-      "embedding": []
-    },
-    {
-      "id": "n45",
-      "personId": "p44",
-      "rawText": "need a ring light. ill give it back same day",
-      "needFrom": "2026-10-06",
-      "needUntil": "2026-10-23",
-      "embedding": []
-    },
-    {
-      "id": "n46",
-      "personId": "p43",
-      "rawText": "CAN I BORROW A SNOW SHOVEL, ILL GIVE IT BACK SAME DAY",
-      "needFrom": "2026-11-11",
-      "needUntil": "2026-11-20",
-      "embedding": []
-    },
-    {
-      "id": "n47",
-      "personId": "p51",
-      "rawText": "need a garment steamer. my room is tiny so i cant keep it",
-      "needFrom": "2026-10-31",
-      "needUntil": "2026-11-06",
-      "embedding": []
-    },
-    {
-      "id": "n48",
-      "personId": "p8",
-      "rawText": "looking to borrow a allen key set. for one project then im done",
-      "needFrom": "2026-11-13",
-      "needUntil": "2026-11-30",
-      "embedding": []
-    },
-    {
-      "id": "n49",
-      "personId": "p58",
-      "rawText": "looking to borrow a brita water filter, only need it for a couple hours",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-09-17",
-      "embedding": []
-    },
-    {
-      "id": "n50",
-      "personId": "p8",
-      "rawText": "need a camera tripod. can pick up anytime.",
-      "needFrom": "2026-12-20",
-      "needUntil": "2026-12-28",
-      "embedding": []
-    },
-    {
-      "id": "n51",
-      "personId": "p38",
-      "rawText": "can i borrow a power drill, my room is tiny so i cant keep it",
-      "needFrom": "2026-12-13",
-      "needUntil": "2026-12-28",
-      "embedding": []
-    },
-    {
-      "id": "n52",
-      "personId": "p13",
-      "rawText": "anyone have a shoe rack",
-      "needFrom": "2026-10-01",
-      "needUntil": "2026-10-06",
-      "embedding": []
-    },
-    {
-      "id": "n53",
-      "personId": "p31",
-      "rawText": "can i borrow a toaster",
-      "needFrom": "2026-10-03",
-      "needUntil": "2026-10-10",
-      "embedding": []
-    },
-    {
-      "id": "n54",
-      "personId": "p47",
-      "rawText": "hoping someone has a spirit level",
-      "needFrom": "2026-10-02",
-      "needUntil": "2026-10-04",
-      "embedding": []
-    },
-    {
-      "id": "n55",
-      "personId": "p37",
-      "rawText": "hoping someone has a mini fridge. moving out so its kind of urgent",
-      "needFrom": "2026-11-01",
-      "needUntil": "2026-11-08",
-      "embedding": []
-    },
-    {
-      "id": "n56",
-      "personId": "p27",
-      "rawText": "need a desk chair, im in sunnydale",
-      "needFrom": "2026-12-11",
-      "needUntil": "2026-12-15",
-      "embedding": []
-    },
-    {
-      "id": "n57",
-      "personId": "p6",
-      "rawText": "looking to borrow a folding chairs (4). would rather not buy one tbh. im in sunnydale",
-      "needFrom": "2026-12-02",
-      "needUntil": "2026-12-12",
-      "embedding": []
-    },
-    {
-      "id": "n59",
-      "personId": "p56",
-      "rawText": "trying to find a extension cord",
-      "needFrom": "2026-11-01",
-      "needUntil": "2026-11-04",
-      "embedding": []
-    },
-    {
-      "id": "n60",
-      "personId": "p22",
-      "rawText": "anyone have a impact driver. i have no car so closer the better. im in lester",
-      "needFrom": "2026-09-23",
-      "needUntil": "2026-10-10",
-      "embedding": []
-    },
-    {
-      "id": "n61",
-      "personId": "p6",
-      "rawText": "ISO a sleeping bag. just for the weekend",
-      "needFrom": "2026-12-09",
-      "needUntil": "2026-12-26",
-      "embedding": []
-    },
-    {
-      "id": "n62",
-      "personId": "p19",
-      "rawText": "anyone have a karaoke mic",
-      "needFrom": "2026-12-04",
-      "needUntil": "2026-12-06",
-      "embedding": []
-    },
-    {
-      "id": "n63",
-      "personId": "p28",
-      "rawText": "anyone have a screwdriver set. i have no car so closer the better. im in king st n",
-      "needFrom": "2026-09-08",
+      "id": "n11",
+      "personId": "p34",
+      "rawText": "looking to borrow a electric kettle, for one project then im done.",
+      "needFrom": "2026-09-17",
       "needUntil": "2026-09-19",
       "embedding": []
     },
     {
-      "id": "n64",
-      "personId": "p49",
-      "rawText": "DOES ANYONE OWN A CLOTHING RACK, WOULD RATHER NOT BUY ONE TBH, IM IN SUNNYDALE",
-      "needFrom": "2026-10-23",
-      "needUntil": "2026-11-01",
+      "id": "n12",
+      "personId": "p7",
+      "rawText": "can i borrow a full length mirror, im in lester",
+      "needFrom": "2026-12-03",
+      "needUntil": "2026-12-08",
       "embedding": []
     },
     {
-      "id": "n65",
-      "personId": "p39",
-      "rawText": "can i borrow a iron, moving out so its kind of urgent, im in beechwood",
-      "needFrom": "2026-10-30",
+      "id": "n13",
+      "personId": "p5",
+      "rawText": "does anyone own a steam mop, im in lester",
+      "needFrom": "2026-10-03",
+      "needUntil": "2026-10-04",
+      "embedding": []
+    },
+    {
+      "id": "n14",
+      "personId": "p47",
+      "rawText": "ISO a large suitcase, would rather not buy one tbh",
+      "needFrom": "2026-11-11",
       "needUntil": "2026-11-16",
       "embedding": []
     },
     {
-      "id": "n67",
-      "personId": "p42",
-      "rawText": "does anyone own a ladder",
+      "id": "n15",
+      "personId": "p52",
+      "rawText": "does anyone own a luggage scale. ill give it back same day.",
+      "needFrom": "2026-11-09",
+      "needUntil": "2026-11-12",
+      "embedding": []
+    },
+    {
+      "id": "n16",
+      "personId": "p49",
+      "rawText": "hoping someone has a vacuum, for one project then im done",
+      "needFrom": "2026-10-09",
+      "needUntil": "2026-10-10",
+      "embedding": []
+    },
+    {
+      "id": "n17",
+      "personId": "p48",
+      "rawText": "looking to borrow a air mattress. just for the weekend",
+      "needFrom": "2026-10-29",
+      "needUntil": "2026-10-30",
+      "embedding": []
+    },
+    {
+      "id": "n18",
+      "personId": "p35",
+      "rawText": "looking to borrow a step stool. just for the weekend",
+      "needFrom": "2026-09-21",
+      "needUntil": "2026-09-22",
+      "embedding": []
+    },
+    {
+      "id": "n19",
+      "personId": "p53",
+      "rawText": "does anyone own a hammer. my room is tiny so i cant keep it",
+      "needFrom": "2026-10-30",
+      "needUntil": "2026-11-03",
+      "embedding": []
+    },
+    {
+      "id": "n20",
+      "personId": "p1",
+      "rawText": "need a mugs, 3 of them, im in king st n",
+      "needFrom": "2026-09-15",
+      "needUntil": "2026-09-17",
+      "embedding": []
+    },
+    {
+      "id": "n21",
+      "personId": "p7",
+      "rawText": "trying to find a serving platters, cant justify buying one for this",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-08",
+      "embedding": []
+    },
+    {
+      "id": "n22",
+      "personId": "p50",
+      "rawText": "looking to borrow a paper shredder, can pick up anytime, im in sunnydale",
+      "needFrom": "2026-09-06",
+      "needUntil": "2026-09-18",
+      "embedding": []
+    },
+    {
+      "id": "n23",
+      "personId": "p4",
+      "rawText": "ISO a stand mixer, my room is tiny so i cant keep it, im in northdale",
+      "needFrom": "2026-12-20",
+      "needUntil": "2026-12-22",
+      "embedding": []
+    },
+    {
+      "id": "n24",
+      "personId": "p1",
+      "rawText": "DOES ANYONE OWN A PLATES AND BOWLS, SET OF 4. MY ROOM IS TINY SO I CANT KEEP IT",
       "needFrom": "2026-12-27",
+      "needUntil": "2026-12-30",
+      "embedding": []
+    },
+    {
+      "id": "n25",
+      "personId": "p8",
+      "rawText": "ISO a shoe rack, for one project then im done",
+      "needFrom": "2026-09-14",
+      "needUntil": "2026-09-23",
+      "embedding": []
+    },
+    {
+      "id": "n26",
+      "personId": "p35",
+      "rawText": "trying to find a brita water filter, cant justify buying one for this",
+      "needFrom": "2026-10-31",
+      "needUntil": "2026-11-04",
+      "embedding": []
+    },
+    {
+      "id": "n27",
+      "personId": "p56",
+      "rawText": "looking to borrow a stand mixer. i have no car so closer the better. im in lester",
+      "needFrom": "2026-12-01",
+      "needUntil": "2026-12-04",
+      "embedding": []
+    },
+    {
+      "id": "n28",
+      "personId": "p10",
+      "rawText": "ISO a hand truck",
+      "needFrom": "2026-10-14",
+      "needUntil": "2026-10-22",
+      "embedding": []
+    },
+    {
+      "id": "n29",
+      "personId": "p24",
+      "rawText": "anyone have a mugs, 3 of them. can pick up anytime. im in northdale",
+      "needFrom": "2026-12-26",
+      "needUntil": "2026-12-27",
+      "embedding": []
+    },
+    {
+      "id": "n30",
+      "personId": "p1",
+      "rawText": "ISO a drying rack",
+      "needFrom": "2026-12-13",
+      "needUntil": "2026-12-26",
+      "embedding": []
+    },
+    {
+      "id": "n31",
+      "personId": "p56",
+      "rawText": "does anyone own a cutlery set",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-02",
+      "embedding": []
+    },
+    {
+      "id": "n33",
+      "personId": "p1",
+      "rawText": "need a folding cot, any condition really, im in lester",
+      "needFrom": "2026-10-25",
+      "needUntil": "2026-10-27",
+      "embedding": []
+    },
+    {
+      "id": "n35",
+      "personId": "p25",
+      "rawText": "hoping someone has a power bar, my room is tiny so i cant keep it.",
+      "needFrom": "2026-10-29",
+      "needUntil": "2026-11-02",
+      "embedding": []
+    },
+    {
+      "id": "n36",
+      "personId": "p53",
+      "rawText": "hoping someone has a mugs, 3 of them. ill give it back same day. im in lester",
+      "needFrom": "2026-12-15",
+      "needUntil": "2026-12-17",
+      "embedding": []
+    },
+    {
+      "id": "n37",
+      "personId": "p16",
+      "rawText": "trying to find a ladder, just for the weekend",
+      "needFrom": "2026-12-14",
+      "needUntil": "2026-12-20",
+      "embedding": []
+    },
+    {
+      "id": "n38",
+      "personId": "p49",
+      "rawText": "can i borrow a camera tripod, for one project then im done",
+      "needFrom": "2026-11-04",
+      "needUntil": "2026-11-10",
+      "embedding": []
+    },
+    {
+      "id": "n39",
+      "personId": "p51",
+      "rawText": "trying to find a mugs, 3 of them",
+      "needFrom": "2026-12-23",
+      "needUntil": "2026-12-25",
+      "embedding": []
+    },
+    {
+      "id": "n40",
+      "personId": "p8",
+      "rawText": "anyone have a shoe rack. for one project then im done",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-12",
+      "embedding": []
+    },
+    {
+      "id": "n41",
+      "personId": "p1",
+      "rawText": "looking to borrow a garment steamer. my room is tiny so i cant keep it",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-06",
+      "embedding": []
+    },
+    {
+      "id": "n42",
+      "personId": "p57",
+      "rawText": "hoping someone has a stand mixer. just for the weekend",
+      "needFrom": "2026-09-03",
+      "needUntil": "2026-09-05",
+      "embedding": []
+    },
+    {
+      "id": "n43",
+      "personId": "p23",
+      "rawText": "hoping someone has a folding cot. i have no car so closer the better",
+      "needFrom": "2026-10-04",
+      "needUntil": "2026-10-05",
+      "embedding": []
+    },
+    {
+      "id": "n44",
+      "personId": "p17",
+      "rawText": "ISO a bluetooth speaker",
+      "needFrom": "2026-09-18",
+      "needUntil": "2026-09-30",
+      "embedding": []
+    },
+    {
+      "id": "n45",
+      "personId": "p56",
+      "rawText": "ISO A TENT. IM IN LESTER.",
+      "needFrom": "2026-10-11",
+      "needUntil": "2026-10-16",
+      "embedding": []
+    },
+    {
+      "id": "n46",
+      "personId": "p29",
+      "rawText": "anyone have a garment steamer, my room is tiny so i cant keep it",
+      "needFrom": "2026-12-21",
+      "needUntil": "2026-12-26",
+      "embedding": []
+    },
+    {
+      "id": "n47",
+      "personId": "p17",
+      "rawText": "does anyone own a desk lamp, moving out so its kind of urgent",
+      "needFrom": "2026-10-27",
+      "needUntil": "2026-10-29",
+      "embedding": []
+    },
+    {
+      "id": "n48",
+      "personId": "p22",
+      "rawText": "looking to borrow a folding chairs (4). would rather not buy one tbh. im in sunnydale",
+      "needFrom": "2026-12-06",
+      "needUntil": "2026-12-12",
+      "embedding": []
+    },
+    {
+      "id": "n49",
+      "personId": "p17",
+      "rawText": "trying to find a toaster, my room is tiny so i cant keep it",
+      "needFrom": "2026-12-23",
+      "needUntil": "2026-12-25",
+      "embedding": []
+    },
+    {
+      "id": "n50",
+      "personId": "p23",
+      "rawText": "anyone have a impact driver. i have no car so closer the better. im in lester",
+      "needFrom": "2026-09-25",
+      "needUntil": "2026-09-28",
+      "embedding": []
+    },
+    {
+      "id": "n51",
+      "personId": "p6",
+      "rawText": "looking to borrow a spirit level. for one project then im done. im in lester",
+      "needFrom": "2026-10-19",
+      "needUntil": "2026-11-01",
+      "embedding": []
+    },
+    {
+      "id": "n53",
+      "personId": "p50",
+      "rawText": "anyone have a ring light, only need it for a couple hours",
+      "needFrom": "2026-11-09",
+      "needUntil": "2026-11-14",
+      "embedding": []
+    },
+    {
+      "id": "n54",
+      "personId": "p49",
+      "rawText": "can i borrow a power bar with surge protection. any condition really. im in beechwood",
+      "needFrom": "2026-12-01",
+      "needUntil": "2026-12-07",
+      "embedding": []
+    },
+    {
+      "id": "n55",
+      "personId": "p38",
+      "rawText": "can i borrow a paper shredder. i have no car so closer the better",
+      "needFrom": "2026-09-20",
+      "needUntil": "2026-09-23",
+      "embedding": []
+    },
+    {
+      "id": "n56",
+      "personId": "p0",
+      "rawText": "looking to borrow a step ladder. im in king st n",
+      "needFrom": "2026-10-10",
+      "needUntil": "2026-10-11",
+      "embedding": []
+    },
+    {
+      "id": "n57",
+      "personId": "p14",
+      "rawText": "does anyone own a shower caddy, i have no car so closer the better",
+      "needFrom": "2026-12-22",
+      "needUntil": "2026-12-29",
+      "embedding": []
+    },
+    {
+      "id": "n58",
+      "personId": "p49",
+      "rawText": "anyone have a mattress topper, twin xl. i have no car so closer the better",
+      "needFrom": "2026-11-30",
+      "needUntil": "2026-12-03",
+      "embedding": []
+    },
+    {
+      "id": "n59",
+      "personId": "p51",
+      "rawText": "ISO a serving platters. only need it for a couple hours",
+      "needFrom": "2026-12-29",
+      "needUntil": "2026-12-31",
+      "embedding": []
+    },
+    {
+      "id": "n60",
+      "personId": "p5",
+      "rawText": "can i borrow a duffel bag, can pick up anytime",
+      "needFrom": "2026-12-06",
+      "needUntil": "2026-12-12",
+      "embedding": []
+    },
+    {
+      "id": "n61",
+      "personId": "p15",
+      "rawText": "ISO a punch bowl + ladle, my room is tiny so i cant keep it",
+      "needFrom": "2026-12-03",
+      "needUntil": "2026-12-09",
+      "embedding": []
+    },
+    {
+      "id": "n62",
+      "personId": "p13",
+      "rawText": "can i borrow a packing tape gun, would rather not buy one tbh, im in sunnydale",
+      "needFrom": "2026-12-08",
+      "needUntil": "2026-12-09",
+      "embedding": []
+    },
+    {
+      "id": "n63",
+      "personId": "p20",
+      "rawText": "does anyone own a toolkit, my room is tiny so i cant keep it",
+      "needFrom": "2026-10-25",
+      "needUntil": "2026-10-27",
+      "embedding": []
+    },
+    {
+      "id": "n64",
+      "personId": "p20",
+      "rawText": "need a suitcase",
+      "needFrom": "2026-10-23",
+      "needUntil": "2026-10-26",
+      "embedding": []
+    },
+    {
+      "id": "n65",
+      "personId": "p28",
+      "rawText": "ISO A SEWING MACHINE, WOULD RATHER NOT BUY ONE TBH",
+      "needFrom": "2026-10-28",
+      "needUntil": "2026-10-30",
+      "embedding": []
+    },
+    {
+      "id": "n66",
+      "personId": "p4",
+      "rawText": "trying to find a moving straps, cant justify buying one for this",
+      "needFrom": "2026-10-13",
+      "needUntil": "2026-10-15",
+      "embedding": []
+    },
+    {
+      "id": "n67",
+      "personId": "p38",
+      "rawText": "ISO a printer. cant justify buying one for this. im in northdale",
+      "needFrom": "2026-12-22",
       "needUntil": "2026-12-29",
       "embedding": []
     },
     {
       "id": "n68",
-      "personId": "p3",
-      "rawText": "can i borrow a iron, cant justify buying one for this",
-      "needFrom": "2026-09-19",
-      "needUntil": "2026-10-04",
+      "personId": "p16",
+      "rawText": "does anyone own a raclette grill. for one project then im done. im in beechwood",
+      "needFrom": "2026-11-22",
+      "needUntil": "2026-11-26",
       "embedding": []
     },
     {
       "id": "n69",
-      "personId": "p45",
-      "rawText": "looking to borrow a food processor. can pick up anytime. im in king st n",
-      "needFrom": "2026-10-05",
-      "needUntil": "2026-10-09",
-      "embedding": []
-    },
-    {
-      "id": "n70",
-      "personId": "p59",
-      "rawText": "looking to borrow a cordless drill.",
-      "needFrom": "2026-10-18",
-      "needUntil": "2026-11-04",
+      "personId": "p47",
+      "rawText": "does anyone own a shower caddy, my room is tiny so i cant keep it",
+      "needFrom": "2026-10-02",
+      "needUntil": "2026-10-06",
       "embedding": []
     },
     {
       "id": "n71",
-      "personId": "p52",
-      "rawText": "ISO a ice scraper",
-      "needFrom": "2026-11-18",
-      "needUntil": "2026-11-22",
+      "personId": "p29",
+      "rawText": "can i borrow a full length mirror",
+      "needFrom": "2026-11-23",
+      "needUntil": "2026-11-24",
       "embedding": []
     },
     {
       "id": "n72",
-      "personId": "p21",
-      "rawText": "need a bike pump",
-      "needFrom": "2026-10-01",
-      "needUntil": "2026-10-05",
+      "personId": "p12",
+      "rawText": "does anyone own a cordless drill, can pick up anytime",
+      "needFrom": "2026-09-17",
+      "needUntil": "2026-09-20",
       "embedding": []
     },
     {
       "id": "n73",
-      "personId": "p37",
-      "rawText": "ISO a cutlery set. cant justify buying one for this",
-      "needFrom": "2026-11-18",
-      "needUntil": "2026-11-23",
+      "personId": "p14",
+      "rawText": "need a steam mop. im in beechwood.",
+      "needFrom": "2026-10-16",
+      "needUntil": "2026-10-22",
       "embedding": []
     },
     {
       "id": "n74",
-      "personId": "p26",
-      "rawText": "need a space heater, ill give it back same day, im in sunnydale",
-      "needFrom": "2026-10-16",
-      "needUntil": "2026-10-21",
+      "personId": "p4",
+      "rawText": "does anyone own a food processor. nothing fancy.",
+      "needFrom": "2026-10-13",
+      "needUntil": "2026-10-15",
       "embedding": []
     },
     {
       "id": "n75",
-      "personId": "p29",
-      "rawText": "looking to borrow a allen key set. ill give it back same day",
-      "needFrom": "2026-10-09",
-      "needUntil": "2026-10-13",
-      "embedding": []
-    },
-    {
-      "id": "n76",
-      "personId": "p35",
-      "rawText": "does anyone own a wrench set, would rather not buy one tbh",
-      "needFrom": "2026-09-08",
-      "needUntil": "2026-09-26",
-      "embedding": []
-    },
-    {
-      "id": "n78",
-      "personId": "p0",
-      "rawText": "looking to borrow a step stool. ill give it back same day.",
-      "needFrom": "2026-11-01",
+      "personId": "p23",
+      "rawText": "need a cooler. my room is tiny so i cant keep it.",
+      "needFrom": "2026-10-30",
       "needUntil": "2026-11-06",
       "embedding": []
     },
     {
-      "id": "n79",
-      "personId": "p14",
-      "rawText": "trying to find a microwave. im in king st n",
-      "needFrom": "2026-10-22",
-      "needUntil": "2026-10-25",
+      "id": "n76",
+      "personId": "p9",
+      "rawText": "can i borrow a ring light, cant justify buying one for this",
+      "needFrom": "2026-12-24",
+      "needUntil": "2026-12-27",
+      "embedding": []
+    },
+    {
+      "id": "n77",
+      "personId": "p38",
+      "rawText": "trying to find a cutlery set, just for the weekend",
+      "needFrom": "2026-11-14",
+      "needUntil": "2026-11-27",
+      "embedding": []
+    },
+    {
+      "id": "n78",
+      "personId": "p24",
+      "rawText": "HOPING SOMEONE HAS A PROJECTOR, MY ROOM IS TINY SO I CANT KEEP IT.",
+      "needFrom": "2026-10-13",
+      "needUntil": "2026-10-19",
       "embedding": []
     },
     {
       "id": "n80",
-      "personId": "p4",
-      "rawText": "looking to borrow a spirit level, just for the weekend, im in king st n",
+      "personId": "p0",
+      "rawText": "hoping someone has a full length mirror, i have no car so closer the better",
       "needFrom": "2026-12-28",
       "needUntil": "2026-12-31",
       "embedding": []
     },
     {
+      "id": "n81",
+      "personId": "p23",
+      "rawText": "can i borrow a mugs, 3 of them.",
+      "needFrom": "2026-12-19",
+      "needUntil": "2026-12-20",
+      "embedding": []
+    },
+    {
       "id": "n82",
-      "personId": "p0",
-      "rawText": "does anyone own a carpet cleaner. ill give it back same day",
-      "needFrom": "2026-11-09",
-      "needUntil": "2026-11-21",
-      "embedding": []
-    },
-    {
-      "id": "n83",
-      "personId": "p10",
-      "rawText": "need a steam mop",
-      "needFrom": "2026-12-25",
-      "needUntil": "2026-12-27",
-      "embedding": []
-    },
-    {
-      "id": "n84",
-      "personId": "p37",
-      "rawText": "can i borrow a brita water filter, can pick up anytime",
-      "needFrom": "2026-11-14",
-      "needUntil": "2026-11-24",
-      "embedding": []
-    },
-    {
-      "id": "n86",
-      "personId": "p47",
-      "rawText": "looking to borrow a folding table, my room is tiny so i cant keep it, im in king st n",
-      "needFrom": "2026-11-09",
-      "needUntil": "2026-11-13",
-      "embedding": []
-    },
-    {
-      "id": "n87",
-      "personId": "p18",
-      "rawText": "need a steam mop. im in beechwood.",
-      "needFrom": "2026-10-14",
-      "needUntil": "2026-10-27",
-      "embedding": []
-    },
-    {
-      "id": "n88",
-      "personId": "p4",
-      "rawText": "hoping someone has a humidifier. any condition really. im in sunnydale.",
-      "needFrom": "2026-10-31",
-      "needUntil": "2026-11-02",
-      "embedding": []
-    },
-    {
-      "id": "n89",
-      "personId": "p23",
-      "rawText": "trying to find a stand mixer. i have no car so closer the better. im in king st n",
-      "needFrom": "2026-10-07",
-      "needUntil": "2026-10-21",
-      "embedding": []
-    },
-    {
-      "id": "n90",
-      "personId": "p2",
-      "rawText": "hoping someone has a food processor, any condition really",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-09-07",
-      "embedding": []
-    },
-    {
-      "id": "n91",
-      "personId": "p42",
-      "rawText": "does anyone own a camping stove, would rather not buy one tbh, im in lester",
-      "needFrom": "2026-12-10",
-      "needUntil": "2026-12-22",
-      "embedding": []
-    },
-    {
-      "id": "n92",
-      "personId": "p22",
-      "rawText": "trying to find a food processor, cant justify buying one for this.",
-      "needFrom": "2026-10-19",
-      "needUntil": "2026-10-23",
-      "embedding": []
-    },
-    {
-      "id": "n93",
-      "personId": "p56",
-      "rawText": "looking to borrow a sewing machine, any condition really.",
-      "needFrom": "2026-09-16",
-      "needUntil": "2026-09-18",
-      "embedding": []
-    },
-    {
-      "id": "n94",
-      "personId": "p54",
-      "rawText": "hoping someone has a packing tape gun.",
-      "needFrom": "2026-09-13",
-      "needUntil": "2026-09-26",
-      "embedding": []
-    },
-    {
-      "id": "n95",
-      "personId": "p53",
-      "rawText": "hoping someone has a dehumidifier, i have no car so closer the better",
-      "needFrom": "2026-11-23",
-      "needUntil": "2026-11-27",
-      "embedding": []
-    },
-    {
-      "id": "n96",
-      "personId": "p51",
-      "rawText": "does anyone own a cooler. can pick up anytime",
-      "needFrom": "2026-11-14",
-      "needUntil": "2026-11-26",
-      "embedding": []
-    },
-    {
-      "id": "n97",
-      "personId": "p44",
-      "rawText": "can i borrow a ladder, only need it for a couple hours",
-      "needFrom": "2026-11-04",
-      "needUntil": "2026-11-07",
-      "embedding": []
-    },
-    {
-      "id": "n98",
-      "personId": "p15",
-      "rawText": "hoping someone has a ice scraper. cant justify buying one for this. im in king st n",
-      "needFrom": "2026-11-06",
-      "needUntil": "2026-11-16",
-      "embedding": []
-    },
-    {
-      "id": "n99",
-      "personId": "p48",
-      "rawText": "does anyone own a bluetooth speaker, would rather not buy one tbh",
-      "needFrom": "2026-10-07",
-      "needUntil": "2026-10-15",
-      "embedding": []
-    },
-    {
-      "id": "n100",
-      "personId": "p21",
-      "rawText": "trying to find a bedside table",
-      "needFrom": "2026-11-19",
-      "needUntil": "2026-12-01",
-      "embedding": []
-    },
-    {
-      "id": "n101",
-      "personId": "p10",
-      "rawText": "can i borrow a plates & bowls, set of 4",
-      "needFrom": "2026-10-02",
-      "needUntil": "2026-10-09",
-      "embedding": []
-    },
-    {
-      "id": "n102",
-      "personId": "p23",
-      "rawText": "hoping someone has a tent, i have no car so closer the better",
-      "needFrom": "2026-12-01",
-      "needUntil": "2026-12-06",
-      "embedding": []
-    },
-    {
-      "id": "n103",
-      "personId": "p26",
-      "rawText": "can i borrow a air mattress",
-      "needFrom": "2026-11-04",
+      "personId": "p39",
+      "rawText": "does anyone own a luggage scale. nothing fancy",
+      "needFrom": "2026-11-05",
       "needUntil": "2026-11-18",
       "embedding": []
     },
     {
-      "id": "n104",
-      "personId": "p11",
-      "rawText": "hoping someone has a first aid kit. ill give it back same day",
-      "needFrom": "2026-12-08",
-      "needUntil": "2026-12-23",
+      "id": "n83",
+      "personId": "p44",
+      "rawText": "need a carpet cleaner, for one project then im done, im in beechwood",
+      "needFrom": "2026-10-16",
+      "needUntil": "2026-10-18",
       "embedding": []
     },
     {
-      "id": "n105",
-      "personId": "p17",
-      "rawText": "need a cutlery set, ill give it back same day.",
-      "needFrom": "2026-11-19",
-      "needUntil": "2026-11-25",
-      "embedding": []
-    },
-    {
-      "id": "n106",
-      "personId": "p23",
-      "rawText": "NEED A EXTENSION CORD. FOR ONE PROJECT THEN IM DONE",
-      "needFrom": "2026-11-01",
-      "needUntil": "2026-11-16",
-      "embedding": []
-    },
-    {
-      "id": "n107",
+      "id": "n84",
       "personId": "p35",
-      "rawText": "does anyone own a tent, moving out so its kind of urgent",
-      "needFrom": "2026-11-06",
-      "needUntil": "2026-11-22",
-      "embedding": []
-    },
-    {
-      "id": "n108",
-      "personId": "p42",
-      "rawText": "ISO a folding cot, nothing fancy",
-      "needFrom": "2026-12-24",
-      "needUntil": "2026-12-31",
-      "embedding": []
-    },
-    {
-      "id": "n110",
-      "personId": "p9",
-      "rawText": "looking to borrow a packing tape gun. cant justify buying one for this",
-      "needFrom": "2026-09-08",
-      "needUntil": "2026-09-19",
-      "embedding": []
-    },
-    {
-      "id": "n111",
-      "personId": "p54",
-      "rawText": "need a toaster",
-      "needFrom": "2026-10-21",
-      "needUntil": "2026-11-05",
-      "embedding": []
-    },
-    {
-      "id": "n112",
-      "personId": "p51",
-      "rawText": "ISO a rice cooker, ill give it back same day",
-      "needFrom": "2026-10-31",
-      "needUntil": "2026-11-09",
-      "embedding": []
-    },
-    {
-      "id": "n113",
-      "personId": "p32",
-      "rawText": "hoping someone has a vacuum. moving out so its kind of urgent",
-      "needFrom": "2026-11-19",
-      "needUntil": "2026-11-29",
-      "embedding": []
-    },
-    {
-      "id": "n114",
-      "personId": "p25",
-      "rawText": "anyone have a shop vac",
-      "needFrom": "2026-12-07",
-      "needUntil": "2026-12-19",
-      "embedding": []
-    },
-    {
-      "id": "n115",
-      "personId": "p36",
-      "rawText": "looking to borrow a folding chairs (4). i have no car so closer the better",
-      "needFrom": "2026-11-28",
-      "needUntil": "2026-12-14",
-      "embedding": []
-    },
-    {
-      "id": "n116",
-      "personId": "p1",
-      "rawText": "need a moving straps, im in sunnydale",
-      "needFrom": "2026-12-11",
-      "needUntil": "2026-12-24",
-      "embedding": []
-    },
-    {
-      "id": "n117",
-      "personId": "p32",
-      "rawText": "hoping someone has a air pump, im in beechwood",
-      "needFrom": "2026-11-18",
-      "needUntil": "2026-11-21",
-      "embedding": []
-    },
-    {
-      "id": "n118",
-      "personId": "p2",
-      "rawText": "need a toaster",
-      "needFrom": "2026-09-21",
-      "needUntil": "2026-09-25",
-      "embedding": []
-    },
-    {
-      "id": "n119",
-      "personId": "p40",
-      "rawText": "can i borrow a folding table. for one project then im done",
-      "needFrom": "2026-09-30",
-      "needUntil": "2026-10-13",
-      "embedding": []
-    },
-    {
-      "id": "n121",
-      "personId": "p29",
-      "rawText": "need a bed risers. any condition really",
-      "needFrom": "2026-09-29",
-      "needUntil": "2026-10-05",
-      "embedding": []
-    },
-    {
-      "id": "n122",
-      "personId": "p35",
-      "rawText": "does anyone own a rice cooker, for one project then im done, im in northdale",
-      "needFrom": "2026-09-10",
-      "needUntil": "2026-09-22",
-      "embedding": []
-    },
-    {
-      "id": "n123",
-      "personId": "p36",
-      "rawText": "iso a snow shovel, can pick up anytime",
-      "needFrom": "2026-11-07",
-      "needUntil": "2026-11-17",
-      "embedding": []
-    },
-    {
-      "id": "n124",
-      "personId": "p9",
-      "rawText": "hoping someone has a steam mop, im in beechwood",
-      "needFrom": "2026-09-12",
-      "needUntil": "2026-09-19",
-      "embedding": []
-    },
-    {
-      "id": "n125",
-      "personId": "p52",
-      "rawText": "can i borrow a storage bins, 3 stackable",
-      "needFrom": "2026-09-27",
-      "needUntil": "2026-10-14",
-      "embedding": []
-    },
-    {
-      "id": "n126",
-      "personId": "p18",
-      "rawText": "ISO a cordless drill",
-      "needFrom": "2026-11-05",
-      "needUntil": "2026-11-20",
-      "embedding": []
-    },
-    {
-      "id": "n128",
-      "personId": "p8",
-      "rawText": "anyone have a air mattress. any condition really. im in king st n",
-      "needFrom": "2026-10-15",
-      "needUntil": "2026-10-24",
-      "embedding": []
-    },
-    {
-      "id": "n129",
-      "personId": "p6",
-      "rawText": "looking to borrow a packing tape gun, cant justify buying one for this.",
-      "needFrom": "2026-10-09",
-      "needUntil": "2026-10-14",
-      "embedding": []
-    },
-    {
-      "id": "n130",
-      "personId": "p23",
-      "rawText": "can i borrow a step stool",
-      "needFrom": "2026-09-22",
-      "needUntil": "2026-10-09",
-      "embedding": []
-    },
-    {
-      "id": "n132",
-      "personId": "p11",
-      "rawText": "ISO a dehumidifier. for one project then im done",
-      "needFrom": "2026-10-11",
-      "needUntil": "2026-10-15",
-      "embedding": []
-    },
-    {
-      "id": "n133",
-      "personId": "p59",
-      "rawText": "can i borrow a jumper cables, can pick up anytime, im in beechwood",
-      "needFrom": "2026-12-01",
-      "needUntil": "2026-12-17",
-      "embedding": []
-    },
-    {
-      "id": "n134",
-      "personId": "p18",
-      "rawText": "looking to borrow a full length mirror",
-      "needFrom": "2026-12-04",
-      "needUntil": "2026-12-10",
-      "embedding": []
-    },
-    {
-      "id": "n135",
-      "personId": "p29",
-      "rawText": "looking to borrow a drill",
-      "needFrom": "2026-09-06",
-      "needUntil": "2026-09-21",
-      "embedding": []
-    },
-    {
-      "id": "n136",
-      "personId": "p18",
-      "rawText": "does anyone own a raclette grill. nothing fancy",
-      "needFrom": "2026-12-06",
-      "needUntil": "2026-12-21",
-      "embedding": []
-    },
-    {
-      "id": "n137",
-      "personId": "p40",
-      "rawText": "trying to find a extension cord. can pick up anytime",
-      "needFrom": "2026-09-19",
-      "needUntil": "2026-09-26",
-      "embedding": []
-    },
-    {
-      "id": "n139",
-      "personId": "p52",
-      "rawText": "ANYONE HAVE A STOCKPOT",
-      "needFrom": "2026-11-06",
-      "needUntil": "2026-11-13",
-      "embedding": []
-    },
-    {
-      "id": "n140",
-      "personId": "p57",
-      "rawText": "anyone have a air mattress. im in sunnydale",
-      "needFrom": "2026-10-28",
+      "rawText": "need a shoe rack, my room is tiny so i cant keep it",
+      "needFrom": "2026-10-22",
       "needUntil": "2026-11-04",
       "embedding": []
     },
     {
-      "id": "n141",
-      "personId": "p3",
-      "rawText": "looking to borrow a desk chair, im in beechwood",
-      "needFrom": "2026-10-22",
-      "needUntil": "2026-11-05",
-      "embedding": []
-    },
-    {
-      "id": "n142",
-      "personId": "p26",
-      "rawText": "anyone have a toolkit, im in northdale",
-      "needFrom": "2026-09-27",
-      "needUntil": "2026-10-11",
-      "embedding": []
-    },
-    {
-      "id": "n143",
-      "personId": "p21",
-      "rawText": "looking to borrow a air pump",
+      "id": "n85",
+      "personId": "p54",
+      "rawText": "looking to borrow a step stool. moving out so its kind of urgent",
       "needFrom": "2026-11-07",
-      "needUntil": "2026-11-22",
+      "needUntil": "2026-11-12",
       "embedding": []
     },
     {
-      "id": "n144",
-      "personId": "p3",
-      "rawText": "trying to find a waffle maker, for one project then im done",
-      "needFrom": "2026-10-23",
-      "needUntil": "2026-10-31",
+      "id": "n86",
+      "personId": "p57",
+      "rawText": "can i borrow a toaster. ill give it back same day. im in northdale",
+      "needFrom": "2026-09-02",
+      "needUntil": "2026-09-08",
       "embedding": []
     },
     {
-      "id": "n145",
-      "personId": "p8",
-      "rawText": "anyone have a shower caddy, im in sunnydale",
-      "needFrom": "2026-11-01",
-      "needUntil": "2026-11-11",
+      "id": "n87",
+      "personId": "p43",
+      "rawText": "need a tire levers + patch kit",
+      "needFrom": "2026-10-09",
+      "needUntil": "2026-10-12",
       "embedding": []
     },
     {
-      "id": "n146",
-      "personId": "p8",
-      "rawText": "does anyone own a plates and bowls, set of 4",
-      "needFrom": "2026-10-31",
-      "needUntil": "2026-11-09",
+      "id": "n88",
+      "personId": "p53",
+      "rawText": "can i borrow a raclette grill. i have no car so closer the better",
+      "needFrom": "2026-12-21",
+      "needUntil": "2026-12-22",
       "embedding": []
     },
     {
-      "id": "n147",
-      "personId": "p32",
-      "rawText": "does anyone own a impact driver",
-      "needFrom": "2026-10-29",
-      "needUntil": "2026-11-07",
+      "id": "n89",
+      "personId": "p29",
+      "rawText": "can i borrow a paper shredder",
+      "needFrom": "2026-12-08",
+      "needUntil": "2026-12-09",
       "embedding": []
     },
     {
-      "id": "n148",
-      "personId": "p51",
-      "rawText": "anyone have a humidifier, any condition really",
-      "needFrom": "2026-10-04",
-      "needUntil": "2026-10-08",
-      "embedding": []
-    },
-    {
-      "id": "n149",
-      "personId": "p0",
-      "rawText": "trying to find a folding cot, nothing fancy",
-      "needFrom": "2026-09-20",
-      "needUntil": "2026-09-26",
-      "embedding": []
-    },
-    {
-      "id": "n150",
-      "personId": "p25",
-      "rawText": "hoping someone has a snow shovel. im in sunnydale",
-      "needFrom": "2026-11-01",
-      "needUntil": "2026-11-05",
-      "embedding": []
-    },
-    {
-      "id": "n151",
-      "personId": "p34",
-      "rawText": "trying to find a step ladder, for one project then im done",
-      "needFrom": "2026-11-13",
-      "needUntil": "2026-11-24",
-      "embedding": []
-    },
-    {
-      "id": "n153",
-      "personId": "p24",
-      "rawText": "iso a clothing rack. would rather not buy one tbh",
-      "needFrom": "2026-12-07",
-      "needUntil": "2026-12-16",
-      "embedding": []
-    },
-    {
-      "id": "n155",
-      "personId": "p49",
-      "rawText": "does anyone own a space heater, moving out so its kind of urgent, im in lester",
-      "needFrom": "2026-09-07",
-      "needUntil": "2026-09-16",
-      "embedding": []
-    },
-    {
-      "id": "n156",
-      "personId": "p12",
-      "rawText": "need a bed risers.",
-      "needFrom": "2026-09-28",
-      "needUntil": "2026-10-08",
-      "embedding": []
-    },
-    {
-      "id": "n157",
-      "personId": "p38",
-      "rawText": "can i borrow a punch bowl + ladle. moving out so its kind of urgent. im in sunnydale",
-      "needFrom": "2026-11-19",
-      "needUntil": "2026-12-04",
-      "embedding": []
-    },
-    {
-      "id": "n158",
-      "personId": "p32",
-      "rawText": "hoping someone has a carpet cleaner, im in lester",
+      "id": "n90",
+      "personId": "p37",
+      "rawText": "need a cutlery set, ill give it back same day.",
       "needFrom": "2026-11-20",
       "needUntil": "2026-11-25",
       "embedding": []
     },
     {
-      "id": "n159",
-      "personId": "p44",
-      "rawText": "trying to find a snow shovel. cant justify buying one for this. im in lester",
-      "needFrom": "2026-11-21",
-      "needUntil": "2026-12-02",
+      "id": "n91",
+      "personId": "p23",
+      "rawText": "anyone have a space heater, my room is tiny so i cant keep it",
+      "needFrom": "2026-09-23",
+      "needUntil": "2026-09-28",
       "embedding": []
     },
     {
-      "id": "n160",
-      "personId": "p13",
-      "rawText": "does anyone own a moving blankets. my room is tiny so i cant keep it",
-      "needFrom": "2026-11-10",
-      "needUntil": "2026-11-26",
-      "embedding": []
-    },
-    {
-      "id": "n161",
-      "personId": "p18",
-      "rawText": "anyone have a shower caddy. can pick up anytime",
-      "needFrom": "2026-12-20",
-      "needUntil": "2026-12-26",
-      "embedding": []
-    },
-    {
-      "id": "n162",
-      "personId": "p35",
-      "rawText": "trying to find a storage bins, 3 stackable, can pick up anytime",
-      "needFrom": "2026-12-19",
-      "needUntil": "2027-01-01",
-      "embedding": []
-    },
-    {
-      "id": "n163",
+      "id": "n92",
       "personId": "p37",
-      "rawText": "need a stud finder. only need it for a couple hours.",
-      "needFrom": "2026-10-10",
+      "rawText": "does anyone own a paper shredder, i have no car so closer the better",
+      "needFrom": "2026-11-21",
+      "needUntil": "2026-11-24",
+      "embedding": []
+    },
+    {
+      "id": "n93",
+      "personId": "p52",
+      "rawText": "ISO a drying rack",
+      "needFrom": "2026-09-03",
+      "needUntil": "2026-09-05",
+      "embedding": []
+    },
+    {
+      "id": "n94",
+      "personId": "p9",
+      "rawText": "anyone have a full length mirror. can pick up anytime",
+      "needFrom": "2026-10-21",
       "needUntil": "2026-10-22",
       "embedding": []
     },
     {
-      "id": "n164",
-      "personId": "p54",
-      "rawText": "ISO a drying rack",
-      "needFrom": "2026-12-05",
-      "needUntil": "2026-12-07",
+      "id": "n95",
+      "personId": "p48",
+      "rawText": "hoping someone has a garment bag",
+      "needFrom": "2026-09-16",
+      "needUntil": "2026-09-17",
       "embedding": []
     },
     {
-      "id": "n165",
-      "personId": "p10",
-      "rawText": "does anyone own a step stool, ill give it back same day",
-      "needFrom": "2026-11-14",
-      "needUntil": "2026-11-25",
+      "id": "n96",
+      "personId": "p31",
+      "rawText": "anyone have a first aid kit, ill give it back same day",
+      "needFrom": "2026-11-07",
+      "needUntil": "2026-11-09",
       "embedding": []
     },
     {
-      "id": "n166",
+      "id": "n97",
+      "personId": "p23",
+      "rawText": "trying to find a printer. for one project then im done",
+      "needFrom": "2026-11-30",
+      "needUntil": "2026-12-05",
+      "embedding": []
+    },
+    {
+      "id": "n98",
       "personId": "p19",
-      "rawText": "need a wrench set",
-      "needFrom": "2026-09-24",
-      "needUntil": "2026-10-02",
-      "embedding": []
-    },
-    {
-      "id": "n167",
-      "personId": "p3",
-      "rawText": "LOOKING TO BORROW A KARAOKE MIC, CAN PICK UP ANYTIME",
-      "needFrom": "2026-09-09",
-      "needUntil": "2026-09-13",
-      "embedding": []
-    },
-    {
-      "id": "n168",
-      "personId": "p58",
-      "rawText": "looking to borrow a folding cot. ill give it back same day",
-      "needFrom": "2026-11-05",
-      "needUntil": "2026-11-17",
-      "embedding": []
-    },
-    {
-      "id": "n170",
-      "personId": "p4",
-      "rawText": "ISO a moving blankets, for one project then im done.",
-      "needFrom": "2026-12-21",
-      "needUntil": "2026-12-30",
-      "embedding": []
-    },
-    {
-      "id": "n171",
-      "personId": "p37",
-      "rawText": "anyone have a stud finder. for one project then im done",
+      "rawText": "TRYING TO FIND A PRINTER. I HAVE NO CAR SO CLOSER THE BETTER",
       "needFrom": "2026-11-16",
       "needUntil": "2026-11-22",
       "embedding": []
     },
     {
-      "id": "n172",
-      "personId": "p13",
-      "rawText": "anyone have a duffel bag, moving out so its kind of urgent, im in lester",
-      "needFrom": "2026-11-19",
-      "needUntil": "2026-12-05",
-      "embedding": []
-    },
-    {
-      "id": "n173",
-      "personId": "p35",
-      "rawText": "anyone have a clothing rack, would rather not buy one tbh, im in king st n",
-      "needFrom": "2026-10-09",
-      "needUntil": "2026-10-20",
-      "embedding": []
-    },
-    {
-      "id": "n174",
-      "personId": "p35",
-      "rawText": "trying to find a food processor. only need it for a couple hours",
-      "needFrom": "2026-12-05",
-      "needUntil": "2026-12-14",
-      "embedding": []
-    },
-    {
-      "id": "n176",
-      "personId": "p59",
-      "rawText": "trying to find a bed risers",
-      "needFrom": "2026-09-22",
-      "needUntil": "2026-10-02",
-      "embedding": []
-    },
-    {
-      "id": "n177",
-      "personId": "p8",
-      "rawText": "hoping someone has a power bar, would rather not buy one tbh",
-      "needFrom": "2026-09-27",
-      "needUntil": "2026-10-14",
-      "embedding": []
-    },
-    {
-      "id": "n178",
-      "personId": "p1",
-      "rawText": "ISO a sewing machine. ill give it back same day",
-      "needFrom": "2026-10-16",
-      "needUntil": "2026-11-03",
-      "embedding": []
-    },
-    {
-      "id": "n179",
-      "personId": "p4",
-      "rawText": "NEED A BRITA WATER FILTER, MOVING OUT SO ITS KIND OF URGENT",
-      "needFrom": "2026-09-06",
-      "needUntil": "2026-09-15",
-      "embedding": []
-    },
-    {
-      "id": "n180",
-      "personId": "p14",
-      "rawText": "CAN I BORROW A PRINTER, ONLY NEED IT FOR A COUPLE HOURS",
-      "needFrom": "2026-12-09",
-      "needUntil": "2026-12-13",
-      "embedding": []
-    },
-    {
-      "id": "n181",
-      "personId": "p49",
-      "rawText": "iso a cordless drill, only need it for a couple hours",
-      "needFrom": "2026-09-25",
-      "needUntil": "2026-10-10",
-      "embedding": []
-    },
-    {
-      "id": "n182",
-      "personId": "p31",
-      "rawText": "can i borrow a screwdriver set, would rather not buy one tbh.",
-      "needFrom": "2026-10-18",
-      "needUntil": "2026-11-02",
-      "embedding": []
-    },
-    {
-      "id": "n183",
-      "personId": "p31",
-      "rawText": "can i borrow a hammer, for one project then im done, im in lester.",
-      "needFrom": "2026-09-27",
-      "needUntil": "2026-10-02",
-      "embedding": []
-    },
-    {
-      "id": "n184",
-      "personId": "p9",
-      "rawText": "need a hand truck. any condition really",
-      "needFrom": "2026-09-25",
-      "needUntil": "2026-10-04",
-      "embedding": []
-    },
-    {
-      "id": "n185",
-      "personId": "p9",
-      "rawText": "can i borrow a step stool. cant justify buying one for this",
-      "needFrom": "2026-09-14",
-      "needUntil": "2026-09-26",
-      "embedding": []
-    },
-    {
-      "id": "n186",
-      "personId": "p12",
-      "rawText": "ISO a tent. nothing fancy. im in sunnydale.",
-      "needFrom": "2026-10-20",
-      "needUntil": "2026-11-02",
-      "embedding": []
-    },
-    {
-      "id": "n187",
-      "personId": "p14",
-      "rawText": "can i borrow a camping stove",
-      "needFrom": "2026-12-12",
-      "needUntil": "2026-12-30",
-      "embedding": []
-    },
-    {
-      "id": "n188",
-      "personId": "p56",
-      "rawText": "LOOKING TO BORROW A HUMIDIFIER, MOVING OUT SO ITS KIND OF URGENT, IM IN LESTER",
-      "needFrom": "2026-10-09",
-      "needUntil": "2026-10-25",
-      "embedding": []
-    },
-    {
-      "id": "n189",
-      "personId": "p9",
-      "rawText": "ISO a plates and bowls, set of 4. im in sunnydale",
-      "needFrom": "2026-10-11",
-      "needUntil": "2026-10-22",
-      "embedding": []
-    },
-    {
-      "id": "n190",
-      "personId": "p35",
-      "rawText": "trying to find a bike pump. cant justify buying one for this",
-      "needFrom": "2026-12-09",
-      "needUntil": "2026-12-22",
-      "embedding": []
-    },
-    {
-      "id": "n191",
-      "personId": "p24",
-      "rawText": "looking to borrow a food processor. i have no car so closer the better. im in lester",
-      "needFrom": "2026-12-25",
-      "needUntil": "2026-12-29",
-      "embedding": []
-    },
-    {
-      "id": "n192",
-      "personId": "p28",
-      "rawText": "trying to find a step ladder. i have no car so closer the better",
-      "needFrom": "2026-11-19",
-      "needUntil": "2026-12-04",
-      "embedding": []
-    },
-    {
-      "id": "n193",
-      "personId": "p16",
-      "rawText": "anyone have a power bar with surge protection",
-      "needFrom": "2026-11-14",
-      "needUntil": "2026-11-22",
-      "embedding": []
-    },
-    {
-      "id": "n194",
-      "personId": "p30",
-      "rawText": "looking to borrow a cooler",
-      "needFrom": "2026-09-01",
-      "needUntil": "2026-09-19",
-      "embedding": []
-    },
-    {
-      "id": "n195",
-      "personId": "p25",
-      "rawText": "does anyone own a allen key set",
-      "needFrom": "2026-12-03",
-      "needUntil": "2026-12-20",
-      "embedding": []
-    },
-    {
-      "id": "n196",
-      "personId": "p41",
-      "rawText": "does anyone own a waffle maker",
-      "needFrom": "2026-09-02",
-      "needUntil": "2026-09-15",
-      "embedding": []
-    },
-    {
-      "id": "n197",
-      "personId": "p8",
-      "rawText": "looking to borrow a iron. i have no car so closer the better",
-      "needFrom": "2026-09-24",
-      "needUntil": "2026-10-10",
-      "embedding": []
-    },
-    {
-      "id": "n198",
-      "personId": "p38",
-      "rawText": "can i borrow a snow shovel, only need it for a couple hours",
-      "needFrom": "2026-11-25",
-      "needUntil": "2026-11-28",
-      "embedding": []
-    },
-    {
-      "id": "n199",
-      "personId": "p39",
-      "rawText": "does anyone own a paper shredder, cant justify buying one for this, im in northdale",
-      "needFrom": "2026-09-27",
-      "needUntil": "2026-10-11",
-      "embedding": []
-    },
-    {
-      "id": "n201",
-      "personId": "p2",
-      "rawText": "DOES ANYONE OWN A WAFFLE MAKER. JUST FOR THE WEEKEND",
-      "needFrom": "2026-12-03",
-      "needUntil": "2026-12-11",
-      "embedding": []
-    },
-    {
-      "id": "n202",
-      "personId": "p43",
-      "rawText": "anyone have a suitcase. nothing fancy. im in lester",
-      "needFrom": "2026-11-18",
-      "needUntil": "2026-12-03",
-      "embedding": []
-    },
-    {
-      "id": "n203",
-      "personId": "p1",
-      "rawText": "need a first aid kit. for one project then im done",
-      "needFrom": "2026-11-05",
-      "needUntil": "2026-11-14",
-      "embedding": []
-    },
-    {
-      "id": "n204",
-      "personId": "p17",
-      "rawText": "looking to borrow a full length mirror.",
-      "needFrom": "2026-10-25",
-      "needUntil": "2026-10-27",
-      "embedding": []
-    },
-    {
-      "id": "n205",
-      "personId": "p45",
-      "rawText": "can i borrow a garment steamer",
-      "needFrom": "2026-09-22",
-      "needUntil": "2026-10-05",
-      "embedding": []
-    },
-    {
-      "id": "n206",
-      "personId": "p10",
-      "rawText": "need a luggage scale. im in northdale",
-      "needFrom": "2026-09-07",
-      "needUntil": "2026-09-23",
-      "embedding": []
-    },
-    {
-      "id": "n207",
-      "personId": "p4",
-      "rawText": "hoping someone has a cooler. moving out so its kind of urgent.",
-      "needFrom": "2026-10-26",
-      "needUntil": "2026-11-07",
-      "embedding": []
-    },
-    {
-      "id": "n209",
+      "id": "n99",
       "personId": "p58",
-      "rawText": "can i borrow a screwdriver set",
-      "needFrom": "2026-11-10",
+      "rawText": "hoping someone has a power drill, my room is tiny so i cant keep it.",
+      "needFrom": "2026-11-02",
       "needUntil": "2026-11-16",
       "embedding": []
     },
     {
-      "id": "n210",
+      "id": "n100",
+      "personId": "p32",
+      "rawText": "trying to find a hammer, ill give it back same day",
+      "needFrom": "2026-12-24",
+      "needUntil": "2026-12-26",
+      "embedding": []
+    },
+    {
+      "id": "n101",
+      "personId": "p14",
+      "rawText": "need a brita water filter. would rather not buy one tbh",
+      "needFrom": "2026-09-06",
+      "needUntil": "2026-09-11",
+      "embedding": []
+    },
+    {
+      "id": "n102",
+      "personId": "p31",
+      "rawText": "can i borrow a folding table. for one project then im done",
+      "needFrom": "2026-10-03",
+      "needUntil": "2026-10-06",
+      "embedding": []
+    },
+    {
+      "id": "n103",
       "personId": "p13",
-      "rawText": "hoping someone has a screwdriver set. moving out so its kind of urgent",
+      "rawText": "looking to borrow a laundry hamper",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-05",
+      "embedding": []
+    },
+    {
+      "id": "n104",
+      "personId": "p48",
+      "rawText": "need a desk chair, nothing fancy",
+      "needFrom": "2026-11-17",
+      "needUntil": "2026-11-19",
+      "embedding": []
+    },
+    {
+      "id": "n106",
+      "personId": "p35",
+      "rawText": "trying to find a hand truck, only need it for a couple hours",
+      "needFrom": "2026-09-04",
+      "needUntil": "2026-09-10",
+      "embedding": []
+    },
+    {
+      "id": "n107",
+      "personId": "p56",
+      "rawText": "looking to borrow a garment steamer. can pick up anytime",
+      "needFrom": "2026-09-14",
+      "needUntil": "2026-09-17",
+      "embedding": []
+    },
+    {
+      "id": "n108",
+      "personId": "p40",
+      "rawText": "ANYONE HAVE A PACKING TAPE GUN. MOVING OUT SO ITS KIND OF URGENT.",
+      "needFrom": "2026-09-13",
+      "needUntil": "2026-09-20",
+      "embedding": []
+    },
+    {
+      "id": "n109",
+      "personId": "p36",
+      "rawText": "does anyone own a extension cord, just for the weekend",
       "needFrom": "2026-10-19",
-      "needUntil": "2026-10-25",
+      "needUntil": "2026-10-20",
       "embedding": []
     },
     {
-      "id": "n211",
-      "personId": "p20",
-      "rawText": "anyone have a projector",
-      "needFrom": "2026-11-15",
-      "needUntil": "2026-11-25",
+      "id": "n110",
+      "personId": "p11",
+      "rawText": "anyone have a hammer, cant justify buying one for this",
+      "needFrom": "2026-12-14",
+      "needUntil": "2026-12-18",
       "embedding": []
     },
     {
-      "id": "n212",
-      "personId": "p45",
-      "rawText": "anyone have a stud finder. nothing fancy. im in lester",
+      "id": "n111",
+      "personId": "p47",
+      "rawText": "ISO a clothing rack, would rather not buy one tbh",
+      "needFrom": "2026-10-16",
+      "needUntil": "2026-10-19",
+      "embedding": []
+    },
+    {
+      "id": "n112",
+      "personId": "p40",
+      "rawText": "anyone have a step stool, ill give it back same day",
+      "needFrom": "2026-09-26",
+      "needUntil": "2026-09-28",
+      "embedding": []
+    },
+    {
+      "id": "n113",
+      "personId": "p23",
+      "rawText": "does anyone own a humidifier, can pick up anytime",
+      "needFrom": "2026-11-01",
+      "needUntil": "2026-11-07",
+      "embedding": []
+    },
+    {
+      "id": "n114",
+      "personId": "p21",
+      "rawText": "need a suitcase. only need it for a couple hours",
+      "needFrom": "2026-12-21",
+      "needUntil": "2026-12-22",
+      "embedding": []
+    },
+    {
+      "id": "n115",
+      "personId": "p11",
+      "rawText": "anyone have a desk lamp, my room is tiny so i cant keep it",
+      "needFrom": "2026-12-09",
+      "needUntil": "2026-12-11",
+      "embedding": []
+    },
+    {
+      "id": "n116",
+      "personId": "p18",
+      "rawText": "looking to borrow a hand truck",
       "needFrom": "2026-12-01",
       "needUntil": "2026-12-12",
       "embedding": []
     },
     {
-      "id": "n213",
+      "id": "n117",
+      "personId": "p20",
+      "rawText": "ISO a bike pump. i have no car so closer the better",
+      "needFrom": "2026-11-13",
+      "needUntil": "2026-11-15",
+      "embedding": []
+    },
+    {
+      "id": "n119",
+      "personId": "p21",
+      "rawText": "hoping someone has a cordless drill. im in beechwood",
+      "needFrom": "2026-12-24",
+      "needUntil": "2026-12-27",
+      "embedding": []
+    },
+    {
+      "id": "n120",
+      "personId": "p48",
+      "rawText": "need a iron",
+      "needFrom": "2026-12-05",
+      "needUntil": "2026-12-07",
+      "embedding": []
+    },
+    {
+      "id": "n121",
+      "personId": "p52",
+      "rawText": "looking to borrow a cooler. for one project then im done",
+      "needFrom": "2026-10-04",
+      "needUntil": "2026-10-07",
+      "embedding": []
+    },
+    {
+      "id": "n122",
+      "personId": "p11",
+      "rawText": "LOOKING TO BORROW A DRILL. ILL GIVE IT BACK SAME DAY",
+      "needFrom": "2026-11-02",
+      "needUntil": "2026-11-04",
+      "embedding": []
+    },
+    {
+      "id": "n123",
+      "personId": "p5",
+      "rawText": "looking to borrow a mugs, 3 of them. i have no car so closer the better",
+      "needFrom": "2026-11-27",
+      "needUntil": "2026-12-03",
+      "embedding": []
+    },
+    {
+      "id": "n124",
+      "personId": "p37",
+      "rawText": "TRYING TO FIND A TOASTER, CANT JUSTIFY BUYING ONE FOR THIS, IM IN KING ST N",
+      "needFrom": "2026-10-30",
+      "needUntil": "2026-10-31",
+      "embedding": []
+    },
+    {
+      "id": "n125",
+      "personId": "p29",
+      "rawText": "does anyone own a plates and bowls, set of 4",
+      "needFrom": "2026-11-02",
+      "needUntil": "2026-11-07",
+      "embedding": []
+    },
+    {
+      "id": "n126",
+      "personId": "p32",
+      "rawText": "looking to borrow a snow shovel. would rather not buy one tbh",
+      "needFrom": "2026-12-16",
+      "needUntil": "2026-12-18",
+      "embedding": []
+    },
+    {
+      "id": "n127",
+      "personId": "p7",
+      "rawText": "TRYING TO FIND A BLUETOOTH SPEAKER. CANT JUSTIFY BUYING ONE FOR THIS. IM IN NORTHDALE",
+      "needFrom": "2026-10-06",
+      "needUntil": "2026-10-09",
+      "embedding": []
+    },
+    {
+      "id": "n128",
+      "personId": "p36",
+      "rawText": "ISO a moving blankets. just for the weekend",
+      "needFrom": "2026-09-24",
+      "needUntil": "2026-09-26",
+      "embedding": []
+    },
+    {
+      "id": "n129",
+      "personId": "p42",
+      "rawText": "trying to find a rice cooker. just for the weekend.",
+      "needFrom": "2026-11-22",
+      "needUntil": "2026-11-27",
+      "embedding": []
+    },
+    {
+      "id": "n130",
+      "personId": "p51",
+      "rawText": "hoping someone has a large suitcase",
+      "needFrom": "2026-12-30",
+      "needUntil": "2027-01-01",
+      "embedding": []
+    },
+    {
+      "id": "n131",
+      "personId": "p27",
+      "rawText": "looking to borrow a first aid kit, for one project then im done",
+      "needFrom": "2026-11-12",
+      "needUntil": "2026-11-18",
+      "embedding": []
+    },
+    {
+      "id": "n132",
+      "personId": "p48",
+      "rawText": "looking to borrow a bed risers, cant justify buying one for this",
+      "needFrom": "2026-09-12",
+      "needUntil": "2026-09-19",
+      "embedding": []
+    },
+    {
+      "id": "n133",
+      "personId": "p44",
+      "rawText": "hoping someone has a desk chair. i have no car so closer the better",
+      "needFrom": "2026-12-15",
+      "needUntil": "2026-12-22",
+      "embedding": []
+    },
+    {
+      "id": "n134",
+      "personId": "p17",
+      "rawText": "anyone have a large suitcase. would rather not buy one tbh. im in beechwood",
+      "needFrom": "2026-10-03",
+      "needUntil": "2026-10-06",
+      "embedding": []
+    },
+    {
+      "id": "n135",
+      "personId": "p18",
+      "rawText": "can i borrow a bike pump. can pick up anytime",
+      "needFrom": "2026-11-07",
+      "needUntil": "2026-11-08",
+      "embedding": []
+    },
+    {
+      "id": "n136",
+      "personId": "p40",
+      "rawText": "does anyone own a dolly",
+      "needFrom": "2026-11-09",
+      "needUntil": "2026-11-12",
+      "embedding": []
+    },
+    {
+      "id": "n137",
+      "personId": "p33",
+      "rawText": "can i borrow a vacuum, my room is tiny so i cant keep it, im in lester",
+      "needFrom": "2026-10-05",
+      "needUntil": "2026-10-06",
+      "embedding": []
+    },
+    {
+      "id": "n138",
+      "personId": "p41",
+      "rawText": "can i borrow a first aid kit. would rather not buy one tbh",
+      "needFrom": "2026-12-07",
+      "needUntil": "2026-12-10",
+      "embedding": []
+    },
+    {
+      "id": "n140",
       "personId": "p35",
-      "rawText": "ISO a bedside table",
-      "needFrom": "2026-09-16",
+      "rawText": "anyone have a brita water filter",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-03",
+      "embedding": []
+    },
+    {
+      "id": "n141",
+      "personId": "p0",
+      "rawText": "ISO a power drill",
+      "needFrom": "2026-09-13",
+      "needUntil": "2026-09-18",
+      "embedding": []
+    },
+    {
+      "id": "n142",
+      "personId": "p42",
+      "rawText": "anyone have a wrench set",
+      "needFrom": "2026-10-20",
+      "needUntil": "2026-10-24",
+      "embedding": []
+    },
+    {
+      "id": "n143",
+      "personId": "p8",
+      "rawText": "does anyone own a steam mop, nothing fancy, im in beechwood",
+      "needFrom": "2026-09-12",
+      "needUntil": "2026-09-19",
+      "embedding": []
+    },
+    {
+      "id": "n144",
+      "personId": "p43",
+      "rawText": "hoping someone has a punch bowl + ladle, ill give it back same day, im in lester",
+      "needFrom": "2026-12-08",
+      "needUntil": "2026-12-10",
+      "embedding": []
+    },
+    {
+      "id": "n145",
+      "personId": "p30",
+      "rawText": "hoping someone has a spirit level, my room is tiny so i cant keep it",
+      "needFrom": "2026-09-21",
+      "needUntil": "2026-09-24",
+      "embedding": []
+    },
+    {
+      "id": "n146",
+      "personId": "p21",
+      "rawText": "trying to find a plates and bowls, set of 4, can pick up anytime, im in northdale",
+      "needFrom": "2026-10-09",
+      "needUntil": "2026-10-10",
+      "embedding": []
+    },
+    {
+      "id": "n147",
+      "personId": "p3",
+      "rawText": "can i borrow a extension cord. moving out so its kind of urgent",
+      "needFrom": "2026-09-28",
+      "needUntil": "2026-10-01",
+      "embedding": []
+    },
+    {
+      "id": "n148",
+      "personId": "p35",
+      "rawText": "anyone have a air mattress",
+      "needFrom": "2026-11-04",
+      "needUntil": "2026-11-10",
+      "embedding": []
+    },
+    {
+      "id": "n149",
+      "personId": "p22",
+      "rawText": "does anyone own a folding chairs (4). i have no car so closer the better. im in northdale",
+      "needFrom": "2026-11-10",
+      "needUntil": "2026-11-13",
+      "embedding": []
+    },
+    {
+      "id": "n150",
+      "personId": "p36",
+      "rawText": "ISO a ladder. i have no car so closer the better",
+      "needFrom": "2026-11-16",
+      "needUntil": "2026-11-19",
+      "embedding": []
+    },
+    {
+      "id": "n151",
+      "personId": "p25",
+      "rawText": "hoping someone has a power bar, would rather not buy one tbh",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-07",
+      "embedding": []
+    },
+    {
+      "id": "n152",
+      "personId": "p1",
+      "rawText": "trying to find a air mattress, moving out so its kind of urgent",
+      "needFrom": "2026-10-14",
+      "needUntil": "2026-10-21",
+      "embedding": []
+    },
+    {
+      "id": "n153",
+      "personId": "p3",
+      "rawText": "does anyone own a duffel bag. can pick up anytime. im in lester",
+      "needFrom": "2026-09-04",
+      "needUntil": "2026-09-05",
+      "embedding": []
+    },
+    {
+      "id": "n154",
+      "personId": "p39",
+      "rawText": "ISO a brita water filter. nothing fancy.",
+      "needFrom": "2026-12-21",
+      "needUntil": "2026-12-25",
+      "embedding": []
+    },
+    {
+      "id": "n155",
+      "personId": "p36",
+      "rawText": "need a brita water filter, would rather not buy one tbh",
+      "needFrom": "2026-09-15",
+      "needUntil": "2026-09-18",
+      "embedding": []
+    },
+    {
+      "id": "n156",
+      "personId": "p44",
+      "rawText": "can i borrow a spirit level. nothing fancy. im in beechwood.",
+      "needFrom": "2026-11-15",
+      "needUntil": "2026-11-16",
+      "embedding": []
+    },
+    {
+      "id": "n157",
+      "personId": "p20",
+      "rawText": "anyone have a desk lamp, ill give it back same day, im in beechwood",
+      "needFrom": "2026-12-06",
+      "needUntil": "2026-12-09",
+      "embedding": []
+    },
+    {
+      "id": "n158",
+      "personId": "p20",
+      "rawText": "trying to find a drying rack",
+      "needFrom": "2026-10-20",
+      "needUntil": "2026-10-25",
+      "embedding": []
+    },
+    {
+      "id": "n159",
+      "personId": "p1",
+      "rawText": "iso a large suitcase, can pick up anytime",
+      "needFrom": "2026-09-25",
+      "needUntil": "2026-10-01",
+      "embedding": []
+    },
+    {
+      "id": "n160",
+      "personId": "p25",
+      "rawText": "hoping someone has a suitcase",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-04",
+      "embedding": []
+    },
+    {
+      "id": "n161",
+      "personId": "p49",
+      "rawText": "ISO a hammer, im in beechwood.",
+      "needFrom": "2026-12-11",
+      "needUntil": "2026-12-14",
+      "embedding": []
+    },
+    {
+      "id": "n162",
+      "personId": "p45",
+      "rawText": "ISO a plates and bowls, set of 4. im in sunnydale",
+      "needFrom": "2026-10-12",
+      "needUntil": "2026-10-18",
+      "embedding": []
+    },
+    {
+      "id": "n163",
+      "personId": "p35",
+      "rawText": "can i borrow a packing tape gun. i have no car so closer the better",
+      "needFrom": "2026-11-19",
+      "needUntil": "2026-11-22",
+      "embedding": []
+    },
+    {
+      "id": "n164",
+      "personId": "p8",
+      "rawText": "can i borrow a laundry hamper. moving out so its kind of urgent. im in king st n",
+      "needFrom": "2026-11-10",
+      "needUntil": "2026-11-18",
+      "embedding": []
+    },
+    {
+      "id": "n165",
+      "personId": "p37",
+      "rawText": "can i borrow a hammer, nothing fancy, im in lester",
+      "needFrom": "2026-11-10",
+      "needUntil": "2026-11-12",
+      "embedding": []
+    },
+    {
+      "id": "n166",
+      "personId": "p49",
+      "rawText": "ISO a iron, my room is tiny so i cant keep it, im in beechwood.",
+      "needFrom": "2026-10-08",
+      "needUntil": "2026-10-11",
+      "embedding": []
+    },
+    {
+      "id": "n167",
+      "personId": "p35",
+      "rawText": "hoping someone has a power bar. im in beechwood",
+      "needFrom": "2026-10-21",
+      "needUntil": "2026-10-24",
+      "embedding": []
+    },
+    {
+      "id": "n168",
+      "personId": "p29",
+      "rawText": "does anyone own a waffle maker",
+      "needFrom": "2026-09-02",
+      "needUntil": "2026-09-05",
+      "embedding": []
+    },
+    {
+      "id": "n169",
+      "personId": "p8",
+      "rawText": "need a serving platters. i have no car so closer the better",
+      "needFrom": "2026-09-02",
+      "needUntil": "2026-09-08",
+      "embedding": []
+    },
+    {
+      "id": "n170",
+      "personId": "p42",
+      "rawText": "looking to borrow a camping stove. nothing fancy",
+      "needFrom": "2026-11-27",
+      "needUntil": "2026-11-29",
+      "embedding": []
+    },
+    {
+      "id": "n172",
+      "personId": "p2",
+      "rawText": "need a storage bins, 3 stackable. can pick up anytime",
+      "needFrom": "2026-11-20",
+      "needUntil": "2026-11-22",
+      "embedding": []
+    },
+    {
+      "id": "n173",
+      "personId": "p45",
+      "rawText": "hoping someone has a camping stove. cant justify buying one for this. im in sunnydale",
+      "needFrom": "2026-09-15",
+      "needUntil": "2026-09-17",
+      "embedding": []
+    },
+    {
+      "id": "n174",
+      "personId": "p18",
+      "rawText": "need a garment bag, for one project then im done",
+      "needFrom": "2026-10-13",
+      "needUntil": "2026-10-14",
+      "embedding": []
+    },
+    {
+      "id": "n175",
+      "personId": "p14",
+      "rawText": "can i borrow a mugs, 3 of them, cant justify buying one for this, im in sunnydale",
+      "needFrom": "2026-09-28",
+      "needUntil": "2026-10-11",
+      "embedding": []
+    },
+    {
+      "id": "n176",
+      "personId": "p38",
+      "rawText": "looking to borrow a bed risers. im in king st n",
+      "needFrom": "2026-12-06",
+      "needUntil": "2026-12-09",
+      "embedding": []
+    },
+    {
+      "id": "n177",
+      "personId": "p56",
+      "rawText": "looking to borrow a folding table, moving out so its kind of urgent",
+      "needFrom": "2026-09-21",
+      "needUntil": "2026-09-28",
+      "embedding": []
+    },
+    {
+      "id": "n178",
+      "personId": "p11",
+      "rawText": "ISO a vacuum",
+      "needFrom": "2026-09-10",
+      "needUntil": "2026-09-11",
+      "embedding": []
+    },
+    {
+      "id": "n179",
+      "personId": "p5",
+      "rawText": "iso a jumper cables. i have no car so closer the better.",
+      "needFrom": "2026-10-31",
+      "needUntil": "2026-11-01",
+      "embedding": []
+    },
+    {
+      "id": "n180",
+      "personId": "p37",
+      "rawText": "need a moving blankets, my room is tiny so i cant keep it",
+      "needFrom": "2026-11-04",
+      "needUntil": "2026-11-06",
+      "embedding": []
+    },
+    {
+      "id": "n181",
+      "personId": "p45",
+      "rawText": "anyone have a toaster, moving out so its kind of urgent",
+      "needFrom": "2026-11-11",
+      "needUntil": "2026-11-13",
+      "embedding": []
+    },
+    {
+      "id": "n183",
+      "personId": "p48",
+      "rawText": "need a screwdriver set. i have no car so closer the better. im in king st n",
+      "needFrom": "2026-09-09",
+      "needUntil": "2026-09-10",
+      "embedding": []
+    },
+    {
+      "id": "n184",
+      "personId": "p26",
+      "rawText": "trying to find a hand truck, my room is tiny so i cant keep it",
+      "needFrom": "2026-12-15",
+      "needUntil": "2026-12-27",
+      "embedding": []
+    },
+    {
+      "id": "n185",
+      "personId": "p14",
+      "rawText": "anyone have a full length mirror",
+      "needFrom": "2026-10-25",
+      "needUntil": "2026-10-26",
+      "embedding": []
+    },
+    {
+      "id": "n186",
+      "personId": "p35",
+      "rawText": "anyone have a storage bins, 3 stackable. i have no car so closer the better",
+      "needFrom": "2026-09-04",
+      "needUntil": "2026-09-06",
+      "embedding": []
+    },
+    {
+      "id": "n187",
+      "personId": "p52",
+      "rawText": "hoping someone has a serving platters, would rather not buy one tbh",
+      "needFrom": "2026-09-27",
+      "needUntil": "2026-10-04",
+      "embedding": []
+    },
+    {
+      "id": "n188",
+      "personId": "p29",
+      "rawText": "looking to borrow a moving straps",
+      "needFrom": "2026-12-21",
+      "needUntil": "2026-12-23",
+      "embedding": []
+    },
+    {
+      "id": "n189",
+      "personId": "p51",
+      "rawText": "ISO a mugs, 3 of them. for one project then im done.",
+      "needFrom": "2026-12-15",
+      "needUntil": "2026-12-17",
+      "embedding": []
+    },
+    {
+      "id": "n190",
+      "personId": "p0",
+      "rawText": "does anyone own a rice cooker, nothing fancy.",
+      "needFrom": "2026-11-05",
+      "needUntil": "2026-11-09",
+      "embedding": []
+    },
+    {
+      "id": "n191",
+      "personId": "p52",
+      "rawText": "ISO a electric kettle, cant justify buying one for this",
+      "needFrom": "2026-12-26",
+      "needUntil": "2026-12-27",
+      "embedding": []
+    },
+    {
+      "id": "n192",
+      "personId": "p44",
+      "rawText": "does anyone own a camping stove",
+      "needFrom": "2026-11-18",
+      "needUntil": "2026-11-19",
+      "embedding": []
+    },
+    {
+      "id": "n193",
+      "personId": "p28",
+      "rawText": "can i borrow a ironing board, my room is tiny so i cant keep it",
+      "needFrom": "2026-09-14",
+      "needUntil": "2026-09-17",
+      "embedding": []
+    },
+    {
+      "id": "n194",
+      "personId": "p30",
+      "rawText": "trying to find a screwdriver set",
+      "needFrom": "2026-11-06",
+      "needUntil": "2026-11-07",
+      "embedding": []
+    },
+    {
+      "id": "n195",
+      "personId": "p21",
+      "rawText": "ISO a stud finder. any condition really",
+      "needFrom": "2026-09-27",
+      "needUntil": "2026-09-29",
+      "embedding": []
+    },
+    {
+      "id": "n196",
+      "personId": "p19",
+      "rawText": "anyone have a food processor. i have no car so closer the better.",
+      "needFrom": "2026-12-03",
+      "needUntil": "2026-12-05",
+      "embedding": []
+    },
+    {
+      "id": "n197",
+      "personId": "p4",
+      "rawText": "need a plates and bowls, set of 4. just for the weekend.",
+      "needFrom": "2026-11-10",
+      "needUntil": "2026-11-13",
+      "embedding": []
+    },
+    {
+      "id": "n198",
+      "personId": "p27",
+      "rawText": "does anyone own a drill, im in lester",
+      "needFrom": "2026-10-05",
+      "needUntil": "2026-10-07",
+      "embedding": []
+    },
+    {
+      "id": "n200",
+      "personId": "p29",
+      "rawText": "need a desk lamp. can pick up anytime. im in king st n",
+      "needFrom": "2026-09-29",
+      "needUntil": "2026-10-12",
+      "embedding": []
+    },
+    {
+      "id": "n201",
+      "personId": "p50",
+      "rawText": "does anyone own a projector, for one project then im done.",
+      "needFrom": "2026-09-18",
+      "needUntil": "2026-09-22",
+      "embedding": []
+    },
+    {
+      "id": "n202",
+      "personId": "p25",
+      "rawText": "need a mini fridge. only need it for a couple hours. im in king st n",
+      "needFrom": "2026-10-03",
+      "needUntil": "2026-10-09",
+      "embedding": []
+    },
+    {
+      "id": "n203",
+      "personId": "p11",
+      "rawText": "need a power bar with surge protection. would rather not buy one tbh",
+      "needFrom": "2026-12-08",
+      "needUntil": "2026-12-09",
+      "embedding": []
+    },
+    {
+      "id": "n204",
+      "personId": "p30",
+      "rawText": "trying to find a bluetooth speaker",
+      "needFrom": "2026-10-19",
+      "needUntil": "2026-10-21",
+      "embedding": []
+    },
+    {
+      "id": "n205",
+      "personId": "p32",
+      "rawText": "ISO A STEP LADDER. MOVING OUT SO ITS KIND OF URGENT.",
+      "needFrom": "2026-10-12",
+      "needUntil": "2026-10-15",
+      "embedding": []
+    },
+    {
+      "id": "n206",
+      "personId": "p46",
+      "rawText": "does anyone own a food processor",
+      "needFrom": "2026-12-06",
+      "needUntil": "2026-12-11",
+      "embedding": []
+    },
+    {
+      "id": "n207",
+      "personId": "p7",
+      "rawText": "does anyone own a bluetooth speaker, cant justify buying one for this",
+      "needFrom": "2026-10-26",
+      "needUntil": "2026-10-29",
+      "embedding": []
+    },
+    {
+      "id": "n208",
+      "personId": "p23",
+      "rawText": "hoping someone has a steam mop. im in lester",
+      "needFrom": "2026-09-18",
+      "needUntil": "2026-09-20",
+      "embedding": []
+    },
+    {
+      "id": "n209",
+      "personId": "p19",
+      "rawText": "anyone have a suitcase, only need it for a couple hours",
+      "needFrom": "2026-10-14",
+      "needUntil": "2026-10-15",
+      "embedding": []
+    },
+    {
+      "id": "n210",
+      "personId": "p6",
+      "rawText": "trying to find a tire levers + patch kit. ill give it back same day",
+      "needFrom": "2026-09-13",
+      "needUntil": "2026-09-23",
+      "embedding": []
+    },
+    {
+      "id": "n211",
+      "personId": "p55",
+      "rawText": "can i borrow a bedside table. i have no car so closer the better",
+      "needFrom": "2026-12-18",
+      "needUntil": "2026-12-30",
+      "embedding": []
+    },
+    {
+      "id": "n212",
+      "personId": "p12",
+      "rawText": "does anyone own a garment bag. im in beechwood.",
+      "needFrom": "2026-11-12",
+      "needUntil": "2026-11-17",
+      "embedding": []
+    },
+    {
+      "id": "n213",
+      "personId": "p1",
+      "rawText": "hoping someone has a full length mirror, nothing fancy, im in northdale",
+      "needFrom": "2026-11-15",
+      "needUntil": "2026-11-17",
+      "embedding": []
+    },
+    {
+      "id": "n215",
+      "personId": "p4",
+      "rawText": "does anyone own a rice cooker, ill give it back same day, im in beechwood",
+      "needFrom": "2026-09-19",
+      "needUntil": "2026-09-26",
+      "embedding": []
+    },
+    {
+      "id": "n216",
+      "personId": "p52",
+      "rawText": "need a hammer, im in lester",
+      "needFrom": "2026-10-26",
+      "needUntil": "2026-10-27",
+      "embedding": []
+    },
+    {
+      "id": "n217",
+      "personId": "p59",
+      "rawText": "need a serving platters. only need it for a couple hours",
+      "needFrom": "2026-10-22",
+      "needUntil": "2026-10-25",
+      "embedding": []
+    },
+    {
+      "id": "n218",
+      "personId": "p52",
+      "rawText": "can i borrow a stud finder. im in beechwood.",
+      "needFrom": "2026-12-22",
+      "needUntil": "2026-12-24",
+      "embedding": []
+    },
+    {
+      "id": "n219",
+      "personId": "p15",
+      "rawText": "anyone have a rice cooker. ill give it back same day",
+      "needFrom": "2026-11-30",
+      "needUntil": "2026-12-01",
+      "embedding": []
+    },
+    {
+      "id": "n220",
+      "personId": "p28",
+      "rawText": "trying to find a cordless drill. ill give it back same day. im in lester",
+      "needFrom": "2026-11-26",
+      "needUntil": "2026-11-27",
+      "embedding": []
+    },
+    {
+      "id": "n221",
+      "personId": "p15",
+      "rawText": "NEED A STOCKPOT, JUST FOR THE WEEKEND",
+      "needFrom": "2026-12-24",
+      "needUntil": "2026-12-30",
+      "embedding": []
+    },
+    {
+      "id": "n222",
+      "personId": "p5",
+      "rawText": "need a mugs, 3 of them. can pick up anytime. im in beechwood",
+      "needFrom": "2026-09-17",
       "needUntil": "2026-09-21",
       "embedding": []
     },
     {
-      "id": "n214",
-      "personId": "p25",
-      "rawText": "ISO a dehumidifier, im in lester",
+      "id": "n223",
+      "personId": "p23",
+      "rawText": "does anyone own a punch bowl + ladle. i have no car so closer the better. im in northdale",
+      "needFrom": "2026-12-04",
+      "needUntil": "2026-12-12",
+      "embedding": []
+    },
+    {
+      "id": "n224",
+      "personId": "p43",
+      "rawText": "hoping someone has a bike pump",
+      "needFrom": "2026-10-08",
+      "needUntil": "2026-10-10",
+      "embedding": []
+    },
+    {
+      "id": "n225",
+      "personId": "p58",
+      "rawText": "hoping someone has a suitcase. my room is tiny so i cant keep it",
+      "needFrom": "2026-11-16",
+      "needUntil": "2026-11-23",
+      "embedding": []
+    },
+    {
+      "id": "n226",
+      "personId": "p21",
+      "rawText": "hoping someone has a bed risers",
+      "needFrom": "2026-12-04",
+      "needUntil": "2026-12-07",
+      "embedding": []
+    },
+    {
+      "id": "n227",
+      "personId": "p30",
+      "rawText": "looking to borrow a toolkit. just for the weekend. im in beechwood",
+      "needFrom": "2026-11-07",
+      "needUntil": "2026-11-08",
+      "embedding": []
+    },
+    {
+      "id": "n228",
+      "personId": "p23",
+      "rawText": "NEED A STEAM MOP. MY ROOM IS TINY SO I CANT KEEP IT. IM IN SUNNYDALE",
+      "needFrom": "2026-10-11",
+      "needUntil": "2026-10-12",
+      "embedding": []
+    },
+    {
+      "id": "n229",
+      "personId": "p10",
+      "rawText": "trying to find a toaster, only need it for a couple hours, im in northdale",
+      "needFrom": "2026-12-03",
+      "needUntil": "2026-12-04",
+      "embedding": []
+    },
+    {
+      "id": "n230",
+      "personId": "p35",
+      "rawText": "trying to find a duffel bag. moving out so its kind of urgent. im in sunnydale",
+      "needFrom": "2026-12-24",
+      "needUntil": "2026-12-25",
+      "embedding": []
+    },
+    {
+      "id": "n231",
+      "personId": "p13",
+      "rawText": "anyone have a screwdriver set",
+      "needFrom": "2026-11-20",
+      "needUntil": "2026-11-21",
+      "embedding": []
+    },
+    {
+      "id": "n232",
+      "personId": "p59",
+      "rawText": "does anyone own a desk lamp, nothing fancy",
+      "needFrom": "2026-11-02",
+      "needUntil": "2026-11-05",
+      "embedding": []
+    },
+    {
+      "id": "n233",
+      "personId": "p11",
+      "rawText": "trying to find a laundry hamper",
+      "needFrom": "2026-10-16",
+      "needUntil": "2026-10-18",
+      "embedding": []
+    },
+    {
+      "id": "n234",
+      "personId": "p35",
+      "rawText": "can i borrow a air pump",
+      "needFrom": "2026-12-25",
+      "needUntil": "2026-12-26",
+      "embedding": []
+    },
+    {
+      "id": "n235",
+      "personId": "p56",
+      "rawText": "anyone have a steam mop, can pick up anytime",
+      "needFrom": "2026-09-02",
+      "needUntil": "2026-09-04",
+      "embedding": []
+    },
+    {
+      "id": "n236",
+      "personId": "p49",
+      "rawText": "does anyone own a bed risers. i have no car so closer the better",
+      "needFrom": "2026-11-06",
+      "needUntil": "2026-11-07",
+      "embedding": []
+    },
+    {
+      "id": "n238",
+      "personId": "p31",
+      "rawText": "anyone have a extension cord. im in sunnydale",
+      "needFrom": "2026-10-17",
+      "needUntil": "2026-10-19",
+      "embedding": []
+    },
+    {
+      "id": "n239",
+      "personId": "p0",
+      "rawText": "anyone have a shoe rack. would rather not buy one tbh",
+      "needFrom": "2026-11-27",
+      "needUntil": "2026-12-04",
+      "embedding": []
+    },
+    {
+      "id": "n240",
+      "personId": "p36",
+      "rawText": "hoping someone has a impact driver, nothing fancy",
+      "needFrom": "2026-10-03",
+      "needUntil": "2026-10-07",
+      "embedding": []
+    },
+    {
+      "id": "n241",
+      "personId": "p2",
+      "rawText": "ISO A CAMPING STOVE, CANT JUSTIFY BUYING ONE FOR THIS.",
+      "needFrom": "2026-12-29",
+      "needUntil": "2027-01-01",
+      "embedding": []
+    },
+    {
+      "id": "n242",
+      "personId": "p43",
+      "rawText": "hoping someone has a stand mixer, im in beechwood",
+      "needFrom": "2026-12-28",
+      "needUntil": "2026-12-30",
+      "embedding": []
+    },
+    {
+      "id": "n243",
+      "personId": "p11",
+      "rawText": "trying to find a brita water filter",
+      "needFrom": "2026-12-30",
+      "needUntil": "2027-01-01",
+      "embedding": []
+    },
+    {
+      "id": "n244",
+      "personId": "p17",
+      "rawText": "can i borrow a karaoke mic.",
+      "needFrom": "2026-10-09",
+      "needUntil": "2026-10-10",
+      "embedding": []
+    },
+    {
+      "id": "n245",
+      "personId": "p0",
+      "rawText": "need a storage bins, 3 stackable. my room is tiny so i cant keep it",
+      "needFrom": "2026-10-06",
+      "needUntil": "2026-10-09",
+      "embedding": []
+    },
+    {
+      "id": "n246",
+      "personId": "p47",
+      "rawText": "can i borrow a full length mirror, im in lester",
+      "needFrom": "2026-11-05",
+      "needUntil": "2026-11-08",
+      "embedding": []
+    },
+    {
+      "id": "n247",
+      "personId": "p45",
+      "rawText": "TRYING TO FIND A TENT, MY ROOM IS TINY SO I CANT KEEP IT",
+      "needFrom": "2026-09-04",
+      "needUntil": "2026-09-07",
+      "embedding": []
+    },
+    {
+      "id": "n248",
+      "personId": "p17",
+      "rawText": "ISO a power bar. nothing fancy",
+      "needFrom": "2026-11-29",
+      "needUntil": "2026-12-01",
+      "embedding": []
+    },
+    {
+      "id": "n249",
+      "personId": "p35",
+      "rawText": "need a packing tape gun, just for the weekend",
+      "needFrom": "2026-11-06",
+      "needUntil": "2026-11-08",
+      "embedding": []
+    },
+    {
+      "id": "n250",
+      "personId": "p46",
+      "rawText": "trying to find a step stool.",
+      "needFrom": "2026-10-29",
+      "needUntil": "2026-11-01",
+      "embedding": []
+    },
+    {
+      "id": "n251",
+      "personId": "p1",
+      "rawText": "does anyone own a snow shovel",
       "needFrom": "2026-11-06",
       "needUntil": "2026-11-09",
       "embedding": []
     },
     {
-      "id": "n215",
-      "personId": "p20",
-      "rawText": "looking to borrow a tire levers + patch kit, i have no car so closer the better, im in sunnydale",
-      "needFrom": "2026-12-16",
-      "needUntil": "2026-12-30",
-      "embedding": []
-    },
-    {
-      "id": "n217",
-      "personId": "p12",
-      "rawText": "hoping someone has a suitcase. moving out so its kind of urgent. im in beechwood",
-      "needFrom": "2026-09-17",
-      "needUntil": "2026-09-27",
-      "embedding": []
-    },
-    {
-      "id": "n218",
-      "personId": "p19",
-      "rawText": "anyone have a iron. any condition really",
-      "needFrom": "2026-11-12",
-      "needUntil": "2026-11-27",
-      "embedding": []
-    },
-    {
-      "id": "n219",
-      "personId": "p28",
-      "rawText": "anyone have a clothing rack",
-      "needFrom": "2026-10-07",
-      "needUntil": "2026-10-17",
-      "embedding": []
-    },
-    {
-      "id": "n220",
-      "personId": "p54",
-      "rawText": "hoping someone has a iron. im in northdale",
-      "needFrom": "2026-12-15",
-      "needUntil": "2026-12-25",
-      "embedding": []
-    },
-    {
-      "id": "n221",
-      "personId": "p48",
-      "rawText": "anyone have a plates and bowls, set of 4, for one project then im done",
-      "needFrom": "2026-11-10",
-      "needUntil": "2026-11-21",
-      "embedding": []
-    },
-    {
-      "id": "n222",
-      "personId": "p57",
-      "rawText": "ISO a vacuum, im in sunnydale.",
-      "needFrom": "2026-10-28",
-      "needUntil": "2026-10-30",
-      "embedding": []
-    },
-    {
-      "id": "n223",
-      "personId": "p12",
-      "rawText": "can i borrow a ice scraper. cant justify buying one for this. im in lester",
-      "needFrom": "2026-11-05",
-      "needUntil": "2026-11-17",
-      "embedding": []
-    },
-    {
-      "id": "n224",
-      "personId": "p6",
-      "rawText": "looking to borrow a power bar. just for the weekend",
-      "needFrom": "2026-11-22",
-      "needUntil": "2026-12-04",
-      "embedding": []
-    },
-    {
-      "id": "n225",
-      "personId": "p5",
-      "rawText": "NEED A BOX FAN. NOTHING FANCY",
-      "needFrom": "2026-11-19",
-      "needUntil": "2026-11-30",
-      "embedding": []
-    },
-    {
-      "id": "n226",
-      "personId": "p37",
-      "rawText": "looking to borrow a carpet cleaner. any condition really",
-      "needFrom": "2026-12-19",
-      "needUntil": "2026-12-24",
-      "embedding": []
-    },
-    {
-      "id": "n227",
-      "personId": "p4",
-      "rawText": "anyone have a food processor. i have no car so closer the better.",
-      "needFrom": "2026-11-26",
-      "needUntil": "2026-12-07",
-      "embedding": []
-    },
-    {
-      "id": "n228",
-      "personId": "p4",
-      "rawText": "need a step stool. would rather not buy one tbh. im in sunnydale.",
-      "needFrom": "2026-12-25",
-      "needUntil": "2026-12-31",
-      "embedding": []
-    },
-    {
-      "id": "n229",
-      "personId": "p27",
-      "rawText": "hoping someone has a clothing rack, for one project then im done, im in lester",
-      "needFrom": "2026-10-22",
-      "needUntil": "2026-11-03",
-      "embedding": []
-    },
-    {
-      "id": "n230",
-      "personId": "p10",
-      "rawText": "does anyone own a sewing machine",
-      "needFrom": "2026-10-02",
-      "needUntil": "2026-10-16",
-      "embedding": []
-    },
-    {
-      "id": "n231",
-      "personId": "p41",
-      "rawText": "hoping someone has a camera tripod. cant justify buying one for this",
-      "needFrom": "2026-12-19",
-      "needUntil": "2026-12-23",
-      "embedding": []
-    },
-    {
-      "id": "n232",
-      "personId": "p51",
-      "rawText": "iso a stud finder, for one project then im done",
-      "needFrom": "2026-11-05",
-      "needUntil": "2026-11-14",
-      "embedding": []
-    },
-    {
-      "id": "n233",
-      "personId": "p44",
-      "rawText": "ISO a brita water filter. nothing fancy",
-      "needFrom": "2026-09-14",
-      "needUntil": "2026-09-20",
-      "embedding": []
-    },
-    {
-      "id": "n234",
-      "personId": "p11",
-      "rawText": "looking to borrow a ladder",
-      "needFrom": "2026-09-23",
-      "needUntil": "2026-10-02",
-      "embedding": []
-    },
-    {
-      "id": "n235",
-      "personId": "p35",
-      "rawText": "can i borrow a folding table",
-      "needFrom": "2026-10-26",
-      "needUntil": "2026-11-08",
-      "embedding": []
-    },
-    {
-      "id": "n237",
-      "personId": "p33",
-      "rawText": "ISO A STEP LADDER. MOVING OUT SO ITS KIND OF URGENT.",
-      "needFrom": "2026-10-08",
-      "needUntil": "2026-10-22",
-      "embedding": []
-    },
-    {
-      "id": "n239",
-      "personId": "p18",
-      "rawText": "trying to find a humidifier. can pick up anytime",
-      "needFrom": "2026-12-08",
-      "needUntil": "2026-12-23",
-      "embedding": []
-    },
-    {
-      "id": "n240",
-      "personId": "p47",
-      "rawText": "ISO a packing tape gun. moving out so its kind of urgent. im in lester.",
-      "needFrom": "2026-11-28",
-      "needUntil": "2026-12-07",
-      "embedding": []
-    },
-    {
-      "id": "n241",
-      "personId": "p26",
-      "rawText": "anyone have a paper shredder, ill give it back same day",
-      "needFrom": "2026-10-08",
-      "needUntil": "2026-10-12",
-      "embedding": []
-    },
-    {
-      "id": "n243",
-      "personId": "p22",
-      "rawText": "looking to borrow a vacuum, can pick up anytime",
-      "needFrom": "2026-12-02",
-      "needUntil": "2026-12-10",
-      "embedding": []
-    },
-    {
-      "id": "n244",
-      "personId": "p22",
-      "rawText": "does anyone own a cordless drill, my room is tiny so i cant keep it",
-      "needFrom": "2026-10-14",
-      "needUntil": "2026-10-17",
-      "embedding": []
-    },
-    {
-      "id": "n245",
-      "personId": "p49",
-      "rawText": "can i borrow a bedside table. i have no car so closer the better",
-      "needFrom": "2026-12-17",
-      "needUntil": "2026-12-30",
-      "embedding": []
-    },
-    {
-      "id": "n246",
-      "personId": "p12",
-      "rawText": "trying to find a duffel bag",
-      "needFrom": "2026-09-13",
-      "needUntil": "2026-09-30",
-      "embedding": []
-    },
-    {
-      "id": "n248",
-      "personId": "p4",
-      "rawText": "TRYING TO FIND A WRENCH SET",
-      "needFrom": "2026-10-12",
-      "needUntil": "2026-10-14",
-      "embedding": []
-    },
-    {
-      "id": "n250",
-      "personId": "p23",
-      "rawText": "can i borrow a spirit level, im in beechwood",
-      "needFrom": "2026-09-23",
-      "needUntil": "2026-10-06",
-      "embedding": []
-    },
-    {
-      "id": "n251",
-      "personId": "p3",
-      "rawText": "anyone have a bluetooth speaker, for one project then im done",
-      "needFrom": "2026-10-25",
-      "needUntil": "2026-11-06",
-      "embedding": []
-    },
-    {
       "id": "n252",
-      "personId": "p6",
-      "rawText": "ISO a rice cooker, ill give it back same day",
-      "needFrom": "2026-09-29",
-      "needUntil": "2026-10-17",
+      "personId": "p30",
+      "rawText": "looking to borrow a cutlery set. ill give it back same day",
+      "needFrom": "2026-11-29",
+      "needUntil": "2026-12-06",
+      "embedding": []
+    },
+    {
+      "id": "n253",
+      "personId": "p10",
+      "rawText": "does anyone own a box fan. cant justify buying one for this",
+      "needFrom": "2026-11-18",
+      "needUntil": "2026-11-21",
       "embedding": []
     },
     {
       "id": "n254",
       "personId": "p0",
-      "rawText": "hoping someone has a first aid kit. i have no car so closer the better.",
-      "needFrom": "2026-11-18",
-      "needUntil": "2026-11-28",
+      "rawText": "trying to find a waffle maker, would rather not buy one tbh",
+      "needFrom": "2026-12-04",
+      "needUntil": "2026-12-06",
       "embedding": []
     },
     {
       "id": "n255",
-      "personId": "p55",
-      "rawText": "hoping someone has a hand truck",
-      "needFrom": "2026-11-28",
-      "needUntil": "2026-11-30",
+      "personId": "p21",
+      "rawText": "looking to borrow a mugs, 3 of them. moving out so its kind of urgent",
+      "needFrom": "2026-09-12",
+      "needUntil": "2026-09-19",
       "embedding": []
     },
     {
       "id": "n256",
-      "personId": "p20",
-      "rawText": "does anyone own a duffel bag. nothing fancy",
-      "needFrom": "2026-10-14",
-      "needUntil": "2026-10-25",
+      "personId": "p14",
+      "rawText": "anyone have a ring light, for one project then im done",
+      "needFrom": "2026-09-11",
+      "needUntil": "2026-09-13",
       "embedding": []
     },
     {
       "id": "n257",
-      "personId": "p21",
-      "rawText": "iso a desk lamp, moving out so its kind of urgent",
-      "needFrom": "2026-09-05",
-      "needUntil": "2026-09-15",
+      "personId": "p18",
+      "rawText": "hoping someone has a full length mirror",
+      "needFrom": "2026-12-17",
+      "needUntil": "2026-12-18",
       "embedding": []
     },
     {
       "id": "n258",
-      "personId": "p44",
-      "rawText": "HOPING SOMEONE HAS A STEP LADDER, ONLY NEED IT FOR A COUPLE HOURS, IM IN SUNNYDALE",
-      "needFrom": "2026-11-04",
-      "needUntil": "2026-11-16",
+      "personId": "p2",
+      "rawText": "can i borrow a bike pump, any condition really",
+      "needFrom": "2026-12-11",
+      "needUntil": "2026-12-17",
       "embedding": []
     },
     {
       "id": "n259",
-      "personId": "p5",
-      "rawText": "need a brita water filter, ill give it back same day, im in beechwood",
-      "needFrom": "2026-11-07",
-      "needUntil": "2026-11-20",
+      "personId": "p10",
+      "rawText": "trying to find a garment bag. for one project then im done",
+      "needFrom": "2026-12-20",
+      "needUntil": "2026-12-23",
       "embedding": []
     }
   ]
