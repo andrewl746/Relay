@@ -59,6 +59,14 @@ function parseListingFields(formData: FormData): ParsedListingFields | { error: 
   return { title, description, category, offerType, condition, priceCents, expiresAt };
 }
 
+// The post and edit forms resize the photo in the browser and send it as a
+// data URL. Empty means no photo (or removed); anything that isn't an image
+// data URL is dropped rather than stored.
+function parsePhoto(formData: FormData): string | null {
+  const raw = String(formData.get("photo") ?? "");
+  return raw.startsWith("data:image/") ? raw : null;
+}
+
 export type CreateListingResult =
   | { status: "error"; message: string }
   | { status: "ok"; id: string; title: string; expiresAt: string | null };
@@ -67,6 +75,8 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
   const fields = parseListingFields(formData);
   if ("error" in fields) return { status: "error", message: fields.error };
   const { title, description, category, offerType, condition, priceCents, expiresAt } = fields;
+
+  const photoUrl = parsePhoto(formData);
 
   const user = await getCurrentUser();
 
@@ -92,6 +102,7 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
     parentId: null,
     status: "available",
     createdAt: new Date().toISOString(),
+    photoUrl,
   };
 
   listings.unshift(newListing);
@@ -145,6 +156,7 @@ export async function updateListing(
   listing.priceCents = fields.priceCents;
   listing.condition = fields.condition;
   listing.expiresAt = fields.expiresAt;
+  listing.photoUrl = parsePhoto(formData);
 
   resetPlanCache();
   revalidatePath("/");

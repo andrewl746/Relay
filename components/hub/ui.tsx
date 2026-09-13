@@ -68,11 +68,9 @@ export function Eyebrow({ children, strong = false }: { children: ReactNode; str
 }
 
 /**
- * Image placeholder until listings carry real photos.
- *
- * A category glyph rather than the item's word set in a grey box — a word in a
- * box reads as a broken image, and six of them stacked read as a catalogue
- * that failed to load. Swap the <span> for <Image> when photos exist.
+ * Falls back to a category glyph when the listing has no photo — a word in a
+ * grey box reads as a broken image, and several stacked read as a catalogue
+ * that failed to load.
  */
 const THUMB_ICON: { match: RegExp; icon: EmptyIcon }[] = [
   { match: /desk|chair|shelf|table|lamp|bed|mattress|sofa|dresser|furniture/i, icon: "box" },
@@ -80,18 +78,33 @@ const THUMB_ICON: { match: RegExp; icon: EmptyIcon }[] = [
   { match: /fridge|kettle|toaster|micro|cook|kitchen|pot|pan/i, icon: "box" },
 ];
 
-export function Thumb({ word, size = "row" }: { word: string; size?: "row" | "hero" }) {
+export function Thumb({
+  word,
+  photoUrl,
+  alt = "",
+  size = "row",
+}: {
+  word: string;
+  photoUrl?: string | null;
+  alt?: string;
+  size?: "row" | "hero";
+}) {
   const icon = THUMB_ICON.find((t) => t.match.test(word))?.icon ?? "box";
   return (
     <div
-      aria-hidden="true"
+      aria-hidden={photoUrl && alt ? undefined : "true"}
       className={`grid shrink-0 place-items-center overflow-hidden rounded-md bg-surface-2 text-ink-3 ${
         size === "row" ? "size-16 sm:size-[72px]" : "aspect-[4/3] w-full"
       }`}
     >
-      <span className={size === "row" ? "size-7" : "size-16"}>
-        <EmptyIconArt name={icon} />
-      </span>
+      {photoUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element -- data URL, nothing for next/image to optimize
+        <img src={photoUrl} alt={alt} className="size-full object-cover" />
+      ) : (
+        <span className={size === "row" ? "size-7" : "size-16"}>
+          <EmptyIconArt name={icon} />
+        </span>
+      )}
     </div>
   );
 }

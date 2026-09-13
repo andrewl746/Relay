@@ -6,6 +6,7 @@ import { updateListing, type UpdateListingResult } from "@/lib/hub/actions";
 import { categoryLabel } from "@/lib/hub/format";
 import type { Category, Listing, OfferType } from "@/lib/hub/types";
 import { ChoiceChips, Field } from "./form-fields";
+import { PhotoField } from "./photo-field";
 import { btnPrimary, btnTertiary, fieldClass } from "./ui";
 
 const initialState: UpdateListingResult = { status: "idle" };
@@ -38,6 +39,8 @@ export function EditListingForm({ listing }: { listing: Listing }) {
           className={fieldClass}
         />
       </Field>
+
+      <PhotoField defaultValue={listing.photoUrl ?? null} />
 
       <div className="grid gap-6 sm:grid-cols-2">
         <Field label="Category" htmlFor="category">

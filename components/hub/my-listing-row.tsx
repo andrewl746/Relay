@@ -26,7 +26,7 @@ export function MyListingRow({ listing }: { listing: MyListing }) {
           live ? "" : "opacity-70"
         }`}
       >
-        <Thumb word={listing.kind} />
+        <Thumb word={listing.kind} photoUrl={listing.photoUrl} />
         <div className="min-w-0 flex-1">
           <p className="t-eyebrow mb-1 text-ink-2">{statusLabel[listing.status]}</p>
           <p className="t-listing line-clamp-2 text-[17px] leading-[1.25] group-hover:underline group-hover:underline-offset-[3px] sm:line-clamp-1">

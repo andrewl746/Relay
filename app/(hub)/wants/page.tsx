@@ -21,7 +21,7 @@ function MatchRow({ m, muted }: { m: MatchDetail; muted?: boolean }) {
           muted ? "opacity-70" : ""
         }`}
       >
-        <Thumb word={m.listing.kind} />
+        <Thumb word={m.listing.kind} photoUrl={m.listing.photoUrl} />
         <div className="min-w-0 flex-1">
           <p className="t-eyebrow text-ink">
             {matchStrength(m.score)} · covers {m.wants.length}

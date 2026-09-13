@@ -17,7 +17,7 @@ export function ListingRow({ listing }: { listing: BoardListing }) {
         href={`/listings/${listing.id}`}
         className="group flex items-center gap-3 px-4 py-3.5 transition-colors duration-[90ms] hover:bg-surface-2 sm:gap-4 sm:px-5"
       >
-        <Thumb word={listing.kind} />
+        <Thumb word={listing.kind} photoUrl={listing.photoUrl} />
         <div className="min-w-0 flex-1">
           {listing.isMatch && <p className="t-eyebrow mb-1 text-ink">Matches your list</p>}
           <p className="t-listing line-clamp-2 text-[17px] leading-[1.25] group-hover:underline group-hover:underline-offset-[3px] sm:line-clamp-1">

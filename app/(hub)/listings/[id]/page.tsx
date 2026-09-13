@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PencilIcon } from "@/components/hub/icons";
 import { PickupMap } from "@/components/hub/pickup-map";
-import { BackLink, btnPrimary, Countdown, Eyebrow, PageShell, Thumb, VerifiedStamp, SectionTitle } from "@/components/hub/ui";
+import { BackLink, btnPrimary, btnSecondary, Countdown, Eyebrow, PageShell, Thumb, VerifiedStamp, SectionTitle } from "@/components/hub/ui";
 import { getListing, getUniversity } from "@/lib/hub/data";
 import { pickupOptions, planFor } from "@/lib/hub/matching";
 import {
@@ -48,7 +49,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
       <BackLink href="/">All listings</BackLink>
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-        <Thumb word={listing.kind} size="hero" />
+        <Thumb word={listing.kind} photoUrl={listing.photoUrl} alt={listing.title} size="hero" />
 
         <div>
           <Eyebrow>
@@ -112,9 +113,18 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
                 {isOwn ? "You removed this listing." : "This listing is no longer available."}
               </p>
             ) : isOwn ? (
-              <p className="text-ink-2">
-                This is your listing. Switch to another student at the top of the page to try claiming it.
-              </p>
+              <>
+                <p className="text-ink-2">
+                  This is your listing. Switch to another student at the top of the page to try claiming it.
+                </p>
+                <Link
+                  href={`/posts/${listing.id}/edit`}
+                  className={`${btnSecondary} mt-4 inline-flex items-center gap-1.5`}
+                >
+                  <PencilIcon className="size-3.5" />
+                  Edit listing
+                </Link>
+              </>
             ) : !canCollect ? (
               <>
                 <span

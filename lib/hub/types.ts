@@ -42,6 +42,8 @@ export type Listing = {
   parentId: string | null;
   status: ListingStatus;
   createdAt: string;
+  /** Seller-uploaded photo (a resized JPEG data URL). Absent means show the placeholder. */
+  photoUrl?: string | null;
 };
 
 export type TimeSlot = {

@@ -6,6 +6,7 @@ import { createListing, type CreateListingResult } from "@/lib/hub/actions";
 import { categoryLabel, formatWhen } from "@/lib/hub/format";
 import type { Category, OfferType } from "@/lib/hub/types";
 import { ChoiceChips, Field, SlotRows } from "./form-fields";
+import { PhotoField } from "./photo-field";
 import { btnPrimary, btnTertiary, fieldClass } from "./ui";
 
 const initialState: CreateListingResult = { status: "error", message: "" };
@@ -53,6 +54,8 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           className={fieldClass}
         />
       </Field>
+
+      <PhotoField />
 
       <div className="grid gap-6 sm:grid-cols-2">
         <Field label="Category" htmlFor="category">
