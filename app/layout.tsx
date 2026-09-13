@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { SmoothScroll } from '@/components/motion/smooth-scroll'
+import { themeScript } from '@/components/theme'
 import { config } from '@/lib/config'
 import './globals.css'
 
@@ -44,6 +45,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       lang="en"
       className={`${archivo.variable} ${plex.variable} antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="flex min-h-screen flex-col">
         <SmoothScroll />
         {children}

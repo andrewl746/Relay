@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/hub/session";
 import { getWants } from "@/lib/hub/data";
 import { snapshot, networkStats } from "@/lib/relay/store";
 
-export const metadata = { title: "Account — Relay" };
+export const metadata = { title: "Account" };
 
 export default async function AccountPage() {
   const user = await getCurrentUser();

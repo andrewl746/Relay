@@ -5,7 +5,7 @@ import { getBoard, getHandoffs, getMatches, getUniversity, getWants } from "@/li
 import { formatShortDate } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
 
-export const metadata = { title: "Home — Relay" };
+export const metadata = { title: "Home" };
 
 function firstName(name: string) {
   return name.trim().split(/\s+/)[0] || "there";
