@@ -22,7 +22,7 @@ export default async function MyPostsPage() {
 
       {myListings.length === 0 ? (
         <EmptyState title="You haven't posted anything yet.">
-          <p>List your first item and it'll show up here.</p>
+          <p>List your first item and it&apos;ll show up here.</p>
           <Link href="/post" className={`${btnSecondary} mt-4`}>
             Post an item
           </Link>

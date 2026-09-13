@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 export type Theme = "light" | "dark" | "system";
 const KEY = "relay-theme";
@@ -30,9 +30,25 @@ export function applyTheme(theme: Theme) {
  */
 export const themeScript = `(function(){try{var t=localStorage.getItem("${KEY}");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();`;
 
+/**
+ * The theme actually on screen: the data-theme attribute themeScript and
+ * applyTheme set. Read from the page rather than copied into state, so every
+ * toggle agrees with it, including when storage is blocked.
+ */
+function appliedTheme(): Theme {
+  const t = document.documentElement.getAttribute("data-theme");
+  return t === "light" || t === "dark" ? t : "system";
+}
+
+function onThemeChange(notify: () => void) {
+  const observer = new MutationObserver(notify);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => observer.disconnect();
+}
+
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("system");
-  useEffect(() => setTheme(getStoredTheme()), []);
+  // The server can't see the choice, so "system" there and during hydration.
+  const theme = useSyncExternalStore(onThemeChange, appliedTheme, (): Theme => "system");
 
   const options: { value: Theme; label: string }[] = [
     { value: "light", label: "Light" },
@@ -48,10 +64,7 @@ export function ThemeToggle() {
           type="button"
           role="radio"
           aria-checked={theme === o.value}
-          onClick={() => {
-            setTheme(o.value);
-            applyTheme(o.value);
-          }}
+          onClick={() => applyTheme(o.value)}
           className={`min-h-9 rounded-sm px-4 text-[14px] font-semibold transition-colors ${
             theme === o.value ? "bg-accent text-white" : "text-ink-2 hover:text-ink"
           }`}
