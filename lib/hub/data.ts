@@ -1,5 +1,7 @@
-import { filterBoard, rankByUrgency, type BoardView } from "./feed";
+import { filterBoard, rankByUrgency, type BoardMode, type BoardView } from "./feed";
 import { isGoneByTonight } from "./format";
+import { listingText, searchListings } from "./search";
+import { effectiveExpiry } from "./urgency";
 import { handoffs, listings, matches, notifications, slots, university, users, wants } from "./mock-data";
 import { plansFor, type Plan } from "./matching";
 import type { Handoff, Listing, Match, TimeSlot, User, Want } from "./types";
@@ -24,7 +26,17 @@ function childrenOf(listingId: string) {
 
 export type BoardListing = Listing & { itemCount: number; isMatch: boolean };
 
-export async function getBoard({ view, query, userId }: { view: BoardView; query?: string; userId: string }) {
+export async function getBoard({
+  view,
+  mode,
+  query,
+  userId,
+}: {
+  view: BoardView;
+  mode: BoardMode;
+  query?: string;
+  userId: string;
+}) {
   // Only things this person could actually collect count as a match on the
   // board. A listing that is gone before they land is a near miss, and putting
   // it under "Matches my list" would be a lie the rest of the app then has to
@@ -38,14 +50,35 @@ export async function getBoard({ view, query, userId }: { view: BoardView; query
     .filter((l) => l.parentId === null && l.status === "available")
     .map((l) => ({ ...l, itemCount: childrenOf(l.id).length, isMatch: matchedIds.has(l.id) }));
 
-  const shown = filterBoard(open, view, query, {
-    matchedIds,
-    searchableText: (l) => [l.title, l.description, l.kind, ...childrenOf(l.id).map((c) => c.title)].join(" "),
+  const textFor = (l: BoardListing) => listingText(l, childrenOf(l.id).map((c) => c.title));
+
+  // Semantic first, substring only if the model could not be loaded.
+  const hits = query ? await searchListings(query, open.map((l) => ({ id: l.id, text: textFor(l) }))) : null;
+  const semantic = hits !== null;
+  const rank = hits ? new Map(hits.map((h, i) => [h.id, i])) : null;
+
+  const keep = query
+    ? rank
+      ? (l: BoardListing) => rank.has(l.id)
+      : (l: BoardListing) => textFor(l).toLowerCase().includes(query.toLowerCase())
+    : undefined;
+
+  const shown = filterBoard(open, view, mode, { matchedIds, keep });
+
+  const deadlines = open.flatMap((l) => {
+    const at = effectiveExpiry(l);
+    return at ? [at] : [];
   });
 
-  const deadlines = open.flatMap((l) => (l.expiresAt ? [l.expiresAt] : []));
+  // A search is answering a question, so relevance wins over the deadline
+  // ordering the unsearched board uses.
+  const ranked = rank
+    ? { finalCall: [], rest: [...shown].sort((a, b) => rank.get(a.id)! - rank.get(b.id)!) }
+    : rankByUrgency(shown);
+
   return {
-    ...rankByUrgency(shown),
+    ...ranked,
+    semantic,
     total: open.length,
     goneTonight: deadlines.filter(isGoneByTonight).length,
     lastDeadline: deadlines.sort().at(-1) ?? null,

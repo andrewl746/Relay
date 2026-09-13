@@ -4,6 +4,8 @@ import { HandoffSummary } from "@/components/hub/handoff-summary";
 import { btnPrimary, btnTertiary, PageShell, PageTitle } from "@/components/hub/ui";
 import { getListing } from "@/lib/hub/data";
 import { firstName, formatDate, formatTime } from "@/lib/hub/format";
+import { RETURNS } from "@/lib/hub/types";
+import { dueBackFrom } from "@/lib/hub/urgency";
 import { getCurrentUser } from "@/lib/hub/session";
 
 export const metadata = { title: "Handoff confirmed" };
@@ -17,6 +19,8 @@ export default async function ConfirmedPage({ params, searchParams }: PageProps<
   if (!slot) redirect(`/listings/${listing.id}/claim`);
 
   const seller = firstName(listing.seller.name);
+  const dueBack = RETURNS[listing.offerType] ? dueBackFrom(slot.startsAt, listing.returnDays) : null;
+  const paid = query.payment && query.payment !== "cash";
 
   return (
     <PageShell width="narrow">
@@ -26,6 +30,18 @@ export default async function ConfirmedPage({ params, searchParams }: PageProps<
       />
 
       <HandoffSummary listing={listing} slot={slot} buyer={user} seller={listing.seller} justClaimed />
+
+      {dueBack && (
+        <p className="mt-4 rounded-2 border border-rule-strong bg-paper-raised px-5 py-4 font-semibold">
+          Give it back to {seller} by {formatDate(dueBack)}. It’s on {seller}’s card too, so neither of you has to remember.
+        </p>
+      )}
+
+      {paid && (
+        <p className="mt-4 text-[13px] text-ink-2">
+          Payment held on your saved card until pickup. Demo only — nothing is charged.
+        </p>
+      )}
 
       {listing.isBundle && (
         <p className="mt-4 text-ink-2">
@@ -37,7 +53,7 @@ export default async function ConfirmedPage({ params, searchParams }: PageProps<
         <Link href="/handoffs" className={btnPrimary}>
           See my handoffs
         </Link>
-        <Link href="/" className={btnTertiary}>
+        <Link href="/browse" className={btnTertiary}>
           Keep browsing
         </Link>
       </div>

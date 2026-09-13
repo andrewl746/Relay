@@ -13,9 +13,13 @@ import {
   formatTimeRange,
   formatWhen,
   formatDay,
+  formatReturn,
   moveLine,
   offerLabel,
+  urgencyLabel,
 } from "@/lib/hub/format";
+import { RETURNS } from "@/lib/hub/types";
+import { effectiveExpiry, LIFESPAN_DAYS, shortenedByUrgency } from "@/lib/hub/urgency";
 import { getCurrentUser } from "@/lib/hub/session";
 
 export async function generateMetadata({ params }: PageProps<"/listings/[id]">) {
@@ -42,10 +46,12 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
   const heldForOther = Boolean(plan?.contest && !plan.contest.youWin);
   const canCollect = first !== null && plan?.feasible !== false && !heldForOther;
   const partsTotal = listing.items.reduce((sum, item) => sum + (item.priceCents ?? 0), 0);
+  const closes = effectiveExpiry(listing);
+  const returnText = formatReturn(listing);
 
   return (
     <PageShell>
-      <BackLink href="/">All listings</BackLink>
+      <BackLink href="/browse">All listings</BackLink>
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         <Thumb word={listing.kind} size="hero" />
@@ -61,12 +67,26 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
           <div className="mt-5 flex items-end justify-between gap-4 border-y border-rule py-4">
             <p className="data text-[32px] leading-none font-semibold">{formatPrice(listing)}</p>
             <div className="text-right">
-              <Countdown expiresAt={listing.expiresAt} large />
-              {listing.expiresAt && (
-                <p className="mt-1 text-[13px] text-ink-2">Gone by {formatWhen(listing.expiresAt)}</p>
-              )}
+              <Countdown expiresAt={closes} large />
+              {closes && <p className="mt-1 text-[13px] text-ink-2">Gone by {formatWhen(closes)}</p>}
             </div>
           </div>
+
+          {RETURNS[listing.offerType] && (
+            <p className="mt-5 border-l-2 border-ink px-4 py-3 font-semibold">
+              You give this back.{returnText ? ` ${returnText}, then it goes home to ${firstName(seller.name)}.` : ""}
+            </p>
+          )}
+
+          {shortenedByUrgency(listing) && (
+            <p className="mt-5 border-l-2 border-signal px-4 py-3">
+              <span className="font-semibold">
+                {firstName(seller.name)} marked this {urgencyLabel[listing.urgency].toLowerCase()}.
+              </span>{" "}
+              It comes off the board {LIFESPAN_DAYS[listing.urgency]} days after it was posted rather than sitting
+              until term ends — so the pickup times below are the only ones there will be.
+            </p>
+          )}
 
           <p className="mt-5 max-w-[68ch]">{listing.description}</p>
 
@@ -76,6 +96,12 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
               <span className="font-semibold text-ink">{seller.name}</span> · {moveLine(seller)} ·{" "}
               {listing.pickupArea}
             </p>
+          </div>
+
+          <div className="mt-2">
+            {listing.contact && (
+              <p className="text-[13px] text-ink-2">Reach {firstName(seller.name)} at {listing.contact}</p>
+            )}
           </div>
 
           {!isOwn && plan && (
@@ -225,8 +251,9 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
 
       <section className="mt-12 bg-paper-sunk px-5 py-4">
         <p className="max-w-[68ch]">
-          Pay {firstName(seller.name)} directly when you pick it up. We never handle money, so never send anything
-          before you’ve seen the item.
+          {listing.offerType === "free" || listing.offerType === "borrow"
+            ? `${firstName(seller.name)} is not charging for this. Nobody should ask you for money before you pick it up.`
+            : `Pay ${firstName(seller.name)} directly when you pick it up. We never handle money, so never send anything before you’ve seen the item.`}
         </p>
       </section>
     </PageShell>

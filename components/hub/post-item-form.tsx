@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { useState } from "react";
 import { formatWhen } from "@/lib/hub/format";
-import type { Category, OfferType } from "@/lib/hub/types";
+import { LIFESPAN_DAYS } from "@/lib/hub/urgency";
+import { RETURNS, type Category, type OfferType, type Urgency } from "@/lib/hub/types";
 import { ChoiceChips, Field, SlotRows } from "./form-fields";
 import { btnPrimary, btnTertiary, fieldClass } from "./ui";
 
 export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
   const [category, setCategory] = useState<Category>("furniture");
   const [offerType, setOfferType] = useState<OfferType>("sale");
+  const [urgency, setUrgency] = useState<Urgency>("low");
   const [hasDeadline, setHasDeadline] = useState(true);
   const [listed, setListed] = useState<{ title: string; deadline: string | null } | null>(null);
 
@@ -22,7 +24,7 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           {listed.deadline ? `, gone by ${listed.deadline} unless someone claims it.` : "."}
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-5">
-          <Link href="/" className={btnPrimary}>
+          <Link href="/browse" className={btnPrimary}>
             See it on the board
           </Link>
           <button type="button" onClick={() => setListed(null)} className={btnTertiary}>
@@ -68,25 +70,44 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           onChange={setCategory}
           options={[
             { value: "furniture", label: "Furniture" },
-            { value: "school", label: "School materials" },
+            { value: "school", label: "School" },
+            { value: "tools", label: "Tools" },
+            { value: "kitchen", label: "Kitchen" },
+            { value: "electronics", label: "Electronics" },
+            { value: "misc", label: "Everything else" },
           ]}
         />
         <ChoiceChips
-          legend="Offer"
+          legend="Do you want it back?"
           name="offerType"
           value={offerType}
           onChange={setOfferType}
           options={[
-            { value: "sale", label: "Sell" },
-            { value: "rent", label: "Rent for the term" },
             { value: "free", label: "Give away" },
+            { value: "sale", label: "Sell" },
+            { value: "borrow", label: "Lend, free" },
+            { value: "loan", label: "Lend, for a fee" },
           ]}
         />
       </div>
 
+      {RETURNS[offerType] && (
+        <div className="sm:max-w-xs">
+          <Field label="How long can they keep it" hint="We put the return date on both your handoff cards." htmlFor="returnDays">
+            <select id="returnDays" name="returnDays" defaultValue="7" className={fieldClass}>
+              <option value="1">1 day</option>
+              <option value="3">3 days</option>
+              <option value="7">1 week</option>
+              <option value="14">2 weeks</option>
+              <option value="30">1 month</option>
+            </select>
+          </Field>
+        </div>
+      )}
+
       <div className="grid gap-6 sm:grid-cols-2">
         {offerType !== "free" && (
-          <Field label={offerType === "rent" ? "Price per term" : "Price"} htmlFor="price">
+          <Field label={offerType === "loan" ? "Fee to borrow it" : "Price"} htmlFor="price">
             <div className="relative">
               <span className="data pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-2">$</span>
               <input
@@ -109,6 +130,25 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
             <option value="fair">Fair</option>
           </select>
         </Field>
+      </div>
+
+      <div className="border-t border-rule pt-6">
+        <ChoiceChips
+          legend="How badly do you need it gone?"
+          name="urgency"
+          value={urgency}
+          onChange={setUrgency}
+          options={[
+            { value: "low", label: "No rush" },
+            { value: "medium", label: "Soon" },
+            { value: "high", label: "Urgent" },
+          ]}
+        />
+        <p className="mt-2 text-[13px] text-ink-2">
+          {urgency === "high"
+            ? "Urgent means this comes off the board in 48 hours — we stop offering pickup times after that, and if two people want it, it goes to whoever has no other option."
+            : `We'll keep this live for ${LIFESPAN_DAYS[urgency]} days.`}
+        </p>
       </div>
 
       <fieldset className="border-y border-rule py-5">
@@ -142,6 +182,19 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           </div>
         )}
       </fieldset>
+
+      <div className="grid gap-6 border-t border-rule pt-6 sm:grid-cols-2">
+        <Field label="Where do they pick it up" hint="A building or an intersection is enough." htmlFor="pickupArea">
+          <input id="pickupArea" name="pickupArea" required defaultValue={defaultPlace} placeholder="318 Lester St" className={fieldClass} />
+        </Field>
+        <Field label="How should they reach you" htmlFor="contact">
+          <input id="contact" name="contact" required placeholder="you@uwaterloo.ca" className={fieldClass} />
+        </Field>
+      </div>
+
+      <Field label="Photo" hint="Optional. A bad phone photo still beats no photo." htmlFor="photo">
+        <input id="photo" name="photo" type="file" accept="image/*" className={`${fieldClass} py-2 file:mr-3 file:rounded-1 file:border-0 file:bg-ink file:px-3 file:py-1.5 file:text-paper file:font-semibold`} />
+      </Field>
 
       <SlotRows defaultPlace={defaultPlace} />
 

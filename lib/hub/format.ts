@@ -1,5 +1,6 @@
 import { CAMPUS_TIME_ZONE, NOW } from "./clock";
-import type { Category, Condition, Listing, OfferType, User } from "./types";
+import { RETURNS } from "./types";
+import type { Category, Condition, Listing, OfferType, Urgency, User } from "./types";
 
 const HOUR = 3_600_000;
 
@@ -132,20 +133,47 @@ export function formatMoney(cents: number) {
 }
 
 export function formatPrice(listing: Pick<Listing, "offerType" | "priceCents">) {
-  if (listing.offerType === "free" || listing.priceCents === null) return "Free";
+  if (listing.offerType === "free") return "Free";
+  if (listing.offerType === "borrow") return "Free to borrow";
+  if (listing.priceCents === null) return "Free";
   const amount = formatMoney(listing.priceCents);
-  return listing.offerType === "rent" ? `${amount}/term` : amount;
+  return listing.offerType === "loan" ? `${amount} to borrow` : amount;
+}
+
+/** "Back by Sep 20" — only the two modes that return have one. */
+export function formatReturn(listing: Pick<Listing, "offerType" | "returnDays">) {
+  if (!RETURNS[listing.offerType] || listing.returnDays === null) return null;
+  return listing.returnDays === 1 ? "Back the next day" : `Yours for ${listing.returnDays} days`;
 }
 
 export const categoryLabel: Record<Category, string> = {
   furniture: "Furniture",
   school: "School materials",
+  tools: "Tools",
+  kitchen: "Kitchen",
+  electronics: "Electronics",
+  misc: "Everything else",
 };
 
 export const offerLabel: Record<OfferType, string> = {
-  sale: "For sale",
-  rent: "For rent",
   free: "Free",
+  sale: "For sale",
+  borrow: "To borrow",
+  loan: "To loan",
+};
+
+/** The distinction the whole model turns on: does the owner get it back? */
+export const offerGroupLabel: Record<OfferType, string> = {
+  free: "Keep it",
+  sale: "Keep it",
+  borrow: "Give it back",
+  loan: "Give it back",
+};
+
+export const urgencyLabel: Record<Urgency, string> = {
+  low: "No rush",
+  medium: "Soon",
+  high: "Urgent",
 };
 
 export const conditionLabel: Record<Condition, string> = {

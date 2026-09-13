@@ -1,4 +1,4 @@
-import type { Handoff, Listing, Match, TimeSlot, University, User, UserNotification, Want } from "./types";
+import type { Handoff, Listing, Match, TimeSlot, University, Urgency, User, UserNotification, Want } from "./types";
 
 export const university: University = {
   id: "uw",
@@ -98,13 +98,18 @@ export const users: User[] = [
   },
 ];
 
-type ListingSeed = Omit<Listing, "universityId" | "isBundle" | "parentId" | "status" | "createdAt" | "description"> &
-  Partial<Pick<Listing, "isBundle" | "parentId" | "status" | "createdAt" | "description">>;
+type ListingDefaults = "universityId" | "isBundle" | "parentId" | "status" | "createdAt" | "description" | "contact" | "photoUrl" | "urgency" | "returnDays";
+
+type ListingSeed = Omit<Listing, ListingDefaults> & Partial<Pick<Listing, ListingDefaults>>;
 
 function listing(seed: ListingSeed): Listing {
   return {
     universityId: "uw",
     description: "",
+    contact: "",
+    photoUrl: null,
+    urgency: "low",
+    returnDays: null,
     isBundle: false,
     parentId: null,
     status: "available",
@@ -123,6 +128,74 @@ const inPriyasRoom = {
 } as const;
 
 export const listings: Listing[] = [
+  listing({
+    id: "l-drill",
+    sellerId: "u-hana",
+    title: "Cordless drill with bit set",
+    description:
+      "For hanging shelves or building flat-pack furniture. You need it for an afternoon, not for four years, so borrow it and bring it back.",
+    kind: "Drill",
+    category: "tools",
+    offerType: "borrow",
+    priceCents: null,
+    condition: "good",
+    pickupArea: "Mackenzie King Village",
+    contact: "h4tanaka@uwaterloo.ca",
+    returnDays: 3,
+    urgency: "low",
+    expiresAt: null,
+    createdAt: "2026-09-12T10:00:00-04:00",
+  }),
+  listing({
+    id: "l-toolkit",
+    sellerId: "u-jordan",
+    title: "Allen keys, screwdrivers and a rubber mallet",
+    description: "Everything IKEA furniture needs and nothing it doesn't. Borrow it for a weekend.",
+    kind: "Tools",
+    category: "tools",
+    offerType: "borrow",
+    priceCents: null,
+    condition: "good",
+    pickupArea: "Columbia St W",
+    contact: "j2park@uwaterloo.ca",
+    returnDays: 7,
+    urgency: "low",
+    expiresAt: null,
+    createdAt: "2026-09-12T11:30:00-04:00",
+  }),
+  listing({
+    id: "l-stockpot",
+    sellerId: "u-aisha",
+    title: "6 litre stock pot with lid",
+    description: "Big enough for pasta for six. Stainless, dishwasher safe.",
+    kind: "Pot",
+    category: "kitchen",
+    offerType: "sale",
+    priceCents: 1200,
+    condition: "good",
+    pickupArea: "Phillip St",
+    contact: "a5khan@uwaterloo.ca",
+    urgency: "medium",
+    expiresAt: "2026-09-16T18:00:00-04:00",
+    createdAt: "2026-09-12T14:00:00-04:00",
+  }),
+  listing({
+    id: "l-vacuum",
+    sellerId: "u-owen",
+    title: "Vacuum cleaner",
+    description: "For move-in day and move-out day, which is the only time anyone needs one.",
+    kind: "Vacuum",
+    category: "tools",
+    offerType: "borrow",
+    priceCents: null,
+    condition: "fair",
+    pickupArea: "King St N",
+    contact: "o3reid@uwaterloo.ca",
+    returnDays: 1,
+    urgency: "low",
+    expiresAt: null,
+    createdAt: "2026-09-13T08:00:00-04:00",
+  }),
   listing({
     id: "l-mattress",
     sellerId: "u-daniel",
@@ -165,6 +238,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "Sunview St",
     expiresAt: "2026-09-13T20:00:00-04:00",
+    urgency: "high",
     createdAt: "2026-09-12T18:00:00-04:00",
   }),
   listing({
@@ -180,6 +254,7 @@ export const listings: Listing[] = [
     condition: "fair",
     pickupArea: "Sunview St",
     expiresAt: "2026-09-14T09:00:00-04:00",
+    urgency: "high",
     createdAt: "2026-09-11T20:15:00-04:00",
   }),
   listing({
@@ -189,7 +264,7 @@ export const listings: Listing[] = [
     description:
       "Bought it for MATH 137 and barely used it after midterms. Comes with the charging cable and the slide case.",
     kind: "TI-84",
-    category: "school",
+    category: "electronics",
     offerType: "sale",
     priceCents: 6000,
     condition: "like-new",
@@ -228,7 +303,7 @@ export const listings: Listing[] = [
     description:
       "Birch frame with a beige cushion. Great reading chair. The cushion cover comes off and goes in the wash.",
     kind: "Chair",
-    category: "furniture",
+    category: "misc",
     offerType: "sale",
     priceCents: 3500,
     condition: "good",
@@ -262,6 +337,7 @@ export const listings: Listing[] = [
     condition: "like-new",
     pickupArea: "Mackenzie King Village",
     expiresAt: "2026-09-17T18:00:00-04:00",
+    urgency: "medium",
     createdAt: "2026-09-12T15:20:00-04:00",
   }),
   listing({
@@ -270,12 +346,13 @@ export const listings: Listing[] = [
     title: "Mini fridge, 1.7 cu ft",
     description: "Quiet enough for a bedroom. Rent it for the term and bring it back at the end of December.",
     kind: "Fridge",
-    category: "furniture",
-    offerType: "rent",
+    category: "kitchen",
+    offerType: "loan",
     priceCents: 2500,
     condition: "good",
     pickupArea: "King St N",
     expiresAt: null,
+    returnDays: 105,
     createdAt: "2026-09-13T09:00:00-04:00",
   }),
   listing({
@@ -285,12 +362,13 @@ export const listings: Listing[] = [
     description:
       "1440p with HDMI and DisplayPort. I have two and only use one, so rent it for the term and bring it back in December.",
     kind: "Screen",
-    category: "school",
-    offerType: "rent",
+    category: "electronics",
+    offerType: "loan",
     priceCents: 3000,
     condition: "good",
     pickupArea: "Columbia St W",
     expiresAt: null,
+    returnDays: 105,
     createdAt: "2026-09-12T21:00:00-04:00",
   }),
   listing({
@@ -313,7 +391,7 @@ export const listings: Listing[] = [
     title: "3-tier rolling cart",
     description: "Good for a desk-side printer or bathroom stuff. Free to whoever wants it.",
     kind: "Cart",
-    category: "furniture",
+    category: "misc",
     offerType: "free",
     priceCents: null,
     condition: "good",
@@ -355,7 +433,7 @@ export const listings: Listing[] = [
     title: "Kitchen table with two chairs",
     description: "Solid wood, some scratches on top. Needs a car or two people to carry.",
     kind: "Table",
-    category: "furniture",
+    category: "kitchen",
     offerType: "sale",
     priceCents: 6000,
     condition: "fair",
@@ -402,6 +480,15 @@ function slot(id: string, listingId: string, start: string, end: string, place: 
 }
 
 export const slots: TimeSlot[] = [
+  slot("s-drill-1", "l-drill", "2026-09-13T17:00", "2026-09-13T18:00", "Mackenzie King Village", "seller"),
+  slot("s-drill-2", "l-drill", "2026-09-14T11:00", "2026-09-14T12:00", "SLC main lobby", "campus"),
+  slot("s-drill-3", "l-drill", "2026-09-15T17:00", "2026-09-15T18:00", "Mackenzie King Village", "seller"),
+  slot("s-drill-4", "l-drill", "2026-09-16T12:00", "2026-09-16T13:00", "SLC main lobby", "campus"),
+  slot("s-toolkit-1", "l-toolkit", "2026-09-14T13:00", "2026-09-14T14:00", "Columbia St W", "seller"),
+  slot("s-stockpot-1", "l-stockpot", "2026-09-14T16:00", "2026-09-14T17:00", "Phillip St", "seller"),
+  slot("s-vacuum-1", "l-vacuum", "2026-09-15T10:00", "2026-09-15T11:00", "King St N", "seller"),
+  slot("s-vacuum-2", "l-vacuum", "2026-09-16T10:00", "2026-09-16T11:00", "King St N", "seller"),
+
   slot("s-room-1", "l-priya-room", "2026-09-14T18:00", "2026-09-14T19:00", lester, "seller"),
   slot("s-room-2", "l-priya-room", "2026-09-15T10:00", "2026-09-15T11:00", lester, "seller"),
   slot("s-room-3", "l-priya-room", "2026-09-15T11:00", "2026-09-15T12:00", lester, "seller"),
@@ -463,7 +550,7 @@ const sofiaFirstLab = "2026-09-16T08:30:00-04:00";
 const sofiaTutorial = "2026-09-17T13:00:00-04:00";
 const classesStart = "2026-09-21T08:30:00-04:00";
 
-type WantSeed = Omit<Want, "fulfilled"> & { fulfilled?: boolean };
+type WantSeed = Omit<Want, "fulfilled" | "urgency"> & { fulfilled?: boolean; urgency?: Urgency };
 
 export const wants: Want[] = (
   [
@@ -471,17 +558,26 @@ export const wants: Want[] = (
     { id: "w-marcus-chair", userId: "u-marcus", text: "Comfy chair for studying", maxPriceCents: 5000, neededBy: marcusSettled },
     { id: "w-marcus-lamp", userId: "u-marcus", text: "Lamp", maxPriceCents: null, neededBy: marcusSettled },
     { id: "w-marcus-fridge", userId: "u-marcus", text: "Small fridge for my room", maxPriceCents: 6000, neededBy: marcusSettled },
+    { id: "w-marcus-drill", userId: "u-marcus", text: "Something to put up shelves with", maxPriceCents: 0, neededBy: marcusSettled, urgency: "high" },
     { id: "w-marcus-monitor", userId: "u-marcus", text: "Second monitor", maxPriceCents: 2500, neededBy: classesStart },
     { id: "w-marcus-board", userId: "u-marcus", text: "Whiteboard for problem sets", maxPriceCents: 3000, neededBy: classesStart, fulfilled: true },
     { id: "w-sofia-calc", userId: "u-sofia", text: "Graphing calculator for first-year math", maxPriceCents: 7000, neededBy: sofiaTutorial },
-    { id: "w-sofia-coat", userId: "u-sofia", text: "Lab coat for chem labs", maxPriceCents: 2000, neededBy: sofiaFirstLab },
+    { id: "w-sofia-coat", userId: "u-sofia", text: "Lab coat for chem labs", maxPriceCents: 2000, neededBy: sofiaFirstLab, urgency: "high" },
     { id: "w-sofia-bio", userId: "u-sofia", text: "Biology textbook", maxPriceCents: 5000, neededBy: classesStart },
-    { id: "w-jordan-shelf", userId: "u-jordan", text: "Bookshelf for my textbooks", maxPriceCents: null, neededBy: classesStart },
-    { id: "w-owen-shelf", userId: "u-owen", text: "Shelving for studio supplies", maxPriceCents: 3000, neededBy: classesStart },
+    { id: "w-jordan-shelf", userId: "u-jordan", text: "Bookshelf for my textbooks", maxPriceCents: null, neededBy: classesStart, urgency: "low" },
+    { id: "w-owen-shelf", userId: "u-owen", text: "Shelving for studio supplies", maxPriceCents: 3000, neededBy: classesStart, urgency: "high" },
   ] satisfies WantSeed[]
-).map((w) => ({ fulfilled: false, ...w }));
+).map((w) => ({ fulfilled: false, urgency: "medium" as Urgency, ...w }));
 
 export const matches: Match[] = [
+  {
+    id: "m-marcus-drill",
+    userId: "u-marcus",
+    listingId: "l-drill",
+    wantIds: ["w-marcus-drill"],
+    score: 0.88,
+    reason: "You need it for one afternoon. Hana lends it out and wants it back in three days, so it costs nothing.",
+  },
   {
     id: "m-marcus-room",
     userId: "u-marcus",
@@ -595,6 +691,11 @@ export const handoffs: Handoff[] = [
     slotId: "s-board-1",
     buyerId: "u-marcus",
     sellerId: "u-jordan",
+    buyerName: "Marcus Chen",
+    buyerContact: "m8chen@uwaterloo.ca",
+    payment: null,
+    urgency: "medium",
+    dueBack: null,
     createdAt: "2026-09-12T20:05:00-04:00",
   },
   {
@@ -603,6 +704,11 @@ export const handoffs: Handoff[] = [
     slotId: "s-bedside-1",
     buyerId: "u-sofia",
     sellerId: "u-priya",
+    buyerName: "Sofia Martins",
+    buyerContact: "(226) 555-0188",
+    payment: { brand: "Visa", last4: "4242" },
+    urgency: "high",
+    dueBack: null,
     createdAt: "2026-09-13T09:20:00-04:00",
   },
 ];

@@ -16,6 +16,7 @@
     "reset": "node --experimental-strip-types scripts/reset.ts"
   },
   "dependencies": {
+    "@huggingface/transformers": "^4.2.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
     "backboard-sdk": "^1.5.16",

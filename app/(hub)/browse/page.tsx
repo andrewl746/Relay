@@ -4,7 +4,7 @@ import { SearchIcon } from "@/components/hub/icons";
 import { ListingRow } from "@/components/hub/listing-row";
 import { btnSecondary, btnTertiary, EmptyState, Eyebrow, fieldClass } from "@/components/hub/ui";
 import { getBoard, getMatches, getUniversity, getWants, type BoardListing } from "@/lib/hub/data";
-import { boardViews, parseBoardView } from "@/lib/hub/feed";
+import { boardModes, boardViews, parseBoardMode, parseBoardView } from "@/lib/hub/feed";
 import { formatShortDate, moveLine } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
 
@@ -12,27 +12,35 @@ function one(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
-export default async function BrowsePage({ searchParams }: PageProps<"/">) {
+export default async function BrowsePage({ searchParams }: PageProps<"/browse">) {
   const params = await searchParams;
   const view = parseBoardView(one(params.view));
+  const mode = parseBoardMode(one(params.mode));
   const query = one(params.q)?.trim() || undefined;
 
   const user = await getCurrentUser();
   const [university, board, wants, matches] = await Promise.all([
     getUniversity(),
-    getBoard({ view, query, userId: user.id }),
+    getBoard({ view, mode, query, userId: user.id }),
     getWants(user.id),
     getMatches(user.id),
   ]);
   const shown = board.finalCall.length + board.rest.length;
 
-  const viewHref = (value: string) => {
+  const href = (next: { view?: string; mode?: string }) => {
     const search = new URLSearchParams();
-    if (value !== "all") search.set("view", value);
+    const v = next.view ?? view;
+    const m = next.mode ?? mode;
+    if (v !== "all") search.set("view", v);
+    if (m !== "any") search.set("mode", m);
     if (query) search.set("q", query);
     const qs = search.toString();
-    return qs ? `/?${qs}` : "/";
+    return qs ? `/browse?${qs}` : "/browse";
   };
+  const chip = (active: boolean) =>
+    `inline-flex min-h-11 items-center rounded-1 border px-3 text-[13px] font-semibold whitespace-nowrap transition-colors duration-[90ms] ${
+      active ? "border-ink bg-ink text-paper" : "border-rule hover:border-rule-strong hover:bg-paper-raised"
+    }`;
 
   return (
     <div className="mx-auto max-w-[1120px] px-4 pt-8 pb-16 sm:px-6">
@@ -49,8 +57,9 @@ export default async function BrowsePage({ searchParams }: PageProps<"/">) {
             {board.goneTonight > 0 && ` · ${board.goneTonight} gone by tonight`}
           </p>
 
-          <Form action="/" className="mt-6 flex gap-2">
+          <Form action="/browse" className="mt-6 flex gap-2">
             {view !== "all" && <input type="hidden" name="view" value={view} />}
+            {mode !== "any" && <input type="hidden" name="mode" value={mode} />}
             <label className="relative flex-1">
               <span className="sr-only">Search listings</span>
               <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-2" />
@@ -58,7 +67,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/">) {
                 key={query ?? ""}
                 name="q"
                 defaultValue={query}
-                placeholder="What do you need? Try “lamp” or “BIOL 130”"
+                placeholder="What do you need? Try “something to keep my milk cold”"
                 className={`${fieldClass} min-h-11 pl-9`}
               />
             </label>
@@ -67,30 +76,35 @@ export default async function BrowsePage({ searchParams }: PageProps<"/">) {
             </button>
           </Form>
 
-          <nav
-            aria-label="Filter listings"
-            className="-mx-4 mt-4 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0"
-          >
+          <nav aria-label="Filter listings" className="-mx-4 mt-4 space-y-2 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0">
             <ul className="flex gap-2">
-              {boardViews.map((v) => {
-                const active = v.value === view;
-                return (
-                  <li key={v.value}>
-                    <Link
-                      href={viewHref(v.value)}
-                      scroll={false}
-                      aria-current={active ? "true" : undefined}
-                      className={`inline-flex min-h-11 items-center rounded-1 border px-3 text-[13px] font-semibold whitespace-nowrap transition-colors duration-[90ms] ${
-                        active ? "border-ink bg-ink text-paper" : "border-rule hover:border-rule-strong hover:bg-paper-raised"
-                      }`}
-                    >
-                      {v.label}
-                    </Link>
-                  </li>
-                );
-              })}
+              {boardViews.map((v) => (
+                <li key={v.value}>
+                  <Link href={href({ view: v.value })} scroll={false} aria-current={v.value === view ? "true" : undefined} className={chip(v.value === view)}>
+                    {v.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ul className="flex items-center gap-2">
+              {boardModes.map((m, i) => (
+                <li key={m.value} className="flex items-center gap-2">
+                  {m.group !== boardModes[i - 1]?.group && m.group && (
+                    <span className="t-eyebrow pl-1 text-ink-3">{m.group}</span>
+                  )}
+                  <Link href={href({ mode: m.value })} scroll={false} aria-current={m.value === mode ? "true" : undefined} className={chip(m.value === mode)}>
+                    {m.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
+
+          {query && board.semantic && shown > 0 && (
+            <p className="mt-4 text-[13px] text-ink-2">
+              Sorted by meaning, not keywords — matched on what each item is for.
+            </p>
+          )}
 
           <div className="mt-6">
             {shown === 0 ? (
@@ -115,7 +129,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/">) {
                     listings={board.finalCall}
                   />
                 )}
-                <BoardSection title="Soonest deadline first" listings={board.rest} />
+                <BoardSection title={query ? "Closest to what you asked for" : "Soonest deadline first"} listings={board.rest} />
               </>
             )}
           </div>
@@ -159,7 +173,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/">) {
                 </ul>
               )}
               <div className="mt-4 flex flex-wrap items-center gap-4">
-                <Link href="/?view=matches" className={btnSecondary}>
+                <Link href="/browse?view=matches" className={btnSecondary}>
                   Show my matches
                 </Link>
                 <Link href="/wants" className={`${btnTertiary} text-[13px]`}>

@@ -2,6 +2,7 @@ import { NOW } from "./clock";
 import { formatDate, formatWhen } from "./format";
 import { formatWalk, walkKm } from "./geo";
 import { listings, matches, slots, users, wants } from "./mock-data";
+import { effectiveExpiry, hasExpired, URGENCY_RANK, wantUrgency } from "./urgency";
 import type { Listing, Match, TimeSlot, User, Want } from "./types";
 
 /**
@@ -166,9 +167,10 @@ function evaluate(buyer: User, match: Match): Plan {
     timing: blocker.text,
   });
 
-  // 1. Has the seller's window already shut?
-  if (listing.expiresAt && Date.parse(listing.expiresAt) <= NOW.getTime()) {
-    return blocked({ kind: "expired", text: `Gone since ${formatWhen(listing.expiresAt)}.` });
+  // 1. Has the seller's window already shut? An urgent seller shuts it sooner
+  //    than the date on the listing, and that shorter life is binding here.
+  if (hasExpired(listing)) {
+    return blocked({ kind: "expired", text: `Gone since ${formatWhen(effectiveExpiry(listing)!)}.` });
   }
 
   // 2. Can they afford it?
@@ -223,7 +225,7 @@ function evaluate(buyer: User, match: Match): Plan {
   const slot = inTime[0];
   const km = walkKm(buyer.moveStatus === "arriving" ? buyer.destination : buyer.home, slot.place);
 
-  const closeCandidates = [inTime[inTime.length - 1].endsAt, listing.expiresAt].filter(Boolean) as string[];
+  const closeCandidates = [inTime[inTime.length - 1].endsAt, effectiveExpiry(listing)].filter(Boolean) as string[];
   const closesAt = closeCandidates.reduce((a, b) => (Date.parse(a) <= Date.parse(b) ? a : b));
   const closesInHours = (Date.parse(closesAt) - NOW.getTime()) / HOUR;
   const urgency = Math.max(0, Math.min(1, 1 - closesInHours / URGENCY_HORIZON_HOURS));
@@ -263,14 +265,19 @@ function alternatives(plan: Plan, all: Plan[]): number {
 }
 
 function resolveContests(byUser: Map<string, Plan[]>) {
-  const claimants = new Map<string, { plan: Plan; user: User; alternatives: number }[]>();
+  const claimants = new Map<string, { plan: Plan; user: User; alternatives: number; urgency: number }[]>();
 
   for (const [userId, plans] of byUser) {
     const user = users.find((u) => u.id === userId)!;
     for (const plan of plans) {
       if (!plan.feasible) continue;
       const list = claimants.get(plan.listing.id) ?? [];
-      list.push({ plan, user, alternatives: alternatives(plan, plans) });
+      list.push({
+        plan,
+        user,
+        alternatives: alternatives(plan, plans),
+        urgency: URGENCY_RANK[wantUrgency(plan.wants)],
+      });
       claimants.set(plan.listing.id, list);
     }
   }
@@ -278,11 +285,14 @@ function resolveContests(byUser: Map<string, Plan[]>) {
   for (const [, list] of claimants) {
     if (list.length < 2) continue;
 
-    // Fewest alternatives first — then whoever's window shuts soonest, then
-    // the better semantic fit. Order asked is never part of it.
+    // Scarcity first: someone with no other option genuinely cannot substitute,
+    // and no stated preference outranks that. Then the urgency they chose, then
+    // whose window shuts soonest, then the better semantic fit. Order asked is
+    // never part of it.
     const ranked = [...list].sort(
       (a, b) =>
         a.alternatives - b.alternatives ||
+        b.urgency - a.urgency ||
         (a.plan.closesInHours ?? 0) - (b.plan.closesInHours ?? 0) ||
         b.plan.match.score - a.plan.match.score,
     );
@@ -297,10 +307,14 @@ function resolveContests(byUser: Map<string, Plan[]>) {
         why: youWin
           ? winner.alternatives === 0
             ? "Held for you — nothing else on the board covers this."
-            : `Held for you — ${ranked[1].user.name.split(" ")[0]} has ${ranked[1].alternatives} other option${ranked[1].alternatives === 1 ? "" : "s"}.`
+            : winner.urgency > ranked[1].urgency
+              ? `Held for you — you marked this urgent and ${ranked[1].user.name.split(" ")[0]} did not.`
+              : `Held for you — ${ranked[1].user.name.split(" ")[0]} has ${ranked[1].alternatives} other option${ranked[1].alternatives === 1 ? "" : "s"}.`
           : winner.alternatives === 0
             ? `${winner.user.name.split(" ")[0]} has no other option for this, and you have ${entry.alternatives}.`
-            : `${winner.user.name.split(" ")[0]}'s window shuts sooner.`,
+            : winner.urgency > entry.urgency
+              ? `${winner.user.name.split(" ")[0]} marked this urgent.`
+              : `${winner.user.name.split(" ")[0]}'s window shuts sooner.`,
       };
     }
   }
