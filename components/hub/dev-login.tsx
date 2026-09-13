@@ -45,7 +45,7 @@ export function DevLogin({
       className="space-y-6"
     >
       <fieldset>
-        <legend className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)]">Select Profile</legend>
+        <legend className="text-[13px] font-semibold text-[var(--text-muted)]">Select Profile</legend>
         <div className="mt-3 border-t border-[var(--bezel)]">
           {users.map((u) => (
             <label key={u.id} className="flex min-h-12 cursor-pointer items-center gap-3 border-b border-[var(--bezel)] py-3 hover:bg-[var(--panel)] transition-colors duration-75">
@@ -70,7 +70,7 @@ export function DevLogin({
       </fieldset>
 
       <div>
-        <label htmlFor="email" className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)]">
+        <label htmlFor="email" className="text-[13px] font-semibold text-[var(--text-muted)]">
           Email
         </label>
         <input
@@ -94,7 +94,7 @@ export function DevLogin({
       <button
         type="submit"
         disabled={loading}
-        className="w-full sm:w-auto inline-flex min-h-11 items-center justify-center rounded-[2px] bg-[var(--active-route)] px-6 text-[15px] font-bold text-[#0D0E12] transition-all duration-75 hover:brightness-110 disabled:opacity-50"
+        className="w-full sm:w-auto inline-flex min-h-11 items-center justify-center rounded-[2px] bg-[var(--active-route)] px-6 text-[15px] font-bold text-white transition-all duration-75 hover:brightness-110 disabled:opacity-50"
       >
         {loading ? "Authorizing..." : `Continue as ${selected?.name.split(" ")[0] ?? "user"}`}
       </button>

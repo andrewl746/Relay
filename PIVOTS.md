@@ -112,17 +112,64 @@ The `chainForItem` DP core structure. The DP already elegantly loops through int
 
 ---
 
-## Pivot 4 — 16:00 · four hours left
+## Pivot 4 — 16:00 · four hours left · FINAL
 
 **What dropped:**
+> *"Your solution must now support voice input for one meaningful part of the experience.
+> The user should be able to complete at least one core action by speaking instead of
+> typing or clicking through a form. The voice interaction must affect actual product
+> functionality. A microphone button that records audio without using it does not count."*
 
 **What we considered:**
 
+1. **Voice-post an item.** Speak "lending my drill, four dollars a day, pickup at V1" and
+   have it fill the posting form. Most impressive, and the one most likely to die on
+   stage: it needs the spoken sentence parsed into five typed fields, and our LLM
+   extraction path (Backboard) is blocked on billing.
+2. **A voice assistant screen.** A page you talk to. This is the bolted-on chatbot shape
+   the handbook explicitly says scores badly, and it is the thing the pivot text is
+   warning against — a microphone that produces a transcript and no product effect.
+3. **Voice into the two inputs that already drive the engine** — the board search and
+   your wants list.
+
 **What we chose:**
+The third, in about 40 minutes of the 90 we had budgeted.
+
+The two text inputs in this app are not incidental: the search box is the query side of
+the matcher, and a row on your wants list is literally a `Need` the routing engine plans
+against. So speech goes straight into those fields and then **submits the form**. Saying
+*"bookshelf"* runs the real search and returns the bookcase; saying *"somewhere to put my
+books"* puts a real row on your list that the matcher then works on. Delete the button and
+the only thing that changes is that you have to type — which is the test the pivot text
+actually set.
+
+Implementation is the browser's own `SpeechRecognition`. No dependency, no API key, no
+audio uploaded to us, nothing recorded or stored, and it degrades to nothing at all on
+Firefox rather than sitting there dead. `components/hub/voice-input.tsx`, ~180 lines
+including the types the DOM lib doesn't ship.
+
+The one genuinely fiddly part is documented in the file: assigning `.value` on a React
+controlled input is invisible to React, so the transcript is written through the prototype
+setter and dispatched as a real `input` event — which is why it works on both the
+uncontrolled search field and the controlled wants field with no per-form special-casing.
 
 **What we deliberately did NOT change, and why:**
 
+- **No new dependency, no new service.** Adding a speech SDK at 16:00 on a 12-hour build
+  is how you lose the demo. The platform already had it.
+- **No redesign around voice.** The pivot text says outright you don't need to; a second
+  input method on two fields is the whole change. Every other screen is untouched.
+- **The engine.** Voice is an input method. It produces the same `Need` text a keyboard
+  produces, and the DP never learns where the words came from — the same reason Pivot 2
+  cost an hour: the layers don't know about each other.
+
 **What we cut to protect the demo:**
+
+- **Voice-driven posting** (option 1). It needs entity extraction we can't reach today.
+- **Continuous / wake-word listening.** One press, one sentence, one action.
+- **Server-side transcription** as a fallback for Firefox. The button hides itself instead.
+
+**Time spent adapting:** ~40 minutes, inside the pre-decided 90-minute cap.
 
 > **Rule decided in advance, not at 4 PM:** whatever Pivot 4 says, the response must be
 > finishable in **90 minutes**. With four hours on the clock the correct move is almost

@@ -1,20 +1,30 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 
-const STEPS = ["Your info", "Verify email", "Interests"];
+const STEPS = ["Your info", "Verify email", "Interests", "Wishlist"];
 
 export function OnboardingShell({
   step,
   title,
   description,
+  backHref,
+  backLabel,
   children,
+  width = "narrow",
 }: {
-  step: 1 | 2 | 3;
+  step: 1 | 2 | 3 | 4;
   title: string;
   description?: string;
+  backHref?: string;
+  backLabel?: string;
   children: ReactNode;
+  /** "wide" for the interest grid; forms stay narrow and readable. */
+  width?: "narrow" | "wide";
 }) {
   return (
-    <div className="gh-card p-6 sm:p-8">
+    <div
+      className={`gh-card mx-auto p-6 sm:p-8 ${width === "wide" ? "max-w-[900px]" : "max-w-[480px]"}`}
+    >
       <ol className="mb-6 flex items-center">
         {STEPS.map((label, i) => {
           const n = i + 1;
@@ -48,6 +58,14 @@ export function OnboardingShell({
         })}
       </ol>
 
+      {backHref && (
+        <Link
+          href={backHref}
+          className="mb-3 inline-flex items-center gap-1 text-[13px] font-semibold text-gh-fg-muted hover:text-gh-fg"
+        >
+          ← {backLabel ?? "Back"}
+        </Link>
+      )}
       <h1 className="text-xl font-semibold text-gh-fg">{title}</h1>
       {description && <p className="mt-1 text-[13px] text-gh-fg-muted">{description}</p>}
       <div className="mt-6">{children}</div>

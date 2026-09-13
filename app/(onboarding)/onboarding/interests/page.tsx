@@ -16,7 +16,12 @@ export default async function OnboardingInterestsPage() {
   if (!profile?.university_email_verified) redirect("/onboarding/verify");
 
   return (
-    <OnboardingShell step={3} title="What are you looking for?" description="Pick as many as you like. You can change these later.">
+    <OnboardingShell
+      step={3}
+      width="wide"
+      title="What are you looking for?"
+      description="Pick as many as you like. You can change these later."
+    >
       <InterestsForm defaultInterests={profile.interests ?? []} />
     </OnboardingShell>
   );

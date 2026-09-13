@@ -1,53 +1,46 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { formatWhen } from "@/lib/hub/format";
-import { LIFESPAN_DAYS } from "@/lib/hub/urgency";
-import { RETURNS, type Category, type OfferType, type Urgency } from "@/lib/hub/types";
+import { useActionState, useState } from "react";
+import { createListing, type CreateListingResult } from "@/lib/hub/actions";
+import { categoryLabel, formatWhen } from "@/lib/hub/format";
+import type { Category, OfferType } from "@/lib/hub/types";
 import { ChoiceChips, Field, SlotRows } from "./form-fields";
+import { PhotoField } from "./photo-field";
 import { btnPrimary, btnTertiary, fieldClass } from "./ui";
+
+const initialState: CreateListingResult = { status: "error", message: "" };
 
 export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
   const [category, setCategory] = useState<Category>("furniture");
   const [offerType, setOfferType] = useState<OfferType>("sale");
-  const [urgency, setUrgency] = useState<Urgency>("low");
   const [hasDeadline, setHasDeadline] = useState(true);
-  const [listed, setListed] = useState<{ title: string; deadline: string | null } | null>(null);
+  const [state, formAction, pending] = useActionState(createListing, initialState);
 
-  if (listed) {
+  if (state.status === "ok") {
     return (
       <div role="status" className="rounded-2 border border-rule-strong bg-paper-raised px-5 py-5">
         <p className="t-title text-[22px]">Listed.</p>
         <p className="mt-1">
-          “{listed.title}” is on the board
-          {listed.deadline ? `, gone by ${listed.deadline} unless someone claims it.` : "."}
+          “{state.title}” is on the board
+          {state.expiresAt ? `, gone by ${formatWhen(state.expiresAt)} unless someone claims it.` : "."}
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-5">
           <Link href="/" className={btnPrimary}>
             See it on the board
           </Link>
-          <button type="button" onClick={() => setListed(null)} className={btnTertiary}>
+          {/* Plain anchor, not Link: forces a full reload so useActionState
+              resets instead of reusing this component instance's state. */}
+          <a href="/post" className={btnTertiary}>
             Post another
-          </button>
+          </a>
         </div>
       </div>
     );
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        const data = new FormData(e.currentTarget);
-        const deadline = data.get("expiresAt");
-        setListed({
-          title: String(data.get("title")),
-          deadline: hasDeadline && deadline ? formatWhen(`${deadline}:00-04:00`) : null,
-        });
-      }}
-      className="space-y-8"
-    >
+    <form action={formAction} className="space-y-8">
       <Field label="What is it" htmlFor="title">
         <input id="title" name="title" required placeholder="IKEA desk, white, 120cm" className={fieldClass} />
       </Field>
@@ -62,52 +55,42 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
         />
       </Field>
 
-      <div className="flex flex-wrap gap-x-10 gap-y-6">
+      <PhotoField />
+
+      <div className="grid gap-6 sm:grid-cols-2">
+        <Field label="Category" htmlFor="category">
+          <select
+            id="category"
+            name="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value as Category)}
+            className={fieldClass}
+          >
+            {(Object.keys(categoryLabel) as Category[]).map((value) => (
+              <option key={value} value={value}>
+                {categoryLabel[value]}
+              </option>
+            ))}
+          </select>
+        </Field>
+
         <ChoiceChips
-          legend="Category"
-          name="category"
-          value={category}
-          onChange={setCategory}
-          options={[
-            { value: "furniture", label: "Furniture" },
-            { value: "school", label: "School" },
-            { value: "tools", label: "Tools" },
-            { value: "kitchen", label: "Kitchen" },
-            { value: "electronics", label: "Electronics" },
-            { value: "misc", label: "Everything else" },
-          ]}
-        />
-        <ChoiceChips
-          legend="Do you want it back?"
+          legend="Offer"
           name="offerType"
           value={offerType}
           onChange={setOfferType}
           options={[
-            { value: "free", label: "Give away" },
             { value: "sale", label: "Sell" },
-            { value: "borrow", label: "Lend, free" },
-            { value: "loan", label: "Lend, for a fee" },
+            { value: "free", label: "Give away for free" },
+            { value: "lend", label: "Lend for free" },
+            { value: "rent", label: "Lend for money" },
           ]}
         />
       </div>
 
-      {RETURNS[offerType] && (
-        <div className="sm:max-w-xs">
-          <Field label="How long can they keep it" hint="We put the return date on both your handoff cards." htmlFor="returnDays">
-            <select id="returnDays" name="returnDays" defaultValue="7" className={fieldClass}>
-              <option value="1">1 day</option>
-              <option value="3">3 days</option>
-              <option value="7">1 week</option>
-              <option value="14">2 weeks</option>
-              <option value="30">1 month</option>
-            </select>
-          </Field>
-        </div>
-      )}
-
       <div className="grid gap-6 sm:grid-cols-2">
-        {offerType !== "free" && (
-          <Field label={offerType === "loan" ? "Fee to borrow it" : "Price"} htmlFor="price">
+        {(offerType === "sale" || offerType === "rent") && (
+          <Field label={offerType === "rent" ? "Price per term" : "Price"} htmlFor="price">
             <div className="relative">
               <span className="data pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-2">$</span>
               <input
@@ -125,30 +108,13 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
         )}
         <Field label="Condition" htmlFor="condition">
           <select id="condition" name="condition" defaultValue="good" className={fieldClass}>
+            <option value="new">New</option>
             <option value="like-new">Like new</option>
             <option value="good">Good</option>
             <option value="fair">Fair</option>
+            <option value="bad">Bad</option>
           </select>
         </Field>
-      </div>
-
-      <div className="border-t border-rule pt-6">
-        <ChoiceChips
-          legend="How badly do you need it gone?"
-          name="urgency"
-          value={urgency}
-          onChange={setUrgency}
-          options={[
-            { value: "low", label: "No rush" },
-            { value: "medium", label: "Soon" },
-            { value: "high", label: "Urgent" },
-          ]}
-        />
-        <p className="mt-2 text-[13px] text-ink-2">
-          {urgency === "high"
-            ? "Urgent means this comes off the board in 48 hours — we stop offering pickup times after that, and if two people want it, it goes to whoever has no other option."
-            : `We'll keep this live for ${LIFESPAN_DAYS[urgency]} days.`}
-        </p>
       </div>
 
       <fieldset className="border-y border-rule py-5">
@@ -183,23 +149,12 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
         )}
       </fieldset>
 
-      <div className="grid gap-6 border-t border-rule pt-6 sm:grid-cols-2">
-        <Field label="Where do they pick it up" hint="A building or an intersection is enough." htmlFor="pickupArea">
-          <input id="pickupArea" name="pickupArea" required defaultValue={defaultPlace} placeholder="318 Lester St" className={fieldClass} />
-        </Field>
-        <Field label="How should they reach you" htmlFor="contact">
-          <input id="contact" name="contact" required placeholder="you@uwaterloo.ca" className={fieldClass} />
-        </Field>
-      </div>
-
-      <Field label="Photo" hint="Optional. A bad phone photo still beats no photo." htmlFor="photo">
-        <input id="photo" name="photo" type="file" accept="image/*" className={`${fieldClass} py-2 file:mr-3 file:rounded-1 file:border-0 file:bg-ink file:px-3 file:py-1.5 file:text-paper file:font-semibold`} />
-      </Field>
-
       <SlotRows defaultPlace={defaultPlace} />
 
-      <button type="submit" className={`${btnPrimary} w-full sm:w-auto`}>
-        List it
+      {state.status === "error" && state.message && <p className="gh-flash-error">{state.message}</p>}
+
+      <button type="submit" disabled={pending} className={`${btnPrimary} w-full sm:w-auto`}>
+        {pending ? "Listing…" : "List it"}
       </button>
     </form>
   );

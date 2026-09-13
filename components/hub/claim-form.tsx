@@ -1,5 +1,7 @@
 "use client";
 
+import { claimListing } from "@/lib/hub/claim-actions";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { OfferType, PlaceKind, Urgency } from "@/lib/hub/types";
@@ -64,7 +66,7 @@ export function ClaimForm({
   const [urgency, setUrgency] = useState<Urgency>("medium");
   const [payment, setPayment] = useState<string>(CARDS[0].id);
 
-  const costsMoney = offerType === "sale" || offerType === "loan";
+  const costsMoney = offerType === "sale" || offerType === "rent";
 
   const visible = options.filter((o) => o.placeKind === method);
   const selected = visible.find((o) => o.id === slotId) ?? null;
@@ -74,15 +76,12 @@ export function ClaimForm({
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (!selected) return;
-        const q = new URLSearchParams({ slot: selected.id, urgency });
-        if (costsMoney) q.set("payment", payment);
-        router.push(`/listings/${listingId}/claim/confirmed?${q}`);
-      }}
+      action={claimListing}
       className="space-y-8"
     >
+      <input type="hidden" name="listingId" value={listingId} />
+      <input type="hidden" name="slotId" value={selected?.id ?? ""} />
+
       {methods.length > 1 ? (
         <fieldset>
           <legend className="t-eyebrow text-ink-2">How to get it</legend>

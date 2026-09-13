@@ -23,7 +23,7 @@ export default async function ConfirmedPage({ params, searchParams }: PageProps<
   const paid = query.payment && query.payment !== "cash";
 
   return (
-    <PageShell width="narrow">
+    <PageShell>
       <PageTitle
         title="Claimed"
         lede={`Meet ${seller} at ${slot.place}, ${formatDate(slot.startsAt)} at ${formatTime(slot.startsAt)}. ${seller} got the same confirmation.`}

@@ -1,59 +1,76 @@
 import Link from "next/link";
-import { getUnreadCount, getUniversity, getUsers } from "@/lib/hub/data";
+import { getUnreadCount, getUniversity } from "@/lib/hub/data";
 import { getCurrentUser } from "@/lib/hub/session";
 import { SITE_NAME } from "@/lib/hub/site";
 import { signOut } from "@/lib/supabase/actions";
 import { getSupabaseUser } from "@/lib/supabase/session";
 import { BellIcon } from "./icons";
+import { Logo } from "./logo";
 import { NavLinks } from "./nav-links";
-import { UserSwitcher } from "./user-switcher";
+import { UserMenu } from "./user-menu";
 
 export async function SiteHeader() {
-  const [user, supabaseUser, users, university] = await Promise.all([
+  const [user, supabaseUser, university] = await Promise.all([
     getCurrentUser(),
     getSupabaseUser(),
-    getUsers(),
     getUniversity(),
   ]);
   const unread = await getUnreadCount(user.id);
 
   return (
-    <header className="border-b border-rule-strong">
+    /* Sticky, with its own ground. The wrapper stopped painting a background
+       so the kraft grain could show through the page, which left the header
+       transparent and the board scrolling under bare text. */
+    <header className="sticky top-0 z-40 border-b border-border bg-bg/85 backdrop-blur-[10px] backdrop-saturate-150">
       <div className="mx-auto flex max-w-[1120px] flex-wrap items-center gap-x-3 px-4 sm:gap-x-6 sm:px-6 lg:flex-nowrap">
-        <Link href="/" className="flex min-h-14 items-baseline gap-2">
-          <span className="t-display text-[20px] whitespace-nowrap">{SITE_NAME}</span>
-          <span className="hidden text-[13px] font-medium text-ink-2 sm:inline">{university.shortName}</span>
+        {/* The whole lockup is the home link — the campus name reads as part of
+            the mark, so it should behave like it. The mark is a mask, so the
+            whole thing takes the accent on hover in one colour change. */}
+        <Link
+          href="/"
+          aria-label={`${SITE_NAME} home`}
+          className="group flex min-h-14 shrink-0 items-center gap-2.5 pr-2 sm:pr-6"
+        >
+          <Logo className="h-8 bg-ink transition-colors duration-200 ease-out group-hover:bg-accent" />
+          <span aria-hidden className="hidden h-7 w-px shrink-0 bg-border-strong sm:block" />
+          {/* leading-none: the default line box hangs descender space under the
+              word, which parked it visibly below the mark's optical centre. */}
+          <span className="hidden text-[19px] leading-none font-semibold tracking-[-0.01em] text-ink-3 transition-colors duration-200 ease-out group-hover:text-accent sm:inline">
+            {university.shortName}
+          </span>
         </Link>
 
         <div className="ml-auto flex items-center gap-1 lg:order-last">
           <Link
             href="/notifications"
-            className="relative grid size-11 place-items-center rounded-1 hover:bg-paper-raised"
+            className="relative grid size-11 place-items-center rounded-1 text-ink-2 transition-colors duration-100 hover:bg-paper-raised hover:text-ink"
             aria-label={unread > 0 ? `Notifications, ${unread} unread` : "Notifications"}
           >
             <BellIcon className="size-5" />
             {unread > 0 && (
-              <span className="data absolute top-1.5 right-1 grid h-4 min-w-4 place-items-center bg-ink px-1 text-[11px] font-semibold text-paper">
+              <span className="data absolute top-1.5 right-1 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[11px] font-semibold text-white">
                 {unread}
               </span>
             )}
           </Link>
 
-          {supabaseUser ? (
-            <div className="flex items-center gap-3 pl-2">
-              <span className="hidden max-w-[9rem] truncate text-[13px] font-semibold sm:inline">{user.name}</span>
-              <form action={signOut}>
-                <button type="submit" className="min-h-11 rounded-1 px-3 text-[13px] font-semibold text-ink-2 hover:bg-paper-raised hover:text-ink">
-                  Sign out
-                </button>
-              </form>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 pl-2">
-              <span className="t-eyebrow hidden text-ink-3 sm:inline">Demo</span>
-              <UserSwitcher users={users.map((u) => ({ id: u.id, label: `${u.name}, ${u.moveStatus}` }))} currentUserId={user.id} />
-            </div>
-          )}
+          {/* One menu in both modes. The demo used to hang a <select> of fake
+              students off the header, which is developer furniture on the
+              first screen a judge sees; switching demo students now lives in
+              Settings, where every other account control already is. */}
+          <div className="flex items-center pl-2">
+            <UserMenu
+              name={user.name}
+              email={user.email}
+              signedIn={Boolean(supabaseUser)}
+              avatarUrl={
+                (supabaseUser?.user_metadata?.avatar_url as string | undefined) ??
+                (supabaseUser?.user_metadata?.picture as string | undefined) ??
+                null
+              }
+              signOutAction={signOut}
+            />
+          </div>
         </div>
 
         <NavLinks />

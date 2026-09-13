@@ -1,7 +1,7 @@
 # Handoff — read this first
 
 You are picking up **Relay**, a PivotHacks project, mid-build. This file is the
-fastest path to being useful. It is current as of commit `cbd7f9e`.
+fastest path to being useful. It is current as of the **Pivot 4 (voice)** commit — the last pivot of the event.
 
 Read in this order: **this file → [PIVOTS.md](PIVOTS.md) → [docs/PROJECT.md](docs/PROJECT.md)**.
 [docs/DESIGN.md](docs/DESIGN.md) only when you touch UI.
@@ -38,8 +38,8 @@ many people across a term**. That routing is the entire differentiator.
   Creativity 15 / Demo 10.** Adaptability outweighs execution.
 - Judges ask verbatim: *which pivot hit hardest · what did you remove ·
   **what did you intentionally NOT change** · why does it look like this.*
-- **[PIVOTS.md](PIVOTS.md) is the highest-value file in the repo.** Update it within
-  minutes of each pivot. Pivot 3 and 4 entries are still blank.
+- **[PIVOTS.md](PIVOTS.md) is the highest-value file in the repo.** All four pivots are
+  now written up. Pivot 4 was **voice input**; read that entry before the demo.
 - Handbook rule, decided in advance: **a Pivot 4 response must fit in 90 minutes.**
   Narrow or reframe, never rebuild.
 
@@ -71,30 +71,54 @@ Current network: **27/90 items placed, 117 handoffs, 12ms** for the whole assign
 items._ Do not claim global optimality.**
 Call the pipeline **retrieve-and-rerank**, not "a transformer pipeline."
 
-### ❌ Mockup — the UI (`app/(hub)/`, `components/hub/`, `lib/hub/`)
+### ⚠️ Half-real — the UI (`app/(hub)/`, `components/hub/`, `lib/hub/`)
 
-A teammate built ~3,200 lines of UI against a **separate, hardcoded data model**.
-It looks finished. It persists nothing.
+A teammate built ~3,200 lines of UI against a **separate, hardcoded data model**. Parts of
+it are now real. Parts are still a mockup. This table is the truth as of now.
 
 | Thing | Reality |
 |---|---|
-| University sign-in / `.edu` verification | **Does not exist.** `/login` is a user picker. `isUniversityEmail()` in `lib/hub/email.ts` is correct and **called from nowhere** |
-| Session | Plaintext cookie set via `document.cookie`. Unsigned, client-writable |
-| Posting an item | Form → React state → fake confirmation. **Writes nothing** |
-| Claiming | Navigates to a URL with a slot id. No claim recorded |
-| Wants list | Client-side array, lost on refresh |
-| Handoffs / notifications | Hardcoded rows in `lib/hub/mock-data.ts` (625 lines) |
+| Google sign-in | **Real.** Supabase SSR auth, `app/(auth)/`, `/auth/callback`. Needs the provider toggle ON in the Supabase dashboard (see SETUP.md) |
+| Profile / settings | **Real.** `/settings` writes name, university, living situation, address and avatar to Supabase through a validating server action. Delete-account goes through the `delete_own_account()` SECURITY DEFINER function |
+| Demo mode | A cookie-picked seeded student, no auth. Switching demo students lives in **Settings**, not the header. Signing out clears this cookie too, so you don't land back in the hub as a stranger |
+| Search | **Real, and not Ctrl-F** — see §4a |
+| **Voice input** | **Real.** Speak into the board search or your wants list and the form submits. `components/hub/voice-input.tsx`. Pivot 4 |
+| Claiming | **Real.** `lib/hub/claim-actions.ts` writes a claim to `data/runtime.json`; `/handoffs` reads it back. Verified end to end |
+| Posting an item | **Still a mockup.** Form → React state → fake confirmation. `lib/relay/actions.ts#postItem` exists and is tested; the form does not call it yet |
+| Wants list | **Still client-side.** Lost on refresh. `addNeed` exists, unwired |
+| Notifications | Hardcoded rows in `lib/hub/mock-data.ts` |
 | Room bundles | Form only |
+| `.edu` verification | `isUniversityEmail()` in `lib/hub/email.ts` is correct and **called from nowhere**. Resend OTP path exists, needs `RESEND_API_KEY` |
 
-`lib/hub/*` has its own types (`Listing`, `Want`, `Claim`, `TimeSlot`) that **shadow**
-the engine's. `lib/hub/scheduling.ts` even admits it in a comment: *"Naive stand-in…
-The interval DP in lib/assign.ts is the real version."*
+`lib/hub/*` still has its own types (`Listing`, `Want`, `Claim`, `TimeSlot`) that **shadow**
+the engine's. `lib/hub/scheduling.ts` admits it in a comment: *"Naive stand-in… The
+interval DP in lib/assign.ts is the real version."*
 
-**The wall between the two halves is the main outstanding work.** See §7.
+**Finishing the wall between the two halves is the main outstanding work.** See §9.
 
 ---
 
-## 4. `lib/relay/` — the bridge I built (real, tested, not yet wired to the UI)
+## 4. Search — why it is not Ctrl-F
+
+Someone will ask this in Q&A. The answer is two layers, unioned:
+
+1. **Lexical + synonyms** (`lib/hub/search.ts`). Query tokens are AND-ed, synonyms within
+   a token are OR-ed. This is what makes *"desk lamp"* exclude a bare desk while
+   *"bookshelf"* finds a **bookcase** — two words for one object that share no substring.
+   Covered by `npm run check:search` (**the bookshelf test**).
+2. **Embeddings** (`lib/hub/semantic.ts`). The same `MatchProvider` seam the routing engine
+   uses, pointed at the search box: `MATCH_PROVIDER=stub` is the offline hashed-bag model,
+   `MATCH_PROVIDER=snowflake` embeds through Cortex. Two calibrated guards, both learned
+   rather than guessed — a **relative** cut (absolute cosine isn't comparable across
+   queries: "fridge" peaks at 0.63 on this corpus, "bookshelf" at 0.25) and an absolute
+   floor below which the whole query is noise.
+
+They are **unioned, never substituted**. If the provider is down, has no key, or rate
+limits, the lexical half still answers and search degrades instead of breaking.
+
+---
+
+## 5. `lib/relay/` — the bridge (real, tested, partly wired)
 
 | File | Role |
 |---|---|
@@ -107,7 +131,7 @@ putting up shelves"* → embedded → matched to a real drill → routed Oct 2�
 
 ---
 
-## 5. Landmines — things that already bit us
+## 6. Landmines — things that already bit us
 
 Read these before you debug something that looks mysterious.
 
@@ -131,7 +155,7 @@ Read these before you debug something that looks mysterious.
 
 ---
 
-## 6. Snowflake — tested, blocked, do not re-litigate
+## 7. Snowflake — tested, blocked, do not re-litigate
 
 The event has a **separate 30-point Snowflake track**.
 
@@ -164,7 +188,56 @@ endpoint.** Treat it as unverified.
 
 ---
 
-## 7. What to do next, in priority order
+## 8. The design system — read before you touch any UI
+
+**`docs/DESIGN.md` is STALE.** It describes a dark "Industrial Premium / Tactical
+Logistics" theme that was abandoned. What is actually built is below; trust this file and
+the CSS, not that one.
+
+**Kraft, one accent.** `app/globals.css` holds the whole palette as CSS variables and
+`app/(hub)/hub.css` only aliases old token names — **do not define a colour in two
+places.**
+
+- Surfaces are warm white, **not** beige: `--bg` is the page, `--surface` is white so
+  cards sit *above* the page, `--surface-2` is for inset wells. An earlier all-beige ramp
+  read as 1991 PC plastic.
+- Cardboard comes from **texture**, not from tinting surfaces brown: a real board photo at
+  5% behind everything (`body::before`, fixed layer, **not** `background-attachment`,
+  which repaints the backdrop every scroll frame and stalled Lenis).
+- **`.hub` must not paint a background.** It used to, which covered the texture and left
+  every signed-in page flat white.
+- **One accent**, `--accent: #1A56DB` (dark: `#5B9BFF`). 6.2:1 on white both directions, so
+  it is safe as text on paper *and* as a fill with white on top. It was a burnt sienna
+  before; on a warm paper ground that read as the cardboard gone damp.
+- **Measure contrast, don't estimate it.** A previous build had near-black text on the red
+  fill — about 2:1 — on the single most urgent element on screen.
+
+**Type and structure**
+
+- Every page uses `PageShell` (one width), `PageTitle` (one h1), `SectionTitle` (19px).
+  Pages used to roll their own h1 at 28px bold / 30px semibold / a 54px clamp.
+- **`.t-eyebrow` is 13px sentence case now.** It was 11px bold uppercase at 0.14em, which
+  is dashboard chrome — and it was carrying real sentences nobody could read.
+- **Every section on every page sits on a `.board` card.** Bare sections on the page ground
+  looked unfinished next to the home screen.
+- **Hover = colour or fill, not an underline.** Underlines-on-hover were pulled back to a
+  minimum site-wide; row titles shift to the accent instead.
+- Nav holds where you *go* (Browse, Post, Handoffs). The profile menu holds what's *yours*
+  (My list, My posts, Settings). Nothing has two homes. The header is **sticky** and paints
+  its own translucent ground.
+- The logo is `components/hub/logo.tsx`: the PNG as a **CSS mask**, so one asset takes a
+  real `background-color` — ink normally, accent on hover, correct in dark mode. Tinting
+  via `currentColor` does not fade, because there is no specified-value change to animate.
+- Board→listing navigation is a **shared-element view transition**
+  (`components/hub/transition-link.tsx`); the thumbnail grows into the hero. React's own
+  `<ViewTransition>` would replace it but only exists in the **experimental** React
+  channel — this repo is on stable React 19.2, so the native API is driven by hand. The
+  awkward part (resolving the transition promise only after React commits the new route)
+  is documented in the file. **Don't "simplify" it back to resolving immediately.**
+
+---
+
+## 9. What to do next, in priority order
 
 The user's stated preference: **get the architecture and backend stable before
 designing a frontend. The teammate's UI is expendable; mock data can be twisted or
@@ -178,14 +251,30 @@ removed as needed.**
 2. **Wire the forms to `lib/relay/actions.ts`** so posting and wants actually persist.
 3. **Real session**: signed `httpOnly` cookie, and call the `isUniversityEmail()` that
    already exists.
-4. Only then, UI polish (docs/DESIGN.md).
+4. **Voice on the post form** (the Pivot 4 option we cut). Needs entity extraction —
+   "lending my drill, four dollars a day, pickup at V1" → five fields. `lib/providers/
+   backboard.ts#extractNeedMetadata` is structurally correct and blocked on billing.
+5. Only then, UI polish — and read **§8**, not docs/DESIGN.md, which is stale.
+
+**Still needs a human, not a model:**
+
+- Flip **"Enable Sign in with Google"** in the Supabase dashboard (the Client ID and
+  Secret are already there; the toggle is simply off). Deliberately not done for you —
+  changing someone's account settings isn't ours to do.
+- Generate a **Snowflake PAT**, set `SNOWFLAKE_ACCOUNT` / `SNOWFLAKE_PAT`. Never ask a
+  model to generate or read that token.
+- Run migrations **0003_wants / 0004_delete_account / 0005_avatar** in the SQL editor.
+- `RESEND_API_KEY` + `RESEND_FROM_EMAIL` (domain is verified, key isn't in `.env.local`).
+- Optional: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` — without it the pickup map degrades to a
+  written description rather than drawing a fake map.
+- Backboard credits: the free tier covers Memory & RAG, **not** LLM chat.
 
 **Protect the last 45 minutes** (19:15–20:00): freeze, seed the demo path, rehearse
 the two minutes three times. A demo that runs beats a feature nobody sees.
 
 ---
 
-## 8. Decisions already made — don't reopen without a reason
+## 10. Decisions already made — don't reopen without a reason
 
 From [docs/PROJECT.md §3](docs/PROJECT.md), the decision ledger. These are answers to
 a scored judging question.
@@ -202,7 +291,7 @@ a scored judging question.
 
 ---
 
-## 9. Commands
+## 11. Commands
 
 ```bash
 npm run dev          # http://localhost:4287  (NOT 3000)
@@ -211,16 +300,21 @@ npm run pipeline     # embed + rerank -> data/dataset.json, data/matches.json
 npm run chains       # print computed chains to the terminal
 npm run check        # provider smoke test — run after ANY stub weight change
 npm run check:store  # end-to-end write-path test
+npm run check:search # the bookshelf test — "bookshelf" must find a bookcase
 npm run reset        # wipe runtime.json before a demo run
 npm run typecheck
 ```
 
 After changing `scripts/seed.ts` or any embedding weight: **`npm run seed && npm run
-pipeline`**, then re-run both checks.
+pipeline`**, then re-run every check.
+
+**Voice needs Chrome or Safari and a real origin.** `SpeechRecognition` doesn't exist in
+Firefox (the button hides itself) and the mic permission prompt needs `localhost` or
+HTTPS — not a LAN IP. Test the demo on the machine you'll demo from.
 
 ---
 
-## 10. Pitch skeleton
+## 12. Pitch skeleton
 
 *Started here → learned this → changed this → ended up here → why it matters.*
 Do not spend 90 seconds on the problem.

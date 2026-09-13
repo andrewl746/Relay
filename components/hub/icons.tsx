@@ -42,3 +42,10 @@ export const CloseIcon = (p: IconProps) => (
     <path d="M6 6l12 12M18 6 6 18" />
   </Svg>
 );
+
+export const PencilIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 20l1-4.5L15.5 5 19 8.5 8.5 19 4 20z" />
+    <path d="M13 7l4 4" />
+  </Svg>
+);

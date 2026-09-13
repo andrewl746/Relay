@@ -1,65 +1,380 @@
 @import "tailwindcss";
 
+/*
+ * Relay — corrugated kraft.
+ *
+ * The read: this app moves physical objects between people, and the logo is an
+ * open box. So the surface is packaging — kraft board, stencil ink, packing
+ * tape, shipping-label monospace.
+ *
+ * Not skeuomorphic. No photographic textures, no bevels, no drop shadows
+ * pretending to be lighting. The cardboard comes from four things only:
+ *   1. the kraft colour ramp
+ *   2. a faint corrugated flute pattern
+ *   3. hard-offset edges instead of blurred shadows (board has thickness)
+ *   4. type set like it was stencilled on a box
+ */
+
 html {
-  color-scheme: dark;
+  color-scheme: light dark;
 }
+html[data-theme="light"] { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
 
 :root {
-  --chassis: #0D0E12;
-  --panel: #16181D;
-  --bezel: #2A2D35;
-  --text-primary: #E4E7EB;
-  --text-muted: #828896;
-  
-  --active-route: #FF5C00;
-  --secured: #00E5FF;
-  --alert: #FFE600;
+  /*
+   * One accent, everything else paper and ink.
+   *
+   * The previous ramp was beige all the way down, which reads as 1991 PC
+   * plastic rather than paper, and three competing Kandinsky primaries made
+   * every screen look like a warning. Cardboard now comes from TEXTURE and
+   * STRUCTURE, not from tinting every surface brown.
+   */
 
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-ui: 'Inter', system-ui, sans-serif;
-  --font-data: 'JetBrains Mono', monospace;
+  /* surfaces — warm white, not beige */
+  --bg: #FAF8F5;          /* page */
+  --surface: #FFFFFF;     /* cards sit ON the page, lighter than it */
+  --surface-2: #F4F1EC;   /* inset wells, table stripes */
+  --border: #E7E2DA;
+  --border-strong: #D2CABE;
+
+  /* ink */
+  --ink: #1C1917;         /* 16.9:1 on --bg */
+  --ink-2: #57534E;       /*  7.0:1 */
+  --ink-3: #8A837B;       /*  3.4:1 — >=18.66px bold or non-text only */
+
+  /* The single theme colour. Blue, not the burnt sienna it was: on a warm
+     paper ground that red-brown read as the cardboard itself gone damp, and
+     every accented word looked like part of the texture rather than a thing
+     you could click. Blue ink on kraft is also just what a shipping stamp is.
+     6.2:1 on white both ways, so it is safe as text on paper AND as a fill
+     with white text on top. */
+  --accent: #1A56DB;
+  --accent-tint: #E8EEFC; /* wash for selected rows */
+
+  /* confirmed. the one other hue, kept muted and used only for a completed tick */
+  --done: #2D6A4F;
+
+  /* legacy aliases — components still reference these names */
+  --kraft-50: var(--bg);
+  --kraft-100: var(--surface);
+  --kraft-200: var(--surface-2);
+  --kraft-300: var(--border);
+  --kraft-400: var(--border-strong);
+  --paper: var(--bg);
+  --paper-raised: var(--surface);
+  --paper-sunk: var(--surface-2);
+  --rule: var(--border);
+  --rule-strong: var(--border-strong);
+  --signal: var(--accent);
+  --signal-fill: var(--accent);
+  --amber: var(--ink-2);
+  --amber-fill: var(--accent);
+  --seal: var(--done);
+  --seal-fill: var(--done);
+  --kand-blue: var(--accent);
+  --kand-red: var(--accent);
+  --kand-yellow: var(--accent-tint);
+  --tape: rgba(210, 202, 190, 0.5);
+  --tape-edge: rgba(168, 160, 148, 0.4);
+  --chassis: var(--bg);
+  --panel: var(--surface);
+  --bezel: var(--border);
+  --text-primary: var(--ink);
+  --text-muted: var(--ink-2);
+  --active-route: var(--accent);
+  --secured: var(--done);
+  --alert: var(--accent);
+
+  --font-display: var(--font-archivo), system-ui, sans-serif;
+  --font-ui: var(--font-archivo), system-ui, sans-serif;
+  --font-data: var(--font-plex), ui-monospace, monospace;
+
+  /* one soft shadow; cards lift off the page instead of being outlined twice */
+  --lift: 0 1px 2px rgba(28, 25, 23, .04), 0 2px 8px rgba(28, 25, 23, .05);
+  --lift-2: 0 2px 4px rgba(28, 25, 23, .05), 0 8px 24px rgba(28, 25, 23, .07);
+
+  /* one spacing rhythm — see .shell */
+  --page-max: 1100px;
+  --page-gutter: 24px;
+
+  --dur-snap: 90ms;
+  --dur-fold: 260ms;
+  --ease-box: cubic-bezier(0.34, 1.28, 0.64, 1);
 }
 
+/*
+ * Dark. Only the surface and ink tokens are redefined — every component reads
+ * those, so nothing else needs touching. The accent lifts slightly because
+ * #1A56DB on a dark ground is 3.0:1; #5B9BFF is 6.6:1.
+ *
+ * Applied by [data-theme="dark"] so the setting wins in both directions, and
+ * under prefers-color-scheme only when the user has not chosen explicitly.
+ */
+:root[data-theme="dark"] {
+  --bg: #16140F;
+  --surface: #1F1C16;
+  --surface-2: #2A261E;
+  --border: #353026;
+  --border-strong: #4A4336;
+  --ink: #F0EBE2;
+  --ink-2: #B3AB9D;
+  --ink-3: #7C7466;
+  --accent: #5B9BFF;
+  --accent-tint: #1C2742;
+  --done: #6FAF87;
+  --lift: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .35);
+  --lift-2: 0 2px 4px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    --bg: #16140F;
+    --surface: #1F1C16;
+    --surface-2: #2A261E;
+    --border: #353026;
+    --border-strong: #4A4336;
+    --ink: #F0EBE2;
+    --ink-2: #B3AB9D;
+    --ink-3: #7C7466;
+    --accent: #5B9BFF;
+    --accent-tint: #1C2742;
+    --done: #6FAF87;
+    --lift: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .35);
+    --lift-2: 0 2px 4px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .45);
+  }
+}
+
+/* The kraft grain is a light-paper texture; it turns to mud on a dark ground. */
+:root[data-theme="dark"] body::before { opacity: 0.03; }
+
 @theme inline {
-  --color-chassis: var(--chassis);
-  --color-panel: var(--panel);
-  --color-bezel: var(--bezel);
-  --color-text-primary: var(--text-primary);
-  --color-text-muted: var(--text-muted);
-  
-  --color-active-route: var(--active-route);
-  --color-secured: var(--secured);
-  --color-alert: var(--alert);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-accent: var(--accent);
+  --color-accent-tint: var(--accent-tint);
+  --color-done: var(--done);
+
+  --color-paper: var(--bg);
+  --color-paper-raised: var(--surface);
+  --color-paper-sunk: var(--surface-2);
+  --color-rule: var(--border);
+  --color-rule-strong: var(--border-strong);
+  --color-signal: var(--accent);
+  --color-signal-fill: var(--accent);
+  --color-amber: var(--ink-2);
+  --color-seal: var(--done);
+  --color-kraft-50: var(--bg);
+  --color-kraft-100: var(--surface);
+  --color-kraft-200: var(--surface-2);
+  --color-kraft-300: var(--border);
+  --color-kraft-400: var(--border-strong);
+  --color-chassis: var(--bg);
+  --color-panel: var(--surface);
+  --color-bezel: var(--border);
+  --color-text-primary: var(--ink);
+  --color-text-muted: var(--ink-2);
+  --color-active-route: var(--accent);
+  --color-secured: var(--done);
+  --color-alert: var(--accent);
 
   --font-display: var(--font-display);
   --font-ui: var(--font-ui);
   --font-data: var(--font-data);
 
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
 }
 
 body {
-  background: var(--chassis);
-  color: var(--text-primary);
+  background: var(--kraft-50);
+  color: var(--ink);
   font-family: var(--font-ui);
+  font-variation-settings: "wdth" 100;
 }
 
+/*
+ * Texture.
+ *
+ * Bauhaus says the material should be honest about what it is, so the grain is
+ * a real photograph of board rather than a CSS approximation of one — but it
+ * sits at 6% on a warm white ground, so it reads as the tooth of paper, not as
+ * a brown wallpaper. Fixed attachment: it is the surface the page is printed
+ * on, so it does not slide when you scroll.
+ */
+body {
+  background-color: var(--bg);
+}
+
+/*
+ * Texture as a fixed layer behind everything, NOT background-attachment on the
+ * body. background-attachment:fixed forces a repaint of the whole backdrop on
+ * every scroll frame, which fights smooth scrolling and was part of why the
+ * page stalled at the bottom.
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--bg);
+  background-image: url("/cardboard-bg.jpg");
+  background-size: 520px auto;
+  background-repeat: repeat;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/*
+ * Lenis owns scrolling, and it measures document height to know where the end
+ * is. `h-full` on <html> pins that height to the viewport, so Lenis thought the
+ * page ended early and the last screen went dead until you scrolled back up.
+ * This is the override Lenis documents; it only applies once Lenis has mounted,
+ * so native scrolling (and reduced-motion users) are untouched.
+ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* An honest sheet: white, lifted, one hairline. Not outlined twice. */
+/* A cardboard panel: kraft face, corrugated edge, real thickness. */
+.board {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--lift);
+}
+.board-thick { box-shadow: var(--lift-2); }
+
+/*
+ * A strip of packing tape. Sits across a corner or a seam; deliberately a
+ * couple of degrees off-square, because nobody tapes a box straight.
+ */
+.tape {
+  position: relative;
+}
+.tape::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 84px;
+  height: 26px;
+  transform: translateX(-50%) rotate(-2.2deg);
+  background: var(--tape);
+  border-left: 1px solid var(--tape-edge);
+  border-right: 1px solid var(--tape-edge);
+  pointer-events: none;
+}
+
+/* Every comparable number. Shipping labels are monospaced for a reason. */
 .data {
   font-family: var(--font-data);
   font-variant-numeric: tabular-nums;
 }
 
-.display-heading {
+/* Stencilled on the side of a box: condensed, heavy, wide-tracked. */
+.display-heading,
+.stencil {
   font-family: var(--font-display);
+  font-variation-settings: "wdth" 112;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
+}
+.stencil-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
 }
 
-/* Tactical input and focus styles */
-input, button, textarea {
-  outline: none;
+/* Focus: a stencilled outline, never removed. */
+input, button, textarea, select { outline: none; }
+input:focus-visible,
+button:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  box-shadow: 0 0 0 2px var(--kraft-50), 0 0 0 4px var(--signal);
 }
-input:focus-visible, button:focus-visible, textarea:focus-visible {
-  box-shadow: 0 0 0 2px var(--chassis), 0 0 0 4px var(--active-route);
+
+/* ---- motion ------------------------------------------------------------ */
+/* Keyframes for the non-React surfaces; components/motion/box.tsx covers the
+   interactive ones. Both obey the reduced-motion block at the bottom. */
+
+@keyframes flap-open {
+  from { opacity: 0; transform: perspective(700px) rotateX(-72deg); }
+  to   { opacity: 1; transform: perspective(700px) rotateX(0deg); }
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes stamp {
+  0%   { transform: scale(1.18) rotate(-3deg); opacity: 0; }
+  60%  { transform: scale(0.97) rotate(-1.5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-1.5deg); opacity: 1; }
+}
+
+.anim-flap { animation: flap-open var(--dur-fold) var(--ease-box) both; transform-origin: top center; }
+.anim-slide { animation: slide-in var(--dur-fold) var(--ease-box) both; }
+.anim-stamp { animation: stamp 300ms var(--ease-box) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  body, .corrugated { background-attachment: scroll; }
+}
+
+/* A flat block of cadmium behind a phrase — a spot-colour hit, not a gradient. */
+.mark {
+  background: var(--kand-yellow);
+  box-shadow: 0 0 0 3px var(--kand-yellow);
+  color: var(--ink);
+}
+
+/* Bauhaus shapes. Decorative only, so they are aria-hidden at the call site. */
+.shape-circle { border-radius: 9999px; }
+.shape-tri {
+  width: 0; height: 0;
+  border-left: var(--tri, 28px) solid transparent;
+  border-right: var(--tri, 28px) solid transparent;
+  border-bottom: calc(var(--tri, 28px) * 1.7) solid currentColor;
+}
+
+/* ---- shared-element navigation ----------------------------------------- */
+/*
+ * A board thumbnail and the listing hero carry the same view-transition-name,
+ * so the browser tweens one into the other. See components/hub/transition-link.
+ * Only the timing is set here; the geometry is the browser's own.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

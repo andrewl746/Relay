@@ -324,12 +324,26 @@ function resolveContests(byUser: Map<string, Plan[]>) {
 
 let cache: Map<string, Plan[]> | null = null;
 
+// Removing/claiming a listing changes what evaluate() would compute for any
+// match pointing at it, but planAll()'s cache doesn't know that on its own —
+// call this wherever a listing's status changes.
+export function resetPlanCache() {
+  cache = null;
+}
+
 export function planAll(): Map<string, Plan[]> {
   if (cache) return cache;
 
   const byUser = new Map<string, Plan[]>();
   for (const user of users) {
-    const mine = matches.filter((m) => m.userId === user.id);
+    // A match authored against a listing that's no longer available (claimed
+    // by someone else, or removed by its seller) isn't something to show —
+    // and evaluate() assumes the listing still exists in the array at all.
+    const mine = matches.filter((m) => {
+      if (m.userId !== user.id) return false;
+      const listing = listings.find((l) => l.id === m.listingId);
+      return listing?.status === "available";
+    });
     if (!mine.length) continue;
     byUser.set(
       user.id,

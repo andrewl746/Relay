@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-export type OnboardingStep = "profile" | "verify" | "interests" | "complete";
+export type OnboardingStep = "profile" | "verify" | "interests" | "wants" | "complete";
 export type LivingSituation = "on_campus" | "off_campus";
 
 export type ProfileRow = {

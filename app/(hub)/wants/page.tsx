@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { WantsList } from "@/components/hub/wants-list";
-import { Countdown, EmptyState, Eyebrow, PageShell, PageTitle, Thumb } from "@/components/hub/ui";
+import { Countdown, EmptyState, Eyebrow, PageShell, PageTitle, Thumb, SectionTitle } from "@/components/hub/ui";
 import { getMatches, getUniversity, getWants, type MatchDetail } from "@/lib/hub/data";
 import { formatMoney, formatPrice, matchStrength, moveLine } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
@@ -21,12 +21,12 @@ function MatchRow({ m, muted }: { m: MatchDetail; muted?: boolean }) {
           muted ? "opacity-70" : ""
         }`}
       >
-        <Thumb word={m.listing.kind} />
+        <Thumb word={m.listing.kind} photoUrl={m.listing.photoUrl} />
         <div className="min-w-0 flex-1">
           <p className="t-eyebrow text-ink">
             {matchStrength(m.score)} · covers {m.wants.length}
           </p>
-          <p className="t-listing mt-1 truncate text-[17px] leading-[1.25] group-hover:underline group-hover:underline-offset-[3px]">
+          <p className="mt-1 truncate text-[17px] leading-[1.25] font-semibold transition-colors duration-100 group-hover:text-accent">
             {m.listing.title}
           </p>
           <p className="mt-1 text-[13px] text-ink-2">{m.reason}</p>
@@ -64,7 +64,7 @@ export default async function WantsPage({ searchParams }: PageProps<"/wants">) {
       />
 
       <div className="grid gap-x-12 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        <section>
+        <section className="board p-5">
           <Eyebrow>
             Your list · {moveLine(user)} · {university.shortName}
           </Eyebrow>
@@ -84,8 +84,8 @@ export default async function WantsPage({ searchParams }: PageProps<"/wants">) {
           </div>
         </section>
 
-        <section>
-          <Eyebrow>Matches · what you can actually collect</Eyebrow>
+        <section className="board p-5">
+          <SectionTitle>Matches · what you can actually collect</SectionTitle>
           {reachable.length === 0 && lost.length === 0 && blocked.length === 0 ? (
             <EmptyState title="No matches yet.">
               We check every new listing against your list. Most things get posted in the last two weeks of term.
@@ -102,7 +102,7 @@ export default async function WantsPage({ searchParams }: PageProps<"/wants">) {
 
               {lost.length > 0 && (
                 <>
-                  <p className="t-eyebrow mt-8 text-ink-2">Held for someone with fewer options</p>
+                  <p className="mt-8 text-[15px] font-semibold text-ink-2">Held for someone with fewer options</p>
                   <ul className="mt-3 border-t border-rule">
                     {lost.map((m) => (
                       <MatchRow key={m.id} m={m} muted />
@@ -113,7 +113,7 @@ export default async function WantsPage({ searchParams }: PageProps<"/wants">) {
 
               {blocked.length > 0 && (
                 <>
-                  <p className="t-eyebrow mt-8 text-ink-2">Doesn&rsquo;t work with your dates</p>
+                  <p className="mt-8 text-[15px] font-semibold text-ink-2">Doesn&rsquo;t work with your dates</p>
                   <ul className="mt-3 border-t border-rule">
                     {blocked.map((m) => (
                       <MatchRow key={m.id} m={m} muted />

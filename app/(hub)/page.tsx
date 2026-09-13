@@ -1,222 +1,147 @@
-import Form from "next/form";
 import Link from "next/link";
-import { SearchIcon } from "@/components/hub/icons";
 import { ListingRow } from "@/components/hub/listing-row";
-import { btnSecondary, btnTertiary, EmptyState, Eyebrow, fieldClass } from "@/components/hub/ui";
-import { getBoard, getMatches, getUniversity, getWants, type BoardListing } from "@/lib/hub/data";
-import { boardModes, boardViews, parseBoardMode, parseBoardView } from "@/lib/hub/feed";
-import { formatShortDate, moveLine } from "@/lib/hub/format";
+import { btnPrimary, btnSecondary, CardEmpty, PageShell, PageTitle, SectionTitle } from "@/components/hub/ui";
+import { getBoard, getHandoffs, getMatches, getUniversity, getWants } from "@/lib/hub/data";
+import { formatShortDate } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
 
-function one(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
+export const metadata = { title: "Home" };
+
+function firstName(name: string) {
+  return name.trim().split(/\s+/)[0] || "there";
 }
 
-export default async function BrowsePage({ searchParams }: PageProps<"/">) {
-  const params = await searchParams;
-  const view = parseBoardView(one(params.view));
-  const mode = parseBoardMode(one(params.mode));
-  const query = one(params.q)?.trim() || undefined;
-
+export default async function HomePage() {
   const user = await getCurrentUser();
-  const [university, board, wants, matches] = await Promise.all([
+  const [university, board, wants, matches, handoffs] = await Promise.all([
     getUniversity(),
-    getBoard({ view, mode, query, userId: user.id }),
+    getBoard({ view: "all", userId: user.id }),
     getWants(user.id),
     getMatches(user.id),
+    getHandoffs(user.id),
   ]);
-  const shown = board.finalCall.length + board.rest.length;
 
-  const href = (next: { view?: string; mode?: string }) => {
-    const search = new URLSearchParams();
-    const v = next.view ?? view;
-    const m = next.mode ?? mode;
-    if (v !== "all") search.set("view", v);
-    if (m !== "any") search.set("mode", m);
-    if (query) search.set("q", query);
-    const qs = search.toString();
-    return qs ? `/?${qs}` : "/";
-  };
-  const chip = (active: boolean) =>
-    `inline-flex min-h-11 items-center rounded-1 border px-3 text-[13px] font-semibold whitespace-nowrap transition-colors duration-[90ms] ${
-      active ? "border-ink bg-ink text-paper" : "border-rule hover:border-rule-strong hover:bg-paper-raised"
-    }`;
+  const leavingSoon = [...board.finalCall, ...board.rest].slice(0, 4);
+  const upcoming = [...handoffs.pickingUp, ...handoffs.handingOff].slice(0, 3);
+  const openWants = wants.filter((w) => !w.fulfilled);
 
   return (
-    <div className="mx-auto max-w-[1120px] px-4 pt-8 pb-16 sm:px-6">
-      <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[1fr_320px]">
-        <section aria-labelledby="board-title" className="min-w-0">
-          {board.lastDeadline && (
-            <p className="t-eyebrow text-signal">Move-out week · last deadline {formatShortDate(board.lastDeadline)}</p>
-          )}
-          <h1 id="board-title" className="t-display mt-2 text-[clamp(34px,5.5vw,54px)] leading-[1.02]">
-            Everything here is leaving
-          </h1>
-          <p className="mt-3 text-[17px] text-ink-2">
-            {board.total} listings at {university.shortName}
-            {board.goneTonight > 0 && ` · ${board.goneTonight} gone by tonight`}
-          </p>
+    <PageShell>
+      <PageTitle
+        title={`Hi ${firstName(user.name)}`}
+        lede={
+          matches.length > 0
+            ? `${matches.length} thing${matches.length === 1 ? "" : "s"} on your list just turned up at ${university.shortName}.`
+            : `Here's what's moving around ${university.shortName} right now.`
+        }
+      />
 
-          <Form action="/" className="mt-6 flex gap-2">
-            {view !== "all" && <input type="hidden" name="view" value={view} />}
-            {mode !== "any" && <input type="hidden" name="mode" value={mode} />}
-            <label className="relative flex-1">
-              <span className="sr-only">Search listings</span>
-              <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-2" />
-              <input
-                key={query ?? ""}
-                name="q"
-                defaultValue={query}
-                placeholder="What do you need? Try “something to keep my milk cold”"
-                className={`${fieldClass} min-h-11 pl-9`}
-              />
-            </label>
-            <button type="submit" className={btnSecondary}>
-              Search
-            </button>
-          </Form>
+      <div className="mb-10 flex flex-wrap gap-3">
+        <Link href="/browse" className={btnPrimary}>
+          Find something
+        </Link>
+        <Link href="/post" className={btnSecondary}>
+          Lend or sell something
+        </Link>
+      </div>
 
-          <nav aria-label="Filter listings" className="-mx-4 mt-4 space-y-2 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0">
-            <ul className="flex gap-2">
-              {boardViews.map((v) => (
-                <li key={v.value}>
-                  <Link href={href({ view: v.value })} scroll={false} aria-current={v.value === view ? "true" : undefined} className={chip(v.value === view)}>
-                    {v.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <ul className="flex items-center gap-2">
-              {boardModes.map((m, i) => (
-                <li key={m.value} className="flex items-center gap-2">
-                  {m.group !== boardModes[i - 1]?.group && m.group && (
-                    <span className="t-eyebrow pl-1 text-ink-3">{m.group}</span>
-                  )}
-                  <Link href={href({ mode: m.value })} scroll={false} aria-current={m.value === mode ? "true" : undefined} className={chip(m.value === mode)}>
-                    {m.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {query && board.semantic && shown > 0 && (
-            <p className="mt-4 text-[13px] text-ink-2">
-              Sorted by meaning, not keywords — matched on what each item is for.
-            </p>
-          )}
-
-          <div className="mt-6">
-            {shown === 0 ? (
-              <EmptyState title={query ? `Nothing matches “${query}” right now.` : "Nothing here right now."}>
-                <p>
-                  Add it to your list and we’ll tell you the moment someone posts. Most things show up in the last
-                  two weeks of term.
-                </p>
-                <Link
-                  href={query ? `/wants?add=${encodeURIComponent(query)}` : "/wants"}
-                  className={`${btnSecondary} mt-4`}
-                >
-                  {query ? `Add “${query}” to my list` : "Go to my list"}
-                </Link>
-              </EmptyState>
-            ) : (
-              <>
-                {board.finalCall.length > 0 && (
-                  <BoardSection
-                    title={`Final call · ${board.finalCall.length} ${board.finalCall.length === 1 ? "item" : "items"}`}
-                    urgent
-                    listings={board.finalCall}
-                  />
-                )}
-                <BoardSection title={query ? "Closest to what you asked for" : "Soonest deadline first"} listings={board.rest} />
-              </>
-            )}
+      <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
+        {/* Leaving soon */}
+        <section className="board overflow-hidden">
+          <div className="flex items-center justify-between border-b border-border px-5 py-4">
+            <SectionTitle>Leaving soon</SectionTitle>
+            <Link href="/browse" className="rounded-sm px-2 py-1 text-[14px] font-semibold text-accent transition-colors duration-100 hover:bg-accent-tint">
+              Browse all
+            </Link>
           </div>
+          {leavingSoon.length > 0 ? (
+            <ul>
+              {leavingSoon.map((listing) => (
+                <ListingRow key={listing.id} listing={listing} />
+              ))}
+            </ul>
+          ) : (
+            <div className="px-5">
+              <CardEmpty icon="box" title="Nothing listed yet">
+                Be the first to post something at your school.
+              </CardEmpty>
+            </div>
+          )}
         </section>
 
-        <aside className="space-y-10 lg:pt-2">
-          {user.moveStatus === "leaving" ? (
-            <section>
-              <Eyebrow>Moving out</Eyebrow>
-              <p className="mt-2 text-[17px] font-semibold">Post your whole room in one go</p>
-              <p className="mt-1 text-ink-2">
-                One incoming student claims all of it in a single pickup. No eight separate conversations.
-              </p>
-              <Link href="/post/room" className={`${btnSecondary} mt-4 w-full`}>
-                Post my room
+        <div className="flex flex-col gap-6">
+          {/* Your list */}
+          <section className="board p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <SectionTitle>Your list</SectionTitle>
+              <Link href="/wants" className="rounded-sm px-2 py-1 text-[14px] font-semibold text-accent transition-colors duration-100 hover:bg-accent-tint">
+                Edit
               </Link>
-              <Link href="/post" className={`${btnTertiary} mt-3 inline-block text-[13px]`}>
-                Or post a single item
-              </Link>
-            </section>
-          ) : (
-            <section>
-              <Eyebrow>Your list · {moveLine(user)}</Eyebrow>
-              {wants.length === 0 ? (
-                <p className="mt-2 text-ink-2">
-                  Write down what you need before you arrive and we’ll match it as people post.
-                </p>
-              ) : (
-                <ul className="mt-3 border-t border-rule">
-                  {wants.map((w) => {
-                    const count = matches.filter((m) => m.wantIds.includes(w.id)).length;
-                    return (
-                      <li key={w.id} className="flex items-baseline justify-between gap-3 border-b border-rule py-2">
-                        <span className={w.fulfilled ? "text-ink-3 line-through" : ""}>{w.text}</span>
-                        <span className={`shrink-0 text-[13px] ${count > 0 && !w.fulfilled ? "font-semibold" : "text-ink-2"}`}>
-                          {w.fulfilled ? "found it" : count > 0 ? `● ${count} ${count === 1 ? "match" : "matches"}` : "○ none yet"}
+            </div>
+            {openWants.length > 0 ? (
+              /* Was a <ul> of grey dots and plain text — a list of nouns with
+                 nothing to do. Each line is now the row it should have been:
+                 what you asked for, whether anything on the board answers it,
+                 and somewhere to go. */
+              <ul className="-mx-2 divide-y divide-border">
+                {openWants.slice(0, 5).map((want) => {
+                  const count = matches.filter((m) => m.wantIds.includes(want.id)).length;
+                  return (
+                    <li key={want.id}>
+                      <Link
+                        href={count > 0 ? "/browse?view=matches" : "/wants"}
+                        className="group flex items-center justify-between gap-3 rounded-sm px-2 py-2.5 transition-colors duration-100 hover:bg-surface-2"
+                      >
+                        <span className="min-w-0 flex-1 truncate text-[15px] transition-colors duration-100 group-hover:text-accent">
+                          {want.text}
                         </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-              <div className="mt-4 flex flex-wrap items-center gap-4">
-                <Link href="/?view=matches" className={btnSecondary}>
-                  Show my matches
+                        <span
+                          className={`shrink-0 text-[13px] ${count > 0 ? "font-semibold text-accent" : "text-ink-3"}`}
+                        >
+                          {count > 0 ? `${count} match${count === 1 ? "" : "es"}` : "none yet"}
+                        </span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <CardEmpty icon="list" title="Nothing on your list yet">
+                Tell us what you need and we&rsquo;ll watch for it.{" "}
+                <Link href="/wants" className="font-semibold text-accent transition-colors duration-100 hover:text-ink">
+                  Add something
                 </Link>
-                <Link href="/wants" className={`${btnTertiary} text-[13px]`}>
-                  Edit list
-                </Link>
-              </div>
-            </section>
-          )}
-
-          <section>
-            <Eyebrow>How it works</Eyebrow>
-            <ol className="mt-3 space-y-3">
-              {[
-                ["Find it", "Everything is sorted by when it has to be gone, so nothing gets thrown out first."],
-                ["Pick a time", "The owner already set pickup times. Choose one, no messaging."],
-                ["Pick it up", "Meet at the time and place on your confirmation. Pay in person."],
-              ].map(([title, body], i) => (
-                <li key={title} className="grid grid-cols-[1.5rem_1fr] gap-x-2">
-                  <span className="data font-semibold">{i + 1}</span>
-                  <span>
-                    <span className="block font-semibold">{title}</span>
-                    <span className="block text-ink-2">{body}</span>
-                  </span>
-                </li>
-              ))}
-            </ol>
+              </CardEmpty>
+            )}
           </section>
-        </aside>
-      </div>
-    </div>
-  );
-}
 
-function BoardSection({ title, listings, urgent = false }: { title: string; listings: BoardListing[]; urgent?: boolean }) {
-  if (listings.length === 0) return null;
-  return (
-    <section className="mb-8">
-      <h2 className={`t-eyebrow border-b border-rule-strong pb-2 ${urgent ? "text-signal" : "text-ink-2"}`}>{title}</h2>
-      <ul className="-mx-4 sm:mx-0">
-        {listings.map((l) => (
-          <ListingRow key={l.id} listing={l} />
-        ))}
-      </ul>
-    </section>
+          {/* Handoffs */}
+          <section className="board p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <SectionTitle>Coming up</SectionTitle>
+              <Link href="/handoffs" className="rounded-sm px-2 py-1 text-[14px] font-semibold text-accent transition-colors duration-100 hover:bg-accent-tint">
+                All handoffs
+              </Link>
+            </div>
+            {upcoming.length > 0 ? (
+              <ul className="space-y-3">
+                {upcoming.map((h) => (
+                  <li key={h.id}>
+                    <span className="block text-[15px] font-semibold">{h.listing.title}</span>
+                    <span className="data block text-[13px] text-ink-2">
+                      {formatShortDate(h.slot.startsAt)} · {h.slot.place}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <CardEmpty icon="calendar" title="Nothing scheduled">
+                Claim something and the pickup time and place will show up here.
+              </CardEmpty>
+            )}
+          </section>
+        </div>
+      </div>
+    </PageShell>
   );
 }

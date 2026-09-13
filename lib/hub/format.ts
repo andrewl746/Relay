@@ -134,10 +134,10 @@ export function formatMoney(cents: number) {
 
 export function formatPrice(listing: Pick<Listing, "offerType" | "priceCents">) {
   if (listing.offerType === "free") return "Free";
-  if (listing.offerType === "borrow") return "Free to borrow";
+  if (listing.offerType === "lend") return "Free to borrow";
   if (listing.priceCents === null) return "Free";
   const amount = formatMoney(listing.priceCents);
-  return listing.offerType === "loan" ? `${amount} to borrow` : amount;
+  return listing.offerType === "rent" ? `${amount} to borrow` : amount;
 }
 
 /** "Back by Sep 20" — only the two modes that return have one. */
@@ -150,24 +150,25 @@ export const categoryLabel: Record<Category, string> = {
   furniture: "Furniture",
   school: "School materials",
   tools: "Tools",
-  kitchen: "Kitchen",
+  kitchen: "Kitchen supplies",
   electronics: "Electronics",
-  misc: "Everything else",
+  hygiene: "Hygiene & toiletries",
+  other: "Other",
 };
 
 export const offerLabel: Record<OfferType, string> = {
-  free: "Free",
   sale: "For sale",
-  borrow: "To borrow",
-  loan: "To loan",
+  rent: "Lend for money",
+  free: "Give away for free",
+  lend: "Lend for free",
 };
 
 /** The distinction the whole model turns on: does the owner get it back? */
 export const offerGroupLabel: Record<OfferType, string> = {
   free: "Keep it",
   sale: "Keep it",
-  borrow: "Give it back",
-  loan: "Give it back",
+  lend: "Give it back",
+  rent: "Give it back",
 };
 
 export const urgencyLabel: Record<Urgency, string> = {
@@ -177,9 +178,11 @@ export const urgencyLabel: Record<Urgency, string> = {
 };
 
 export const conditionLabel: Record<Condition, string> = {
+  new: "New",
   "like-new": "Like new",
   good: "Good",
   fair: "Fair",
+  bad: "Bad",
 };
 
 export function moveLine(user: Pick<User, "moveStatus" | "moveDate">) {

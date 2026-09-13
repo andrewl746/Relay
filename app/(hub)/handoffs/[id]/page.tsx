@@ -10,7 +10,7 @@ export default async function HandoffPage({ params }: PageProps<"/handoffs/[id]"
   if (!handoff) notFound();
 
   return (
-    <PageShell width="narrow">
+    <PageShell>
       <BackLink href="/handoffs">All handoffs</BackLink>
       <HandoffSummary listing={handoff.listing} slot={handoff.slot} buyer={handoff.buyer} seller={handoff.seller} />
     </PageShell>

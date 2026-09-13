@@ -1,22 +1,23 @@
-export type Category = "furniture" | "school" | "tools" | "kitchen" | "electronics" | "misc";
+/** Union of both sides: "tools" carries the borrow story, "hygiene"/"other" are his. */
+export type Category = "furniture" | "school" | "tools" | "kitchen" | "electronics" | "hygiene" | "other";
 
 /**
  * The four ways an object can move between two people. The axis that matters
- * is whether it comes back: "free" and "sale" transfer ownership, "borrow" and
- * "loan" do not. That return leg is the thing a general marketplace cannot do,
+ * is whether it comes back: "free" and "sale" transfer ownership, "lend" and
+ * "rent" do not. That return leg is the thing a general marketplace cannot do,
  * so it is modelled here rather than written into a description field.
  */
-export type OfferType = "free" | "sale" | "borrow" | "loan";
+export type OfferType = "sale" | "rent" | "free" | "lend";
 
 /** Does the owner get it back? */
 export const RETURNS: Record<OfferType, boolean> = {
   free: false,
   sale: false,
-  borrow: true,
-  loan: true,
+  lend: true,
+  rent: true,
 };
 
-export type Condition = "like-new" | "good" | "fair";
+export type Condition = "new" | "like-new" | "good" | "fair" | "bad";
 
 /**
  * How badly someone wants this resolved. Chosen by a person, not derived.
@@ -29,7 +30,7 @@ export type Condition = "like-new" | "good" | "fair";
 export type Urgency = "low" | "medium" | "high";
 export type MoveStatus = "leaving" | "arriving" | "staying";
 export type PlaceKind = "seller" | "campus";
-export type ListingStatus = "available" | "claimed";
+export type ListingStatus = "available" | "claimed" | "removed";
 
 export type University = {
   id: string;
@@ -65,7 +66,6 @@ export type Listing = {
   pickupArea: string;
   /** How the seller wants to be reached once someone claims it. */
   contact: string;
-  photoUrl: string | null;
   urgency: Urgency;
   /** How long the borrower keeps it, for the two modes that come back. */
   returnDays: number | null;
@@ -74,6 +74,8 @@ export type Listing = {
   parentId: string | null;
   status: ListingStatus;
   createdAt: string;
+  /** Seller-uploaded photo (a resized JPEG data URL). Absent means show the placeholder. */
+  photoUrl?: string | null;
 };
 
 export type TimeSlot = {

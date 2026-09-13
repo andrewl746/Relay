@@ -13,13 +13,17 @@
     "typecheck": "tsc --noEmit",
     "check": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-provider.ts",
     "check:store": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-store.ts",
-    "reset": "node --experimental-strip-types scripts/reset.ts"
+    "reset": "node --experimental-strip-types scripts/reset.ts",
+    "check:backboard": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-backboard.ts",
+    "check:search": "node --experimental-strip-types scripts/check-search.ts"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.2.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
     "backboard-sdk": "^1.5.16",
+    "lenis": "^1.3.26",
+    "motion": "^13.2.0",
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",

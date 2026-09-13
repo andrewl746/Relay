@@ -1,10 +1,18 @@
 import { filterBoard, rankByUrgency, type BoardMode, type BoardView } from "./feed";
 import { isGoneByTonight } from "./format";
-import { listingText, searchListings } from "./search";
+import { matchesTerms, searchTerms } from "./search";
+import { semanticHits } from "./semantic";
 import { effectiveExpiry } from "./urgency";
 import { handoffs, listings, matches, notifications, slots, university, users, wants } from "./mock-data";
 import { plansFor, type Plan } from "./matching";
+import { createClient } from "../supabase/server";
+import { readRuntime } from "@/lib/relay/runtime";
 import type { Handoff, Listing, Match, TimeSlot, User, Want } from "./types";
+
+// Supabase auth ids are UUIDs; seeded demo users (dev login) use short ids
+// like "u-marcus". That difference is how we tell a real signed-in user's
+// data apart from the mock-data seed used by the dev-login demo path.
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 // Async on purpose: these signatures stay the same when mock data is replaced by real queries.
 
@@ -24,7 +32,7 @@ function childrenOf(listingId: string) {
   return listings.filter((l) => l.parentId === listingId);
 }
 
-export type BoardListing = Listing & { itemCount: number; isMatch: boolean };
+export type BoardListing = Listing & { itemCount: number; isMatch: boolean; sellerName: string };
 
 export async function getBoard({
   view,
@@ -33,7 +41,7 @@ export async function getBoard({
   userId,
 }: {
   view: BoardView;
-  mode: BoardMode;
+  mode?: BoardMode;
   query?: string;
   userId: string;
 }) {
@@ -48,41 +56,59 @@ export async function getBoard({
   );
   const open: BoardListing[] = listings
     .filter((l) => l.parentId === null && l.status === "available")
-    .map((l) => ({ ...l, itemCount: childrenOf(l.id).length, isMatch: matchedIds.has(l.id) }));
+    .map((l) => ({
+      ...l,
+      itemCount: childrenOf(l.id).length,
+      isMatch: matchedIds.has(l.id),
+      sellerName: users.find((u) => u.id === l.sellerId)?.name ?? "A student",
+    }));
 
-  const textFor = (l: BoardListing) => listingText(l, childrenOf(l.id).map((c) => c.title));
+  const searchableText = (l: BoardListing) =>
+    [l.title, l.description, l.kind, ...childrenOf(l.id).map((c) => c.title)].join(" ");
 
-  // Semantic first, substring only if the model could not be loaded.
-  const hits = query ? await searchListings(query, open.map((l) => ({ id: l.id, text: textFor(l) }))) : null;
-  const semantic = hits !== null;
-  const rank = hits ? new Map(hits.map((h, i) => [h.id, i])) : null;
-
-  const keep = query
-    ? rank
-      ? (l: BoardListing) => rank.has(l.id)
-      : (l: BoardListing) => textFor(l).toLowerCase().includes(query.toLowerCase())
-    : undefined;
-
-  const shown = filterBoard(open, view, mode, { matchedIds, keep });
+  // Filter the view first, then search inside it. Search is the union of a
+  // literal/synonym match and an embedding match (./semantic.ts) — the model
+  // can add results a table never would, and if it is unavailable the lexical
+  // half still answers, so search degrades instead of breaking.
+  const inView = filterBoard(open, view, mode ?? "any", { matchedIds });
+  let shown = inView;
+  let semantic = false;
+  if (query?.trim()) {
+    const terms = searchTerms(query);
+    const hits = await semanticHits(
+      query,
+      inView.map((l) => ({ id: l.id, text: searchableText(l) })),
+    );
+    semantic = hits.size > 0;
+    shown = inView.filter((l) => matchesTerms(searchableText(l), terms) || hits.has(l.id));
+  }
 
   const deadlines = open.flatMap((l) => {
     const at = effectiveExpiry(l);
     return at ? [at] : [];
   });
 
-  // A search is answering a question, so relevance wins over the deadline
-  // ordering the unsearched board uses.
-  const ranked = rank
-    ? { finalCall: [], rest: [...shown].sort((a, b) => rank.get(a.id)! - rank.get(b.id)!) }
-    : rankByUrgency(shown);
-
   return {
-    ...ranked,
+    ...rankByUrgency(shown),
     semantic,
     total: open.length,
     goneTonight: deadlines.filter(isGoneByTonight).length,
     lastDeadline: deadlines.sort().at(-1) ?? null,
   };
+}
+
+export type MyListing = Listing & { itemCount: number };
+
+/**
+ * What a seller has posted, newest first. Includes claimed listings so the
+ * seller can see a handoff is pending — once both sides confirm a handoff,
+ * this is where the listing will stop showing up (see lib/hub/actions.ts).
+ */
+export async function getMyListings(userId: string): Promise<MyListing[]> {
+  return listings
+    .filter((l) => l.sellerId === userId && l.parentId === null)
+    .map((l) => ({ ...l, itemCount: childrenOf(l.id).length }))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
 }
 
 export type ListingDetail = Listing & { seller: User; slots: TimeSlot[]; items: Listing[] };
@@ -101,8 +127,29 @@ export async function getListing(id: string): Promise<ListingDetail | null> {
   };
 }
 
-export async function getWants(userId: string) {
-  return wants.filter((w) => w.userId === userId);
+export async function getWants(userId: string): Promise<Want[]> {
+  if (!UUID_RE.test(userId)) return wants.filter((w) => w.userId === userId);
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("wants")
+    .select("id, user_id, text, max_price_cents, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: true });
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    id: row.id,
+    userId: row.user_id,
+    text: row.text,
+    maxPriceCents: row.max_price_cents,
+    urgency: "medium" as const,
+    // Real users' wants aren't run through the matching/urgency pipeline
+    // yet (only the seeded demo users have authored matches), so this
+    // isn't consumed downstream — it exists only to satisfy the Want type.
+    neededBy: row.created_at,
+    fulfilled: false,
+  }));
 }
 
 export type MatchDetail = Match & { listing: Listing; wants: Want[]; plan: Plan };
@@ -139,8 +186,36 @@ function withDetail(h: Handoff): HandoffDetail | null {
   return listing && slot && buyer && seller ? { ...h, listing, slot, buyer, seller } : null;
 }
 
+/**
+ * Claims made in the app become handoffs here.
+ *
+ * Without this, /handoffs only ever showed the hardcoded demo rows, which are
+ * keyed to demo user ids — so a real signed-in user (a Supabase UUID) claimed
+ * something, landed on the confirmation, opened Handoffs and found it empty.
+ */
+function runtimeHandoffs(): Handoff[] {
+  return readRuntime().claims.flatMap((c) => {
+    const listing = listings.find((l) => l.id === c.listingId);
+    if (!listing) return [];
+    return [{
+      id: c.id,
+      buyerName: "",
+      buyerContact: "",
+      payment: null,
+      urgency: "medium" as const,
+      dueBack: null,
+      listingId: c.listingId,
+      slotId: c.slotId,
+      buyerId: c.buyerId,
+      sellerId: listing.sellerId,
+      createdAt: c.createdAt,
+    }];
+  });
+}
+
 export async function getHandoffs(userId: string) {
-  const mine = handoffs
+  const all = [...handoffs, ...runtimeHandoffs()];
+  const mine = all
     .filter((h) => h.buyerId === userId || h.sellerId === userId)
     .map(withDetail)
     .filter((h): h is HandoffDetail => h !== null)
@@ -152,7 +227,7 @@ export async function getHandoffs(userId: string) {
 }
 
 export async function getHandoff(id: string) {
-  const h = handoffs.find((x) => x.id === id);
+  const h = [...handoffs, ...runtimeHandoffs()].find((x) => x.id === id);
   return h ? withDetail(h) : null;
 }
 

@@ -2,9 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { setDevUser } from "@/lib/hub/dev-login";
+import { fieldClass } from "./ui";
 
-const SIGN_IN = "__sign-in";
-
+/**
+ * Viewing the demo as a different seeded student.
+ *
+ * Lives in Settings, not the header. Every student sees a different board —
+ * different matches, different feasible pickup times, a different contested
+ * item — so switching is how you show the matcher working, but it is still
+ * demo furniture and doesn't belong on the first screen a stranger sees.
+ */
 export function UserSwitcher({
   users,
   currentUserId,
@@ -15,27 +22,22 @@ export function UserSwitcher({
   const router = useRouter();
 
   return (
-    <label className="flex items-center gap-2">
+    <label className="block">
       <span className="sr-only">Viewing as</span>
       <select
         key={currentUserId}
         defaultValue={currentUserId}
         onChange={(e) => {
-          if (e.target.value === SIGN_IN) {
-            router.push("/login");
-            return;
-          }
           setDevUser(e.target.value);
           router.refresh();
         }}
-        className="h-11 max-w-[6.5rem] truncate rounded-1 border border-rule-strong bg-paper-raised pr-7 pl-3 text-[13px] font-semibold text-ink sm:max-w-[16rem]"
+        className={fieldClass}
       >
         {users.map((u) => (
           <option key={u.id} value={u.id}>
             {u.label}
           </option>
         ))}
-        <option value={SIGN_IN}>Sign in with Google…</option>
       </select>
     </label>
   );

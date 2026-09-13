@@ -3,7 +3,16 @@ import type { Listing, OfferType } from "./types";
 import { effectiveExpiry, hasExpired } from "./urgency";
 
 /** What the item is. */
-export type BoardView = "all" | "furniture" | "school" | "tools" | "kitchen" | "electronics" | "misc" | "matches";
+export type BoardView =
+  | "all"
+  | "matches"
+  | "furniture"
+  | "school"
+  | "tools"
+  | "kitchen"
+  | "electronics"
+  | "hygiene"
+  | "other";
 
 /** How it moves. Kept separate from the category so the two compose. */
 export type BoardMode = "any" | OfferType;
@@ -16,7 +25,8 @@ export const boardViews: { value: BoardView; label: string }[] = [
   { value: "tools", label: "Tools" },
   { value: "kitchen", label: "Kitchen" },
   { value: "electronics", label: "Electronics" },
-  { value: "misc", label: "Everything else" },
+  { value: "hygiene", label: "Hygiene" },
+  { value: "other", label: "Everything else" },
 ];
 
 /**
@@ -27,8 +37,8 @@ export const boardModes: { value: BoardMode; label: string; group: string }[] = 
   { value: "any", label: "Any way", group: "" },
   { value: "free", label: "Free", group: "Keep it" },
   { value: "sale", label: "Buy", group: "Keep it" },
-  { value: "borrow", label: "Borrow", group: "Give it back" },
-  { value: "loan", label: "Loan", group: "Give it back" },
+  { value: "lend", label: "Borrow", group: "Give it back" },
+  { value: "rent", label: "Rent", group: "Give it back" },
 ];
 
 export function parseBoardView(value: string | undefined): BoardView {

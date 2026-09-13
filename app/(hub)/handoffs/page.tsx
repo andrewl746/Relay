@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { btnTertiary, EmptyState, PageShell, PageTitle } from "@/components/hub/ui";
+import { btnTertiary, EmptyState, PageShell, PageTitle, SectionTitle } from "@/components/hub/ui";
 import { getHandoffs, type HandoffDetail } from "@/lib/hub/data";
 import { formatDay, formatTimeRange } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
@@ -56,24 +56,27 @@ function HandoffList({
   empty: React.ReactNode;
 }) {
   return (
-    <section>
-      <h2 className="t-eyebrow border-b border-rule-strong pb-2 text-ink-2">{title}</h2>
+    <section className="board overflow-hidden">
+      {/* A section heading, not a 13px grey label. It names half the page. */}
+      <div className="border-b border-border px-5 py-4">
+        <SectionTitle>{title}</SectionTitle>
+      </div>
       {handoffs.length === 0 ? (
-        empty
+        <div className="px-5">{empty}</div>
       ) : (
-        <ul>
+        <ul className="divide-y divide-border">
           {handoffs.map((h) => (
-            <li key={h.id} className="border-b border-rule">
+            <li key={h.id}>
               <Link
                 href={`/handoffs/${h.id}`}
-                className="group grid grid-cols-[7.5rem_1fr] gap-4 px-1 py-3 transition-colors duration-[90ms] hover:bg-paper-raised"
+                className="group grid grid-cols-[7.5rem_1fr] gap-4 px-5 py-4 transition-colors duration-100 hover:bg-surface-2"
               >
                 <span className="data">
                   <span className="block text-[13px] text-ink-2">{formatDay(h.slot.startsAt)}</span>
                   <span className="block font-semibold">{formatTimeRange(h.slot.startsAt, h.slot.endsAt)}</span>
                 </span>
                 <span className="min-w-0">
-                  <span className="t-listing block truncate text-[17px] group-hover:underline group-hover:underline-offset-[3px]">
+                  <span className="block truncate text-[17px] font-semibold transition-colors duration-100 group-hover:text-accent">
                     {h.listing.title}
                   </span>
                   <span className="block text-[13px] text-ink-2">

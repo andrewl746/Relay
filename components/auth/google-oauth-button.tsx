@@ -26,11 +26,11 @@ export function GoogleOAuthButton({ label }: { label: string }) {
 
   return (
     <div>
-      <button type="button" onClick={handleClick} disabled={pending} className="gh-btn">
+      <button type="button" onClick={handleClick} disabled={pending} className="inline-flex min-h-11 w-full items-center justify-center gap-2.5 rounded-sm border border-border-strong bg-surface px-5 text-[15px] font-semibold text-ink transition-colors duration-100 hover:bg-surface-2 disabled:cursor-not-allowed disabled:opacity-50">
         <GoogleIcon />
         {pending ? "Redirecting to Google…" : label}
       </button>
-      {error && <p className="gh-flash-error mt-3">{error}</p>}
+      {error && <p className="mt-3 rounded-sm border border-accent/40 bg-accent-tint px-3.5 py-3 text-[14px] text-ink">{error}</p>}
     </div>
   );
 }

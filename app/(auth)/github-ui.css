@@ -4,20 +4,20 @@
    distinct on purpose from the ledger system in app/(hub), since sign-in/onboarding
    is a different job than browsing listings. */
 :root {
-  --gh-canvas: #ffffff;
-  --gh-canvas-subtle: #f6f8fa;
-  --gh-canvas-inset: #eff2f5;
-  --gh-border: #d1d9e0;
-  --gh-border-muted: #d8dee4;
-  --gh-fg: #1f2328;
-  --gh-fg-muted: #59636e;
-  --gh-fg-subtle: #6e7781;
-  --gh-accent: #0969da;
-  --gh-accent-subtle: #ddf4ff;
-  --gh-success: #1a7f37;
-  --gh-success-subtle: #d8f5df;
-  --gh-danger: #cf222e;
-  --gh-danger-subtle: #ffebe9;
+  --gh-canvas: #F3EADB;
+  --gh-canvas-subtle: #E8DAC2;
+  --gh-canvas-inset: #D9C3A0;
+  --gh-border: #C4A87E;
+  --gh-border-muted: #D2B88F;
+  --gh-fg: #2B2118;
+  --gh-fg-muted: #6A5744;
+  --gh-fg-subtle: #9C876A;
+  --gh-accent: #B33A1E;
+  --gh-accent-subtle: #F0D9C8;
+  --gh-success: #2F5D3A;
+  --gh-success-subtle: #D9E5D3;
+  --gh-danger: #B33A1E;
+  --gh-danger-subtle: #F2DAD2;
 }
 
 @theme inline {

@@ -56,7 +56,7 @@ export default function OnboardingPage() {
 
         {/* University */}
         <div className="mb-8">
-          <label className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] block mb-3">
+          <label className="text-[13px] font-semibold text-[var(--text-muted)] block mb-3">
             University
           </label>
           <select
@@ -73,7 +73,7 @@ export default function OnboardingPage() {
 
         {/* Location */}
         <div className="mb-8">
-          <label className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] block mb-3">
+          <label className="text-[13px] font-semibold text-[var(--text-muted)] block mb-3">
             Neighbourhood
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -84,7 +84,7 @@ export default function OnboardingPage() {
                 onClick={() => setLocation(loc)}
                 className={`rounded-[2px] border px-3 py-2.5 text-[13px] font-semibold transition-all duration-75 font-[family-name:var(--font-data)] ${
                   location === loc
-                    ? 'border-[var(--secured)] bg-[var(--secured)] text-[#0D0E12]'
+                    ? 'border-[var(--secured)] bg-[var(--secured)] text-white'
                     : 'border-[var(--bezel)] bg-[var(--panel)] text-[var(--text-muted)] hover:border-[var(--text-muted)]'
                 }`}
               >
@@ -96,7 +96,7 @@ export default function OnboardingPage() {
 
         {/* Pickup Windows */}
         <div className="mb-10">
-          <label className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] block mb-3">
+          <label className="text-[13px] font-semibold text-[var(--text-muted)] block mb-3">
             Pickup Windows
           </label>
           <div className="flex gap-2">
@@ -105,9 +105,9 @@ export default function OnboardingPage() {
                 key={w}
                 type="button"
                 onClick={() => toggleWindow(w)}
-                className={`flex-1 rounded-[2px] border px-4 py-3 text-[14px] font-bold uppercase tracking-wide transition-all duration-75 ${
+                className={`flex-1 rounded-[2px] border px-4 py-3 text-[14px] font-semibold transition-all duration-75 ${
                   windows.has(w)
-                    ? 'border-[var(--active-route)] bg-[var(--active-route)] text-[#0D0E12]'
+                    ? 'border-[var(--active-route)] bg-[var(--active-route)] text-white'
                     : 'border-[var(--bezel)] bg-[var(--panel)] text-[var(--text-muted)] hover:border-[var(--text-muted)]'
                 }`}
               >
@@ -121,7 +121,7 @@ export default function OnboardingPage() {
         <button
           onClick={() => router.push('/')}
           disabled={!ready}
-          className="w-full min-h-12 rounded-[2px] bg-[var(--active-route)] text-[15px] font-bold text-[#0D0E12] tracking-wide transition-all duration-75 hover:brightness-110 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
+          className="w-full min-h-12 rounded-[2px] bg-[var(--active-route)] text-[15px] font-bold text-white tracking-wide transition-all duration-75 hover:brightness-110 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
         >
           ACTIVATE
         </button>

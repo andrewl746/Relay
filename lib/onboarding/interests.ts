@@ -8,3 +8,13 @@ export const INTERESTS: Interest[] = [
   { id: "electronics", label: "Electronics", hint: "Monitors, lamps, chargers" },
   { id: "other", label: "Other essentials", hint: "Anything else students hand off" },
 ];
+
+// Quick-add chips on the wants step, seeded from whichever interests they picked.
+export const INTEREST_SUGGESTIONS: Record<string, string[]> = {
+  "school-supplies": ["Textbooks", "Graphing calculator", "Notebooks"],
+  "kitchen-supplies": ["Mini fridge", "Kettle", "Cookware set"],
+  hygiene: ["Toiletries", "Laundry hamper"],
+  furniture: ["Desk", "Desk chair", "Bookshelf"],
+  electronics: ["Monitor", "Desk lamp", "Charger"],
+  other: ["Storage bins", "Bike"],
+};

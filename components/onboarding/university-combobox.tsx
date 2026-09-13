@@ -3,12 +3,23 @@
 import { useId, useRef, useState } from "react";
 import { getUniversity, searchUniversities, type University } from "@/lib/onboarding/universities";
 
-export function UniversityCombobox({ defaultUniversityId }: { defaultUniversityId?: string | null }) {
+export function UniversityCombobox({
+  defaultUniversityId,
+  onSelect,
+}: {
+  defaultUniversityId?: string | null
+  /** Lets the parent react to the choice — the profile form needs the campus address. */
+  onSelect?: (university: University | null) => void
+}) {
   const listId = useId();
   const initial = defaultUniversityId ? getUniversity(defaultUniversityId) : null;
 
   const [query, setQuery] = useState(initial?.name ?? "");
-  const [selected, setSelected] = useState<University | null>(initial);
+  const [selected, setSelectedRaw] = useState<University | null>(initial);
+  const setSelected = (u: University | null) => {
+    setSelectedRaw(u);
+    onSelect?.(u);
+  };
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
