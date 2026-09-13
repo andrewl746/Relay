@@ -13,15 +13,17 @@ const LAMBDA = config.penalties.lambdaGapPerDay
 const MU = config.penalties.muDistance
 
 /**
- * Nobody in the chain has room to warehouse the thing. A handoff that would
- * leave an item parked longer than this is not a cheaper chain, it is an
- * impossible one — the holder has nowhere to put it. Hard constraint, not a
- * penalty, because "I physically cannot store this" does not trade off against
- * a better match score.
+ * How long a borrower may sit on the item waiting for the NEXT borrower.
  *
- * Applies between holders only. The stretch before the first loan is the
- * owner's own item sitting in the owner's own room, which is allowed — it is
- * still counted as idle in the accounting.
+ * A hop is a loan, not a change of ownership. The normal flow is
+ * owner -> borrower -> owner -> borrower: the thing goes home in between, which
+ * is always allowed because it is the owner's own shelf.
+ *
+ * The optimization worth computing is the DIRECT handoff — one borrower passing
+ * straight to the next, saving the owner two trips. That is only physically
+ * reasonable if the wait is short, because a first-year's apartment has no
+ * storage. Past this many days it routes home instead. Not a hard constraint on
+ * the chain any more; a constraint on which of the two routes is available.
  */
 const MAX_IDLE = config.constraints.maxIdleDays
 
@@ -101,11 +103,18 @@ export function chainForItem(
     for (let j = 0; j < i; j++) {
       if (cands[j].needUntil > cands[i].needFrom) continue // overlap
       const gap = Math.max(0, days(cands[j].needUntil, cands[i].needFrom))
-      if (gap > maxIdle) continue // no one has room to hold it that long
-      const dist = distance(
-        peopleById.get(cands[j].personId),
-        peopleById.get(cands[i].personId),
-      )
+      // Two ways to get from one loan to the next:
+      //   direct   — the previous borrower hands straight to the next one.
+      //              Saves the owner two trips, but only if the wait is short
+      //              enough that someone can keep it (MAX_IDLE).
+      //   via home — it goes back to the owner in between. Always available,
+      //              and the trip out is measured from the owner.
+      const dist = gap <= maxIdle
+        ? distance(
+            peopleById.get(cands[j].personId),
+            peopleById.get(cands[i].personId),
+          )
+        : distance(holder, peopleById.get(cands[i].personId))
       const v = dp[j] + score[i] - lambda * gap - mu * dist
       if (v > dp[i]) {
         dp[i] = v
@@ -133,9 +142,11 @@ export function chainForItem(
     const gapDays = prevNeed
       ? Math.max(0, days(prevNeed.needUntil, need.needFrom))
       : Math.max(0, days(item.freeFrom, need.needFrom))
-    const dist = prevNeed
+    // Direct only when the previous borrower could hold it until this one.
+    const direct = prevNeed != null && gapDays <= maxIdle
+    const dist = direct
       ? distance(
-          peopleById.get(prevNeed.personId),
+          peopleById.get(prevNeed!.personId),
           peopleById.get(need.personId),
         )
       : distance(holder, peopleById.get(need.personId))
@@ -149,6 +160,7 @@ export function chainForItem(
       reason: m?.reason ?? 'no reason recorded',
       gapDays,
       distance: dist,
+      viaOwner: !direct,
     }
   })
 
@@ -170,6 +182,9 @@ export function eligibleNeeds(
   minScore = MIN_SCORE,
 ): Need[] {
   return needs.filter((need) => {
+    // You cannot borrow your own thing. The seed generates needs for everyone,
+    // so without this an owner shows up as a borrower in their own chain.
+    if (need.personId === item.holderId) return false
     const m = table[`${need.id}|${item.id}`]
     if (!m) return false
     if (m.score < minScore) return false

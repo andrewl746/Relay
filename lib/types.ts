@@ -75,8 +75,14 @@ export type Hop = {
   to: string
   matchScore: number
   reason: string
-  /** Storage days between the previous hop's release and this hop's start. */
+  /** Days between the previous loan ending and this one starting. */
   gapDays: number
+  /**
+   * True when the item went back to the owner before this loan; false when the
+   * previous borrower handed it straight over. A direct handoff saves the owner
+   * two trips and is the thing the schedule is actually optimizing for.
+   */
+  viaOwner: boolean
   /** Location penalty against the previous hop. 0 for the first hop. */
   distance: number
 }
