@@ -1,21 +1,32 @@
 import type { Metadata } from "next";
-import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { SiteHeader } from "@/components/hub/site-header";
 import { SITE_NAME } from "@/lib/hub/site";
 import "./hub.css";
 
-const archivo = Archivo({
+// Self-hosted rather than next/font/google. Google Fonts is fetched at build
+// time, and it timed out here and 500'd every route. More to the point, a demo
+// that reaches out to fonts.gstatic.com is a demo that dies on venue wifi.
+// Latin subset only, 133KB total.
+const archivo = localFont({
+  src: "../fonts/archivo-var.woff2",
   variable: "--font-archivo",
-  subsets: ["latin"],
-  axes: ["wdth"],
+  weight: "100 900",
+  display: "swap",
+  // The wdth axis is the hierarchy channel — see docs/DESIGN.md §4.
+  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
 });
 
-const plex = IBM_Plex_Mono({
+const plex = localFont({
   variable: "--font-plex",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  display: "swap",
+  src: [
+    { path: "../fonts/plex-mono-400.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/plex-mono-500.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/plex-mono-600.woff2", weight: "600", style: "normal" },
+  ],
 });
 
 export const metadata: Metadata = {
