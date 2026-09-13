@@ -107,6 +107,10 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
           <div className="mt-8">
             {listing.status === "claimed" ? (
               <p className="font-semibold text-ink-2">Someone already claimed this.</p>
+            ) : listing.status === "removed" ? (
+              <p className="font-semibold text-ink-2">
+                {isOwn ? "You removed this listing." : "This listing is no longer available."}
+              </p>
             ) : isOwn ? (
               <p className="text-ink-2">
                 This is your listing. Switch to another student at the top of the page to try claiming it.

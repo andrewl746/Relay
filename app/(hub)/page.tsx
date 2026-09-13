@@ -1,5 +1,7 @@
 import Form from "next/form";
 import Link from "next/link";
+import { Suspense } from "react";
+import { ResetSearchOnReload } from "@/components/hub/reset-search-on-reload";
 import { SearchIcon } from "@/components/hub/icons";
 import { ListingRow } from "@/components/hub/listing-row";
 import { btnSecondary, btnTertiary, EmptyState, Eyebrow, fieldClass } from "@/components/hub/ui";
@@ -36,6 +38,9 @@ export default async function BrowsePage({ searchParams }: PageProps<"/">) {
 
   return (
     <div className="mx-auto max-w-[1120px] px-4 pt-8 pb-16 sm:px-6">
+      <Suspense fallback={null}>
+        <ResetSearchOnReload />
+      </Suspense>
       <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[1fr_320px]">
         <section aria-labelledby="board-title" className="min-w-0">
           {board.lastDeadline && (

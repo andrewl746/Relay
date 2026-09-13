@@ -17,14 +17,20 @@ export default async function ClaimPage({ params }: PageProps<"/listings/[id]/cl
   const seller = firstName(listing.seller.name);
   const back = <BackLink href={`/listings/${listing.id}`}>{listing.title}</BackLink>;
 
-  if (user.id === listing.sellerId || listing.status === "claimed") {
+  if (user.id === listing.sellerId || listing.status !== "available") {
     return (
       <PageShell width="narrow">
         {back}
         <PageTitle
-          title={listing.status === "claimed" ? "Someone already claimed this" : "This is your listing"}
-          lede={
+          title={
             listing.status === "claimed"
+              ? "Someone already claimed this"
+              : listing.status === "removed"
+                ? "This listing was removed"
+                : "This is your listing"
+          }
+          lede={
+            listing.status !== "available"
               ? "Try searching for something similar, or add it to your list."
               : "Switch to another student at the top of the page to try the claim flow."
           }

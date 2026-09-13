@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/", label: "Browse" },
-  { href: "/wants", label: "My list" },
   { href: "/post", label: "Post" },
   { href: "/posts", label: "My posts" },
   { href: "/handoffs", label: "Handoffs" },
+  { href: "/wants", label: "My list" },
 ];
 
 function isActive(pathname: string, href: string) {
