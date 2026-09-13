@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { formatWhen } from "@/lib/hub/format";
+import { categoryLabel, formatWhen } from "@/lib/hub/format";
 import type { Category, OfferType } from "@/lib/hub/types";
 import { ChoiceChips, Field, SlotRows } from "./form-fields";
 import { btnPrimary, btnTertiary, fieldClass } from "./ui";
@@ -60,17 +60,23 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
         />
       </Field>
 
-      <div className="flex flex-wrap gap-x-10 gap-y-6">
-        <ChoiceChips
-          legend="Category"
-          name="category"
-          value={category}
-          onChange={setCategory}
-          options={[
-            { value: "furniture", label: "Furniture" },
-            { value: "school", label: "School materials" },
-          ]}
-        />
+      <div className="grid gap-6 sm:grid-cols-2">
+        <Field label="Category" htmlFor="category">
+          <select
+            id="category"
+            name="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value as Category)}
+            className={fieldClass}
+          >
+            {(Object.keys(categoryLabel) as Category[]).map((value) => (
+              <option key={value} value={value}>
+                {categoryLabel[value]}
+              </option>
+            ))}
+          </select>
+        </Field>
+
         <ChoiceChips
           legend="Offer"
           name="offerType"
@@ -78,14 +84,15 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           onChange={setOfferType}
           options={[
             { value: "sale", label: "Sell" },
-            { value: "rent", label: "Rent for the term" },
-            { value: "free", label: "Give away" },
+            { value: "free", label: "Give away for free" },
+            { value: "lend", label: "Lend for free" },
+            { value: "rent", label: "Lend for money" },
           ]}
         />
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
-        {offerType !== "free" && (
+        {(offerType === "sale" || offerType === "rent") && (
           <Field label={offerType === "rent" ? "Price per term" : "Price"} htmlFor="price">
             <div className="relative">
               <span className="data pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-2">$</span>
@@ -104,9 +111,11 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
         )}
         <Field label="Condition" htmlFor="condition">
           <select id="condition" name="condition" defaultValue="good" className={fieldClass}>
+            <option value="new">New</option>
             <option value="like-new">Like new</option>
             <option value="good">Good</option>
             <option value="fair">Fair</option>
+            <option value="bad">Bad</option>
           </select>
         </Field>
       </div>

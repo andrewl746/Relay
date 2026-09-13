@@ -1,6 +1,6 @@
-export type Category = "furniture" | "school";
-export type OfferType = "sale" | "rent" | "free";
-export type Condition = "like-new" | "good" | "fair";
+export type Category = "furniture" | "school" | "kitchen" | "electronics" | "hygiene" | "other";
+export type OfferType = "sale" | "rent" | "free" | "lend";
+export type Condition = "new" | "like-new" | "good" | "fair" | "bad";
 export type MoveStatus = "leaving" | "arriving" | "staying";
 export type PlaceKind = "seller" | "campus";
 export type ListingStatus = "available" | "claimed";

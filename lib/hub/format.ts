@@ -132,7 +132,7 @@ export function formatMoney(cents: number) {
 }
 
 export function formatPrice(listing: Pick<Listing, "offerType" | "priceCents">) {
-  if (listing.offerType === "free" || listing.priceCents === null) return "Free";
+  if (listing.offerType === "free" || listing.offerType === "lend" || listing.priceCents === null) return "Free";
   const amount = formatMoney(listing.priceCents);
   return listing.offerType === "rent" ? `${amount}/term` : amount;
 }
@@ -140,18 +140,25 @@ export function formatPrice(listing: Pick<Listing, "offerType" | "priceCents">) 
 export const categoryLabel: Record<Category, string> = {
   furniture: "Furniture",
   school: "School materials",
+  kitchen: "Kitchen supplies",
+  electronics: "Electronics",
+  hygiene: "Hygiene & toiletries",
+  other: "Other",
 };
 
 export const offerLabel: Record<OfferType, string> = {
   sale: "For sale",
-  rent: "For rent",
-  free: "Free",
+  rent: "Lend for money",
+  free: "Give away for free",
+  lend: "Lend for free",
 };
 
 export const conditionLabel: Record<Condition, string> = {
+  new: "New",
   "like-new": "Like new",
   good: "Good",
   fair: "Fair",
+  bad: "Bad",
 };
 
 export function moveLine(user: Pick<User, "moveStatus" | "moveDate">) {
