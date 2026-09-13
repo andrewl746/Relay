@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PickupMap } from "@/components/hub/pickup-map";
 import { BackLink, btnPrimary, Countdown, Eyebrow, PageShell, Thumb, VerifiedStamp } from "@/components/hub/ui";
 import { getListing, getUniversity } from "@/lib/hub/data";
+import { pickupOptions, planFor } from "@/lib/hub/matching";
 import {
   categoryLabel,
   conditionLabel,
@@ -28,6 +30,17 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
 
   const seller = listing.seller;
   const isOwn = user.id === seller.id;
+
+  // The situational read on this listing, for this person, right now.
+  const plan = planFor(user.id, listing.id);
+  const { verdicts, first } = pickupOptions(user, listing);
+  const myPlace = user.moveStatus === "arriving" ? user.destination : user.home;
+
+  // Claiming is gated on the situation, not just on the item being available.
+  // There is no pickup time these two people can both make, so there is
+  // nothing to claim — the button would only lead to an empty slot picker.
+  const heldForOther = Boolean(plan?.contest && !plan.contest.youWin);
+  const canCollect = first !== null && plan?.feasible !== false && !heldForOther;
   const partsTotal = listing.items.reduce((sum, item) => sum + (item.priceCents ?? 0), 0);
 
   return (
@@ -65,6 +78,32 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
             </p>
           </div>
 
+          {!isOwn && plan && (
+            <div
+              className={`mt-6 border-l-2 px-4 py-3 ${
+                !plan.feasible
+                  ? "border-signal bg-paper-raised"
+                  : plan.contest && !plan.contest.youWin
+                    ? "border-amber bg-paper-raised"
+                    : "border-seal bg-paper-raised"
+              }`}
+            >
+              <p className="t-eyebrow text-ink-2">
+                {!plan.feasible
+                  ? "Doesn't work with your dates"
+                  : plan.contest && !plan.contest.youWin
+                    ? "Held for someone else"
+                    : "You can collect this"}
+              </p>
+              <p className="mt-1 font-semibold">
+                {plan.contest && !plan.contest.youWin ? plan.contest.why : plan.timing}
+              </p>
+              {plan.feasible && plan.contest?.youWin && (
+                <p className="mt-1 text-[13px] text-ink-2">{plan.contest.why}</p>
+              )}
+            </div>
+          )}
+
           <div className="mt-8">
             {listing.status === "claimed" ? (
               <p className="font-semibold text-ink-2">Someone already claimed this.</p>
@@ -72,13 +111,36 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
               <p className="text-ink-2">
                 This is your listing. Switch to another student at the top of the page to try claiming it.
               </p>
+            ) : !canCollect ? (
+              <>
+                <span
+                  aria-disabled="true"
+                  className="inline-block w-full cursor-not-allowed border border-rule-strong bg-paper-sunk px-5 py-3 text-center font-semibold text-ink-3 sm:w-auto"
+                >
+                  {heldForOther ? "Held for someone else" : "You can’t collect this"}
+                </span>
+                <p className="mt-3 max-w-[52ch] text-[13px] text-ink-2">
+                  {heldForOther
+                    ? plan?.contest?.why
+                    : plan?.blocker?.text ?? "None of the pickup times work for you."}{" "}
+                  <Link href="/wants" className="font-semibold underline underline-offset-[3px]">
+                    See what you can collect
+                  </Link>
+                  .
+                </p>
+              </>
             ) : (
               <>
                 <Link href={`/listings/${listing.id}/claim`} className={`${btnPrimary} w-full sm:w-auto`}>
                   {listing.isBundle ? "Claim the whole room" : "Claim this"}
                 </Link>
                 <p className="mt-3 text-[13px] text-ink-2">
-                  Next you pick one of {firstName(seller.name)}’s pickup times. No messaging back and forth.
+                  {first && (
+                    <>
+                      Soonest you can make it: <span className="font-semibold text-ink">{formatWhen(first.startsAt)}</span>.{" "}
+                    </>
+                  )}
+                  No messaging back and forth.
                 </p>
               </>
             )}
@@ -87,16 +149,43 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
           <section className="mt-8">
             <Eyebrow>Pickup times {firstName(seller.name)} offered</Eyebrow>
             <ul className="mt-2 border-t border-rule">
-              {listing.slots.map((slot) => (
-                <li key={slot.id} className="flex flex-wrap justify-between gap-x-4 border-b border-rule py-2 text-[13px]">
-                  <span className="data font-medium">
+              {verdicts.map(({ slot, usable, why }) => (
+                <li
+                  key={slot.id}
+                  className={`flex flex-wrap items-baseline justify-between gap-x-4 border-b border-rule py-2 text-[13px] ${
+                    usable ? "" : "text-ink-3"
+                  }`}
+                >
+                  <span className={`data font-medium ${usable ? "" : "line-through"}`}>
                     {formatDay(slot.startsAt)}, {formatTimeRange(slot.startsAt, slot.endsAt)}
                   </span>
-                  <span className="text-ink-2">{slot.place}</span>
+                  <span className={usable ? "text-ink-2" : ""}>
+                    {usable ? slot.place : why}
+                  </span>
                 </li>
               ))}
             </ul>
+            {!isOwn && verdicts.some((v) => !v.usable) && (
+              <p className="mt-2 text-[13px] text-ink-2">
+                Struck-out times are ones you can&rsquo;t make. They&rsquo;re excluded from matching, not just
+                from this list.
+              </p>
+            )}
           </section>
+
+          {!isOwn && first && (
+            <section className="mt-8">
+              <Eyebrow>The walk</Eyebrow>
+              <div className="mt-2">
+                <PickupMap
+                  from={myPlace}
+                  to={first.place}
+                  fromLabel={user.moveStatus === "arriving" ? "your new place" : "you"}
+                  toLabel={first.place.split(",")[0]}
+                />
+              </div>
+            </section>
+          )}
         </div>
       </div>
 

@@ -18,6 +18,8 @@ export type User = {
   email: string;
   universityId: string;
   home: string;
+  /** Where an arriving student is moving to. Null once they are already here. */
+  destination: string | null;
   moveStatus: MoveStatus;
   moveDate: string | null;
   note: string;

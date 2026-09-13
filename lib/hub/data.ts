@@ -1,6 +1,7 @@
 import { filterBoard, rankByUrgency, type BoardView } from "./feed";
 import { isGoneByTonight } from "./format";
 import { handoffs, listings, matches, notifications, slots, university, users, wants } from "./mock-data";
+import { plansFor, type Plan } from "./matching";
 import type { Handoff, Listing, Match, TimeSlot, User, Want } from "./types";
 
 // Async on purpose: these signatures stay the same when mock data is replaced by real queries.
@@ -24,7 +25,15 @@ function childrenOf(listingId: string) {
 export type BoardListing = Listing & { itemCount: number; isMatch: boolean };
 
 export async function getBoard({ view, query, userId }: { view: BoardView; query?: string; userId: string }) {
-  const matchedIds = new Set(matches.filter((m) => m.userId === userId).map((m) => m.listingId));
+  // Only things this person could actually collect count as a match on the
+  // board. A listing that is gone before they land is a near miss, and putting
+  // it under "Matches my list" would be a lie the rest of the app then has to
+  // walk back.
+  const matchedIds = new Set(
+    plansFor(userId)
+      .filter((p) => p.feasible && p.contest?.youWin !== false)
+      .map((p) => p.listing.parentId ?? p.listing.id),
+  );
   const open: BoardListing[] = listings
     .filter((l) => l.parentId === null && l.status === "available")
     .map((l) => ({ ...l, itemCount: childrenOf(l.id).length, isMatch: matchedIds.has(l.id) }));
@@ -63,16 +72,28 @@ export async function getWants(userId: string) {
   return wants.filter((w) => w.userId === userId);
 }
 
-export type MatchDetail = Match & { listing: Listing; wants: Want[] };
+export type MatchDetail = Match & { listing: Listing; wants: Want[]; plan: Plan };
 
+/**
+ * Matches, ordered by what this person can actually do about them.
+ *
+ * The semantic pairing is authored; everything about the ordering, and whether
+ * a pair survives at all, is computed in lib/hub/matching.ts from when they
+ * land, when the seller leaves, what pickup times exist, what they budgeted,
+ * and who else is competing for the same object.
+ */
 export async function getMatches(userId: string): Promise<MatchDetail[]> {
-  return matches
-    .filter((m) => m.userId === userId)
-    .flatMap((m) => {
-      const listing = listings.find((l) => l.id === m.listingId);
-      return listing ? [{ ...m, listing, wants: wants.filter((w) => m.wantIds.includes(w.id)) }] : [];
-    })
-    .sort((a, b) => b.score - a.score);
+  return plansFor(userId).map((plan) => ({
+    ...plan.match,
+    listing: plan.listing,
+    wants: plan.wants,
+    plan,
+  }));
+}
+
+/** Just the ones they can actually act on. */
+export async function getReachableMatches(userId: string): Promise<MatchDetail[]> {
+  return (await getMatches(userId)).filter((m) => m.plan.feasible && m.plan.contest?.youWin !== false);
 }
 
 export type HandoffDetail = Handoff & { listing: Listing; slot: TimeSlot; buyer: User; seller: User };

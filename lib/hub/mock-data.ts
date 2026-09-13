@@ -14,6 +14,7 @@ export const users: User[] = [
     email: "m8chen@uwaterloo.ca",
     universityId: "uw",
     home: "Moving in from Vancouver",
+    destination: "Phillip St",
     moveStatus: "arriving",
     moveDate: "2026-09-15T09:00:00-04:00",
     note: "2B Software Engineering",
@@ -24,6 +25,7 @@ export const users: User[] = [
     email: "p3raman@uwaterloo.ca",
     universityId: "uw",
     home: "318 Lester St",
+    destination: null,
     moveStatus: "leaving",
     moveDate: "2026-09-15T14:00:00-04:00",
     note: "Co-op term in Toronto",
@@ -34,6 +36,7 @@ export const users: User[] = [
     email: "s7martins@uwaterloo.ca",
     universityId: "uw",
     home: "Moving in from Mississauga",
+    destination: "Village 1",
     moveStatus: "arriving",
     moveDate: "2026-09-14T14:00:00-04:00",
     note: "1A Biomedical Engineering",
@@ -44,6 +47,7 @@ export const users: User[] = [
     email: "a2bello@uwaterloo.ca",
     universityId: "uw",
     home: "Village 1",
+    destination: null,
     moveStatus: "leaving",
     moveDate: "2026-09-14T20:00:00-04:00",
     note: "Co-op term in Ottawa",
@@ -54,6 +58,7 @@ export const users: User[] = [
     email: "d4osei@uwaterloo.ca",
     universityId: "uw",
     home: "Sunview St",
+    destination: null,
     moveStatus: "leaving",
     moveDate: "2026-09-14T10:00:00-04:00",
     note: "Co-op term in Calgary",
@@ -64,6 +69,7 @@ export const users: User[] = [
     email: "h6yoshida@uwaterloo.ca",
     universityId: "uw",
     home: "Mackenzie King Village",
+    destination: null,
     moveStatus: "leaving",
     moveDate: "2026-09-17T20:00:00-04:00",
     note: "Co-op term in San Francisco",
@@ -74,6 +80,7 @@ export const users: User[] = [
     email: "j5kim@uwaterloo.ca",
     universityId: "uw",
     home: "Columbia St W",
+    destination: null,
     moveStatus: "staying",
     moveDate: null,
     note: "4A Mechatronics",
@@ -84,6 +91,7 @@ export const users: User[] = [
     email: "o9brooks@uwaterloo.ca",
     universityId: "uw",
     home: "King St N",
+    destination: null,
     moveStatus: "staying",
     moveDate: null,
     note: "3A Architecture",
@@ -447,18 +455,29 @@ export const slots: TimeSlot[] = [
 const marcusArrives = "2026-09-15T09:00:00-04:00";
 const sofiaArrives = "2026-09-14T14:00:00-04:00";
 
+// When a thing is actually needed, which is not the same as when someone
+// lands. Marcus wants his room usable by the weekend; Sofia's first chem lab
+// is Wednesday morning and her math tutorial is Thursday.
+const marcusSettled = "2026-09-18T20:00:00-04:00";
+const sofiaFirstLab = "2026-09-16T08:30:00-04:00";
+const sofiaTutorial = "2026-09-17T13:00:00-04:00";
+const classesStart = "2026-09-21T08:30:00-04:00";
+
 type WantSeed = Omit<Want, "fulfilled"> & { fulfilled?: boolean };
 
 export const wants: Want[] = (
   [
-    { id: "w-marcus-desk", userId: "u-marcus", text: "Desk big enough for a laptop and a monitor", maxPriceCents: 8000, neededBy: marcusArrives },
-    { id: "w-marcus-chair", userId: "u-marcus", text: "Comfy chair for studying", maxPriceCents: 5000, neededBy: marcusArrives },
-    { id: "w-marcus-lamp", userId: "u-marcus", text: "Lamp", maxPriceCents: null, neededBy: marcusArrives },
-    { id: "w-marcus-fridge", userId: "u-marcus", text: "Small fridge for my room", maxPriceCents: 6000, neededBy: marcusArrives },
-    { id: "w-marcus-board", userId: "u-marcus", text: "Whiteboard for problem sets", maxPriceCents: 3000, neededBy: marcusArrives, fulfilled: true },
-    { id: "w-sofia-calc", userId: "u-sofia", text: "Graphing calculator for first-year math", maxPriceCents: 7000, neededBy: sofiaArrives },
-    { id: "w-sofia-coat", userId: "u-sofia", text: "Lab coat for chem labs", maxPriceCents: 2000, neededBy: sofiaArrives },
-    { id: "w-sofia-bio", userId: "u-sofia", text: "Biology textbook", maxPriceCents: 5000, neededBy: sofiaArrives },
+    { id: "w-marcus-desk", userId: "u-marcus", text: "Desk big enough for a laptop and a monitor", maxPriceCents: 8000, neededBy: marcusSettled },
+    { id: "w-marcus-chair", userId: "u-marcus", text: "Comfy chair for studying", maxPriceCents: 5000, neededBy: marcusSettled },
+    { id: "w-marcus-lamp", userId: "u-marcus", text: "Lamp", maxPriceCents: null, neededBy: marcusSettled },
+    { id: "w-marcus-fridge", userId: "u-marcus", text: "Small fridge for my room", maxPriceCents: 6000, neededBy: marcusSettled },
+    { id: "w-marcus-monitor", userId: "u-marcus", text: "Second monitor", maxPriceCents: 2500, neededBy: classesStart },
+    { id: "w-marcus-board", userId: "u-marcus", text: "Whiteboard for problem sets", maxPriceCents: 3000, neededBy: classesStart, fulfilled: true },
+    { id: "w-sofia-calc", userId: "u-sofia", text: "Graphing calculator for first-year math", maxPriceCents: 7000, neededBy: sofiaTutorial },
+    { id: "w-sofia-coat", userId: "u-sofia", text: "Lab coat for chem labs", maxPriceCents: 2000, neededBy: sofiaFirstLab },
+    { id: "w-sofia-bio", userId: "u-sofia", text: "Biology textbook", maxPriceCents: 5000, neededBy: classesStart },
+    { id: "w-jordan-shelf", userId: "u-jordan", text: "Bookshelf for my textbooks", maxPriceCents: null, neededBy: classesStart },
+    { id: "w-owen-shelf", userId: "u-owen", text: "Shelving for studio supplies", maxPriceCents: 3000, neededBy: classesStart },
   ] satisfies WantSeed[]
 ).map((w) => ({ fulfilled: false, ...w }));
 
@@ -494,6 +513,54 @@ export const matches: Match[] = [
     wantIds: ["w-marcus-chair"],
     score: 0.58,
     reason: "An armchair rather than a desk chair. Good for reading, not for long study sessions.",
+  },
+  {
+    id: "m-marcus-lamp-free",
+    userId: "u-marcus",
+    listingId: "l-floor-lamp",
+    wantIds: ["w-marcus-lamp"],
+    score: 0.88,
+    reason: "A tall floor lamp with the bulb still in it, free.",
+  },
+  {
+    id: "m-marcus-lamp-priya",
+    userId: "u-marcus",
+    listingId: "l-priya-lamp",
+    wantIds: ["w-marcus-lamp"],
+    score: 0.72,
+    reason: "A desk lamp with a USB port, out of Priya's room.",
+  },
+  {
+    id: "m-marcus-monitor",
+    userId: "u-marcus",
+    listingId: "l-monitor",
+    wantIds: ["w-marcus-monitor"],
+    score: 0.86,
+    reason: "A 27 inch Dell, rented by the term.",
+  },
+  {
+    id: "m-jordan-shelf",
+    userId: "u-jordan",
+    listingId: "l-bookshelf",
+    wantIds: ["w-jordan-shelf"],
+    score: 0.9,
+    reason: "A 5-shelf bookcase, free, two streets from you.",
+  },
+  {
+    id: "m-owen-shelf",
+    userId: "u-owen",
+    listingId: "l-bookshelf",
+    wantIds: ["w-owen-shelf"],
+    score: 0.84,
+    reason: "A 5-shelf bookcase, free. Taller than the studio needs but it holds everything.",
+  },
+  {
+    id: "m-owen-shelf-priya",
+    userId: "u-owen",
+    listingId: "l-priya-shelf",
+    wantIds: ["w-owen-shelf"],
+    score: 0.7,
+    reason: "A 3-shelf bookcase out of Priya's room, $20.",
   },
   {
     id: "m-sofia-calc",
