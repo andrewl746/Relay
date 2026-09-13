@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getUnreadCount, getUniversity, getUsers } from "@/lib/hub/data";
 import { getCurrentUser } from "@/lib/hub/session";
 import { SITE_NAME } from "@/lib/hub/site";
-import { deleteAccount, signOut } from "@/lib/supabase/actions";
+import { signOut } from "@/lib/supabase/actions";
 import { getSupabaseUser } from "@/lib/supabase/session";
 import { BellIcon } from "./icons";
 import { NavLinks } from "./nav-links";
@@ -22,9 +22,21 @@ export async function SiteHeader() {
   return (
     <header className="border-b border-rule-strong">
       <div className="mx-auto flex max-w-[1120px] flex-wrap items-center gap-x-3 px-4 sm:gap-x-6 sm:px-6 lg:flex-nowrap">
-        <Link href="/" className="flex min-h-14 items-center gap-2.5" aria-label={SITE_NAME}>
-          <Image src="/relay-black.png" alt={SITE_NAME} width={160} height={58} priority className="h-7 w-auto" />
-          <span className="hidden text-[13px] font-medium text-ink-2 sm:inline">{university.shortName}</span>
+        {/* The campus name sat inline at nav size and read as another tab.
+            It is context, not a destination: larger, tracked, ink-3, and
+            separated by a rule with real space on both sides. */}
+        {/* The whole lockup is the home link — the campus name reads as part of
+            the mark, so it should behave like it. */}
+        <Link
+          href="/"
+          aria-label={`${SITE_NAME} home`}
+          className="flex min-h-14 shrink-0 items-center gap-2.5 pr-2 sm:pr-6"
+        >
+          <Image src="/relay-black.png" alt={SITE_NAME} width={160} height={58} priority className="h-8 w-auto" />
+          <span aria-hidden className="hidden h-7 w-px bg-border-strong sm:block" />
+          <span className="hidden text-[19px] font-semibold tracking-[-0.01em] text-ink-3 sm:inline">
+            {university.shortName}
+          </span>
         </Link>
 
         <div className="ml-auto flex items-center gap-1 lg:order-last">
@@ -46,8 +58,8 @@ export async function SiteHeader() {
               <UserMenu
                 name={user.name}
                 email={user.email}
+                avatarUrl={(supabaseUser.user_metadata?.avatar_url as string | undefined) ?? (supabaseUser.user_metadata?.picture as string | undefined) ?? null}
                 signOutAction={signOut}
-                deleteAction={deleteAccount}
               />
             </div>
           ) : (

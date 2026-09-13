@@ -19,7 +19,7 @@ export default async function ClaimPage({ params }: PageProps<"/listings/[id]/cl
 
   if (user.id === listing.sellerId || listing.status !== "available") {
     return (
-      <PageShell width="narrow">
+      <PageShell>
         {back}
         <PageTitle
           title={
@@ -55,7 +55,7 @@ export default async function ClaimPage({ params }: PageProps<"/listings/[id]/cl
   }));
 
   return (
-    <PageShell width="narrow">
+    <PageShell>
       {back}
       <PageTitle
         title="Pick a pickup time"

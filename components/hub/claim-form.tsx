@@ -1,5 +1,7 @@
 "use client";
 
+import { claimListing } from "@/lib/hub/claim-actions";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { PlaceKind } from "@/lib/hub/types";
@@ -50,12 +52,12 @@ export function ClaimForm({
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (selected) router.push(`/listings/${listingId}/claim/confirmed?slot=${encodeURIComponent(selected.id)}`);
-      }}
+      action={claimListing}
       className="space-y-8"
     >
+      <input type="hidden" name="listingId" value={listingId} />
+      <input type="hidden" name="slotId" value={selected?.id ?? ""} />
+
       {methods.length > 1 ? (
         <fieldset>
           <legend className="t-eyebrow text-ink-2">How to get it</legend>

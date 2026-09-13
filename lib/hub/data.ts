@@ -3,6 +3,7 @@ import { isGoneByTonight } from "./format";
 import { handoffs, listings, matches, notifications, slots, university, users, wants } from "./mock-data";
 import { plansFor, type Plan } from "./matching";
 import { createClient } from "../supabase/server";
+import { readRuntime } from "@/lib/relay/runtime";
 import type { Handoff, Listing, Match, TimeSlot, User, Want } from "./types";
 
 // Supabase auth ids are UUIDs; seeded demo users (dev login) use short ids
@@ -146,8 +147,31 @@ function withDetail(h: Handoff): HandoffDetail | null {
   return listing && slot && buyer && seller ? { ...h, listing, slot, buyer, seller } : null;
 }
 
+/**
+ * Claims made in the app become handoffs here.
+ *
+ * Without this, /handoffs only ever showed the hardcoded demo rows, which are
+ * keyed to demo user ids — so a real signed-in user (a Supabase UUID) claimed
+ * something, landed on the confirmation, opened Handoffs and found it empty.
+ */
+function runtimeHandoffs(): Handoff[] {
+  return readRuntime().claims.flatMap((c) => {
+    const listing = listings.find((l) => l.id === c.listingId);
+    if (!listing) return [];
+    return [{
+      id: c.id,
+      listingId: c.listingId,
+      slotId: c.slotId,
+      buyerId: c.buyerId,
+      sellerId: listing.sellerId,
+      createdAt: c.createdAt,
+    }];
+  });
+}
+
 export async function getHandoffs(userId: string) {
-  const mine = handoffs
+  const all = [...handoffs, ...runtimeHandoffs()];
+  const mine = all
     .filter((h) => h.buyerId === userId || h.sellerId === userId)
     .map(withDetail)
     .filter((h): h is HandoffDetail => h !== null)
@@ -159,7 +183,7 @@ export async function getHandoffs(userId: string) {
 }
 
 export async function getHandoff(id: string) {
-  const h = handoffs.find((x) => x.id === id);
+  const h = [...handoffs, ...runtimeHandoffs()].find((x) => x.id === id);
   return h ? withDetail(h) : null;
 }
 

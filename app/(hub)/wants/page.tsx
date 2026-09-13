@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { WantsList } from "@/components/hub/wants-list";
-import { Countdown, EmptyState, Eyebrow, PageShell, PageTitle, Thumb } from "@/components/hub/ui";
+import { Countdown, EmptyState, Eyebrow, PageShell, PageTitle, Thumb, SectionTitle } from "@/components/hub/ui";
 import { getMatches, getUniversity, getWants, type MatchDetail } from "@/lib/hub/data";
 import { formatMoney, formatPrice, matchStrength, moveLine } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
@@ -85,7 +85,7 @@ export default async function WantsPage({ searchParams }: PageProps<"/wants">) {
         </section>
 
         <section>
-          <Eyebrow>Matches · what you can actually collect</Eyebrow>
+          <SectionTitle>Matches · what you can actually collect</SectionTitle>
           {reachable.length === 0 && lost.length === 0 && blocked.length === 0 ? (
             <EmptyState title="No matches yet.">
               We check every new listing against your list. Most things get posted in the last two weeks of term.

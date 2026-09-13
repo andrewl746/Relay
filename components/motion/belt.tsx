@@ -41,8 +41,15 @@ export function Belt({
 
   return (
     <div
-      className="group relative overflow-hidden py-1"
+      // overflow-x:clip, NOT hidden. `hidden` makes this a scroll container, so
+      // the wheel gets swallowed here and the page stops scrolling when the
+      // cursor is over the belt. `clip` crops without becoming scrollable.
+      className="group relative py-1"
       style={{
+        overflowX: 'clip',
+        overflowY: 'visible',
+        // the belt is decoration; never let it eat a pointer or a wheel event
+        pointerEvents: 'none',
         maskImage:
           'linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)',
         WebkitMaskImage:

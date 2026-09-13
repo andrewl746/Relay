@@ -29,15 +29,29 @@ export type AcceptedHop = {
   createdAt: string
 }
 
+/**
+ * A claim someone actually made in the UI: this listing, this pickup slot, this
+ * person. The hub's handoff list reads these, so claiming finally produces
+ * something instead of just navigating to a confirmation page.
+ */
+export type HubClaim = {
+  id: string
+  listingId: string
+  slotId: string
+  buyerId: string
+  createdAt: string
+}
+
 export type Runtime = {
   items: Item[]
   needs: Need[]
   accepted: AcceptedHop[]
+  claims: HubClaim[]
   /** `${needId}|${itemId}` -> reranked score, for rows the seed never saw. */
   matches: Record<string, { score: number; reason: string }>
 }
 
-const EMPTY: Runtime = { items: [], needs: [], accepted: [], matches: {} }
+const EMPTY: Runtime = { items: [], needs: [], accepted: [], claims: [], matches: {} }
 
 const file = () => join(process.cwd(), 'data', 'runtime.json')
 

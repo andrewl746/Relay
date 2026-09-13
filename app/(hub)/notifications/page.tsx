@@ -19,7 +19,7 @@ export default async function NotificationsPage() {
   const notifications = await getNotifications(user.id);
 
   return (
-    <PageShell width="narrow">
+    <PageShell>
       <PageTitle title="Notifications" lede="Matches for your list, claims on your things, and pickups coming up." />
 
       {notifications.length === 0 ? (

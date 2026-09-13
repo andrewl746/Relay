@@ -10,7 +10,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login/demo
   const [users, current] = await Promise.all([getUsers(), getCurrentUser()]);
 
   return (
-    <PageShell width="narrow">
+    <PageShell>
       <div className="mb-8">
         <h1 className="font-[family-name:var(--font-display)] text-[32px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
           AUTHORIZE
