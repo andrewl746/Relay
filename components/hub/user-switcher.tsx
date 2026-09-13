@@ -35,7 +35,7 @@ export function UserSwitcher({
             {u.label}
           </option>
         ))}
-        <option value={SIGN_IN}>Sign in with a school email…</option>
+        <option value={SIGN_IN}>Sign in with Google…</option>
       </select>
     </label>
   );

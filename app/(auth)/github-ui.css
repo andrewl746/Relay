@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+/* A dense, bordered, form-first system in the spirit of a developer-tool auth page —
+   distinct on purpose from the ledger system in app/(hub), since sign-in/onboarding
+   is a different job than browsing listings. */
+:root {
+  --gh-canvas: #ffffff;
+  --gh-canvas-subtle: #f6f8fa;
+  --gh-canvas-inset: #eff2f5;
+  --gh-border: #d1d9e0;
+  --gh-border-muted: #d8dee4;
+  --gh-fg: #1f2328;
+  --gh-fg-muted: #59636e;
+  --gh-fg-subtle: #6e7781;
+  --gh-accent: #0969da;
+  --gh-accent-subtle: #ddf4ff;
+  --gh-success: #1a7f37;
+  --gh-success-subtle: #d8f5df;
+  --gh-danger: #cf222e;
+  --gh-danger-subtle: #ffebe9;
+}
+
+@theme inline {
+  --color-gh-canvas: var(--gh-canvas);
+  --color-gh-canvas-subtle: var(--gh-canvas-subtle);
+  --color-gh-canvas-inset: var(--gh-canvas-inset);
+  --color-gh-border: var(--gh-border);
+  --color-gh-border-muted: var(--gh-border-muted);
+  --color-gh-fg: var(--gh-fg);
+  --color-gh-fg-muted: var(--gh-fg-muted);
+  --color-gh-fg-subtle: var(--gh-fg-subtle);
+  --color-gh-accent: var(--gh-accent);
+  --color-gh-accent-subtle: var(--gh-accent-subtle);
+  --color-gh-success: var(--gh-success);
+  --color-gh-success-subtle: var(--gh-success-subtle);
+  --color-gh-danger: var(--gh-danger);
+  --color-gh-danger-subtle: var(--gh-danger-subtle);
+}
+
+.gh {
+  background: var(--gh-canvas-subtle);
+  color: var(--gh-fg);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.gh :focus-visible {
+  outline: 2px solid var(--gh-accent);
+  outline-offset: -1px;
+  border-radius: 6px;
+}
+
+@layer components {
+  .gh-card {
+    background: var(--gh-canvas);
+    border: 1px solid var(--gh-border);
+    border-radius: 12px;
+    box-shadow: 0 1px 0 rgba(31, 35, 40, 0.04);
+  }
+
+  .gh-input {
+    display: block;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--gh-border);
+    background: var(--gh-canvas);
+    padding: 5px 12px;
+    font-size: 14px;
+    color: var(--gh-fg);
+    box-shadow: inset 0 1px 0 rgba(208, 215, 222, 0.2);
+  }
+
+  .gh-input:focus-visible {
+    border-color: var(--gh-accent);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--gh-accent-subtle);
+  }
+
+  .gh-input::placeholder {
+    color: var(--gh-fg-subtle);
+  }
+
+  .gh-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .gh-hint {
+    font-size: 12px;
+    color: var(--gh-fg-muted);
+    margin-top: 6px;
+  }
+
+  .gh-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 34px;
+    padding: 5px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid var(--gh-border);
+    background: var(--gh-canvas-subtle);
+    color: var(--gh-fg);
+    transition: background-color 80ms ease;
+  }
+
+  .gh-btn:hover {
+    background: var(--gh-canvas-inset);
+  }
+
+  .gh-btn-primary {
+    border-color: rgba(27, 31, 36, 0.15);
+    background: var(--gh-success);
+    color: #ffffff;
+  }
+
+  .gh-btn-primary:hover {
+    background: #1a7f37;
+  }
+
+  .gh-btn-primary:disabled {
+    background: #94d3a2;
+    border-color: transparent;
+    cursor: not-allowed;
+  }
+
+  .gh-btn-secondary:disabled {
+    color: var(--gh-fg-subtle);
+    cursor: not-allowed;
+  }
+
+  .gh-link {
+    color: var(--gh-accent);
+    font-weight: 500;
+  }
+
+  .gh-link:hover {
+    text-decoration: underline;
+  }
+
+  .gh-flash-error {
+    display: flex;
+    gap: 8px;
+    border: 1px solid rgba(207, 34, 46, 0.4);
+    background: var(--gh-danger-subtle);
+    color: var(--gh-danger);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .gh-flash-success {
+    display: flex;
+    gap: 8px;
+    border: 1px solid rgba(26, 127, 55, 0.3);
+    background: var(--gh-success-subtle);
+    color: var(--gh-success);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}

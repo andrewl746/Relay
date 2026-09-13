@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/lib/hub/session";
 
 export const metadata = { title: "Authorization — Relay" };
 
-export default async function LoginPage({ searchParams }: PageProps<"/login">) {
+export default async function LoginPage({ searchParams }: PageProps<"/login/demo">) {
   const next = (await searchParams).next;
   const [users, current] = await Promise.all([getUsers(), getCurrentUser()]);
 

@@ -11,6 +11,7 @@ export function getUniversityDomain(email: string): string | null {
   return null;
 }
 
-export function isUniversityEmail(email: string): boolean {
-  return getUniversityDomain(email) !== null;
+export function isUniversityEmail(email: string, domain?: string): boolean {
+  const host = getUniversityDomain(email);
+  return host !== null && (!domain || host === domain);
 }

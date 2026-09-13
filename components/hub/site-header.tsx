@@ -2,12 +2,19 @@ import Link from "next/link";
 import { getUnreadCount, getUniversity, getUsers } from "@/lib/hub/data";
 import { getCurrentUser } from "@/lib/hub/session";
 import { SITE_NAME } from "@/lib/hub/site";
+import { signOut } from "@/lib/supabase/actions";
+import { getSupabaseUser } from "@/lib/supabase/session";
 import { BellIcon } from "./icons";
 import { NavLinks } from "./nav-links";
 import { UserSwitcher } from "./user-switcher";
 
 export async function SiteHeader() {
-  const [user, users, university] = await Promise.all([getCurrentUser(), getUsers(), getUniversity()]);
+  const [user, supabaseUser, users, university] = await Promise.all([
+    getCurrentUser(),
+    getSupabaseUser(),
+    getUsers(),
+    getUniversity(),
+  ]);
   const unread = await getUnreadCount(user.id);
 
   return (
@@ -31,10 +38,22 @@ export async function SiteHeader() {
               </span>
             )}
           </Link>
-          <UserSwitcher
-            users={users.map((u) => ({ id: u.id, label: `${u.name}, ${u.moveStatus}` }))}
-            currentUserId={user.id}
-          />
+
+          {supabaseUser ? (
+            <div className="flex items-center gap-3 pl-2">
+              <span className="hidden max-w-[9rem] truncate text-[13px] font-semibold sm:inline">{user.name}</span>
+              <form action={signOut}>
+                <button type="submit" className="min-h-11 rounded-1 px-3 text-[13px] font-semibold text-ink-2 hover:bg-paper-raised hover:text-ink">
+                  Sign out
+                </button>
+              </form>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 pl-2">
+              <span className="t-eyebrow hidden text-ink-3 sm:inline">Demo</span>
+              <UserSwitcher users={users.map((u) => ({ id: u.id, label: `${u.name}, ${u.moveStatus}` }))} currentUserId={user.id} />
+            </div>
+          )}
         </div>
 
         <NavLinks />

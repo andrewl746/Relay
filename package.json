@@ -16,10 +16,13 @@
     "reset": "node --experimental-strip-types scripts/reset.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.116.0",
     "backboard-sdk": "^1.5.16",
     "next": "16.3.5",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "resend": "^6.28.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
