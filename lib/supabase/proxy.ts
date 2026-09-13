@@ -22,7 +22,10 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getUser();
+  // getClaims, not getUser: it still refreshes an expiring session, but verifies the JWT
+  // locally when the project uses asymmetric signing keys instead of calling Supabase
+  // Auth on every request — this runs for every navigation and prefetch.
+  await supabase.auth.getClaims();
 
   return response;
 }

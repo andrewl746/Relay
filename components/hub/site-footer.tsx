@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { SITE_NAME } from "@/lib/hub/site";
+import { Logo } from "./logo";
 
 const COLUMNS: { title: string; links: { href: string; label: string }[] }[] = [
   {
@@ -34,13 +33,7 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-[var(--page-max)] px-5 py-12 sm:px-6">
         <div className="grid gap-10 sm:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
-            <Image
-              src="/relay-black.png"
-              alt={SITE_NAME}
-              width={160}
-              height={58}
-              className="h-12 w-auto"
-            />
+            <Logo className="h-12 bg-ink" />
             <p className="mt-3 max-w-[30ch] text-[14px] leading-relaxed text-ink-2">
               Borrow what you need for a few days from someone in your building,
               and pass it on when you&rsquo;re done.

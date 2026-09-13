@@ -1,4 +1,4 @@
-import { TransitionLink } from "./transition-link";
+import Link from "next/link";
 import type { BoardListing } from "@/lib/hub/data";
 import { categoryLabel, conditionLabel, formatPrice, formatReturn, isFinalCall, offerLabel } from "@/lib/hub/format";
 import { RETURNS } from "@/lib/hub/types";
@@ -26,7 +26,7 @@ export function ListingRow({ listing }: { listing: BoardListing }) {
   return (
     <li className="relative">
       {finalCall && <span aria-hidden="true" className="absolute inset-y-0 left-0 w-0.5 bg-accent" />}
-      <TransitionLink
+      <Link
         href={`/listings/${listing.id}`}
         className="group grid grid-cols-[auto_1fr] items-start gap-4 px-4 py-4 transition-colors duration-100 hover:bg-surface-2 sm:grid-cols-[auto_1fr_auto] sm:gap-5 sm:px-5"
       >
@@ -80,7 +80,7 @@ export function ListingRow({ listing }: { listing: BoardListing }) {
             <Countdown expiresAt={closes} />
           </p>
         </div>
-      </TransitionLink>
+      </Link>
     </li>
   );
 }

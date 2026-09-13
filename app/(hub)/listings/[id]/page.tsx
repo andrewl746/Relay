@@ -69,7 +69,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
               ? `Whole room · ${listing.items.length} items · ${offerLabel[listing.offerType]}`
               : `${categoryLabel[listing.category]} · ${offerLabel[listing.offerType]} · ${conditionLabel[listing.condition]}`}
           </Eyebrow>
-          <h1 className="t-title mt-2 text-[28px] leading-[1.15]">{listing.title}</h1>
+          <h1 className="t-title mt-2 text-[clamp(30px,3.5vw,38px)] leading-[1.15]">{listing.title}</h1>
 
           <div className="mt-5 flex items-end justify-between gap-4 border-y border-rule py-4">
             <p className="data text-[32px] leading-none font-semibold">{formatPrice(listing)}</p>

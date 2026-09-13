@@ -3,12 +3,9 @@ import localFont from "next/font/local";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
-import { SiteFooter } from "@/components/hub/site-footer";
 import { SiteHeader } from "@/components/hub/site-header";
-import { getProfile } from "@/lib/onboarding/profile";
 import { SITE_NAME } from "@/lib/hub/site";
-import { createClient } from "@/lib/supabase/server";
-import { getSupabaseUser } from "@/lib/supabase/session";
+import { getMyProfile, getSupabaseUser } from "@/lib/supabase/session";
 import "./hub.css";
 
 // Self-hosted rather than next/font/google. Google Fonts is fetched at build
@@ -40,10 +37,8 @@ export const metadata: Metadata = {
 };
 
 export default async function HubLayout({ children }: { children: ReactNode }) {
-  const supabaseUser = await getSupabaseUser();
-  if (supabaseUser) {
-    const supabase = await createClient();
-    const profile = await getProfile(supabase, supabaseUser.id);
+  if (await getSupabaseUser()) {
+    const profile = await getMyProfile();
     if (!profile?.onboarding_completed) redirect("/onboarding/profile");
   }
 
@@ -51,7 +46,6 @@ export default async function HubLayout({ children }: { children: ReactNode }) {
     <div className={`${archivo.variable} ${plex.variable} hub flex min-h-full flex-1 flex-col font-sans`}>
       <SiteHeader />
       <main className="flex-1">{children}</main>
-      <SiteFooter />
     </div>
   );
 }

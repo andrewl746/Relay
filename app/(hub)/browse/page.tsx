@@ -24,9 +24,9 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
   const user = await getCurrentUser();
   const [university, board, wants, matches] = await Promise.all([
     getUniversity(),
-    getBoard({ view, mode, query, userId: user.id }),
+    getBoard({ view, mode, query, user }),
     getWants(user.id),
-    getMatches(user.id),
+    getMatches(user),
   ]);
   const shown = board.finalCall.length + board.rest.length;
 
@@ -41,15 +41,17 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
     return qs ? `/browse?${qs}` : "/browse";
   };
   const chip = (active: boolean) =>
-    `inline-flex min-h-9 items-center rounded-full px-3.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-[90ms] ${
-      active ? "bg-ink text-bg" : "bg-surface-2 text-ink-2 hover:bg-surface hover:text-ink"
+    `inline-flex min-h-9 items-center rounded-full border px-3.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-[90ms] ${
+      active
+        ? "border-ink bg-ink text-bg"
+        : "border-border-strong bg-surface-2 text-ink-2 hover:border-ink-3 hover:text-ink"
     }`;
 
   return (
-    <div className="mx-auto max-w-[1120px] px-4 pt-8 pb-16 sm:px-6">
+    <div className="mx-auto max-w-[1120px] px-4 pt-12 pb-16 sm:px-6 sm:pt-16">
       <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[1fr_320px]">
         <section aria-labelledby="board-title" className="min-w-0">
-          <h1 id="board-title" className="text-[30px] leading-[1.12] font-semibold tracking-[-0.02em] text-ink">
+          <h1 id="board-title" className="text-[clamp(32px,4.5vw,42px)] leading-[1.1] font-semibold tracking-[-0.02em] text-ink">
             Everything here is leaving
           </h1>
           <p className="mt-2 text-[16px] text-ink-2">
@@ -95,7 +97,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                 </li>
               ))}
             </ul>
-            {/* The axis a general marketplace has no row for. */}
+            {/* The axis a general marketplace has no row for: am I keeping it? */}
             <ul className="flex items-center gap-2">
               {boardModes.map((m, i) => (
                 <li key={m.value} className="flex items-center gap-2">
@@ -110,12 +112,6 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
             </ul>
           </nav>
 
-          {query && board.semantic && shown > 0 && (
-            <p className="mt-4 text-[13px] text-ink-2">
-              Matched on meaning, not just keywords — an embedding of what you asked for.
-            </p>
-          )}
-
           <div className="mt-6">
             {shown === 0 ? (
               <div className="board px-5">
@@ -126,7 +122,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                 </p>
                 <Link
                   href={query ? `/wants?add=${encodeURIComponent(query)}` : "/wants"}
-                  className={`${btnSecondary} mt-4`}
+                  className={btnTertiary}
                 >
                   {query ? `Add “${query}” to my list` : "Go to my list"}
                 </Link>

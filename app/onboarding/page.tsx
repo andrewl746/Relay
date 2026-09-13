@@ -47,7 +47,7 @@ export default function OnboardingPage() {
       />
 
       <div className="relative z-10 w-full max-w-[520px]">
-        <h1 className="font-[family-name:var(--font-display)] text-[28px] font-bold tracking-[-0.03em] mb-2">
+        <h1 className="font-[family-name:var(--font-display)] text-[36px] font-bold tracking-[-0.03em] mb-2">
           CONFIGURE YOUR NODE
         </h1>
         <p className="text-[var(--text-muted)] mb-10 text-[15px]">
@@ -107,7 +107,7 @@ export default function OnboardingPage() {
                 onClick={() => toggleWindow(w)}
                 className={`flex-1 rounded-[2px] border px-4 py-3 text-[14px] font-semibold transition-all duration-75 ${
                   windows.has(w)
-                    ? 'border-[var(--active-route)] bg-[var(--active-route)] text-white'
+                    ? 'border-accent bg-accent text-on-accent'
                     : 'border-[var(--bezel)] bg-[var(--panel)] text-[var(--text-muted)] hover:border-[var(--text-muted)]'
                 }`}
               >
@@ -121,7 +121,7 @@ export default function OnboardingPage() {
         <button
           onClick={() => router.push('/')}
           disabled={!ready}
-          className="w-full min-h-12 rounded-[2px] bg-[var(--active-route)] text-[15px] font-bold text-white tracking-wide transition-all duration-75 hover:brightness-110 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
+          className="w-full min-h-12 rounded-[2px] bg-accent text-[15px] font-bold text-on-accent tracking-wide transition-all duration-75 hover:brightness-110 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
         >
           ACTIVATE
         </button>

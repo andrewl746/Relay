@@ -56,7 +56,7 @@ export function UserMenu({
         aria-haspopup="menu"
         className="flex min-h-11 items-center gap-2 rounded-sm px-2 text-[13px] font-semibold hover:bg-surface-2"
       >
-        <Avatar name={name} url={avatarUrl} />
+        <Avatar name={name} url={avatarUrl} size={36} />
         <span className="hidden max-w-[9rem] truncate sm:inline">{name}</span>
         <svg aria-hidden viewBox="0 0 16 16" className="size-3.5 text-ink-2">
           <path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -143,7 +143,7 @@ function Avatar({ name, url, size = 28 }: { name: string; url?: string | null; s
   return (
     <span
       aria-hidden
-      className="flex shrink-0 items-center justify-center rounded-full bg-accent font-bold text-white"
+      className="flex shrink-0 items-center justify-center rounded-full bg-accent font-bold text-on-accent"
       style={{ width: size, height: size, fontSize: size * 0.44, lineHeight: 1 }}
     >
       {name.trim().charAt(0).toUpperCase() || "?"}

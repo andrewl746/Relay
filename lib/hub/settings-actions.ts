@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { getProfile } from "@/lib/onboarding/profile";
 import { getUniversity } from "@/lib/onboarding/universities";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseUser } from "@/lib/supabase/session";
@@ -48,9 +50,15 @@ export async function saveSettings(
   }
 
   const supabase = await createClient();
+  // A verified email proves you study at ONE university. Moving to another
+  // drops that proof, and the save sends you to verify the new domain.
+  const current = await getProfile(supabase, user.id);
+  const universityChanged = current?.university_id !== universityId;
+
   const { error } = await supabase
     .from("profiles")
     .update({
+      ...(universityChanged && { university_email: null, university_email_verified: false }),
       full_name: fullName,
       university_id: universityId,
       living_situation: livingSituation,
@@ -63,8 +71,14 @@ export async function saveSettings(
     })
     .eq("id", user.id);
 
-  if (error) return { status: "error", message: "Couldn't save that. Try again." };
+  if (error) {
+    // Logged so a schema problem (e.g. an unrun migration) isn't hidden behind
+    // the generic message.
+    console.error("saveSettings failed:", error.message);
+    return { status: "error", message: "Couldn't save that. Try again." };
+  }
 
   revalidatePath("/", "layout");
+  if (universityChanged) redirect("/onboarding/verify");
   return { status: "saved" };
 }

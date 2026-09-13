@@ -50,7 +50,7 @@ function MatchRow({ m, muted }: { m: MatchDetail; muted?: boolean }) {
 export default async function WantsPage({ searchParams }: PageProps<"/wants">) {
   const add = (await searchParams).add;
   const user = await getCurrentUser();
-  const [wants, matches, university] = await Promise.all([getWants(user.id), getMatches(user.id), getUniversity()]);
+  const [wants, matches, university] = await Promise.all([getWants(user.id), getMatches(user), getUniversity()]);
 
   const reachable = matches.filter((m) => m.plan.feasible && m.plan.contest?.youWin !== false);
   const lost = matches.filter((m) => m.plan.feasible && m.plan.contest?.youWin === false);

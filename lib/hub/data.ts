@@ -1,10 +1,9 @@
 import { filterBoard, rankByUrgency, type BoardMode, type BoardView } from "./feed";
+import { hybridSearch, hybridSearchMany, type SearchDoc, type SearchHit } from "./semantic";
 import { isGoneByTonight } from "./format";
-import { matchesTerms, searchTerms } from "./search";
-import { semanticHits } from "./semantic";
 import { effectiveExpiry } from "./urgency";
-import { handoffs, listings, matches, notifications, slots, university, users, wants } from "./mock-data";
-import { plansFor, type Plan } from "./matching";
+import { handoffs, listings, notifications, slots, university, users, wants } from "./mock-data";
+import { evaluate, plansFor, type Plan } from "./matching";
 import { createClient } from "../supabase/server";
 import { readRuntime } from "@/lib/relay/runtime";
 import type { Handoff, Listing, Match, TimeSlot, User, Want } from "./types";
@@ -32,44 +31,53 @@ function childrenOf(listingId: string) {
   return listings.filter((l) => l.parentId === listingId);
 }
 
+function searchDoc(l: Listing): SearchDoc {
+  return {
+    id: l.id,
+    title: [l.title, l.kind, ...childrenOf(l.id).map((c) => c.title)].join(". "),
+    body: l.description,
+  };
+}
+
+function openListings() {
+  return listings.filter((l) => l.parentId === null && l.status === "available");
+}
+
 export type BoardListing = Listing & { itemCount: number; isMatch: boolean; sellerName: string };
 
 export async function getBoard({
   view,
   mode,
   query,
-  userId,
+  user,
 }: {
   view: BoardView;
   mode?: BoardMode;
   query?: string;
-  userId: string;
+  user: User;
 }) {
   // Only things this person could actually collect count as a match on the
   // board. A listing that is gone before they land is a near miss, and putting
   // it under "Matches my list" would be a lie the rest of the app then has to
   // walk back.
   const matchedIds = new Set(
-    plansFor(userId)
-      .filter((p) => p.feasible && p.contest?.youWin !== false)
-      .map((p) => p.listing.parentId ?? p.listing.id),
+    (await getMatches(user))
+      .filter((m) => m.plan.feasible && m.plan.contest?.youWin !== false)
+      .map((m) => m.listing.parentId ?? m.listing.id),
   );
-  const open: BoardListing[] = listings
-    .filter((l) => l.parentId === null && l.status === "available")
-    .map((l) => ({
-      ...l,
-      itemCount: childrenOf(l.id).length,
-      isMatch: matchedIds.has(l.id),
-      sellerName: users.find((u) => u.id === l.sellerId)?.name ?? "A student",
-    }));
+  const open: BoardListing[] = openListings().map((l) => ({
+    ...l,
+    itemCount: childrenOf(l.id).length,
+    isMatch: matchedIds.has(l.id),
+    sellerName: users.find((u) => u.id === l.sellerId)?.name ?? "A student",
+  }));
 
   const searchableText = (l: BoardListing) =>
     [l.title, l.description, l.kind, ...childrenOf(l.id).map((c) => c.title)].join(" ");
 
-  // Filter the view first, then search inside it. Search is the union of a
-  // literal/synonym match and an embedding match (./semantic.ts) — the model
-  // can add results a table never would, and if it is unavailable the lexical
-  // half still answers, so search degrades instead of breaking.
+  // Search scores against the whole board, not just the current view, so the
+  // embedding gates see a real distribution even when a filter leaves five
+  // listings. See ./semantic.ts for how the tiers are decided.
   const inView = filterBoard(open, view, mode ?? "any", { matchedIds });
   let shown = inView;
   let semantic = false;
@@ -77,23 +85,22 @@ export async function getBoard({
 
   if (query?.trim()) {
     searched = true;
-    const terms = searchTerms(query);
-    const hits = await semanticHits(
-      query,
-      inView.map((l) => ({ id: l.id, text: searchableText(l) })),
-    );
-    semantic = hits.size > 0;
+    const hits = await hybridSearch(query, open.map(searchDoc));
+    semantic = hits.some((h) => h.via === "embedding");
 
-    // A literal match is the words the student actually typed, so it outranks
-    // anything the vectors merely found similar. Everything else is ordered by
-    // how well it answers the question — never by deadline, which would bury
-    // the best answer under whatever happens to expire soonest.
-    const relevance = (l: BoardListing) =>
-      (matchesTerms(searchableText(l), terms) ? 1 : 0) + (hits.get(l.id) ?? 0);
-
+    // Order by how well each listing answers the question — never by deadline,
+    // which would bury the best answer under whatever happens to expire
+    // soonest. The tier decides first: a title match is the words the student
+    // actually typed, so it outranks anything the vectors merely found similar.
+    const TIER = { title: 2, text: 1, embedding: 0 } as const;
+    const rank = new Map(hits.map((h) => [h.id, h]));
     shown = inView
-      .filter((l) => relevance(l) > 0)
-      .sort((a, b) => relevance(b) - relevance(a));
+      .filter((l) => rank.has(l.id))
+      .sort((a, b) => {
+        const x = rank.get(a.id)!;
+        const y = rank.get(b.id)!;
+        return TIER[y.via] - TIER[x.via] || (y.similarity ?? 0) - (x.similarity ?? 0);
+      });
   }
 
   const deadlines = open.flatMap((l) => {
@@ -159,26 +166,80 @@ export async function getWants(userId: string): Promise<Want[]> {
     text: row.text,
     maxPriceCents: row.max_price_cents,
     urgency: "medium" as const,
-    // Real users' wants aren't run through the matching/urgency pipeline
-    // yet (only the seeded demo users have authored matches), so this
-    // isn't consumed downstream — it exists only to satisfy the Want type.
-    neededBy: row.created_at,
+    // The wants table has no needed-by date. Empty means no deadline to
+    // matching.ts — created_at would read as a deadline already missed and
+    // mark every match "after you need it".
+    neededBy: "",
     fulfilled: false,
   }));
 }
 
 export type MatchDetail = Match & { listing: Listing; wants: Want[]; plan: Plan };
 
+/** Feeds matchStrength(): a title hit reads as "Good match", never "Strong" — that's for authored pairings. */
+const HIT_SCORE: Record<SearchHit["via"], number> = { title: 0.8, embedding: 0.7, text: 0.6 };
+
+function matchReason(covered: Want[], hits: SearchHit[]): string {
+  const quoted = covered.map((w) => `“${w.text}”`).join(", ");
+  if (hits.some((h) => h.via === "title")) return `Named in the listing: ${quoted}.`;
+  if (hits.some((h) => h.via === "embedding")) return `Close in meaning to ${quoted}.`;
+  return `Mentioned in the description: ${quoted}.`;
+}
+
 /**
  * Matches, ordered by what this person can actually do about them.
  *
- * The semantic pairing is authored; everything about the ordering, and whether
- * a pair survives at all, is computed in lib/hub/matching.ts from when they
- * land, when the seller leaves, what pickup times exist, what they budgeted,
- * and who else is competing for the same object.
+ * Seeded demo pairings are authored; every other want is matched by running
+ * its text through the same hybrid search as the browse box (./semantic.ts),
+ * so what shows up here is exactly what searching for the want would show.
+ * Everything about the ordering, and whether a pair survives at all, is then
+ * computed in lib/hub/matching.ts from when they land, when the seller
+ * leaves, what pickup times exist, what they budgeted, and who else is
+ * competing for the same object.
  */
-export async function getMatches(userId: string): Promise<MatchDetail[]> {
-  return plansFor(userId).map((plan) => ({
+export async function getMatches(user: User): Promise<MatchDetail[]> {
+  const authored = plansFor(user.id);
+  const authoredWantIds = new Set(authored.flatMap((p) => p.match.wantIds));
+  const authoredListingIds = new Set(authored.map((p) => p.listing.id));
+
+  const wantsList = await getWants(user.id);
+  const openWants = wantsList.filter((w) => !w.fulfilled && !authoredWantIds.has(w.id));
+
+  let plans = authored;
+  if (openWants.length > 0) {
+    const pool = openListings().filter((l) => l.sellerId !== user.id);
+    const hitsPerWant = await hybridSearchMany(
+      openWants.map((w) => w.text),
+      pool.map(searchDoc),
+    );
+
+    // One match per listing, covering every want it answers — the same shape
+    // as an authored bundle match that ticks four things off a list.
+    const byListing = new Map<string, { wants: Want[]; hits: SearchHit[] }>();
+    openWants.forEach((want, i) => {
+      for (const hit of hitsPerWant[i]) {
+        if (authoredListingIds.has(hit.id)) continue;
+        const entry = byListing.get(hit.id) ?? { wants: [], hits: [] };
+        entry.wants.push(want);
+        entry.hits.push(hit);
+        byListing.set(hit.id, entry);
+      }
+    });
+
+    const searched = [...byListing].map(([listingId, { wants: covered, hits }]) =>
+      evaluate(user, {
+        id: `search-${user.id}-${listingId}`,
+        userId: user.id,
+        listingId,
+        wantIds: covered.map((w) => w.id),
+        score: Math.max(...hits.map((h) => HIT_SCORE[h.via])),
+        reason: matchReason(covered, hits),
+      }),
+    );
+    plans = [...authored, ...searched].sort((a, b) => b.rank - a.rank);
+  }
+
+  return plans.map((plan) => ({
     ...plan.match,
     listing: plan.listing,
     wants: plan.wants,
@@ -187,8 +248,8 @@ export async function getMatches(userId: string): Promise<MatchDetail[]> {
 }
 
 /** Just the ones they can actually act on. */
-export async function getReachableMatches(userId: string): Promise<MatchDetail[]> {
-  return (await getMatches(userId)).filter((m) => m.plan.feasible && m.plan.contest?.youWin !== false);
+export async function getReachableMatches(user: User): Promise<MatchDetail[]> {
+  return (await getMatches(user)).filter((m) => m.plan.feasible && m.plan.contest?.youWin !== false);
 }
 
 export type HandoffDetail = Handoff & { listing: Listing; slot: TimeSlot; buyer: User; seller: User };

@@ -21,7 +21,7 @@ export async function SiteHeader() {
     /* Sticky, with its own ground. The wrapper stopped painting a background
        so the kraft grain could show through the page, which left the header
        transparent and the board scrolling under bare text. */
-    <header className="sticky top-0 z-40 border-b border-border bg-bg/85 backdrop-blur-[10px] backdrop-saturate-150">
+    <header className="sticky top-0 z-40 border-b border-border bg-bg/60 backdrop-blur-[14px] backdrop-saturate-150">
       <div className="mx-auto flex max-w-[1120px] flex-wrap items-center gap-x-3 px-4 sm:gap-x-6 sm:px-6 lg:flex-nowrap">
         {/* The whole lockup is the home link — the campus name reads as part of
             the mark, so it should behave like it. The mark is a mask, so the
@@ -48,7 +48,7 @@ export async function SiteHeader() {
           >
             <BellIcon className="size-5" />
             {unread > 0 && (
-              <span className="data absolute top-1.5 right-1 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[11px] font-semibold text-white">
+              <span className="data absolute top-1.5 right-1 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[11px] font-semibold text-on-accent">
                 {unread}
               </span>
             )}

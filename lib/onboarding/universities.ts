@@ -16,8 +16,8 @@ export type University = {
 }
 
 export const UNIVERSITIES: University[] = [
-  { id: "uw", name: "University of Waterloo", shortName: "Waterloo", emailDomain: "uwaterloo.ca", campus: { street: "200 University Ave W", city: "Waterloo", province: "ON", country: "Canada", postalCode: "N2L 3G1" } },
-  { id: "uoft", name: "University of Toronto", shortName: "U of T", emailDomain: "mail.utoronto.ca", campus: { street: "27 King’s College Cir", city: "Toronto", province: "ON", country: "Canada", postalCode: "M5S 1A1" } },
+  { id: "uw", name: "University of Waterloo", shortName: "UWaterloo", emailDomain: "uwaterloo.ca", campus: { street: "200 University Ave W", city: "Waterloo", province: "ON", country: "Canada", postalCode: "N2L 3G1" } },
+  { id: "uoft", name: "University of Toronto", shortName: "UofT", emailDomain: "mail.utoronto.ca", campus: { street: "27 King’s College Cir", city: "Toronto", province: "ON", country: "Canada", postalCode: "M5S 1A1" } },
   { id: "ubc", name: "University of British Columbia", shortName: "UBC", emailDomain: "student.ubc.ca", campus: { street: "2329 West Mall", city: "Vancouver", province: "BC", country: "Canada", postalCode: "V6T 1Z4" } },
   { id: "mcgill", name: "McGill University", shortName: "McGill", emailDomain: "mail.mcgill.ca", campus: { street: "845 Sherbrooke St W", city: "Montreal", province: "QC", country: "Canada", postalCode: "H3A 0G4" } },
   { id: "queens", name: "Queen's University", shortName: "Queen's", emailDomain: "queensu.ca", campus: { street: "99 University Ave", city: "Kingston", province: "ON", country: "Canada", postalCode: "K7L 3N6" } },

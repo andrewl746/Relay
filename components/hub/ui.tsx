@@ -1,10 +1,10 @@
 import Link from "next/link";
-import type { CSSProperties, ReactNode } from "react";
+import { ViewTransition, type ReactNode } from "react";
 import { countdown, type CountdownTier } from "@/lib/hub/format";
 import { BackIcon } from "./icons";
 
 export const btnPrimary =
-  "inline-flex min-h-11 items-center justify-center rounded-sm bg-accent px-5 text-[15px] font-semibold text-white transition-colors duration-75 hover:brightness-[1.08] active:brightness-95 disabled:cursor-not-allowed disabled:opacity-40";
+  "inline-flex min-h-11 items-center justify-center rounded-sm bg-accent px-5 text-[15px] font-semibold text-on-accent transition-colors duration-75 hover:brightness-[1.08] active:brightness-95 disabled:cursor-not-allowed disabled:opacity-40";
 
 export const btnSecondary =
   "inline-flex min-h-11 items-center justify-center rounded-sm border border-border-strong bg-surface px-5 text-[15px] font-semibold text-ink transition-colors duration-75 hover:bg-surface-2";
@@ -22,7 +22,7 @@ export const fieldClass =
  */
 export function PageShell({ children }: { children: ReactNode; width?: "wide" | "narrow" }) {
   return (
-    <div className="mx-auto w-full max-w-[var(--page-max)] px-5 pt-8 pb-20 sm:px-6">
+    <div className="mx-auto w-full max-w-[var(--page-max)] px-5 pt-12 pb-20 sm:px-6 sm:pt-16">
       {children}
     </div>
   );
@@ -41,7 +41,7 @@ export function Column({ children }: { children: ReactNode }) {
 export function PageTitle({ title, lede }: { title: string; lede?: ReactNode }) {
   return (
     <div className="mb-8">
-      <h1 className="text-[30px] leading-[1.12] font-semibold tracking-[-0.02em] text-ink">
+      <h1 className="text-[clamp(32px,4.5vw,42px)] leading-[1.1] font-semibold tracking-[-0.02em] text-ink">
         {title}
       </h1>
       {lede && <p className="mt-2 max-w-[68ch] text-[16px] text-ink-2">{lede}</p>}
@@ -86,7 +86,10 @@ export function Thumb({
   /**
    * Shared identity across a navigation. The board row and the listing hero
    * pass the same name, so the browser tweens the one growing into the other
-   * rather than painting a new page over it. See components/hub/transition-link.
+   * rather than painting a new page over it. React's <ViewTransition> starts
+   * the transition when the route commits, so the old page never freezes while
+   * the new one is fetched. `default="none"` keeps the morph to named pairs —
+   * no crossfade on every unrelated transition (search, refresh).
    */
   transitionName,
 }: {
@@ -104,11 +107,10 @@ export function Thumb({
   }[size];
   const glyph = { row: "size-7", list: "size-12", hero: "size-16" }[size];
 
-  return (
+  const thumb = (
     <div
       aria-hidden={photoUrl && alt ? undefined : "true"}
       className={`grid shrink-0 place-items-center overflow-hidden rounded-md border border-border bg-surface-2 text-ink-3 ${box}`}
-      style={transitionName ? ({ viewTransitionName: transitionName } as CSSProperties) : undefined}
     >
       {photoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element -- data URL, nothing for next/image to optimize
@@ -120,15 +122,23 @@ export function Thumb({
       )}
     </div>
   );
+
+  return transitionName ? (
+    <ViewTransition name={transitionName} share="auto" default="none">
+      {thumb}
+    </ViewTransition>
+  ) : (
+    thumb
+  );
 }
 
 const tierClass: Record<CountdownTier, string> = {
   open: "font-medium text-ink-2",
   soon: "font-semibold text-ink",
   today: "font-semibold text-accent",
-  // White on --accent is 6.0:1. It was near-black on the red fill, which is
-  // about 2:1 and fails AA badly — on the single most urgent thing on screen.
-  final: "rounded-sm bg-accent px-1.5 py-0.5 font-semibold text-white",
+  // --on-accent is 6.2:1 light, 7.6:1 dark. It was near-black on the red fill,
+  // about 2:1 — on the single most urgent thing on screen.
+  final: "rounded-sm bg-accent px-1.5 py-0.5 font-semibold text-on-accent",
   gone: "font-medium text-ink-3 line-through",
 };
 

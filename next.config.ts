@@ -11,6 +11,15 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "4mb",
     },
   },
+  images: {
+    // The built-in optimizer spawns a sharp/jest-worker pool on first
+    // request; on a memory-tight dev machine that pool crashes repeatedly
+    // ("Jest worker encountered N child process exceptions") instead of
+    // serving the image. Every <Image> here is already a small local asset
+    // (the wordmark, a demo avatar), so there's nothing worth resizing —
+    // serve it as-is and skip the worker pool entirely.
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;

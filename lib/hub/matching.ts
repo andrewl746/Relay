@@ -140,7 +140,7 @@ export function pickupOptions(buyer: User, listing: Listing) {
   return { verdicts, usable, first: usable[0] ?? null };
 }
 
-function evaluate(buyer: User, match: Match): Plan {
+export function evaluate(buyer: User, match: Match): Plan {
   const listing = listings.find((l) => l.id === match.listingId)!;
   const seller = users.find((u) => u.id === listing.sellerId);
   const matched = wants.filter((w) => match.wantIds.includes(w.id));

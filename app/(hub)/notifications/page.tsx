@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EmptyState, PageShell, PageTitle } from "@/components/hub/ui";
+import { btnTertiary, EmptyState, PageShell, PageTitle } from "@/components/hub/ui";
 import { getNotifications } from "@/lib/hub/data";
 import { formatWhen } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
@@ -23,10 +23,12 @@ export default async function NotificationsPage() {
       <PageTitle title="Notifications" lede="Matches for your list, claims on your things, and pickups coming up." />
 
       {notifications.length === 0 ? (
+        <div className="board px-5">
         <EmptyState title="Nothing new.">
-          Add things to <Link href="/wants" className="font-semibold text-ink underline underline-offset-[3px]">your list</Link>{" "}
+          Add things to <Link href="/wants" className={btnTertiary}>your list</Link>{" "}
           and we’ll tell you when someone posts a match.
         </EmptyState>
+        </div>
       ) : (
         <ul className="board divide-y divide-border overflow-hidden">
           {notifications.map((n) => (

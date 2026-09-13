@@ -107,7 +107,19 @@ The `chainForItem` DP core structure. The DP already elegantly loops through int
 **Time spent adapting:**
 ~25m on typing constraints, config and algorithm updates.
 
-> Also decide here: **Snowflake track, in or out.** We are wiring Snowflake.
+> Also decide here: **Snowflake track, in or out.** Decided: **out**, on evidence.
+>
+> The Cortex provider is written (`lib/providers/snowflake.ts`) and the schema runs
+> (`snowflake/schema.sql`), but Cortex's AI functions are gated on trial accounts —
+> verified twice, on the standard 30-day trial *and* the 120-day student trial the
+> handbook promises. `AI_EMBED`, `AI_COMPLETE` and `SNOWFLAKE.CORTEX.EMBED_TEXT_768`
+> all return *"not available for trial accounts"*; `ALTER ACCOUNT SET
+> CORTEX_ENABLED_CROSS_REGION='ANY_REGION'` ran clean and changed nothing, so it is a
+> SKU gate rather than a region problem. `VECTOR_COSINE_SIMILARITY` does work.
+>
+> So the seam stayed and the model moved: search embeds with all-MiniLM-L6-v2 in
+> process — 384 dimensions, no API key, no network call at query time. `MATCH_PROVIDER`
+> is `stub` today and `snowflake` is one env var away if the gate lifts.
 
 
 ---
