@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { mutate } from "@/lib/relay/runtime";
+import { saveClaim } from "./claim-store";
 import { getListing } from "./data";
 import { getCurrentUser, getTradeBlocker } from "./session";
 
@@ -29,19 +29,12 @@ export async function claimListing(formData: FormData) {
   }
   if (listing.sellerId === user.id) throw new Error("This is your own listing.");
 
-  mutate((r) => {
-    const already = r.claims.some(
-      (c) => c.listingId === listingId && c.buyerId === user.id,
-    );
-    if (!already) {
-      r.claims.push({
-        id: `c-${Date.now().toString(36)}`,
-        listingId,
-        slotId,
-        buyerId: user.id,
-        createdAt: new Date().toISOString(),
-      });
-    }
+  await saveClaim({
+    id: `c-${Date.now().toString(36)}`,
+    listingId,
+    slotId,
+    buyerId: user.id,
+    createdAt: new Date().toISOString(),
   });
 
   revalidatePath("/", "layout");

@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
     // serve it as-is and skip the worker pool entirely.
     unoptimized: true,
   },
+  // lib/data.ts reads data/*.json with readFileSync at a path built from
+  // process.cwd(). Next's tracer only bundles files it can see being imported,
+  // so on Vercel those reads would hit ENOENT and the Relay pages would render
+  // empty — with no build error to warn you. Name them explicitly.
+  outputFileTracingIncludes: {
+    "/**": ["./data/dataset.json", "./data/matches.json"],
+  },
   async redirects() {
     // Setup moved off its own pages and into Parcel's corner on the site, so
     // old links to a step (or the old demo setup page) land on the board, where

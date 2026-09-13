@@ -1,4 +1,4 @@
-import { getProvider, providerName } from "../providers/index.ts";
+import { asQuery, getProvider, providerMeta, providerName } from "../providers/index.ts";
 import { cosine } from "../vector.ts";
 import { matchesTerms, searchTerms } from "./search.ts";
 
@@ -40,6 +40,33 @@ const TEXT_FLOOR = 0.1;
 
 const COLLECTIVE = new Set(["set", "kit", "supplies", "pack", "bundle", "pair", "lot", "collection"]);
 
+/**
+ * Board embeddings, cached per process.
+ *
+ * The board is the same ~30 strings on every render, and this runs on /,
+ * /browse and /wants — plus a second time inside getBoard, which awaits
+ * getMatches itself. On the offline stub that is free. On Cortex it is a paid
+ * round trip per page load, several per search, which is the difference
+ * between MATCH_PROVIDER=snowflake being demoable and not.
+ *
+ * Queries are deliberately NOT cached: they are unbounded user input, and they
+ * are the one thing that actually changes between calls.
+ *
+ * Keyed by embed model as well as text, because the stub is 256-dim and Cortex
+ * is 768/1024 and cosine() compares over min(len) — a cache shared across a
+ * provider switch would return meaningless numbers instead of crashing.
+ */
+const docVectors = new Map<string, number[]>();
+
+async function embedAll(queries: string[], docs: string[]): Promise<number[][]> {
+  const model = providerMeta().embedModel;
+  const key = (text: string) => `${model} ${text}`; // model ids never contain a space
+  const missing = [...new Set(docs.filter((d) => !docVectors.has(key(d))))];
+  const fresh = await getProvider().embed([...queries.map(asQuery), ...missing]);
+  missing.forEach((d, i) => docVectors.set(key(d), fresh[queries.length + i]));
+  return [...fresh.slice(0, queries.length), ...docs.map((d) => docVectors.get(key(d))!)];
+}
+
 export type SearchDoc = {
   id: string;
   /** Title, kind, and bundle item titles — what the listing IS. */
@@ -60,7 +87,7 @@ export async function hybridSearchMany(queries: string[], docs: SearchDoc[]): Pr
 
   let vectors: number[][] | null = null;
   try {
-    vectors = await getProvider().embed([...queries, ...docs.map((d) => `${d.title}. ${d.body}`)]);
+    vectors = await embedAll(queries, docs.map((d) => `${d.title}. ${d.body}`));
   } catch (err) {
     console.warn(`[search] ${providerName()} embed failed, lexical only:`, err);
   }

@@ -2,7 +2,7 @@ import 'server-only'
 import { config } from '../config.ts'
 import { chainForItem, eligibleNeeds } from '../assign.ts'
 import { TOP_K, type MatchTable } from '../match.ts'
-import { getProvider } from '../providers/index.ts'
+import { asQuery, getProvider } from '../providers/index.ts'
 import { cosine } from '../vector.ts'
 import { addDays, dayLabel, daysBetween, rangeLabel, today } from './dates.ts'
 import { kmBetween } from './place.ts'
@@ -86,7 +86,7 @@ function sharedWindows(a: Person, b: Person): string[] | null {
 export async function findAnswers(me: Me, text: string, from: string, to: string): Promise<AnswerSet> {
   const snap = snapshot()
   const provider = getProvider()
-  const [vector] = await provider.embed([text])
+  const [vector] = await provider.embed([asQuery(text)])
   const hidden = new Set(me.profile.dismissed)
   const people = new Map(snap.data.people.map((p) => [p.id, p]))
   const mine = people.get(me.id) ?? me.person

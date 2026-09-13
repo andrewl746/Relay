@@ -9,7 +9,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import type { Dataset } from '../lib/types.ts'
-import { getProvider } from '../lib/providers/index.ts'
+import { asQuery, getProvider } from '../lib/providers/index.ts'
 import { retrieve, rerank, TOP_K } from '../lib/match.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
@@ -24,7 +24,7 @@ console.log(`provider: ${process.env.MATCH_PROVIDER ?? 'stub'}`)
 // ---- stage 1: embed
 const t0 = Date.now()
 const itemVecs = await provider.embed(data.items.map((i) => i.rawText))
-const needVecs = await provider.embed(data.needs.map((n) => n.rawText))
+const needVecs = await provider.embed(data.needs.map((n) => asQuery(n.rawText)))
 data.items.forEach((it, i) => (it.embedding = itemVecs[i]))
 data.needs.forEach((n, i) => (n.embedding = needVecs[i]))
 console.log(

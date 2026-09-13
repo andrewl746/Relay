@@ -1,11 +1,13 @@
 import { filterBoard, rankByUrgency, type BoardFilters, type BoardView } from "./feed";
 import { hybridSearch, hybridSearchMany, type SearchDoc, type SearchHit } from "./semantic";
 import { isGoneByTonight } from "./format";
-import { handoffs, listings, notifications, slots, university, users, wants } from "./mock-data";
+import { handoffs, notifications, slots, university, users, wants } from "./mock-data";
+import { allListings } from "./listing-store";
 import { evaluate, plansFor, type Plan } from "./matching";
 import { createClient } from "../supabase/server";
-import { readRuntime } from "@/lib/relay/runtime";
+import { allClaims } from "./claim-store";
 import type { Handoff, Listing, Match, TimeSlot, User, Want } from "./types";
+import type { HubClaim } from "@/lib/relay/runtime";
 
 // Supabase auth ids are UUIDs; seeded demo users (dev login) use short ids
 // like "u-marcus". That difference is how we tell a real signed-in user's
@@ -26,20 +28,16 @@ export async function getUser(id: string) {
   return users.find((u) => u.id === id) ?? null;
 }
 
-function childrenOf(listingId: string) {
-  return listings.filter((l) => l.parentId === listingId);
+function childrenOf(all: Listing[], listingId: string) {
+  return all.filter((l) => l.parentId === listingId);
 }
 
-function searchDoc(l: Listing): SearchDoc {
+function searchDoc(all: Listing[], l: Listing): SearchDoc {
   return {
     id: l.id,
-    title: [l.title, l.kind, ...childrenOf(l.id).map((c) => c.title)].join(". "),
+    title: [l.title, l.kind, ...childrenOf(all, l.id).map((c) => c.title)].join(". "),
     body: l.description,
   };
-}
-
-function openListings() {
-  return listings.filter((l) => l.parentId === null && l.status === "available");
 }
 
 export type BoardListing = Listing & { itemCount: number; isMatch: boolean; sellerName: string };
@@ -64,15 +62,18 @@ export async function getBoard({
       .filter((m) => m.plan.feasible && m.plan.contest?.youWin !== false)
       .map((m) => m.listing.parentId ?? m.listing.id),
   );
-  const open: BoardListing[] = openListings().map((l) => ({
+  const all = await allListings();
+  const open: BoardListing[] = all
+    .filter((l) => l.parentId === null && l.status === "available")
+    .map((l) => ({
     ...l,
-    itemCount: childrenOf(l.id).length,
+    itemCount: childrenOf(all, l.id).length,
     isMatch: matchedIds.has(l.id),
     sellerName: users.find((u) => u.id === l.sellerId)?.name ?? "A student",
   }));
 
   const searchableText = (l: BoardListing) =>
-    [l.title, l.description, l.kind, ...childrenOf(l.id).map((c) => c.title)].join(" ");
+    [l.title, l.description, l.kind, ...childrenOf(all, l.id).map((c) => c.title)].join(" ");
 
   // Search scores against the whole board, not just the current view, so the
   // embedding gates see a real distribution even when a filter leaves five
@@ -80,7 +81,7 @@ export async function getBoard({
   const inView = filterBoard(open, view, undefined, { matchedIds, searchableText, filters });
   let shown = inView;
   if (query?.trim()) {
-    const hitIds = new Set((await hybridSearch(query, open.map(searchDoc))).map((h) => h.id));
+    const hitIds = new Set((await hybridSearch(query, open.map((l) => searchDoc(all, l)))).map((h) => h.id));
     shown = inView.filter((l) => hitIds.has(l.id));
   }
 
@@ -101,16 +102,18 @@ export type MyListing = Listing & { itemCount: number };
  * this is where the listing will stop showing up (see lib/hub/actions.ts).
  */
 export async function getMyListings(userId: string): Promise<MyListing[]> {
-  return listings
+  const all = await allListings();
+  return all
     .filter((l) => l.sellerId === userId && l.parentId === null)
-    .map((l) => ({ ...l, itemCount: childrenOf(l.id).length }))
+    .map((l) => ({ ...l, itemCount: childrenOf(all, l.id).length }))
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
 }
 
 export type ListingDetail = Listing & { seller: User; slots: TimeSlot[]; items: Listing[] };
 
 export async function getListing(id: string): Promise<ListingDetail | null> {
-  const listing = listings.find((l) => l.id === id);
+  const all = await allListings();
+  const listing = all.find((l) => l.id === id);
   const seller = listing && users.find((u) => u.id === listing.sellerId);
   if (!listing || !seller) return null;
   return {
@@ -119,7 +122,7 @@ export async function getListing(id: string): Promise<ListingDetail | null> {
     slots: slots
       .filter((s) => s.listingId === id)
       .sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt)),
-    items: childrenOf(id),
+    items: childrenOf(all, id),
   };
 }
 
@@ -180,10 +183,13 @@ export async function getMatches(user: User): Promise<MatchDetail[]> {
 
   let plans = authored;
   if (openWants.length > 0) {
-    const pool = openListings().filter((l) => l.sellerId !== user.id);
+    const all = await allListings();
+    const pool = all.filter(
+      (l) => l.parentId === null && l.status === "available" && l.sellerId !== user.id,
+    );
     const hitsPerWant = await hybridSearchMany(
       openWants.map((w) => w.text),
-      pool.map(searchDoc),
+      pool.map((l) => searchDoc(all, l)),
     );
 
     // One match per listing, covering every want it answers — the same shape
@@ -227,8 +233,8 @@ export async function getReachableMatches(user: User): Promise<MatchDetail[]> {
 
 export type HandoffDetail = Handoff & { listing: Listing; slot: TimeSlot; buyer: User; seller: User };
 
-function withDetail(h: Handoff): HandoffDetail | null {
-  const listing = listings.find((l) => l.id === h.listingId);
+function withDetail(all: Listing[], h: Handoff): HandoffDetail | null {
+  const listing = all.find((l) => l.id === h.listingId);
   const slot = slots.find((s) => s.id === h.slotId);
   const buyer = users.find((u) => u.id === h.buyerId);
   const seller = users.find((u) => u.id === h.sellerId);
@@ -242,9 +248,9 @@ function withDetail(h: Handoff): HandoffDetail | null {
  * keyed to demo user ids — so a real signed-in user (a Supabase UUID) claimed
  * something, landed on the confirmation, opened Handoffs and found it empty.
  */
-function runtimeHandoffs(): Handoff[] {
-  return readRuntime().claims.flatMap((c) => {
-    const listing = listings.find((l) => l.id === c.listingId);
+function runtimeHandoffs(all: Listing[], claims: HubClaim[]): Handoff[] {
+  return claims.flatMap((c) => {
+    const listing = all.find((l) => l.id === c.listingId);
     if (!listing) return [];
     return [{
       id: c.id,
@@ -258,10 +264,10 @@ function runtimeHandoffs(): Handoff[] {
 }
 
 export async function getHandoffs(userId: string) {
-  const all = [...handoffs, ...runtimeHandoffs()];
-  const mine = all
+  const [listings, claims] = await Promise.all([allListings(), allClaims()]);
+  const mine = [...handoffs, ...runtimeHandoffs(listings, claims)]
     .filter((h) => h.buyerId === userId || h.sellerId === userId)
-    .map(withDetail)
+    .map((h) => withDetail(listings, h))
     .filter((h): h is HandoffDetail => h !== null)
     .sort((a, b) => Date.parse(a.slot.startsAt) - Date.parse(b.slot.startsAt));
   return {
@@ -271,8 +277,9 @@ export async function getHandoffs(userId: string) {
 }
 
 export async function getHandoff(id: string) {
-  const h = [...handoffs, ...runtimeHandoffs()].find((x) => x.id === id);
-  return h ? withDetail(h) : null;
+  const [listings, claims] = await Promise.all([allListings(), allClaims()]);
+  const h = [...handoffs, ...runtimeHandoffs(listings, claims)].find((x) => x.id === id);
+  return h ? withDetail(listings, h) : null;
 }
 
 export async function getNotifications(userId: string) {

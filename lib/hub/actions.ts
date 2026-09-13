@@ -8,7 +8,8 @@ import { USER_COOKIE } from "./dev-login";
 import { getCurrentUser, getTradeBlocker } from "./session";
 import { resetPlanCache } from "./matching";
 import { canBeUrgent, parseUrgency } from "./urgency";
-import { listings, users, wants } from "./mock-data";
+import { users, wants } from "./mock-data";
+import { allListings, saveListing } from "./listing-store";
 import { createClient } from "../supabase/server";
 import { getSupabaseUser } from "../supabase/session";
 import type { Category, Condition, Listing, OfferType } from "./types";
@@ -170,7 +171,9 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
     urgency: parseUrgency(formData.get("urgency"), expiresAt),
   };
 
-  listings.unshift(newListing);
+  const saved = await saveListing(newListing);
+  if (!saved.ok) return { status: "error", message: saved.message };
+
   revalidatePath("/");
   revalidatePath("/wants");
 
@@ -190,10 +193,10 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
 // leaves a record on "My posts" instead of silently vanishing.
 export async function removeListing(listingId: string, _formData: FormData) {
   const user = await getCurrentUser();
-  const listing = listings.find((l) => l.id === listingId);
+  const listing = (await allListings()).find((l) => l.id === listingId);
   if (!listing || listing.sellerId !== user.id || listing.status !== "available") return;
 
-  listing.status = "removed";
+  await saveListing({ ...listing, status: "removed" });
   resetPlanCache();
   revalidatePath("/");
   revalidatePath("/posts");
@@ -208,7 +211,7 @@ export async function updateListing(
   formData: FormData,
 ): Promise<UpdateListingResult> {
   const user = await getCurrentUser();
-  const listing = listings.find((l) => l.id === listingId);
+  const listing = (await allListings()).find((l) => l.id === listingId);
   if (!listing || listing.sellerId !== user.id) {
     return { status: "error", message: "You can't edit this listing." };
   }
@@ -219,18 +222,23 @@ export async function updateListing(
   const fields = parseListingFields(formData);
   if ("error" in fields) return { status: "error", message: fields.error };
 
-  listing.title = fields.title;
-  listing.description = fields.description;
-  listing.kind = fields.title.split(" ")[0] || listing.kind;
-  listing.category = fields.category;
-  listing.offerType = fields.offerType;
-  listing.priceCents = fields.priceCents;
-  listing.condition = fields.condition;
-  listing.expiresAt = fields.expiresAt;
-  // The edit form has no scream meter, so keep the original reading unless
-  // the new deadline is too far out for it to count.
-  if (!canBeUrgent(fields.expiresAt)) listing.urgency = null;
-  listing.photoUrl = parsePhoto(formData);
+  const updated = {
+    ...listing,
+    title: fields.title,
+    description: fields.description,
+    kind: fields.title.split(" ")[0] || listing.kind,
+    category: fields.category,
+    offerType: fields.offerType,
+    priceCents: fields.priceCents,
+    condition: fields.condition,
+    expiresAt: fields.expiresAt,
+    // The edit form has no scream meter, so keep the original reading unless
+    // the new deadline is too far out for it to count.
+    urgency: canBeUrgent(fields.expiresAt) ? listing.urgency : null,
+    photoUrl: parsePhoto(formData),
+  };
+  const saved = await saveListing(updated);
+  if (!saved.ok) return { status: "error", message: saved.message };
 
   resetPlanCache();
   revalidatePath("/");
