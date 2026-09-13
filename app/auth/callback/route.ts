@@ -26,6 +26,6 @@ export async function GET(request: Request) {
   if (!user) return NextResponse.redirect(new URL("/login?error=no_user", url.origin));
 
   const profile = await getProfile(supabase, user.id);
-  const destination = profile?.onboarding_completed ? "/browse" : "/onboarding/profile";
+  const destination = profile?.onboarding_completed ? "/" : "/onboarding/profile";
   return NextResponse.redirect(new URL(destination, url.origin));
 }

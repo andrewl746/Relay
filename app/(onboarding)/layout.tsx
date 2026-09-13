@@ -13,7 +13,7 @@ export default async function OnboardingLayout({ children }: { children: ReactNo
 
   const supabase = await createClient();
   const profile = await getProfile(supabase, user.id);
-  if (profile?.onboarding_completed) redirect("/browse");
+  if (profile?.onboarding_completed) redirect("/");
 
   return (
     <div className="gh flex min-h-full flex-1 flex-col">

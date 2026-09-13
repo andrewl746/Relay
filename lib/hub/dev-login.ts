@@ -5,5 +5,5 @@ export function setDevUser(userId: string) {
 }
 
 export function safeNextPath(next: string | null | undefined) {
-  return next && next.startsWith("/") && !next.startsWith("//") ? next : "/browse";
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
 }

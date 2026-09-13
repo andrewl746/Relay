@@ -3,10 +3,11 @@ import Link from "next/link";
 import { getUnreadCount, getUniversity, getUsers } from "@/lib/hub/data";
 import { getCurrentUser } from "@/lib/hub/session";
 import { SITE_NAME } from "@/lib/hub/site";
-import { signOut } from "@/lib/supabase/actions";
+import { deleteAccount, signOut } from "@/lib/supabase/actions";
 import { getSupabaseUser } from "@/lib/supabase/session";
 import { BellIcon } from "./icons";
 import { NavLinks } from "./nav-links";
+import { UserMenu } from "./user-menu";
 import { UserSwitcher } from "./user-switcher";
 
 export async function SiteHeader() {
@@ -21,7 +22,7 @@ export async function SiteHeader() {
   return (
     <header className="border-b border-rule-strong">
       <div className="mx-auto flex max-w-[1120px] flex-wrap items-center gap-x-3 px-4 sm:gap-x-6 sm:px-6 lg:flex-nowrap">
-        <Link href="/browse" className="flex min-h-14 items-center gap-2.5" aria-label={SITE_NAME}>
+        <Link href="/" className="flex min-h-14 items-center gap-2.5" aria-label={SITE_NAME}>
           <Image src="/relay-black.png" alt={SITE_NAME} width={160} height={58} priority className="h-7 w-auto" />
           <span className="hidden text-[13px] font-medium text-ink-2 sm:inline">{university.shortName}</span>
         </Link>
@@ -41,13 +42,13 @@ export async function SiteHeader() {
           </Link>
 
           {supabaseUser ? (
-            <div className="flex items-center gap-3 pl-2">
-              <span className="hidden max-w-[9rem] truncate text-[13px] font-semibold sm:inline">{user.name}</span>
-              <form action={signOut}>
-                <button type="submit" className="min-h-11 rounded-1 px-3 text-[13px] font-semibold text-ink-2 hover:bg-paper-raised hover:text-ink">
-                  Sign out
-                </button>
-              </form>
+            <div className="flex items-center pl-2">
+              <UserMenu
+                name={user.name}
+                email={user.email}
+                signOutAction={signOut}
+                deleteAction={deleteAccount}
+              />
             </div>
           ) : (
             <div className="flex items-center gap-2 pl-2">

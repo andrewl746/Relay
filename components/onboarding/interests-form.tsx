@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { completeOnboarding, type ActionState } from "@/app/(onboarding)/actions";
+import { saveInterests, type ActionState } from "@/app/(onboarding)/actions";
 import { INTERESTS } from "@/lib/onboarding/interests";
 import { InterestArt } from "./interest-art";
 
@@ -16,7 +16,7 @@ const initialState: ActionState = { status: "idle" };
  * posts normally and keyboard + screen-reader behaviour is unchanged.
  */
 export function InterestsForm({ defaultInterests }: { defaultInterests: string[] }) {
-  const [state, formAction, pending] = useActionState(completeOnboarding, initialState);
+  const [state, formAction, pending] = useActionState(saveInterests, initialState);
   const [picked, setPicked] = useState<string[]>(defaultInterests);
 
   const toggle = (id: string, on: boolean) =>
@@ -90,7 +90,7 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
 
       <div className="flex items-center gap-4">
         <button type="submit" disabled={pending} className="gh-btn gh-btn-primary">
-          {pending ? "Finishing up…" : "Complete"}
+          {pending ? "Saving…" : "Next"}
         </button>
         <span className="text-[13px] text-[var(--ink-2)]">
           {picked.length === 0

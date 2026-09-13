@@ -12,7 +12,7 @@ function one(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
-export default async function BrowsePage({ searchParams }: PageProps<"/browse">) {
+export default async function BrowsePage({ searchParams }: PageProps<"/">) {
   const params = await searchParams;
   const view = parseBoardView(one(params.view));
   const query = one(params.q)?.trim() || undefined;
@@ -31,7 +31,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
     if (value !== "all") search.set("view", value);
     if (query) search.set("q", query);
     const qs = search.toString();
-    return qs ? `/browse?${qs}` : "/browse";
+    return qs ? `/?${qs}` : "/";
   };
 
   return (
@@ -49,7 +49,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
             {board.goneTonight > 0 && ` · ${board.goneTonight} gone by tonight`}
           </p>
 
-          <Form action="/browse" className="mt-6 flex gap-2">
+          <Form action="/" className="mt-6 flex gap-2">
             {view !== "all" && <input type="hidden" name="view" value={view} />}
             <label className="relative flex-1">
               <span className="sr-only">Search listings</span>
@@ -159,7 +159,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                 </ul>
               )}
               <div className="mt-4 flex flex-wrap items-center gap-4">
-                <Link href="/browse?view=matches" className={btnSecondary}>
+                <Link href="/?view=matches" className={btnSecondary}>
                   Show my matches
                 </Link>
                 <Link href="/wants" className={`${btnTertiary} text-[13px]`}>

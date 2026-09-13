@@ -22,7 +22,7 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           {listed.deadline ? `, gone by ${listed.deadline} unless someone claims it.` : "."}
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-5">
-          <Link href="/browse" className={btnPrimary}>
+          <Link href="/" className={btnPrimary}>
             See it on the board
           </Link>
           <button type="button" onClick={() => setListed(null)} className={btnTertiary}>

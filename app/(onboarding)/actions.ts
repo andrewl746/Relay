@@ -140,17 +140,48 @@ export async function confirmVerificationCode(_prev: ActionState, formData: Form
   redirect("/onboarding/interests");
 }
 
-export async function completeOnboarding(_prev: ActionState, formData: FormData): Promise<ActionState> {
+export async function saveInterests(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const { supabase, user } = await requireUser();
 
   const interests = formData.getAll("interests").map(String);
 
   const { error } = await supabase
     .from("profiles")
-    .update({ interests, onboarding_step: "complete", onboarding_completed: true })
+    .update({ interests, onboarding_step: "wants" })
     .eq("id", user.id);
 
   if (error) return { status: "error", message: "Couldn't save that. Try again." };
 
-  redirect("/browse");
+  redirect("/onboarding/wants");
+}
+
+type WantInput = { text: string; maxPriceCents: number | null };
+
+export async function finishWants(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const { supabase, user } = await requireUser();
+
+  let items: WantInput[] = [];
+  try {
+    items = JSON.parse(String(formData.get("wants") ?? "[]"));
+  } catch {
+    items = [];
+  }
+
+  const rows = items
+    .map((item) => ({ user_id: user.id, text: item.text.trim(), max_price_cents: item.maxPriceCents }))
+    .filter((row) => row.text.length > 0);
+
+  if (rows.length > 0) {
+    const { error: wantsError } = await supabase.from("wants").insert(rows);
+    if (wantsError) return { status: "error", message: "Couldn't save your list. Try again." };
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ onboarding_step: "complete", onboarding_completed: true })
+    .eq("id", user.id);
+
+  if (error) return { status: "error", message: "Couldn't finish setup. Try again." };
+
+  redirect("/");
 }

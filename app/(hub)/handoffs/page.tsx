@@ -21,7 +21,7 @@ export default async function HandoffsPage() {
           person={(h) => `From ${h.seller.name}`}
           empty={
             <EmptyState title="Nothing to pick up yet.">
-              <Link href="/browse" className={btnTertiary}>
+              <Link href="/" className={btnTertiary}>
                 Browse what’s leaving
               </Link>
             </EmptyState>

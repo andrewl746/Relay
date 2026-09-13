@@ -36,7 +36,7 @@ export function RoomBundleForm({ defaultPlace }: { defaultPlace: string }) {
           right away.
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-5">
-          <Link href="/browse" className={btnPrimary}>
+          <Link href="/" className={btnPrimary}>
             See it on the board
           </Link>
           <Link href="/handoffs" className={btnTertiary}>
