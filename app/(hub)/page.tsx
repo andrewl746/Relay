@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ListingRow } from "@/components/hub/listing-row";
-import { btnPrimary, btnSecondary, PageShell, PageTitle, SectionTitle } from "@/components/hub/ui";
+import { btnPrimary, btnSecondary, CardEmpty, PageShell, PageTitle, SectionTitle } from "@/components/hub/ui";
 import { getBoard, getHandoffs, getMatches, getUniversity, getWants } from "@/lib/hub/data";
 import { formatShortDate } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
@@ -61,9 +61,11 @@ export default async function HomePage() {
               ))}
             </ul>
           ) : (
-            <p className="px-5 py-8 text-[15px] text-ink-2">
-              Nothing listed yet. Be the first to post something.
-            </p>
+            <div className="px-5">
+              <CardEmpty icon="box" title="Nothing listed yet">
+                Be the first to post something at your school.
+              </CardEmpty>
+            </div>
           )}
         </section>
 
@@ -86,12 +88,12 @@ export default async function HomePage() {
                 ))}
               </ul>
             ) : (
-              <p className="text-[15px] text-ink-2">
+              <CardEmpty icon="list" title="Nothing on your list yet">
                 Tell us what you need and we&rsquo;ll watch for it.{" "}
                 <Link href="/wants" className="font-semibold text-accent hover:underline">
                   Add something
                 </Link>
-              </p>
+              </CardEmpty>
             )}
           </section>
 
@@ -117,9 +119,9 @@ export default async function HomePage() {
                 ))}
               </ul>
             ) : (
-              <p className="text-[15px] text-ink-2">
-                Nothing scheduled. Claim something and you&rsquo;ll see the pickup here.
-              </p>
+              <CardEmpty icon="calendar" title="Nothing scheduled">
+                Claim something and the pickup time and place will show up here.
+              </CardEmpty>
             )}
           </section>
         </div>

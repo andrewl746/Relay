@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { SiteFooter } from '@/components/hub/site-footer'
 import { Belt } from '@/components/motion/belt'
 import { Conveyor, Crate, Stamp } from '@/components/motion/box'
 
@@ -289,11 +290,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="relative z-10 px-6 py-8 text-center">
-        <p className="text-[13px] text-[var(--ink-2)]">
-          Relay · Built at PivotHacks 2026
-        </p>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

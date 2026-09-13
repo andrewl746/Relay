@@ -67,16 +67,30 @@ export function Eyebrow({ children, strong = false }: { children: ReactNode; str
   return <p className={`t-eyebrow ${strong ? "text-ink" : "text-ink-2"}`}>{children}</p>;
 }
 
+/**
+ * Image placeholder until listings carry real photos.
+ *
+ * A category glyph rather than the item's word set in a grey box — a word in a
+ * box reads as a broken image, and six of them stacked read as a catalogue
+ * that failed to load. Swap the <span> for <Image> when photos exist.
+ */
+const THUMB_ICON: { match: RegExp; icon: EmptyIcon }[] = [
+  { match: /desk|chair|shelf|table|lamp|bed|mattress|sofa|dresser|furniture/i, icon: "box" },
+  { match: /book|text|coat|goggle|lab|calculator|school/i, icon: "list" },
+  { match: /fridge|kettle|toaster|micro|cook|kitchen|pot|pan/i, icon: "box" },
+];
+
 export function Thumb({ word, size = "row" }: { word: string; size?: "row" | "hero" }) {
+  const icon = THUMB_ICON.find((t) => t.match.test(word))?.icon ?? "box";
   return (
     <div
       aria-hidden="true"
-      className={`grid shrink-0 place-items-center overflow-hidden bg-paper-sunk border border-rule-strong ${
-        size === "row" ? "size-16 sm:size-[76px]" : "aspect-[4/3] w-full"
+      className={`grid shrink-0 place-items-center overflow-hidden rounded-md bg-surface-2 text-ink-3 ${
+        size === "row" ? "size-16 sm:size-[72px]" : "aspect-[4/3] w-full"
       }`}
     >
-      <span className={`t-display text-ink-3 ${size === "row" ? "text-[13px]" : "text-[clamp(40px,8vw,76px)]"}`}>
-        {word}
+      <span className={size === "row" ? "size-7" : "size-16"}>
+        <EmptyIconArt name={icon} />
       </span>
     </div>
   );
@@ -113,11 +127,75 @@ export function VerifiedStamp({ domain }: { domain: string }) {
   );
 }
 
-export function EmptyState({ title, children }: { title: string; children?: ReactNode }) {
+/**
+ * Empty states carry an icon so a blank card reads as "nothing yet" rather
+ * than "something failed to load". Line art at a heavy stroke, matching the
+ * stencil glyphs elsewhere; always aria-hidden, since the text says it.
+ */
+export type EmptyIcon = "list" | "calendar" | "box" | "search" | "bell";
+
+const EMPTY_PATHS: Record<EmptyIcon, ReactNode> = {
+  list: <><path d="M9 6h11M9 12h11M9 18h11" /><path d="M4 6h.01M4 12h.01M4 18h.01" /></>,
+  calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" /></>,
+  box: <><path d="M3 8h18v12H3zM3 8l3-4h12l3 4M12 4v16" /></>,
+  search: <><circle cx="11" cy="11" r="7" /><path d="m20 20-3.6-3.6" /></>,
+  bell: <><path d="M18 16V11a6 6 0 1 0-12 0v5l-2 3h16l-2-3Z" /><path d="M10 21h4" /></>,
+};
+
+export function EmptyIconArt({ name }: { name: EmptyIcon }) {
   return (
-    <div className="py-10">
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="size-full"
+    >
+      {EMPTY_PATHS[name]}
+    </svg>
+  );
+}
+
+export function EmptyState({
+  title,
+  icon = "box",
+  children,
+}: {
+  title: string;
+  icon?: EmptyIcon;
+  children?: ReactNode;
+}) {
+  return (
+    <div className="flex flex-col items-center py-14 text-center">
+      <span className="mb-4 block size-14 text-ink-3">
+        <EmptyIconArt name={icon} />
+      </span>
       <p className="text-[17px] font-semibold">{title}</p>
-      {children && <div className="mt-2 max-w-[52ch] text-ink-2">{children}</div>}
+      {children && <div className="mt-1.5 max-w-[46ch] text-[15px] text-ink-2">{children}</div>}
+    </div>
+  );
+}
+
+/** Compact empty state for inside a card, where a full one would dwarf it. */
+export function CardEmpty({
+  icon,
+  title,
+  children,
+}: {
+  icon: EmptyIcon;
+  title: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div className="flex flex-col items-center py-6 text-center">
+      <span className="mb-3 block size-10 text-ink-3">
+        <EmptyIconArt name={icon} />
+      </span>
+      <p className="text-[15px] font-semibold">{title}</p>
+      {children && <div className="mt-1 max-w-[36ch] text-[14px] leading-snug text-ink-2">{children}</div>}
     </div>
   );
 }

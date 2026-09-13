@@ -11,7 +11,7 @@ export function ListingRow({ listing }: { listing: BoardListing }) {
     : `${categoryLabel[listing.category]} · ${conditionLabel[listing.condition]} · ${listing.pickupArea}`;
 
   return (
-    <li className="relative border-b border-rule">
+    <li className="relative">
       {edge && <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-0.5 ${edge}`} />}
       <Link
         href={`/listings/${listing.id}`}

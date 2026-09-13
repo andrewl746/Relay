@@ -40,15 +40,18 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
     <div className="mx-auto max-w-[1120px] px-4 pt-8 pb-16 sm:px-6">
       <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[1fr_320px]">
         <section aria-labelledby="board-title" className="min-w-0">
-          {board.lastDeadline && (
-            <p className="t-eyebrow text-signal">Move-out week · last deadline {formatShortDate(board.lastDeadline)}</p>
-          )}
-          <h1 id="board-title" className="mt-2 text-[30px] leading-[1.12] font-semibold tracking-[-0.02em] text-ink">
+          <h1 id="board-title" className="text-[30px] leading-[1.12] font-semibold tracking-[-0.02em] text-ink">
             Everything here is leaving
           </h1>
-          <p className="mt-3 text-[17px] text-ink-2">
+          <p className="mt-2 text-[16px] text-ink-2">
             {board.total} listings at {university.shortName}
-            {board.goneTonight > 0 && ` · ${board.goneTonight} gone by tonight`}
+            {board.goneTonight > 0 && (
+              <>
+                {" · "}
+                <span className="font-semibold text-accent">{board.goneTonight} gone by tonight</span>
+              </>
+            )}
+            {board.lastDeadline && ` · last deadline ${formatShortDate(board.lastDeadline)}`}
           </p>
 
           <Form action="/browse" className="mt-6 flex gap-2">
@@ -82,8 +85,10 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                       href={viewHref(v.value)}
                       scroll={false}
                       aria-current={active ? "true" : undefined}
-                      className={`inline-flex min-h-11 items-center rounded-1 border px-3 text-[13px] font-semibold whitespace-nowrap transition-colors duration-[90ms] ${
-                        active ? "border-ink bg-ink text-paper" : "border-rule hover:border-rule-strong hover:bg-paper-raised"
+                      className={`inline-flex min-h-9 items-center rounded-full px-3.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-[90ms] ${
+                        active
+                          ? "bg-ink text-bg"
+                          : "bg-surface-2 text-ink-2 hover:bg-surface hover:text-ink"
                       }`}
                     >
                       {v.label}
@@ -198,9 +203,13 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
 function BoardSection({ title, listings, urgent = false }: { title: string; listings: BoardListing[]; urgent?: boolean }) {
   if (listings.length === 0) return null;
   return (
-    <section className="mb-8">
-      <h2 className={`t-eyebrow border-b border-rule-strong pb-2 ${urgent ? "text-signal" : "text-ink-2"}`}>{title}</h2>
-      <ul className="-mx-4 sm:mx-0">
+    <section className="mb-10">
+      <h2
+        className={`mb-1 text-[14px] font-semibold ${urgent ? "text-accent" : "text-ink-3"}`}
+      >
+        {title}
+      </h2>
+      <ul className="divide-y divide-border border-y border-border">
         {listings.map((l) => (
           <ListingRow key={l.id} listing={l} />
         ))}
