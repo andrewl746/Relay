@@ -31,9 +31,9 @@ export default async function HomePage() {
   const user = await getCurrentUser();
   const [university, board, wants, matches, handoffs] = await Promise.all([
     getUniversity(),
-    getBoard({ view: "all", userId: user.id }),
+    getBoard({ view: "all", user }),
     getWants(user.id),
-    getMatches(user.id),
+    getMatches(user),
     getHandoffs(user.id),
   ]);
 

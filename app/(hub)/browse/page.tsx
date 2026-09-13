@@ -23,9 +23,9 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
   const user = await getCurrentUser();
   const [university, board, wants, matches] = await Promise.all([
     getUniversity(),
-    getBoard({ view, query, userId: user.id }),
+    getBoard({ view, query, user }),
     getWants(user.id),
-    getMatches(user.id),
+    getMatches(user),
   ]);
   const shown = board.finalCall.length + board.rest.length;
 

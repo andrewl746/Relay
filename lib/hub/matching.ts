@@ -139,10 +139,11 @@ export function pickupOptions(buyer: User, listing: Listing) {
   return { verdicts, usable, first: usable[0] ?? null };
 }
 
-function evaluate(buyer: User, match: Match): Plan {
+/** `wantPool` defaults to the seed; signed-in accounts' wants live in Supabase, so callers pass them in. */
+export function evaluate(buyer: User, match: Match, wantPool: Want[] = wants): Plan {
   const listing = listings.find((l) => l.id === match.listingId)!;
   const seller = users.find((u) => u.id === listing.sellerId);
-  const matched = wants.filter((w) => match.wantIds.includes(w.id));
+  const matched = wantPool.filter((w) => match.wantIds.includes(w.id));
   const allSlots = slotsFor(listing);
 
   const base = {
