@@ -1,51 +1,45 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useActionState, useState } from "react";
+import { createListing, type CreateListingResult } from "@/lib/hub/actions";
 import { categoryLabel, formatWhen } from "@/lib/hub/format";
 import type { Category, OfferType } from "@/lib/hub/types";
 import { ChoiceChips, Field, SlotRows } from "./form-fields";
 import { btnPrimary, btnTertiary, fieldClass } from "./ui";
 
+const initialState: CreateListingResult = { status: "error", message: "" };
+
 export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
   const [category, setCategory] = useState<Category>("furniture");
   const [offerType, setOfferType] = useState<OfferType>("sale");
   const [hasDeadline, setHasDeadline] = useState(true);
-  const [listed, setListed] = useState<{ title: string; deadline: string | null } | null>(null);
+  const [state, formAction, pending] = useActionState(createListing, initialState);
 
-  if (listed) {
+  if (state.status === "ok") {
     return (
       <div role="status" className="rounded-2 border border-rule-strong bg-paper-raised px-5 py-5">
         <p className="t-title text-[22px]">Listed.</p>
         <p className="mt-1">
-          “{listed.title}” is on the board
-          {listed.deadline ? `, gone by ${listed.deadline} unless someone claims it.` : "."}
+          “{state.title}” is on the board
+          {state.expiresAt ? `, gone by ${formatWhen(state.expiresAt)} unless someone claims it.` : "."}
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-5">
           <Link href="/" className={btnPrimary}>
             See it on the board
           </Link>
-          <button type="button" onClick={() => setListed(null)} className={btnTertiary}>
+          {/* Plain anchor, not Link: forces a full reload so useActionState
+              resets instead of reusing this component instance's state. */}
+          <a href="/post" className={btnTertiary}>
             Post another
-          </button>
+          </a>
         </div>
       </div>
     );
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        const data = new FormData(e.currentTarget);
-        const deadline = data.get("expiresAt");
-        setListed({
-          title: String(data.get("title")),
-          deadline: hasDeadline && deadline ? formatWhen(`${deadline}:00-04:00`) : null,
-        });
-      }}
-      className="space-y-8"
-    >
+    <form action={formAction} className="space-y-8">
       <Field label="What is it" htmlFor="title">
         <input id="title" name="title" required placeholder="IKEA desk, white, 120cm" className={fieldClass} />
       </Field>
@@ -154,8 +148,10 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
 
       <SlotRows defaultPlace={defaultPlace} />
 
-      <button type="submit" className={`${btnPrimary} w-full sm:w-auto`}>
-        List it
+      {state.status === "error" && state.message && <p className="gh-flash-error">{state.message}</p>}
+
+      <button type="submit" disabled={pending} className={`${btnPrimary} w-full sm:w-auto`}>
+        {pending ? "Listing…" : "List it"}
       </button>
     </form>
   );
