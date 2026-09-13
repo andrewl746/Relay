@@ -46,9 +46,14 @@ export async function rerank(
     const results = await provider.rerank(need.rawText, texts)
     cands.forEach((c, idx) => {
       const r = results[idx]
+      // Fall back to the retrieval cosine whenever the provider did not return
+      // a usable number — missing entry, unparseable reply, NaN. A remote
+      // provider having a bad minute must degrade to raw similarity, never
+      // silently zero out a real candidate or poison the DP with NaN.
+      const usable = typeof r?.score === 'number' && Number.isFinite(r.score)
       table[`${need.id}|${c.itemId}`] = {
-        score: r?.score ?? c.cosine,
-        reason: r?.reason ?? 'no reason returned',
+        score: usable ? r.score : c.cosine,
+        reason: usable ? r.reason : `${r?.reason ?? 'no reason returned'} (cosine fallback)`,
       }
     })
     onProgress?.(++done, data.needs.length)
