@@ -14,6 +14,8 @@
     "check": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-provider.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.116.0",
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8"
