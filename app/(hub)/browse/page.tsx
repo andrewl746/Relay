@@ -1,8 +1,10 @@
 import Form from "next/form";
+import { Suspense } from "react";
+import { ResetSearchOnReload } from "@/components/hub/reset-search-on-reload";
 import Link from "next/link";
 import { SearchIcon } from "@/components/hub/icons";
 import { ListingRow } from "@/components/hub/listing-row";
-import { btnSecondary, btnTertiary, EmptyState, Eyebrow, fieldClass } from "@/components/hub/ui";
+import { btnSecondary, btnTertiary, EmptyState, Eyebrow, fieldClass, SectionTitle } from "@/components/hub/ui";
 import { getBoard, getMatches, getUniversity, getWants, type BoardListing } from "@/lib/hub/data";
 import { boardViews, parseBoardView } from "@/lib/hub/feed";
 import { formatShortDate, moveLine } from "@/lib/hub/format";
@@ -41,7 +43,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
           {board.lastDeadline && (
             <p className="t-eyebrow text-signal">Move-out week · last deadline {formatShortDate(board.lastDeadline)}</p>
           )}
-          <h1 id="board-title" className="t-display mt-2 text-[clamp(34px,5.5vw,54px)] leading-[1.02]">
+          <h1 id="board-title" className="mt-2 text-[30px] leading-[1.12] font-semibold tracking-[-0.02em] text-ink">
             Everything here is leaving
           </h1>
           <p className="mt-3 text-[17px] text-ink-2">
@@ -124,7 +126,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
         <aside className="space-y-10 lg:pt-2">
           {user.moveStatus === "leaving" ? (
             <section>
-              <Eyebrow>Moving out</Eyebrow>
+              <SectionTitle>Moving out</SectionTitle>
               <p className="mt-2 text-[17px] font-semibold">Post your whole room in one go</p>
               <p className="mt-1 text-ink-2">
                 One incoming student claims all of it in a single pickup. No eight separate conversations.
@@ -138,7 +140,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
             </section>
           ) : (
             <section>
-              <Eyebrow>Your list · {moveLine(user)}</Eyebrow>
+              <SectionTitle>Your list · {moveLine(user)}</SectionTitle>
               {wants.length === 0 ? (
                 <p className="mt-2 text-ink-2">
                   Write down what you need before you arrive and we’ll match it as people post.
@@ -170,7 +172,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
           )}
 
           <section>
-            <Eyebrow>How it works</Eyebrow>
+            <SectionTitle>How it works</SectionTitle>
             <ol className="mt-3 space-y-3">
               {[
                 ["Find it", "Everything is sorted by when it has to be gone, so nothing gets thrown out first."],

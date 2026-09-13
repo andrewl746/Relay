@@ -52,14 +52,6 @@ export default async function HubLayout({ children }: { children: ReactNode }) {
       <SiteHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter />
-      <footer className="border-t border-rule">
-        <div className="mx-auto flex max-w-[1120px] flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-4 py-6 text-[13px] text-ink-2 sm:px-6">
-          <p>{SITE_NAME} never handles money. Pay when you pick something up, never before you’ve seen it.</p>
-          <Link href="/chains" className="underline underline-offset-[3px] hover:text-ink">
-            Handoff chain engine
-          </Link>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { PageShell } from "@/components/hub/ui";
+import { PageShell, PageTitle } from "@/components/hub/ui";
 import { getCurrentUser } from "@/lib/hub/session";
 import { getWants } from "@/lib/hub/data";
 import { snapshot, networkStats } from "@/lib/relay/store";
@@ -14,12 +14,7 @@ export default async function AccountPage() {
 
   return (
     <PageShell>
-      <div className="mb-8">
-        <h1 className="font-[family-name:var(--font-display)] text-[28px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
-          ACCOUNT
-        </h1>
-        <p className="mt-1 text-[var(--text-muted)]">Your profile and routing statistics.</p>
-      </div>
+      <PageTitle title="Account" lede="Your profile and routing statistics." />
 
       {/* Profile Card */}
       <div className="rounded-[4px] border border-[var(--bezel)] bg-[var(--panel)] p-6 mb-6">

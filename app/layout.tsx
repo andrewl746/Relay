@@ -42,9 +42,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${plex.variable} h-full antialiased`}
+      className={`${archivo.variable} ${plex.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-screen flex-col">
         <SmoothScroll />
         {children}
       </body>

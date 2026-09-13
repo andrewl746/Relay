@@ -159,19 +159,43 @@ body {
  */
 body {
   background-color: var(--bg);
-  background-image: url("/cardboard-bg.jpg");
-  background-size: 520px auto;
-  background-repeat: repeat;
-  background-attachment: fixed;
 }
+
+/*
+ * Texture as a fixed layer behind everything, NOT background-attachment on the
+ * body. background-attachment:fixed forces a repaint of the whole backdrop on
+ * every scroll frame, which fights smooth scrolling and was part of why the
+ * page stalled at the bottom.
+ */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: var(--bg);
-  opacity: 0.94;
-  pointer-events: none;
   z-index: -1;
+  background-color: var(--bg);
+  background-image: url("/cardboard-bg.jpg");
+  background-size: 520px auto;
+  background-repeat: repeat;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+/*
+ * Lenis owns scrolling, and it measures document height to know where the end
+ * is. `h-full` on <html> pins that height to the viewport, so Lenis thought the
+ * page ended early and the last screen went dead until you scrolled back up.
+ * This is the override Lenis documents; it only applies once Lenis has mounted,
+ * so native scrolling (and reduced-motion users) are untouched.
+ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 /* An honest sheet: white, lifted, one hairline. Not outlined twice. */

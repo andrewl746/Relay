@@ -3,7 +3,7 @@ export type OfferType = "sale" | "rent" | "free" | "lend";
 export type Condition = "new" | "like-new" | "good" | "fair" | "bad";
 export type MoveStatus = "leaving" | "arriving" | "staying";
 export type PlaceKind = "seller" | "campus";
-export type ListingStatus = "available" | "claimed";
+export type ListingStatus = "available" | "claimed" | "removed";
 
 export type University = {
   id: string;

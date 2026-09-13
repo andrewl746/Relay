@@ -11,6 +11,7 @@ export default async function MyPostsPage() {
   const myListings = await getMyListings(user.id);
   const live = myListings.filter((l) => l.status === "available");
   const claimed = myListings.filter((l) => l.status === "claimed");
+  const removed = myListings.filter((l) => l.status === "removed");
 
   return (
     <PageShell width="narrow">
@@ -42,12 +43,23 @@ export default async function MyPostsPage() {
           )}
 
           {claimed.length > 0 && (
-            <section>
+            <section className="mb-8">
               <h2 className="t-eyebrow border-b border-rule-strong pb-2 text-ink-2">
                 Claimed, pickup pending · {claimed.length}
               </h2>
               <ul className="-mx-4 sm:mx-0">
                 {claimed.map((l) => (
+                  <MyListingRow key={l.id} listing={l} />
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {removed.length > 0 && (
+            <section>
+              <h2 className="t-eyebrow border-b border-rule-strong pb-2 text-ink-2">Removed · {removed.length}</h2>
+              <ul className="-mx-4 sm:mx-0">
+                {removed.map((l) => (
                   <MyListingRow key={l.id} listing={l} />
                 ))}
               </ul>

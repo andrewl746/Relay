@@ -39,7 +39,7 @@ export function SiteFooter() {
               alt={SITE_NAME}
               width={160}
               height={58}
-              className="h-8 w-auto"
+              className="h-12 w-auto"
             />
             <p className="mt-3 max-w-[30ch] text-[14px] leading-relaxed text-ink-2">
               Borrow what you need for a few days from someone in your building,

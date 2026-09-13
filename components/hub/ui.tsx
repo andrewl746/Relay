@@ -33,11 +33,18 @@ export function Column({ children }: { children: ReactNode }) {
   return <div className="max-w-[620px]">{children}</div>;
 }
 
+/**
+ * The page heading. Every page in the hub uses this — pages used to roll their
+ * own h1 at 28px bold, 30px semibold or a 54px clamp, so no two headings
+ * matched. One size, one weight, one lede treatment.
+ */
 export function PageTitle({ title, lede }: { title: string; lede?: ReactNode }) {
   return (
     <div className="mb-8">
-      <h1 className="t-title text-[28px] leading-[1.15]">{title}</h1>
-      {lede && <p className="mt-2 max-w-[68ch] text-ink-2">{lede}</p>}
+      <h1 className="text-[30px] leading-[1.12] font-semibold tracking-[-0.02em] text-ink">
+        {title}
+      </h1>
+      {lede && <p className="mt-2 max-w-[68ch] text-[16px] text-ink-2">{lede}</p>}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ListingRow } from "@/components/hub/listing-row";
-import { btnPrimary, btnSecondary, PageShell, SectionTitle } from "@/components/hub/ui";
+import { btnPrimary, btnSecondary, PageShell, PageTitle, SectionTitle } from "@/components/hub/ui";
 import { getBoard, getHandoffs, getMatches, getUniversity, getWants } from "@/lib/hub/data";
 import { formatShortDate } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
@@ -27,16 +27,14 @@ export default async function HomePage() {
 
   return (
     <PageShell>
-      <header className="mb-8">
-        <h1 className="text-[30px] leading-tight font-semibold tracking-[-0.02em]">
-          Hi {firstName(user.name)}
-        </h1>
-        <p className="mt-1 text-[16px] text-ink-2">
-          {matches.length > 0
+      <PageTitle
+        title={`Hi ${firstName(user.name)}`}
+        lede={
+          matches.length > 0
             ? `${matches.length} thing${matches.length === 1 ? "" : "s"} on your list just turned up at ${university.shortName}.`
-            : `Here's what's moving around ${university.shortName} right now.`}
-        </p>
-      </header>
+            : `Here's what's moving around ${university.shortName} right now.`
+        }
+      />
 
       <div className="mb-10 flex flex-wrap gap-3">
         <Link href="/browse" className={btnPrimary}>

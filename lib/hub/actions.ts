@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { USER_COOKIE } from "./dev-login";
 import { getCurrentUser } from "./session";
+import { resetPlanCache } from "./matching";
 import { listings, users } from "./mock-data";
 import type { Category, Condition, Listing, OfferType } from "./types";
 
@@ -77,4 +78,21 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
   revalidatePath("/wants");
 
   return { status: "ok", id: newListing.id, title: newListing.title, expiresAt: newListing.expiresAt };
+}
+
+// Soft delete: mark it removed rather than splicing it out of the array.
+// Keeps it out of the board and search (both only ever show "available"
+// listings) without breaking anything that still points at its id — pickup
+// slots, matches, an in-flight claim link someone already opened — and
+// leaves a record on "My posts" instead of silently vanishing.
+export async function removeListing(listingId: string, _formData: FormData) {
+  const user = await getCurrentUser();
+  const listing = listings.find((l) => l.id === listingId);
+  if (!listing || listing.sellerId !== user.id || listing.status !== "available") return;
+
+  listing.status = "removed";
+  resetPlanCache();
+  revalidatePath("/");
+  revalidatePath("/posts");
+  revalidatePath(`/listings/${listingId}`);
 }
