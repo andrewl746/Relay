@@ -1,9 +1,10 @@
 # Relay — Project Document
 
 **Event:** PivotHacks · Builder's Club, Waterloo ON · 12 hours · 8:00 AM → 8:00 PM
+**Starting problem:** Problem 8 — **Resource Sharing.**
 **Repo:** stock `create-next-app` (Next 16.3.5, React 19.2.8, Tailwind v4) — *disclose as a
 starter template on submission, per event rules.*
-**Companion:** [DESIGN.md](DESIGN.md) — visual system, components, screens.
+**Companions:** [DESIGN.md](DESIGN.md) — visual system · [../PIVOTS.md](../PIVOTS.md) — live pivot log.
 
 > **Relay** — one student hands off to the next, term after term: the same room, the same
 > desk, the same four-month window. *(Name is swappable. Runner-up: "Baton".)*
@@ -26,46 +27,20 @@ Judges will ask, verbatim:
 - Why does your final product look the way it does?
 
 This document is therefore structured to **answer those questions**, not just to describe
-a product. §1 and §2 are living sections — update them at 10:00, 12:00 and 16:00. They are
-the single highest-value thing in this repo, and they take four minutes each to maintain.
+a product.
 
 ---
 
-## 1. Pivot log
+## 1. Pivot log → [PIVOTS.md](../PIVOTS.md)
 
-*Update immediately after each Pivot, while it's fresh. Four bullets each. This is the
-raw material for the 2-minute pitch (§13).*
+**The live pivot log lives in one file at the repo root: [PIVOTS.md](../PIVOTS.md).**
+Four fields per pivot, updated at 10:00, 12:00 and 16:00 while it's fresh. It is the raw
+material for the 2-minute pitch (§13) and the single highest-value artifact in this repo.
 
-### Pivot 1 — 08:00 · team-specific
+Kept in its own file rather than in this document so there's exactly one place to update
+under time pressure, and so it's the first thing a judge or teammate finds.
 
-| | |
-|---|---|
-| **What we got** | Students need somewhere to offload furniture and items they don't need during co-op terms. |
-| **What we read into it** | The real problem isn't *selling furniture* — it's that co-op creates a synchronized, city-wide turnover three times a year and nothing is built for it. Housing and stuff leave on the same day, for the same reason. |
-| **What we decided** | One marketplace keyed on the **term window**, covering both a place and the things in it. Rank by time pressure, match by date overlap, not by keyword or recency. |
-| **What we cut immediately** | Chat as a product, ratings, payments, cross-school search. |
-
-### Pivot 2 — 10:00
-
-| | |
-|---|---|
-| **What changed** | *(fill in)* |
-| **What it meant for us** | |
-| **What we changed** | |
-| **What we deliberately kept, and why** | |
-| **Time spent adapting** | |
-
-### Pivot 3 — 12:00
-
-*(same four rows)*
-
-### Pivot 4 — 16:00 · four hours left
-
-*(same four rows — plus: **what we cut to protect the demo**)*
-
-> **Rule for Pivot 4:** with four hours on the clock, the correct response is almost always
-> *narrow* or *reframe*, not *rebuild*. A working smaller thing beats a broken bigger thing;
-> the handbook says so explicitly. Spend ≤15 minutes deciding, then commit.
+§2 below is its standing companion — the decisions we are *not* changing, with reasons.
 
 ---
 
@@ -80,7 +55,7 @@ has to beat the reasoning, not just be newer.
 | **Sort by time pressure, never by recency** | Recency-sorting is exactly why Facebook Marketplace fails this market. Reverting to it would delete our reason to exist. |
 | **No money moves through us** | Every payment feature is a regulator, a fraud vector, and four hours we don't have. |
 | **Never silently delete a cheap listing** | A desk at 15% of retail is the product working. Any "too cheap = scam" heuristic deletes our best inventory. |
-| **Thin messaging** | Chat is a commodity, a support burden, and where fraud goes to hide. |
+| **Structured slots, not chat** | Freeform negotiation is where marketplaces break down. A slot is a commitment with a time attached (§7.12). |
 | **One feed, one listing skeleton** | It's what lets a pivot change *what* is listed without touching ranking, matching, or the UI. See §5. |
 
 ---
@@ -139,6 +114,23 @@ the primary key:
 
 Everything below follows from that one move.
 
+### Two modes on the same data
+
+The date-keyed behaviour shouldn't be the *only* behaviour, or the app is dead for ten
+months of the year and looks abandoned to a first-time visitor in October.
+
+| Mode | When | Behaviour |
+|---|---|---|
+| **Marketplace** | year-round, default | Ordinary listings for furniture and school materials. Browse, filter, claim. Sorted by relevance, deadlines optional |
+| **Clearing** | during a hub's move-out window | Listings carry a deadline, the feed ranks by urgency instead of recency, price ladders activate, and matches are **pushed** to arrivers rather than searched for |
+
+Same data, same listing skeleton, same components — the mode changes ranking, what's
+emphasized, and whether push is on. A hub enters Clearing mode automatically from its term
+presets (§7.3), and the feed says which mode it's in.
+
+This also answers the cold-start problem: in Marketplace mode a new user in July sees a
+queue of upcoming matches from wants lists (§7.7) instead of an empty feed.
+
 ---
 
 ## 5. Pivot-proof architecture
@@ -160,21 +152,41 @@ cheap to swap.
 
 Users · categories · what a "term" is · hub · transaction modes · copy · seed data.
 
+**No domain vocabulary in code.** No type named `Student`, no field named `coopTerm`, no
+hardcoded `"Waterloo"`. Those live in `config.json`:
+
+```json
+{
+  "actor": "student",
+  "actorPlural": "students",
+  "cycle": "co-op term",
+  "place": "Waterloo",
+  "cycleBoundaries": ["2025-09-01", "2026-01-05", "2026-05-04"]
+}
+```
+
+Every user-facing string reads from that file. **Grep for a hardcoded `"student"` before the
+demo** — there should be zero hits outside `config.json` and the seed generator. When a pivot
+says *"your users are now travel nurses,"* the change is a config edit plus a reseed.
+
 ### Pivot dry-runs
 
-Cheap insurance. If Pivot 3 says:
+Cheap insurance, with budgets decided now rather than at 4 PM. If a pivot says:
 
-| Pivot | Response | Code touched |
-|---|---|---|
-| *"Now build for newcomers to Canada"* | Terms become arrival dates; hub becomes a city; categories gain kitchen/winter gear | Seed + copy + term presets |
-| *"Now it's for seniors downsizing"* | Window = move-out date; wants list becomes the family's | Seed + copy |
-| *"Add a new stakeholder — the landlord"* | New role reading the same listings; consent flips from a field to an approval | One table, one view |
-| *"Sustainability is what matters now"* | Provenance chain and diverted-kg move from footer to hero | Pure UI |
-| *"Drop the marketplace"* | Wants + matching stand alone as a want-board | Delete routes |
-| *"Make it mobile-first"* | Already is (DESIGN.md §14) | None |
+| Pivot | Response | Touched | Budget |
+|---|---|---|---|
+| *"New user group"* — newcomers to Canada, grad students, travel nurses | Edit `config.json`, reseed. Terms become arrival dates; hub becomes a city | Config + seed | **15 min** |
+| *"Now it's for seniors downsizing"* | Window = move-out date; wants list becomes the family's | Config + seed + copy | 15 min |
+| *"New constraint"* — cost, trust, accessibility | New term in the ranking function (§7.4) | One formula | **20 min** |
+| *"Add a stakeholder"* — landlord, residence life, sustainability office | New role reading the same listings; §7.13 dashboard already serves the institutional one | One view | **20 min** |
+| *"Sustainability is what matters now"* | Provenance chain and diverted-kg move from footer to hero | Pure UI | 20 min |
+| *"Remove a feature"* | Drop semantic matching; wants still match on category + window | Delete a stage | **5 min** |
+| *"Drop the marketplace"* | Wants + matching stand alone as a want-board | Delete routes | 30 min |
+| *"Make it mobile-first"* | Already is (DESIGN.md §14) | None | 0 |
 
-**If a pivot can be absorbed in seed data and copy, absorb it there.** Say so out loud in
-the pitch — that's the adaptability point, and it's worth more than the feature would be.
+**If a pivot can be absorbed in config, seed data and copy, absorb it there.** Say so out
+loud in the pitch — that's the adaptability point, and it's worth more than the feature
+would have been.
 
 ---
 
@@ -192,6 +204,11 @@ resort**: when no arriver matches, a Stayer is the difference between a sale and
 
 **The Landlord / primary tenant** — not a user, but their consent gates the sublet (§11.1).
 Don't pretend they don't exist.
+
+**The institution** — residence life, or a sustainability office. Not a user either, but
+they're the one party who'd *pay* for this, and what they want is a number: items diverted
+from landfill and money saved per campus (§7.13). Worth building the dashboard cheaply,
+because "add a new stakeholder" is a likely pivot and this one is already half-answered.
 
 ---
 
@@ -249,7 +266,7 @@ location.
 `lease_proof` *(optional upload → Verified stamp)*.
 
 **`thing` extras:** `category` (desk · chair · mattress · bedframe · dresser · shelf · sofa
-· lamp · monitor · fridge · kitchen · textbook · misc), `condition` (new · good · worn ·
+· lamp · monitor · fridge · kitchen · lab kit · textbook · misc), `condition` (new · good · worn ·
 needs_work — plain words, no stars), `dimensions_cm` *(matters enormously for "will it fit
 through the door")*, `item_id` → the persistent item (§7.11).
 
@@ -517,17 +534,53 @@ Weights are **labelled estimates**: desk 28 kg · mattress 23 · dresser 35 · s
 bookshelf 20 · chair 8 · monitor 4 · textbook 1.2. Chain shows term + first name, last
 initial; anyone can hide their own link (renders `—`, count still holds).
 
-### 7.12 Messaging (thin, on purpose)
+### 7.12 Exchange options — structured handoffs instead of chat
 
-You ranked this low. Correct. Chat is a commodity, a support burden, and where fraud goes to
-escape detection.
+**This is the replacement for messaging, not a companion to it.**
 
-- Opening a thread requires a **template**: *"Is this still available?"* · *"Can we do a
-  video walkthrough?"* · *"Does Sep 3 work for the handoff?"*
-- **Free text unlocks after the first reply.** This one rule kills most spam.
-- Contact details, precise address, and unit number unlock only on an accepted claim.
-- Structured actions are first-class objects in the thread, not prose: propose a handoff
-  time, accept, share the condition report.
+Freeform negotiation is where marketplaces break down: an endless stream of *"is this still
+available"*, no commitment, and no-shows. So when a buyer claims, they don't open a blank
+chat — they **pick from slots the seller already set**. Both sides get a confirmation with a
+time and a place attached.
+
+The seller picks one or more when publishing:
+
+| Option | How it works |
+|---|---|
+| **Pickup at the seller's location** | Buyer picks a slot from the seller's stated windows. Address unlocks on acceptance |
+| **Public campus meeting spot** | Seller offers the spot (SLC, DC atrium, E7 lobby), buyer picks the time |
+| **Delivery** | Only if the seller offers it, with a stated radius and fee |
+
+**Handoffs default to public campus locations rather than private residences.** For a
+`thing`, there's no reason to send a stranger to someone's apartment; for a `place`, a
+viewing obviously happens at the unit, so the default flips and the safety copy changes to
+*"bring someone with you, and view before you pay anything."*
+
+**Why this beats chat:** a slot is a commitment with a time attached. It also gives the
+condition report (§7.10) a scheduled moment to attach itself to, and it keeps fraud in
+structured fields where §7.9 can see it, instead of in free text where it hides.
+
+**Chat, if we ever build it**, stays attached to a claimed item — never open messaging
+between strangers. Opening a thread requires a template (*"Is this still available?"* ·
+*"Can we do a video walkthrough?"*), free text unlocks only after the first reply, and
+contact details unlock only on an accepted claim. It is the last thing on the build list
+(§12) and probably never gets built.
+
+### 7.13 Impact dashboard
+
+Every claimed listing is one less item in a dumpster and one less thing an incoming student
+buys new. Per hub:
+
+```
+WATERLOO · FALL 2025
+  312 items diverted        ~4.1 tonnes kept out of landfill
+  $18,400 saved             41 rooms subletted instead of sitting empty
+```
+
+Cheap to compute — a sum over `completed` claims and the category weight table (§7.11) —
+and it's the number a **residence life or sustainability office** would care about, which
+makes it the answer to a "new stakeholder" pivot (§5). Diversion weights are labelled
+estimates; don't present them as measured.
 
 ---
 
@@ -608,11 +661,40 @@ change.
 with a stable per-listing offset. Fuzzing at render time lets someone re-request and average
 the jitter to recover the true point.
 
-**Storage.** Postgres + object storage + transactional email. Supabase covers all three
-including the magic link — fastest path for a 12-hour build.
+**Storage — no database for the hackathon build.** Seed data loads from JSON into memory at
+boot. *n* is in the low hundreds; Postgres is pure setup cost with zero demo value, and the
+schema in §8 is still the right *shape* for the objects in memory. Post-hack, that schema
+goes to Postgres unchanged. **No vector DB either** — cosine similarity over an in-memory
+array at n≈300 is microseconds. Do not install pgvector, Pinecone, Chroma, or FAISS.
 
-**Rate limits** on magic links, publishes, claims, scans, thread opens. Cheapest real
-protection available.
+**Auth — a user switcher, not a magic link.** "Sign in as Maya (leaver) / Dev (arriver)"
+demos better than an email round-trip and costs 40 minutes less. §7.1's magic link is the
+post-hack path, and it's written down so the shape is decided.
+
+**Rate limits** on publishes, claims, and scans — cheap, and the only real protection in a
+build with no auth.
+
+### Seed data
+
+The most under-rated hour of the build.
+
+- **Hand-write ~15 listings in real human voice first** — typos, missing dimensions,
+  inconsistent capitalization, brand names, pickup location mentioned mid-sentence. *Then*
+  clone that pattern programmatically for the rest. Uniformly-phrased synthetic data makes
+  semantic matching look broken and quietly costs points in three rubric categories at once.
+- Use real Waterloo neighbourhoods: **Northdale, Lester, Sunnydale, Beechwood, King St N**.
+- Real term boundaries matching `config.json` (§5).
+- Target ~60 people, ~120 listings, ~90 wants. Generator, not hand-typed rows.
+
+### Hard non-goals for the 12-hour build
+
+Do not build, even if it looks easy: a database or ORM · a vector database · maps,
+geocoding or routing APIs · real authentication or sessions · email or push delivery ·
+payments or deposits · Docker, CI, or deployment config · tests · more than one seeded
+campus.
+
+If a pivot appears to require one of these, the correct response is almost always a narrower
+reinterpretation that fits in 90 minutes.
 
 ---
 
@@ -660,8 +742,35 @@ WHERE l.hub_id = ? AND l.status = 'live'
 ORDER BY sim DESC LIMIT 20;
 ```
 
+### Provider seam
+
+Wrap it behind one interface, with a `LocalProvider` (any embedding + chat API) alongside
+`SnowflakeProvider`, swapped by env var:
+
+```ts
+interface MatchProvider {
+  embed(texts: string[]): Promise<number[][]>;
+  rerank(want: string, candidates: string[]): Promise<{ score: number; reason: string }[]>;
+}
+```
+
+This exists so that **abandoning the Snowflake track at noon is a one-line change rather
+than a refactor** — which is the only reason it's safe to try at all.
+
+### Two rules that decide whether this scores
+
+1. **Precompute embeddings for all seed data at build time and cache them to JSON.** Never
+   embed at request time during the demo. A 4-second spinner in a 2-minute demo is fatal.
+2. **The match score must feed the ranking, not just render in the UI.** If the AI output
+   only displays as a caption next to a result that was ordered by something else, a judge
+   will notice, and it scores as a caption. It goes into `category_fit` in §7.7's formula
+   and changes the order of the feed.
+
+Call it **retrieve-and-rerank** when explaining it. It is not a "transformer pipeline," and
+someone on that judging panel will know the difference.
+
 **Decide by 12:00 whether you're entering this track.** Half-entering costs real hours and
-scores nothing. If yes, #1 is the one to build — it's the smallest diff with the best story.
+scores nothing. If yes, #1 is the one to build — smallest diff, best story.
 
 ---
 
@@ -706,16 +815,16 @@ handbook is explicit: **a smaller working prototype beats 15 unfinished features
 | Clock | Block | Deliverable |
 |---|---|---|
 | 08:00–10:00 | **Pivot 1** | ✅ done — repo, scope, these docs |
-| **10:00–10:20** | 🔄 **Pivot 2** | Absorb. Update §1. Re-plan. **Timebox to 20 min** |
-| 10:20–12:00 | **Foundation + feed** | Schema, seed Waterloo hub with real F25/W26 dates, ~24 believable listings. Design tokens (DESIGN.md §15). **The ledger feed with urgency ranking.** Fake auth via a user switcher |
-| **12:00–12:20** | 🔄 **Pivot 3** | Absorb. Update §1. **Decide the Snowflake track here** |
-| 12:20–14:30 | **Term matching** | Window picker, exchange-zone component, coverage math, "Matches your term" filter, listing detail. *Eat during this block* |
-| 14:30–16:00 | **Wants + the AI moment** | Wants checklist, match-on-publish, match inbox. Camera scan → prefilled form (§10 #1 or #2) |
-| **16:00–16:15** | 🚨 **Pivot 4** | **Narrow or reframe. Do not rebuild.** ≤15 min to decide |
-| 16:15–18:30 | **Absorb + claim/handoff** | Pivot 4 response. Claim hold, condition report capture, both-party confirm |
+| **10:00–10:20** | 🔄 **Pivot 2** | Absorb. Update [PIVOTS.md](../PIVOTS.md). Re-plan. **Timebox to 20 min** |
+| 10:20–12:00 | **Foundation + feed** | `config.json` (§5), in-memory types, **seed generator** — hand-write 15 listings in real voice first (§9). Design tokens (DESIGN.md §15). **The ledger feed with urgency ranking.** User switcher instead of auth |
+| **12:00–12:20** | 🔄 **Pivot 3** | Absorb. Update PIVOTS.md. **Decide the Snowflake track here — in or out** |
+| 12:20–14:30 | **Term matching** | Window picker, exchange-zone component, coverage math, "Matches my term" filter, listing detail. *Eat during this block* |
+| 14:30–16:00 | **Wants + the AI moment** | Wants checklist, match-on-publish, match inbox. Camera scan → prefilled form. Embeddings **precomputed and cached** (§10) |
+| **16:00–16:15** | 🚨 **Pivot 4** | **Narrow or reframe. Do not rebuild.** ≤15 min to decide, response must fit in 90 min |
+| 16:15–18:30 | **Absorb + claim** | Pivot 4 response. Claim hold, **exchange-option slot picker** (§7.12), confirmation with a time and a place |
 | — | | **← cut line. Everything below is optional** |
-| 18:30–19:15 | **Polish** | Empty states, reduced-motion pass, real copy (DESIGN.md §12), 375 px pass, provenance chain |
-| **19:15–20:00** | **Demo prep** | Seed the exact demo path. **Rehearse the 2 minutes out loud, three times.** Fill §1 and §13 completely |
+| 18:30–19:15 | **Polish** | Empty states, reduced-motion pass, real copy (DESIGN.md §12), 375 px pass, impact dashboard, provenance chain |
+| **19:15–20:00** | **Demo prep** | Seed the exact demo path. **Rehearse the 2 minutes out loud, three times.** Finish PIVOTS.md and §13 |
 
 **Protect the last 45 minutes.** A demo that runs beats a feature nobody sees. Three minutes
 of judging is not enough time to recover from a broken build.
@@ -746,7 +855,9 @@ why it matters.* Do **not** spend 90 seconds on the problem.
 >   post. This shows you what's about to be thrown away."*
 > - **The match.** Switch to an arriver six weeks out. Their term bar and the leaver's
 >   availability bar overlap — the exchange zone lights up. **100% cover.**
-> - **The claim.** One action takes the room and everything in it.
+> - **The claim.** One action takes the room and everything in it — then they pick a pickup
+>   slot the seller already set, and both sides get a time and a place. *"No 'is this still
+>   available'. It's a commitment with a time attached."*
 >
 > **5. Why it matters (10s).** "Three times a year, a whole city's worth of furniture goes to
 > the curb while the people who need it are sitting in another city, searching the wrong way.

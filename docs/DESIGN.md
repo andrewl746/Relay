@@ -481,7 +481,70 @@ Listing verification (lease proof, PROJECT.md §7.9) uses the same stamp reading
 `LEASE ON FILE`. The rotation is the whole joke — it's the one imperfect thing in a system
 of straight rules, and it reads as a physical mark rather than a platform badge.
 
-### 9.7 Buttons & fields
+### 9.7 Slot picker — exchange options
+
+Replaces the blank chat box (PROJECT.md §7.12). The buyer never types; they pick.
+
+```
+  HOW TO GET IT
+
+  ○ Public campus spot     SLC lower atrium          ← default
+  ○ Pickup at Maya's       address unlocks on accept
+  ○ Delivery               +$10, within 3km
+
+  ┌──────┐┌──────┐┌──────┐┌──────┐
+  │ Sat  ││ Sat  ││ Sun  ││ Sun  │     slots Maya already set
+  │ 10am ││ 2pm  ││ 11am ││ 4pm  │
+  └──────┘└──────┘└──────┘└──────┘
+
+  ┌────────────────────────────────────────┐
+  │  Sat Dec 20 · 2:00pm · SLC lower atrium│
+  │  Maya K. and you. Bring a friend.      │
+  └────────────────────────────────────────┘
+             [  CONFIRM HANDOFF  ]
+```
+
+- Slot tiles: 1px `--rule`, `--r-1`, 64×56, Plex Mono. Selected = `--ink` fill, paper text.
+- Sold-out / passed slots: `--ink-3`, struck, not removed — seeing three taken slots is
+  social proof that the seller is real.
+- The confirmation box is `--paper-raised` with a 1px `--rule-strong` border. **It states a
+  date, a time, and a place in words** — never "Handoff scheduled ✓".
+- Public-spot option is **pre-selected by default** for `thing` listings. Safety is the
+  default, not a warning.
+
+### 9.8 Mode indicator
+
+The feed says which mode it's in (PROJECT.md §4). One line under the display headline —
+not a toggle, not a banner.
+
+```
+  Marketplace mode      41 listings · Waterloo
+  ─────────────────────────────────────────────
+  CLEARING · ends Dec 19     41 listings · 6 gone by tonight
+```
+
+Marketplace mode: all ink, calm. Clearing mode: the eyebrow goes `--signal`, and the count
+line gains the "gone by tonight" clause. **The mode is legible from colour temperature
+alone** — a calm screen means nothing's urgent, which is the whole colour thesis (§1).
+
+### 9.9 Impact readout
+
+PROJECT.md §7.13. Mono, tabular, no charts, no progress rings, no green.
+
+```
+  WATERLOO · FALL 2025
+
+  312        items diverted
+  4.1 t      kept out of landfill      (estimated)
+  $18,400    saved
+  41         rooms subletted instead of sitting empty
+```
+
+Figures in Data display 32px, labels in `--ink-2` meta. The `(estimated)` note is required
+— see PROJECT.md §7.11 on not presenting category weights as measured. A bar chart here
+would be four bars of unrelated units; a number column is honest and reads faster.
+
+### 9.10 Buttons & fields
 
 - **Primary:** `--ink` fill, `--paper` text, `--r-1`, 44px tall, Archivo 15/600. **One per
   screen.**
@@ -839,11 +902,13 @@ body {
 | 6 | **Listing detail** (§13.2) | Including the safety band |
 | 7 | **Decay ladder** (§9.1) | Small, high-impact, sells the pricing idea instantly |
 | — | | **← if the clock dies here, the demo still lands** |
-| 8 | Bundle manifest (§9.2) | The best transaction, but the feed tells the story without it |
-| 9 | Wants checklist (§9.5) | |
-| 10 | Verified stamp (§9.6) | 10 minutes, disproportionate charm |
-| 11 | Condition report (§9.3) | Highest product value, lowest demo value in 2 minutes |
-| 12 | Provenance chain (§9.4) | Pure garnish — real if sustainability becomes the pivot |
+| 8 | **Slot picker** (§9.7) | Small, and it is the last beat of the demo |
+| 9 | Bundle manifest (§9.2) | The best transaction, but the feed tells the story without it |
+| 10 | Wants checklist (§9.5) | |
+| 11 | Verified stamp (§9.6) | 10 minutes, disproportionate charm |
+| 12 | Impact readout (§9.9) | Pure numbers, 15 min — and it is the answer to a "new stakeholder" pivot |
+| 13 | Condition report (§9.3) | Highest product value, lowest demo value in 2 minutes |
+| 14 | Provenance chain (§9.4) | Pure garnish — real if sustainability becomes the pivot |
 
 **Dark mode is free** if you use the tokens from hour one and expensive if you retrofit it at
 hour ten. Use the tokens.
