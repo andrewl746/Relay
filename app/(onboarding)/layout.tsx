@@ -4,7 +4,6 @@ import { Logo } from "@/components/hub/logo";
 import { getProfile } from "@/lib/onboarding/profile";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseUser } from "@/lib/supabase/session";
-import "../(auth)/github-ui.css";
 
 export default async function OnboardingLayout({ children }: { children: ReactNode }) {
   const user = await getSupabaseUser();
@@ -16,12 +15,13 @@ export default async function OnboardingLayout({ children }: { children: ReactNo
   if (profile?.onboarding_completed && profile.university_email_verified) redirect("/");
 
   return (
-    <div className="gh flex min-h-full flex-1 flex-col">
-      <header className="border-b border-gh-border-muted px-4 py-4">
-        {/* .gh is a light-only theme, so the mark stays dark ink even in dark mode. */}
-        <Logo className="h-7 bg-gh-fg" />
+    <div className="flex min-h-full flex-1 flex-col font-sans text-ink">
+      <header className="border-b border-border">
+        <div className="mx-auto flex max-w-[var(--page-max)] items-center px-5 py-4 sm:px-6">
+          <Logo className="h-8 bg-ink" />
+        </div>
       </header>
-      <main className="flex flex-1 items-start justify-center px-4 py-10 sm:py-16">
+      <main className="flex flex-1 items-start justify-center px-5 py-12 sm:px-6 sm:py-20">
         {/* Step 3 is a grid of tiles, so the shell has to be able to get wide.
             Each step sets its own width via OnboardingShell. */}
         <div className="w-full max-w-[960px]">{children}</div>

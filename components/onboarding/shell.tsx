@@ -3,6 +3,11 @@ import type { ReactNode } from "react";
 
 const STEPS = ["Your info", "Verify email", "Interests", "Wishlist"];
 
+export const labelClass = "mb-1.5 block text-[14px] font-semibold text-ink";
+export const hintClass = "mt-1.5 text-[13px] text-ink-2";
+export const errorClass = "rounded-sm border border-accent/40 bg-accent-tint px-3.5 py-3 text-[14px] text-ink";
+export const successClass = "rounded-sm border border-done/40 bg-surface-2 px-3.5 py-3 text-[14px] text-ink";
+
 export function OnboardingShell({
   step,
   title,
@@ -23,9 +28,11 @@ export function OnboardingShell({
 }) {
   return (
     <div
-      className={`gh-card mx-auto p-6 sm:p-8 ${width === "wide" ? "max-w-[900px]" : "max-w-[480px]"}`}
+      className={`mx-auto rounded-md border border-border bg-surface p-6 shadow-[var(--lift)] sm:p-8 ${
+        width === "wide" ? "max-w-[900px]" : "max-w-[520px]"
+      }`}
     >
-      <ol className="mb-6 flex items-center">
+      <ol className="mb-8 flex items-center">
         {STEPS.map((label, i) => {
           const n = i + 1;
           const state = n < step ? "done" : n === step ? "current" : "upcoming";
@@ -34,25 +41,25 @@ export function OnboardingShell({
               <span className="flex items-center gap-2">
                 <span
                   aria-hidden="true"
-                  className={`grid size-5 shrink-0 place-items-center rounded-full text-[11px] font-semibold ${
+                  className={`grid size-6 shrink-0 place-items-center rounded-full text-[12px] font-semibold ${
                     state === "done"
-                      ? "bg-gh-success text-white"
+                      ? "bg-done text-surface"
                       : state === "current"
-                        ? "bg-gh-accent text-white"
-                        : "border border-gh-border text-gh-fg-subtle"
+                        ? "bg-accent text-on-accent"
+                        : "border border-border-strong text-ink-3"
                   }`}
                 >
                   {state === "done" ? "✓" : n}
                 </span>
                 <span
-                  className={`hidden text-[12px] sm:inline ${
-                    state === "upcoming" ? "text-gh-fg-subtle" : "font-medium text-gh-fg"
+                  className={`hidden text-[13px] sm:inline ${
+                    state === "upcoming" ? "text-ink-3" : "font-semibold text-ink"
                   }`}
                 >
                   {label}
                 </span>
               </span>
-              {n < STEPS.length && <span aria-hidden="true" className="mx-2 h-px flex-1 bg-gh-border" />}
+              {n < STEPS.length && <span aria-hidden="true" className="mx-2 h-px flex-1 bg-border" />}
             </li>
           );
         })}
@@ -61,14 +68,14 @@ export function OnboardingShell({
       {backHref && (
         <Link
           href={backHref}
-          className="mb-3 inline-flex items-center gap-1 text-[13px] font-semibold text-gh-fg-muted hover:text-gh-fg"
+          className="mb-3 -ml-2 inline-flex min-h-9 items-center gap-1 rounded-sm px-2 text-[14px] font-semibold text-ink-2 transition-colors duration-100 hover:bg-surface-2 hover:text-ink"
         >
           ← {backLabel ?? "Back"}
         </Link>
       )}
-      <h1 className="text-[28px] leading-tight font-semibold text-gh-fg">{title}</h1>
-      {description && <p className="mt-1 text-[13px] text-gh-fg-muted">{description}</p>}
-      <div className="mt-6">{children}</div>
+      <h1 className="text-[clamp(28px,4vw,34px)] leading-tight font-semibold tracking-[-0.02em] text-ink">{title}</h1>
+      {description && <p className="mt-2 text-[15px] text-ink-2">{description}</p>}
+      <div className="mt-7">{children}</div>
     </div>
   );
 }

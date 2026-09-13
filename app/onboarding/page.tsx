@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Logo } from "@/components/hub/logo";
+import { btnPrimary, fieldClass } from "@/components/hub/ui";
 
 const LOCATIONS = ['northdale', 'beechwood', 'king-st', 'university-ave', 'lakeshore'];
 const WINDOWS = ['morning', 'afternoon', 'evening'] as const;
@@ -17,6 +19,13 @@ const UNIVERSITIES = [
   'University of Michigan',
   'Other',
 ];
+
+const chip = (on: boolean) =>
+  `min-h-11 rounded-sm border px-3 text-[14px] font-semibold capitalize transition-colors duration-100 ${
+    on
+      ? 'border-accent bg-accent text-on-accent'
+      : 'border-border-strong bg-surface text-ink-2 hover:border-ink-3 hover:text-ink'
+  }`;
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -36,102 +45,86 @@ export default function OnboardingPage() {
   const ready = university && location && windows.size > 0;
 
   return (
-    <div className="min-h-screen bg-[var(--chassis)] text-[var(--text-primary)] flex items-center justify-center px-4">
-      {/* Dot grid */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage: 'radial-gradient(circle, #E4E7EB 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
-        }}
-      />
-
-      <div className="relative z-10 w-full max-w-[520px]">
-        <h1 className="font-[family-name:var(--font-display)] text-[36px] font-bold tracking-[-0.03em] mb-2">
-          CONFIGURE YOUR NODE
-        </h1>
-        <p className="text-[var(--text-muted)] mb-10 text-[15px]">
-          Set your university, location, and availability so the routing engine can match you.
-        </p>
-
-        {/* University */}
-        <div className="mb-8">
-          <label className="text-[13px] font-semibold text-[var(--text-muted)] block mb-3">
-            University
-          </label>
-          <select
-            value={university}
-            onChange={(e) => setUniversity(e.target.value)}
-            className="w-full rounded-[2px] border border-[var(--bezel)] bg-[#1E2028] px-3 py-3 text-[15px] text-[var(--text-primary)] font-[family-name:var(--font-ui)] appearance-none cursor-pointer focus:border-[var(--active-route)]"
-          >
-            <option value="" disabled>Select your university</option>
-            {UNIVERSITIES.map(u => (
-              <option key={u} value={u}>{u}</option>
-            ))}
-          </select>
+    <div className="flex min-h-screen flex-col bg-bg font-sans text-ink">
+      <header className="border-b border-border">
+        <div className="mx-auto flex max-w-[var(--page-max)] items-center px-5 py-4 sm:px-6">
+          <Logo className="h-8 bg-ink" />
         </div>
+      </header>
 
-        {/* Location */}
-        <div className="mb-8">
-          <label className="text-[13px] font-semibold text-[var(--text-muted)] block mb-3">
-            Neighbourhood
-          </label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-            {LOCATIONS.map(loc => (
-              <button
-                key={loc}
-                type="button"
-                onClick={() => setLocation(loc)}
-                className={`rounded-[2px] border px-3 py-2.5 text-[13px] font-semibold transition-all duration-75 font-[family-name:var(--font-data)] ${
-                  location === loc
-                    ? 'border-[var(--secured)] bg-[var(--secured)] text-white'
-                    : 'border-[var(--bezel)] bg-[var(--panel)] text-[var(--text-muted)] hover:border-[var(--text-muted)]'
-                }`}
-              >
-                {loc}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Pickup Windows */}
-        <div className="mb-10">
-          <label className="text-[13px] font-semibold text-[var(--text-muted)] block mb-3">
-            Pickup Windows
-          </label>
-          <div className="flex gap-2">
-            {WINDOWS.map(w => (
-              <button
-                key={w}
-                type="button"
-                onClick={() => toggleWindow(w)}
-                className={`flex-1 rounded-[2px] border px-4 py-3 text-[14px] font-semibold transition-all duration-75 ${
-                  windows.has(w)
-                    ? 'border-accent bg-accent text-on-accent'
-                    : 'border-[var(--bezel)] bg-[var(--panel)] text-[var(--text-muted)] hover:border-[var(--text-muted)]'
-                }`}
-              >
-                {w}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Submit */}
-        <button
-          onClick={() => router.push('/')}
-          disabled={!ready}
-          className="w-full min-h-12 rounded-[2px] bg-accent text-[15px] font-bold text-on-accent tracking-wide transition-all duration-75 hover:brightness-110 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed"
-        >
-          ACTIVATE
-        </button>
-
-        {!ready && (
-          <p className="mt-3 text-center text-[12px] text-[var(--text-muted)] font-[family-name:var(--font-data)]">
-            Select all fields to continue
+      <main className="flex flex-1 items-start justify-center px-5 py-12 sm:px-6 sm:py-20">
+        <div className="w-full max-w-[520px] rounded-md border border-border bg-surface p-6 shadow-[var(--lift)] sm:p-8">
+          <h1 className="text-[clamp(28px,4vw,34px)] leading-tight font-semibold tracking-[-0.02em]">
+            Set up your account
+          </h1>
+          <p className="mt-2 text-[15px] text-ink-2">
+            Set your university, neighbourhood, and when you&rsquo;re free so we can match you with pickups.
           </p>
-        )}
-      </div>
+
+          <div className="mt-7">
+            <label htmlFor="demo-university" className="mb-1.5 block text-[14px] font-semibold">
+              University
+            </label>
+            <select
+              id="demo-university"
+              value={university}
+              onChange={(e) => setUniversity(e.target.value)}
+              className={fieldClass}
+            >
+              <option value="" disabled>Select your university</option>
+              {UNIVERSITIES.map(u => (
+                <option key={u} value={u}>{u}</option>
+              ))}
+            </select>
+          </div>
+
+          <fieldset className="mt-6">
+            <legend className="mb-1.5 block text-[14px] font-semibold">Neighbourhood</legend>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {LOCATIONS.map(loc => (
+                <button
+                  key={loc}
+                  type="button"
+                  aria-pressed={location === loc}
+                  onClick={() => setLocation(loc)}
+                  className={chip(location === loc)}
+                >
+                  {loc.replace('-', ' ')}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="mt-6">
+            <legend className="mb-1.5 block text-[14px] font-semibold">Pickup windows</legend>
+            <div className="flex gap-2">
+              {WINDOWS.map(w => (
+                <button
+                  key={w}
+                  type="button"
+                  aria-pressed={windows.has(w)}
+                  onClick={() => toggleWindow(w)}
+                  className={`${chip(windows.has(w))} flex-1`}
+                >
+                  {w}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+
+          <button
+            onClick={() => router.push('/')}
+            disabled={!ready}
+            className={`${btnPrimary} mt-8 w-full`}
+          >
+            Continue
+          </button>
+
+          {!ready && (
+            <p className="mt-3 text-center text-[13px] text-ink-2">Fill in all three to continue.</p>
+          )}
+        </div>
+      </main>
     </div>
   );
 }

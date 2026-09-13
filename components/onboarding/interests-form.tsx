@@ -2,8 +2,10 @@
 
 import { useActionState, useState } from "react";
 import { saveInterests, type ActionState } from "@/app/(onboarding)/actions";
+import { btnPrimary } from "@/components/hub/ui";
 import { INTERESTS } from "@/lib/onboarding/interests";
 import { InterestArt } from "./interest-art";
+import { errorClass } from "./shell";
 
 const initialState: ActionState = { status: "idle" };
 
@@ -33,15 +35,12 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
             return (
               <label
                 key={interest.id}
-                className={`group anim-flap relative flex cursor-pointer flex-col gap-3 rounded-[4px] border p-4 transition-[transform,border-color,background-color] duration-100 hover:-translate-y-[2px] sm:p-5 ${
+                className={`group anim-flap relative flex cursor-pointer flex-col gap-3 rounded-md border p-4 transition-[border-color,background-color,box-shadow] duration-100 hover:shadow-[var(--lift)] sm:p-5 ${
                   on
-                    ? "border-[var(--kand-red)] bg-[var(--kraft-100)]"
-                    : "border-[var(--kraft-300)] bg-[var(--kraft-50)] hover:border-[var(--kraft-400)]"
+                    ? "border-accent bg-accent-tint"
+                    : "border-border bg-surface hover:border-border-strong"
                 }`}
-                style={{
-                  animationDelay: `${i * 45}ms`,
-                  boxShadow: on ? "0 3px 0 var(--kand-red)" : "0 2px 0 var(--kraft-300)",
-                }}
+                style={{ animationDelay: `${i * 45}ms` }}
               >
                 <input
                   type="checkbox"
@@ -58,7 +57,7 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
                   className={`absolute top-3 right-3 grid size-6 place-items-center rounded-full border-2 text-[13px] font-bold transition-colors ${
                     on
                       ? "border-accent bg-accent text-on-accent"
-                      : "border-[var(--kraft-400)] text-transparent"
+                      : "border-border-strong text-transparent"
                   }`}
                 >
                   ✓
@@ -66,17 +65,17 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
 
                 <span
                   className={`h-16 w-16 transition-colors sm:h-20 sm:w-20 ${
-                    on ? "text-[var(--kand-red)]" : "text-[var(--kraft-400)] group-hover:text-[var(--ink-2)]"
+                    on ? "text-accent" : "text-ink-3 group-hover:text-ink-2"
                   }`}
                 >
                   <InterestArt id={interest.id} />
                 </span>
 
                 <span>
-                  <span className="block text-[16px] font-semibold text-[var(--ink)]">
+                  <span className="block text-[16px] font-semibold text-ink">
                     {interest.label}
                   </span>
-                  <span className="mt-0.5 block text-[13px] leading-snug text-[var(--ink-2)]">
+                  <span className="mt-0.5 block text-[13px] leading-snug text-ink-2">
                     {interest.hint}
                   </span>
                 </span>
@@ -86,13 +85,13 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
         </div>
       </fieldset>
 
-      {state.status === "error" && <p className="gh-flash-error">{state.message}</p>}
+      {state.status === "error" && <p className={errorClass}>{state.message}</p>}
 
       <div className="flex items-center gap-4">
-        <button type="submit" disabled={pending} className="gh-btn gh-btn-primary">
+        <button type="submit" disabled={pending} className={btnPrimary}>
           {pending ? "Saving…" : "Next"}
         </button>
-        <span className="text-[13px] text-[var(--ink-2)]">
+        <span className="text-[13px] text-ink-2">
           {picked.length === 0
             ? "Pick as many as you like — you can change these later."
             : `${picked.length} selected`}
