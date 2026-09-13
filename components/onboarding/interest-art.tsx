@@ -27,9 +27,9 @@ const ART: Record<string, React.ReactNode> = {
   'school-supplies': (
     <Frame>
       <g {...stroke}>
-        <path d="M20 22h40a6 6 0 0 1 6 6v48H26a6 6 0 0 1-6-6V22Z" />
-        <path d="M66 28h10v48H66" />
-        <path d="M32 38h22M32 50h22" />
+        <path d="M25 22h40a6 6 0 0 1 6 6v48H31a6 6 0 0 1-6-6V22Z" />
+        <path d="M71 28h10v48H71" />
+        <path d="M37 38h22M37 50h22" />
       </g>
     </Frame>
   ),
