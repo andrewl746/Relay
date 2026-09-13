@@ -50,7 +50,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         <Thumb
-          word={listing.kind}
+          category={listing.category}
           photoUrl={listing.photoUrl}
           alt={listing.title}
           size="hero"

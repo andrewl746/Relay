@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ViewTransition, type ReactNode } from "react";
 import { countdown, type CountdownTier } from "@/lib/hub/format";
+import type { Category } from "@/lib/hub/types";
 import { BackIcon } from "./icons";
 
 export const btnPrimary =
@@ -68,18 +69,12 @@ export function Eyebrow({ children, strong = false }: { children: ReactNode; str
 }
 
 /**
- * The listing's photo, falling back to a category glyph when it has none — a
- * word in a grey box reads as a broken image, and several stacked read as a
+ * The listing's photo, falling back to its category's glyph when it has none —
+ * a word in a grey box reads as a broken image, and several stacked read as a
  * catalogue that failed to load.
  */
-const THUMB_ICON: { match: RegExp; icon: EmptyIcon }[] = [
-  { match: /desk|chair|shelf|table|lamp|bed|mattress|sofa|dresser|furniture/i, icon: "box" },
-  { match: /book|text|coat|goggle|lab|calculator|school/i, icon: "list" },
-  { match: /fridge|kettle|toaster|micro|cook|kitchen|pot|pan/i, icon: "box" },
-];
-
 export function Thumb({
-  word,
+  category,
   photoUrl,
   alt = "",
   size = "row",
@@ -93,19 +88,19 @@ export function Thumb({
    */
   transitionName,
 }: {
-  word: string;
+  category: Category;
   photoUrl?: string | null;
   alt?: string;
   size?: "row" | "list" | "hero";
   transitionName?: string;
 }) {
-  const icon = THUMB_ICON.find((t) => t.match.test(word))?.icon ?? "box";
+  const icon = CATEGORY_ICON[category];
   const box = {
     row: "size-16 sm:size-[72px]",
     list: "size-[104px] sm:size-[132px]",
     hero: "aspect-[4/3] w-full",
   }[size];
-  const glyph = { row: "size-7", list: "size-12", hero: "size-16" }[size];
+  const glyph = { row: "size-9", list: "size-16", hero: "size-24" }[size];
 
   const thumb = (
     <div
@@ -168,7 +163,7 @@ export function VerifiedStamp({ domain }: { domain: string }) {
  * than "something failed to load". Line art at a heavy stroke, matching the
  * stencil glyphs elsewhere; always aria-hidden, since the text says it.
  */
-export type EmptyIcon = "list" | "calendar" | "box" | "search" | "bell";
+export type EmptyIcon = "list" | "calendar" | "box" | "search" | "bell" | "chair" | "pencil" | "pot" | "monitor" | "soap";
 
 const EMPTY_PATHS: Record<EmptyIcon, ReactNode> = {
   list: <><path d="M9 6h11M9 12h11M9 18h11" /><path d="M4 6h.01M4 12h.01M4 18h.01" /></>,
@@ -176,6 +171,22 @@ const EMPTY_PATHS: Record<EmptyIcon, ReactNode> = {
   box: <><path d="M3 8h18v12H3zM3 8l3-4h12l3 4M12 4v16" /></>,
   search: <><circle cx="11" cy="11" r="7" /><path d="m20 20-3.6-3.6" /></>,
   bell: <><path d="M18 16V11a6 6 0 1 0-12 0v5l-2 3h16l-2-3Z" /><path d="M10 21h4" /></>,
+  chair: <><path d="M7 12V4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8M7 7h10M7 10h10" /><path d="M5 12h14l-1 3H6l-1-3Z" /><path d="M6.5 15 6 21M17.5 15l.5 6M9 15l-.3 4M15 15l.3 4" /></>,
+  // The sheet stops short where the pencil crosses it, so the two outlines never overlap.
+  pencil: <><path d="M15 10.5V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h5.5" /><path d="M6 8h6M6 12h4" /><path d="m19 8 2 2-8 8-3 1 1-3 8-8ZM17 10l2 2" /></>,
+  pot: <><path d="M5 10h14v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7ZM3 10h18M5 13H3M19 13h2M10 7V5M14 7V5" /></>,
+  monitor: <><rect x="3" y="4" width="18" height="12" rx="1.5" /><path d="M12 16v4M8 20h8" /></>,
+  soap: <><path d="M6 12a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-7ZM10 10V7h4v3M12 7V3M9 3h7v2M9.5 15.5h5" /></>,
+};
+
+/** The placeholder art for a listing with no photo. */
+export const CATEGORY_ICON: Record<Category, EmptyIcon> = {
+  furniture: "chair",
+  school: "pencil",
+  kitchen: "pot",
+  electronics: "monitor",
+  hygiene: "soap",
+  other: "box",
 };
 
 export function EmptyIconArt({ name }: { name: EmptyIcon }) {
