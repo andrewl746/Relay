@@ -1,0 +1,91 @@
+export type Category = "furniture" | "school";
+export type OfferType = "sale" | "rent" | "free";
+export type Condition = "like-new" | "good" | "fair";
+export type MoveStatus = "leaving" | "arriving" | "staying";
+export type PlaceKind = "seller" | "campus";
+export type ListingStatus = "available" | "claimed";
+
+export type University = {
+  id: string;
+  name: string;
+  shortName: string;
+  emailDomain: string;
+};
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  universityId: string;
+  home: string;
+  moveStatus: MoveStatus;
+  moveDate: string | null;
+  note: string;
+};
+
+export type Listing = {
+  id: string;
+  universityId: string;
+  sellerId: string;
+  title: string;
+  description: string;
+  kind: string;
+  category: Category;
+  offerType: OfferType;
+  priceCents: number | null;
+  condition: Condition;
+  pickupArea: string;
+  expiresAt: string | null;
+  isBundle: boolean;
+  parentId: string | null;
+  status: ListingStatus;
+  createdAt: string;
+};
+
+export type TimeSlot = {
+  id: string;
+  listingId: string;
+  startsAt: string;
+  endsAt: string;
+  place: string;
+  placeKind: PlaceKind;
+};
+
+export type Want = {
+  id: string;
+  userId: string;
+  text: string;
+  maxPriceCents: number | null;
+  neededBy: string;
+  fulfilled: boolean;
+};
+
+export type Match = {
+  id: string;
+  userId: string;
+  listingId: string;
+  wantIds: string[];
+  score: number;
+  reason: string;
+};
+
+export type Handoff = {
+  id: string;
+  listingId: string;
+  slotId: string;
+  buyerId: string;
+  sellerId: string;
+  createdAt: string;
+};
+
+export type NotificationKind = "match" | "claim" | "handoff" | "reminder";
+
+export type UserNotification = {
+  id: string;
+  userId: string;
+  kind: NotificationKind;
+  text: string;
+  href: string;
+  createdAt: string;
+  read: boolean;
+};
