@@ -1,11 +1,14 @@
-@import "tailwindcss";
-
 /* Onboarding's component classes, drawn from the site palette in app/globals.css.
    This used to be its own GitHub-style system — beige, a red accent, 14px type,
    light-only — and read as a different product from the pages either side of it.
    The gh-* names stay so the onboarding components didn't need rewriting; every
    value now points at a site token, so it follows dark mode like everything else.
-   Don't add colours here: map to a token in globals.css. */
+   Don't add colours here: map to a token in globals.css.
+
+   Imported once, by app/globals.css. Setup runs in Parcel's corner on every hub
+   page and the post forms use gh-flash-error, so this is site-wide now. No
+   @import "tailwindcss" of its own: a second copy re-emitted preflight after
+   globals.css. */
 :root {
   --gh-canvas: var(--surface);
   --gh-canvas-subtle: var(--bg);

@@ -1,11 +1,13 @@
 import { RoomBundleForm } from "@/components/hub/room-bundle-form";
 import { BackLink, PageShell, PageTitle } from "@/components/hub/ui";
-import { getCurrentUser } from "@/lib/hub/session";
+import { SetupRequired } from "@/components/onboarding/setup-required";
+import { getCurrentUser, getTradeBlocker } from "@/lib/hub/session";
 
 export const metadata = { title: "Post your room" };
 
 export default async function PostRoomPage() {
-  const user = await getCurrentUser();
+  const [user, blocker] = await Promise.all([getCurrentUser(), getTradeBlocker()]);
+  if (blocker) return <SetupRequired step={blocker} action="post" title="Post your room" />;
 
   return (
     <PageShell>

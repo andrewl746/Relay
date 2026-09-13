@@ -2,15 +2,16 @@
  * Parcel, Relay's onboarding guide: a small open box with a face.
  *
  * Original artwork. Relay's mark is an open cardboard box, so the guide is one:
- * kraft body, flaps open, a strip of packing tape in the onboarding accent. Pure
- * SVG with no hooks, so it renders in server components too. The onboarding
- * theme (.gh) is light-only, so the colours are fixed rather than tokens.
+ * kraft body, flaps open, a strip of packing tape in the site accent. Pure SVG
+ * with no hooks, so it renders in server components too. Parcel is a kraft box
+ * in both themes, so the box and face colours are fixed; only the tape follows
+ * the accent token, which is the same brand blue in light and dark.
  */
 
 export type Mood = "hi" | "thinking" | "pointing" | "cheer";
 
-const INK = "#2B2118"; // --gh-fg
-const TAPE = "#B33A1E"; // --gh-accent
+const INK = "#2B2118"; // the face, drawn on kraft in both themes
+const TAPE = "var(--accent)";
 const EDGE = "#9C7443";
 const KRAFT = "#D9B27D";
 const CHEEK = "#E07A5F";

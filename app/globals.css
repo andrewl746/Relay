@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./(auth)/github-ui.css";
 
 /*
  * Relay — corrugated kraft.

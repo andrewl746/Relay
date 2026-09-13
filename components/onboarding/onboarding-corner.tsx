@@ -1,28 +1,12 @@
 import type { ReactNode } from "react";
 import { backToInterests } from "@/app/(onboarding)/actions";
-import { hasCompletedProfileStep, type ProfileRow } from "@/lib/onboarding/profile";
+import { pendingStep, type ProfileRow } from "@/lib/onboarding/profile";
 import { getUniversity } from "@/lib/onboarding/universities";
-import type { OnboardingStep } from "./guide-tips";
 import { InterestsForm } from "./interests-form";
 import { ParcelCorner } from "./parcel-corner";
 import { ProfileForm } from "./profile-form";
 import { VerifyEmailForm } from "./verify-email-form";
 import { WantsStepForm } from "./wants-step-form";
-
-/**
- * The step a signed-in account still has to do, or null when setup is done.
- *
- * Same order the old /onboarding pages enforced. A finished account only comes
- * back here to verify again after switching university in Settings.
- */
-export function pendingStep(profile: ProfileRow | null): OnboardingStep | null {
-  if (profile?.onboarding_completed) {
-    return !profile.university_email_verified && getUniversity(profile.university_id ?? "") ? 2 : null;
-  }
-  if (!profile || !hasCompletedProfileStep(profile) || !getUniversity(profile.university_id ?? "")) return 1;
-  if (!profile.university_email_verified) return 2;
-  return profile.onboarding_step === "wants" ? 4 : 3;
-}
 
 /**
  * Account setup, in Parcel's corner of whatever page you're on instead of pages

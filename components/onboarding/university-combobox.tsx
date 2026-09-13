@@ -67,6 +67,8 @@ export function UniversityCombobox({
             e.preventDefault();
             choose(matches[activeIndex]);
           } else if (e.key === "Escape") {
+            // Handled: closing the list shouldn't also fold Parcel's corner around it.
+            e.preventDefault();
             setOpen(false);
           }
         }}

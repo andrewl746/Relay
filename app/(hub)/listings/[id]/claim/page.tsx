@@ -5,14 +5,16 @@ import { BackLink, btnSecondary, PageShell, PageTitle } from "@/components/hub/u
 import { getListing } from "@/lib/hub/data";
 import { firstName, formatDate, formatDay, formatPrice, formatTime, formatTimeRange } from "@/lib/hub/format";
 import { isBeforeArrival, suggestSlot } from "@/lib/hub/scheduling";
-import { getCurrentUser } from "@/lib/hub/session";
+import { SetupRequired } from "@/components/onboarding/setup-required";
+import { getCurrentUser, getTradeBlocker } from "@/lib/hub/session";
 
 export const metadata = { title: "Pick a pickup time" };
 
 export default async function ClaimPage({ params }: PageProps<"/listings/[id]/claim">) {
   const { id } = await params;
-  const [listing, user] = await Promise.all([getListing(id), getCurrentUser()]);
+  const [listing, user, blocker] = await Promise.all([getListing(id), getCurrentUser(), getTradeBlocker()]);
   if (!listing || listing.parentId) notFound();
+  if (blocker) return <SetupRequired step={blocker} action="claim" title="Pick a pickup time" />;
 
   const seller = firstName(listing.seller.name);
   const back = <BackLink href={`/listings/${listing.id}`}>{listing.title}</BackLink>;

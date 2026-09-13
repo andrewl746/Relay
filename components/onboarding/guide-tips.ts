@@ -1,6 +1,7 @@
+import type { SetupStep } from "@/lib/onboarding/profile";
 import type { Mood } from "./guide-bot";
 
-export type OnboardingStep = 1 | 2 | 3 | 4;
+export type OnboardingStep = SetupStep;
 export type GuideTip = { mood: Mood; text: string };
 
 /**
@@ -14,8 +15,10 @@ export type GuideTip = { mood: Mood; text: string };
  * - 10 minutes, "Resend code": CODE_TTL_MINUTES in lib/onboarding/otp.ts, verify-email-form.tsx
  * - quick-add suggestions: lib/onboarding/interests.ts seeds the wishlist step's chips
  * - "Your Active Needs": app/(hub)/account/page.tsx
- * The wishlist tips don't promise matching: lib/hub/data.ts notes real users'
- * wants aren't run through matching yet.
+ * - post and claim after verifying: tradeBlocker in lib/onboarding/profile.ts gates
+ *   app/(hub)/post, app/(hub)/listings/[id]/claim and their actions on steps 1–2 only
+ * The wishlist step's "we'll match them as people post" (onboarding-corner.tsx) is
+ * getMatches in lib/hub/data.ts, which runs every open want through hybrid search.
  */
 const TIPS: Record<OnboardingStep, GuideTip[]> = {
   1: [
@@ -29,6 +32,7 @@ const TIPS: Record<OnboardingStep, GuideTip[]> = {
   2: [
     { mood: "pointing", text: "Use your university email. It’s how Relay knows everyone here is a student." },
     { mood: "thinking", text: "The code lasts 10 minutes. Nothing in your inbox? Check spam, then press Resend code." },
+    { mood: "cheer", text: "Once you’re verified you can post and claim. Interests and Wishlist can wait." },
   ],
   3: [
     { mood: "hi", text: "Tap every kind of thing you might borrow or buy." },

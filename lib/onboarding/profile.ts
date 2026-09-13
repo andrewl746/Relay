@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { getUniversity } from "./universities";
 
 export type OnboardingStep = "profile" | "verify" | "interests" | "wants" | "complete";
 export type LivingSituation = "on_campus" | "off_campus";
@@ -36,4 +37,32 @@ export function hasCompletedProfileStep(profile: ProfileRow | null): boolean {
       profile.country &&
       profile.postal_code,
   );
+}
+
+/** Setup's four steps as Parcel's corner numbers them: Your info, Verify email, Interests, Wishlist. */
+export type SetupStep = 1 | 2 | 3 | 4;
+
+/**
+ * The step a signed-in account still has to do, or null when setup is done.
+ *
+ * Same order the old /onboarding pages enforced. A finished account only comes
+ * back to verify again after switching university in Settings.
+ */
+export function pendingStep(profile: ProfileRow | null): SetupStep | null {
+  if (profile?.onboarding_completed) {
+    return !profile.university_email_verified && getUniversity(profile.university_id ?? "") ? 2 : null;
+  }
+  if (!profile || !hasCompletedProfileStep(profile) || !getUniversity(profile.university_id ?? "")) return 1;
+  if (!profile.university_email_verified) return 2;
+  return profile.onboarding_step === "wants" ? 4 : 3;
+}
+
+/**
+ * The step that stops this account posting or claiming, or null. Only the first
+ * two block: a listing's pickup spot is the profile address, and everyone trading
+ * has a verified university email. Interests and the wishlist can wait.
+ */
+export function tradeBlocker(profile: ProfileRow | null): 1 | 2 | null {
+  const step = pendingStep(profile);
+  return step === 1 || step === 2 ? step : null;
 }
