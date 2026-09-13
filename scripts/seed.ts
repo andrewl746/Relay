@@ -2,11 +2,16 @@
  * Seed generator. Run: npm run seed
  *
  * Deterministic — same output every run, so the demo never surprises us.
- * Embeddings are left empty here; the embed step fills and caches them.
+ * Embeddings are left empty here; the pipeline step fills and caches them.
  *
  * The phrasing pools below are the ONE place outside config.json that is
  * allowed to know what the items actually are. A "new user group" pivot is a
  * diff against config.json plus this file's pools, budgeted at 15 minutes.
+ *
+ * Current audience: someone living independently for the first time. That
+ * changes what an item IS — not furniture inherited at a term boundary, but
+ * the drill you need for one afternoon and cannot justify owning. So the
+ * windows are days-to-weeks rather than months, and people mostly stay put.
  */
 import { writeFileSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -19,8 +24,8 @@ const config: { locations: string[]; cycleBoundaries: string[] } = JSON.parse(
 )
 
 const TARGET_PEOPLE = 60
-const TARGET_ITEMS = 120
-const TARGET_NEEDS = 100
+const TARGET_ITEMS = 90
+const TARGET_NEEDS = 260
 
 // ---------------------------------------------------------------- rng
 
@@ -45,13 +50,13 @@ const DAY = 86400000
 const iso = (d: Date) => d.toISOString().slice(0, 10)
 const shift = (isoDate: string, days: number) =>
   iso(new Date(new Date(isoDate).getTime() + days * DAY))
+const span = (a: string, b: string) =>
+  Math.round((new Date(b).getTime() - new Date(a).getTime()) / DAY)
 
-const B: string[] = config.cycleBoundaries
-/** [start, end) of each cycle. */
-const CYCLES = B.slice(0, -1).map((start: string, i: number) => ({
-  start,
-  end: B[i + 1],
-}))
+const B = config.cycleBoundaries
+const TERM_START = B[0]
+const TERM_END = B[B.length - 1]
+const TERM_DAYS = span(TERM_START, TERM_END)
 
 // ---------------------------------------------------------------- voice
 //
@@ -59,163 +64,168 @@ const CYCLES = B.slice(0, -1).map((start: string, i: number) => ({
 // missing dimensions, brand names, inconsistent caps, pickup location dropped
 // mid-sentence. Everything generated below clones this texture. Uniformly
 // phrased synthetic data makes semantic matching look broken.
+//
+// Every one of these is a thing you need twice a year and would be ridiculous
+// to buy. That is the pivot, expressed as data.
 
 const HANDWRITTEN: string[] = [
-  'IKEA MICKE desk, white, ~55in wide. small scratch on the top left corner but solid. pickup northdale, im on hickory',
-  'selling my monitor - dell 24 inch 1080p, comes w/ the hdmi cable. works fine, no dead pixels',
-  'Queen memory foam mattress topper, barely used, kept in the bag it came in. Lester, can meet by the plaza',
-  'MINI FRIDGE. 3.2 cu ft i think? makes a bit of noise but it gets cold. u haul it, im on sunnydale',
-  'office chair w/ arms, black mesh back, hydraulic still works. pickup beechwood',
-  '2 monitor arms, vesa mount. one is missing a screw but it still clamps fine',
-  'microwave 900w panasonic, clean inside. King St N near the bridge',
-  'bed frame - full size, metal, no headboard. comes apart with an allen key which i still have',
-  'standing desk converter thing, the kind that sits on top of your desk. VIVO brand. its heavy',
-  'space heater, small ceramic one. ran it all winter no issues',
-  'Full length mirror, the kind that leans on the wall. its glass so bring a car pls. northdale',
-  'kitchen starter pack basically - 2 pots, a pan, cutting board, some utensils. all in one box',
-  'TV 43in TCL roku tv, remote included. no stand tho, i had it wall mounted',
-  'desk lamp, cheap amazon one, usb powered. works',
-  'portable air conditioner 8000 btu, hose included. HEAVY, needs 2 ppl. lester',
+  'power drill - black&decker, bits are in the case. ive used it maybe twice. northdale',
+  'full screwdriver set + the allen keys, for when u inevitably build ikea stuff at 1am',
+  'steam mop, my mom made me buy it. works great actually. sunnydale',
+  'air mattress queen size, comes w the pump. for when ppl crash at ur place',
+  'vacuum - dyson stick one, battery holds about 20 min now. lester',
+  'big stockpot, like the huge kind. only needed it once for a party lol',
+  'carpet cleaner. you WILL need this at move out, trust me. beechwood',
+  'large suitcase, spinner wheels, one wheel is a bit sticky but rolls fine',
+  'sewing machine - singer, basic model. i can show u how to thread it',
+  'projector 1080p hdmi, no screen just point it at a wall. King St N',
+  '6ft step ladder. its in my hallway, im on regina',
+  'hand truck / dolly, folds flat. moving day essential. heavy ish',
+  'waffle maker. yes really. still in the box',
+  'basic red toolkit - hammer, pliers, wrench, the usual. northdale',
+  'bike pump with the pressure gauge + a patch kit',
 ]
 
-/** Object phrasings, deliberately inconsistent. */
+/**
+ * Things you need occasionally and cannot justify buying. This pool is the
+ * clearest statement of who the user now is.
+ */
 const OBJECTS: string[] = [
-  'desk',
-  'small desk',
-  'writing desk',
-  'folding table',
-  'card table',
-  'computer desk (glass top)',
-  'ikea LINNMON desk top + legs',
-  'monitor',
-  '27in monitor',
-  'ultrawide monitor (LG 29in)',
-  'second monitor',
-  'old 1080p monitor',
-  'office chair',
-  'desk chair',
-  'gaming chair',
-  'bar stool',
-  'dining chair',
-  'IKEA MARKUS chair',
-  'bed frame',
-  'twin bed frame',
-  'futon',
-  'mattress',
-  'mattress topper',
-  'bookshelf',
-  'billy bookcase',
-  'shelf unit',
-  'nightstand',
-  'dresser',
-  'mini fridge',
-  'microwave',
-  'kettle',
-  'rice cooker',
-  'instant pot',
-  'air fryer',
-  'toaster oven',
-  'blender',
-  'pots and pans',
-  'plates and bowls',
-  'space heater',
-  'fan',
-  'tower fan',
-  'humidifier',
-  'air purifier',
-  'portable AC',
+  'drill',
+  'power drill',
+  'cordless drill',
+  'impact driver',
+  'stud finder',
+  'spirit level',
+  'toolkit',
+  'hammer',
+  'screwdriver set',
+  'allen key set',
+  'wrench set',
+  'step ladder',
+  'ladder',
+  'step stool',
+  'hand truck',
+  'dolly',
+  'moving straps',
+  'packing tape gun',
+  'moving blankets',
+  'carpet cleaner',
+  'steam mop',
   'vacuum',
-  'swiffer + mop bucket',
-  'drying rack',
-  'lamp',
-  'floor lamp',
-  'desk lamp',
-  'led strip lights',
-  'mirror',
-  'rug',
-  'curtains + rod',
-  'shower caddy',
-  'laundry hamper',
-  'TV',
-  '32in tv',
-  'tv stand',
-  'monitor arm',
-  'keyboard + mouse',
-  'printer (brother laser)',
-  'router',
-  'extension cord + power bar',
-  'bike',
-  'bike lock',
-  'winter tires (nobody wants these but theyre free)',
+  'shop vac',
+  'air mattress',
+  'air pump',
+  'folding cot',
+  'folding chairs (4)',
+  'folding table',
+  'projector',
+  'bluetooth speaker',
+  'karaoke mic',
+  'camera tripod',
+  'ring light',
+  'sewing machine',
+  'iron',
+  'ironing board',
+  'garment steamer',
+  'stockpot',
+  'roasting pan',
+  'waffle maker',
+  'raclette grill',
+  'stand mixer',
+  'food processor',
+  'punch bowl + ladle',
+  'serving platters',
+  'cooler',
+  'camping stove',
+  'tent',
+  'sleeping bag',
+  'snow shovel',
+  'ice scraper',
+  'bike pump',
+  'bike repair stand',
+  'tire levers + patch kit',
+  'luggage scale',
   'suitcase',
-  'storage bins',
-  'ironing board + iron',
+  'large suitcase',
+  'duffel bag',
+  'garment bag',
+  'humidifier',
+  'dehumidifier',
+  'space heater',
+  'box fan',
+  'printer',
+  'paper shredder',
+  'extension cord',
+  'power bar',
+  'jumper cables',
+  'first aid kit',
 ]
 
 const CONDITION: string[] = [
   'barely used',
-  'used but fine',
+  'used once honestly',
   'works perfectly',
   'has some scuffs',
-  'honestly a bit beat up but functional',
+  'a bit beat up but functional',
   'basically new',
   'clean',
-  'one leg is wobbly but it stands',
   'missing the manual',
   'no issues',
-  'a little wobbly',
-  'theres a stain on one side',
-  'like new tbh',
-  'i only had it 4 months',
+  'ive had it since first year',
   'got it secondhand already',
+  'battery is fine',
+  'one part is a bit sticky but works',
 ]
 
 const DIMS: string[] = [
-  '~48in wide',
-  'about 4 feet long',
-  '60x30 i think',
-  'not sure on dimensions sorry',
-  'roughly 3ft tall',
+  '~4ft',
+  'the big one',
+  'the small one',
+  'not sure on size sorry',
   'standard size',
   'full size',
   'idk the measurements',
+  'compact, fits in a closet',
 ]
 
 const EXTRAS: string[] = [
-  'comes with the cable',
+  'comes with the case',
   'no box',
   'still have the original box',
-  'includes the allen key',
-  'remote included',
-  'all screws included',
-  'have the receipt somewhere',
+  'all the bits included',
+  'charger included',
   'u haul it',
-  'needs 2 ppl to move',
-  'can help you carry it down',
+  'can drop it off if ur close',
+  'just bring it back when ur done',
+  'pls dont lose the small parts',
+  'i can show u how to use it',
 ]
 
 const NEED_OPENERS: string[] = [
-  'looking for',
+  'looking to borrow',
   'need',
   'anyone have',
   'ISO',
   'trying to find',
-  'want',
-  'in the market for',
+  'can i borrow',
+  'does anyone own',
   'hoping someone has',
 ]
 
 const NEED_TAILS: string[] = [
-  'doesnt have to be nice',
+  'only need it for a couple hours',
+  'just for the weekend',
   'nothing fancy',
-  'budget is basically zero',
-  'ideally something i can carry myself',
+  'cant justify buying one for this',
+  'ill give it back same day',
   'any condition really',
-  'would love to not buy new',
-  'preferably free lol',
+  'would rather not buy one tbh',
+  'i have no car so closer the better',
   'can pick up anytime',
-  'i have a car so distance is fine',
-  'no car so closer the better',
+  'moving out so its kind of urgent',
+  'for one project then im done',
+  'my room is tiny so i cant keep it',
 ]
 
 const STREETS: string[] = [
@@ -260,8 +270,8 @@ function rough(s: string): string {
 function itemText(): string {
   const parts: string[] = [pick(OBJECTS)]
   if (chance(0.55)) parts.push(pick(CONDITION))
-  if (chance(0.35)) parts.push(pick(DIMS))
-  if (chance(0.4)) parts.push(pick(EXTRAS))
+  if (chance(0.3)) parts.push(pick(DIMS))
+  if (chance(0.45)) parts.push(pick(EXTRAS))
   if (chance(0.45)) parts.push(`pickup ${pick(config.locations).toLowerCase()}`)
   else if (chance(0.25)) parts.push(`im on ${pick(STREETS)}`)
   return rough(parts.join(chance(0.5) ? ', ' : '. '))
@@ -269,7 +279,7 @@ function itemText(): string {
 
 function needText(): string {
   const parts: string[] = [`${pick(NEED_OPENERS)} a ${pick(OBJECTS)}`]
-  if (chance(0.6)) parts.push(pick(NEED_TAILS))
+  if (chance(0.7)) parts.push(pick(NEED_TAILS))
   if (chance(0.3)) parts.push(`im in ${pick(config.locations).toLowerCase()}`)
   return rough(parts.join(chance(0.5) ? ', ' : '. '))
 }
@@ -278,55 +288,52 @@ function needText(): string {
 
 const people: Person[] = []
 for (let i = 0; i < TARGET_PEOPLE; i++) {
-  // Away for one cycle (sometimes two), in-location the rest. Jitter the
-  // boundaries by a few days so chains have realistic small gaps rather than
-  // suspiciously perfect zero-day handoffs.
-  const c = int(0, CYCLES.length - 1)
-  const span = chance(0.2) && c < CYCLES.length - 1 ? 2 : 1
-  const from = CYCLES[c].start
-  const until = CYCLES[Math.min(c + span - 1, CYCLES.length - 1)].end
+  // This audience does not rotate out every four months — they live here for
+  // the term. The away window is a reading week or a trip home, and it exists
+  // so the timeline still shows when someone cannot take a handoff.
+  const hasBreak = chance(0.75)
+  const len = hasBreak ? int(5, 14) : 0
+  const start = hasBreak ? int(20, TERM_DAYS - len - 10) : TERM_DAYS
   people.push({
     id: `p${i}`,
     label: `${NAMES[i % NAMES.length]} ${pick(SURNAMES)}`,
     location: pick(config.locations),
-    awayFrom: shift(from, int(-4, 4)),
-    awayUntil: shift(until, int(-4, 4)),
+    awayFrom: shift(TERM_START, start),
+    awayUntil: shift(TERM_START, start + len),
   })
 }
 
 const items: Item[] = []
 for (let i = 0; i < TARGET_ITEMS; i++) {
   const holder = people[int(0, people.length - 1)]
-  // Free from the moment the holder leaves. Most people are done with the
-  // thing for good; the rest want it back when they return.
-  const keepsIt = chance(0.4)
+  // The owner keeps the thing all term and lends it out repeatedly. What the
+  // chain schedules is circulation, not a one-way handoff at a term boundary.
   items.push({
     id: `i${i}`,
     holderId: holder.id,
     rawText: i < HANDWRITTEN.length ? HANDWRITTEN[i] : itemText(),
     embedding: [],
-    freeFrom: holder.awayFrom,
-    freeUntil: keepsIt ? holder.awayUntil : B[B.length - 1],
+    freeFrom: TERM_START,
+    freeUntil: TERM_END,
   })
 }
 
 const needs: Need[] = []
 for (let i = 0; i < TARGET_NEEDS; i++) {
   const person = people[int(0, people.length - 1)]
-  // A need only exists while its owner is actually in the location, i.e. in a
-  // cycle that does not overlap their away window.
-  const open = CYCLES.filter(
-    (cy: { start: string; end: string }) =>
-      cy.end <= person.awayFrom || cy.start >= person.awayUntil,
-  )
-  if (open.length === 0) continue
-  const cy = pick(open)
+  // Days to weeks, not months. You borrow the drill for an afternoon.
+  const len = int(2, 18)
+  const start = int(0, TERM_DAYS - len)
+  const from = shift(TERM_START, start)
+  const until = shift(TERM_START, start + len)
+  // Not while they are away — they cannot receive or return it.
+  if (from < person.awayUntil && until > person.awayFrom) continue
   needs.push({
     id: `n${i}`,
     personId: person.id,
     rawText: needText(),
-    needFrom: shift(cy.start, int(-3, 3)),
-    needUntil: shift(cy.end, int(-3, 3)),
+    needFrom: from,
+    needUntil: until,
     embedding: [],
   })
 }
@@ -338,10 +345,8 @@ console.log(
   `seeded ${people.length} people, ${items.length} items, ${needs.length} needs -> data/seed.json`,
 )
 console.log('\nsample items:')
-for (const it of [items[0], items[3], items[40], items[90]]) {
+for (const it of [items[0], items[3], items[40], items[80]])
   if (it) console.log(`  ${it.id}  ${it.rawText}`)
-}
 console.log('\nsample needs:')
-for (const n of [needs[0], needs[20], needs[55]]) {
+for (const n of [needs[0], needs[20], needs[55]])
   if (n) console.log(`  ${n.id}  ${n.rawText}`)
-}

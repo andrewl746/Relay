@@ -13,6 +13,27 @@ const LAMBDA = config.penalties.lambdaGapPerDay
 const MU = config.penalties.muDistance
 
 /**
+ * Nobody in the chain has room to warehouse the thing. A handoff that would
+ * leave an item parked longer than this is not a cheaper chain, it is an
+ * impossible one — the holder has nowhere to put it. Hard constraint, not a
+ * penalty, because "I physically cannot store this" does not trade off against
+ * a better match score.
+ *
+ * Applies between holders only. The stretch before the first loan is the
+ * owner's own item sitting in the owner's own room, which is allowed — it is
+ * still counted as idle in the accounting.
+ */
+const MAX_IDLE = config.constraints.maxIdleDays
+
+/**
+ * A hop has to actually solve someone's problem. Retrieval keeps ten candidates
+ * per need on purpose — that stage optimizes recall — but routing an item to a
+ * barely-related need inflates the objective without helping anyone, and it is
+ * the first thing a judge notices in the reason strings.
+ */
+const MIN_SCORE = config.constraints.minMatchScore
+
+/**
  * Crude location penalty: 0 if the handoff stays in one neighbourhood, 1 if it
  * crosses. A maps API would add latency and a key for a term that is already
  * dominated by the storage-gap term.
@@ -27,6 +48,8 @@ export type AssignOptions = {
   excludePersonIds?: string[]
   lambda?: number
   mu?: number
+  maxIdleDays?: number
+  minMatchScore?: number
 }
 
 /**
@@ -45,6 +68,7 @@ export function chainForItem(
 ): Chain {
   const lambda = opts.lambda ?? LAMBDA
   const mu = opts.mu ?? MU
+  const maxIdle = opts.maxIdleDays ?? MAX_IDLE
   const holder = peopleById.get(item.holderId)
 
   const cands = [...candidates].sort((a, b) =>
@@ -67,6 +91,7 @@ export function chainForItem(
     for (let j = 0; j < i; j++) {
       if (cands[j].needUntil > cands[i].needFrom) continue // overlap
       const gap = Math.max(0, days(cands[j].needUntil, cands[i].needFrom))
+      if (gap > maxIdle) continue // no one has room to hold it that long
       const dist = distance(
         peopleById.get(cands[j].personId),
         peopleById.get(cands[i].personId),
@@ -132,9 +157,12 @@ export function eligibleNeeds(
   item: Item,
   needs: Need[],
   table: MatchTable,
+  minScore = MIN_SCORE,
 ): Need[] {
   return needs.filter((need) => {
-    if (!(`${need.id}|${item.id}` in table)) return false
+    const m = table[`${need.id}|${item.id}`]
+    if (!m) return false
+    if (m.score < minScore) return false
     if (days(item.freeFrom, need.needFrom) < -WINDOW_GRACE) return false
     if (days(need.needUntil, item.freeUntil) < -WINDOW_GRACE) return false
     return true
@@ -171,7 +199,7 @@ export function assignAll(
   const eligible = new Map<string, Need[]>()
   const scarcity = new Map<string, number>()
   for (const item of items) {
-    const cands = eligibleNeeds(item, needs, table)
+    const cands = eligibleNeeds(item, needs, table, opts.minMatchScore)
     eligible.set(item.id, cands)
     scarcity.set(
       item.id,

@@ -202,7 +202,58 @@ export default function Board({
               })}
             </div>
 
+            {/* The item leads. A long chain can run to a dozen holders, and the
+                bar is the whole point — it must never scroll off the screen. */}
+            <div className="flex items-center gap-2">
+              <div className="w-40 shrink-0 text-xs font-medium text-neutral-900">
+                the {config.ui.itemNoun}
+              </div>
+              <div className="relative h-6 flex-1 rounded bg-neutral-100">
+                {spans.map((s, i) => (
+                  <div
+                    key={i}
+                    className={`absolute inset-y-0 ${
+                      s.kind === 'held' ? 'bg-emerald-500' : 'bg-rose-500'
+                    }`}
+                    style={{
+                      left: `${pct(s.from)}%`,
+                      width: `${Math.max(0.4, pct(s.to) - pct(s.from))}%`,
+                    }}
+                    title={
+                      s.kind === 'held'
+                        ? `${fmt(s.from)} – ${fmt(s.to)}`
+                        : `${daysBetween(s.from, s.to)} ${config.ui.gapLabel}`
+                    }
+                  />
+                ))}
+                {chain.hops.map((h) => (
+                  <div
+                    key={h.needId}
+                    className="absolute -top-1 h-8 w-px bg-neutral-900"
+                    style={{ left: `${pct(h.from)}%` }}
+                    title={`${config.ui.handoffNoun} ${fmt(h.from)}`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* idle callouts, placed under the bar they belong to */}
+            <div className="relative ml-40 mt-1 h-4">
+              {spans
+                .filter((s) => s.kind === 'idle' && daysBetween(s.from, s.to) >= 5)
+                .map((s, i) => (
+                  <span
+                    key={i}
+                    className="absolute whitespace-nowrap text-[10px] font-medium text-rose-600"
+                    style={{ left: `${pct(s.from)}%` }}
+                  >
+                    {daysBetween(s.from, s.to)}d stored
+                  </span>
+                ))}
+            </div>
+
             {/* one row per person */}
+            <div className="mt-2 border-t border-neutral-200 pt-2" />
             {rows.map((p) => {
               const off = excluded.includes(p.id)
               const before = { from: config.cycleBoundaries[0], to: p.awayFrom }
@@ -211,7 +262,7 @@ export default function Board({
                 to: config.cycleBoundaries[config.cycleBoundaries.length - 1],
               }
               return (
-                <div key={p.id} className="flex items-center gap-2 py-[3px]">
+                <div key={p.id} className="flex items-center gap-2 py-[1.5px]">
                   <div className="flex w-40 shrink-0 items-center gap-1">
                     <button
                       onClick={() =>
@@ -263,54 +314,6 @@ export default function Board({
               )
             })}
 
-            {/* the item itself */}
-            <div className="mt-3 flex items-center gap-2 border-t border-neutral-200 pt-3">
-              <div className="w-40 shrink-0 text-xs font-medium text-neutral-900">
-                the {config.ui.itemNoun}
-              </div>
-              <div className="relative h-6 flex-1 rounded bg-neutral-100">
-                {spans.map((s, i) => (
-                  <div
-                    key={i}
-                    className={`absolute inset-y-0 ${
-                      s.kind === 'held' ? 'bg-emerald-500' : 'bg-rose-500'
-                    }`}
-                    style={{
-                      left: `${pct(s.from)}%`,
-                      width: `${Math.max(0.4, pct(s.to) - pct(s.from))}%`,
-                    }}
-                    title={
-                      s.kind === 'held'
-                        ? `${fmt(s.from)} – ${fmt(s.to)}`
-                        : `${daysBetween(s.from, s.to)} ${config.ui.gapLabel}`
-                    }
-                  />
-                ))}
-                {chain.hops.map((h) => (
-                  <div
-                    key={h.needId}
-                    className="absolute -top-1 h-8 w-px bg-neutral-900"
-                    style={{ left: `${pct(h.from)}%` }}
-                    title={`${config.ui.handoffNoun} ${fmt(h.from)}`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* idle callouts, placed under the bar they belong to */}
-            <div className="relative ml-40 mt-1 h-4">
-              {spans
-                .filter((s) => s.kind === 'idle' && daysBetween(s.from, s.to) >= 5)
-                .map((s, i) => (
-                  <span
-                    key={i}
-                    className="absolute whitespace-nowrap text-[10px] font-medium text-rose-600"
-                    style={{ left: `${pct(s.from)}%` }}
-                  >
-                    {daysBetween(s.from, s.to)}d stored
-                  </span>
-                ))}
-            </div>
           </section>
 
           {/* cost breakdown */}

@@ -2,2114 +2,2994 @@
   "people": [
     {
       "id": "p0",
-      "label": "Amara G.",
-      "location": "Northdale",
-      "awayFrom": "2027-01-05",
-      "awayUntil": "2027-05-03"
+      "label": "Amara D.",
+      "location": "King St N",
+      "awayFrom": "2026-10-15",
+      "awayUntil": "2026-10-25"
     },
     {
       "id": "p1",
-      "label": "Ben E.",
-      "location": "Sunnydale",
-      "awayFrom": "2027-05-01",
-      "awayUntil": "2027-09-04"
+      "label": "Ben V.",
+      "location": "Lester",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p2",
-      "label": "Chidi M.",
-      "location": "Beechwood",
-      "awayFrom": "2026-09-03",
-      "awayUntil": "2026-12-31"
+      "label": "Chidi T.",
+      "location": "Lester",
+      "awayFrom": "2026-11-03",
+      "awayUntil": "2026-11-13"
     },
     {
       "id": "p3",
-      "label": "Dana B.",
-      "location": "Beechwood",
-      "awayFrom": "2026-12-28",
-      "awayUntil": "2027-04-30"
+      "label": "Dana R.",
+      "location": "Lester",
+      "awayFrom": "2026-11-10",
+      "awayUntil": "2026-11-20"
     },
     {
       "id": "p4",
-      "label": "Eli S.",
+      "label": "Eli P.",
       "location": "Northdale",
-      "awayFrom": "2027-01-02",
-      "awayUntil": "2027-08-29"
+      "awayFrom": "2026-09-28",
+      "awayUntil": "2026-10-10"
     },
     {
       "id": "p5",
-      "label": "Farah T.",
-      "location": "King St N",
-      "awayFrom": "2027-01-04",
-      "awayUntil": "2027-09-05"
+      "label": "Farah S.",
+      "location": "Northdale",
+      "awayFrom": "2026-09-23",
+      "awayUntil": "2026-10-02"
     },
     {
       "id": "p6",
-      "label": "Grace W.",
-      "location": "Sunnydale",
-      "awayFrom": "2026-12-31",
-      "awayUntil": "2027-05-03"
+      "label": "Grace C.",
+      "location": "King St N",
+      "awayFrom": "2026-11-11",
+      "awayUntil": "2026-11-17"
     },
     {
       "id": "p7",
-      "label": "Hassan K.",
-      "location": "Beechwood",
-      "awayFrom": "2026-08-31",
-      "awayUntil": "2026-12-30"
+      "label": "Hassan T.",
+      "location": "King St N",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p8",
-      "label": "Imani D.",
-      "location": "Northdale",
-      "awayFrom": "2027-04-30",
-      "awayUntil": "2027-09-04"
+      "label": "Imani N.",
+      "location": "Lester",
+      "awayFrom": "2026-12-10",
+      "awayUntil": "2026-12-18"
     },
     {
       "id": "p9",
-      "label": "Jae G.",
-      "location": "Northdale",
-      "awayFrom": "2026-12-30",
-      "awayUntil": "2027-09-03"
+      "label": "Jae K.",
+      "location": "Beechwood",
+      "awayFrom": "2026-11-27",
+      "awayUntil": "2026-12-03"
     },
     {
       "id": "p10",
-      "label": "Kiran A.",
-      "location": "Lester",
-      "awayFrom": "2027-05-05",
-      "awayUntil": "2027-09-03"
+      "label": "Kiran O.",
+      "location": "Northdale",
+      "awayFrom": "2026-12-08",
+      "awayUntil": "2026-12-15"
     },
     {
       "id": "p11",
       "label": "Lena N.",
-      "location": "Lester",
-      "awayFrom": "2027-01-03",
-      "awayUntil": "2027-04-28"
+      "location": "Northdale",
+      "awayFrom": "2026-11-27",
+      "awayUntil": "2026-12-06"
     },
     {
       "id": "p12",
-      "label": "Mateo F.",
+      "label": "Mateo P.",
       "location": "King St N",
-      "awayFrom": "2026-09-04",
-      "awayUntil": "2026-12-29"
+      "awayFrom": "2026-10-13",
+      "awayUntil": "2026-10-18"
     },
     {
       "id": "p13",
-      "label": "Nadia N.",
-      "location": "Sunnydale",
-      "awayFrom": "2027-05-02",
-      "awayUntil": "2027-09-01"
+      "label": "Nadia Z.",
+      "location": "Beechwood",
+      "awayFrom": "2026-10-12",
+      "awayUntil": "2026-10-17"
     },
     {
       "id": "p14",
-      "label": "Omar W.",
-      "location": "King St N",
-      "awayFrom": "2027-04-29",
-      "awayUntil": "2027-08-30"
+      "label": "Omar H.",
+      "location": "Beechwood",
+      "awayFrom": "2026-11-08",
+      "awayUntil": "2026-11-16"
     },
     {
       "id": "p15",
-      "label": "Priya B.",
+      "label": "Priya F.",
       "location": "King St N",
-      "awayFrom": "2027-01-05",
-      "awayUntil": "2027-05-04"
+      "awayFrom": "2026-12-15",
+      "awayUntil": "2026-12-20"
     },
     {
       "id": "p16",
-      "label": "Quinn V.",
-      "location": "Northdale",
-      "awayFrom": "2027-05-01",
-      "awayUntil": "2027-09-01"
+      "label": "Quinn E.",
+      "location": "King St N",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p17",
-      "label": "Rosa K.",
+      "label": "Rosa N.",
       "location": "Sunnydale",
-      "awayFrom": "2026-08-30",
-      "awayUntil": "2026-12-31"
+      "awayFrom": "2026-10-30",
+      "awayUntil": "2026-11-09"
     },
     {
       "id": "p18",
-      "label": "Sam M.",
-      "location": "Beechwood",
-      "awayFrom": "2027-01-05",
-      "awayUntil": "2027-09-03"
+      "label": "Sam K.",
+      "location": "King St N",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p19",
-      "label": "Tomas R.",
+      "label": "Tomas G.",
       "location": "Lester",
-      "awayFrom": "2027-05-04",
-      "awayUntil": "2027-09-04"
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p20",
-      "label": "Uma R.",
+      "label": "Uma Z.",
       "location": "King St N",
-      "awayFrom": "2027-01-05",
-      "awayUntil": "2027-05-04"
+      "awayFrom": "2026-09-28",
+      "awayUntil": "2026-10-07"
     },
     {
       "id": "p21",
-      "label": "Viktor M.",
-      "location": "Northdale",
-      "awayFrom": "2026-08-31",
-      "awayUntil": "2026-12-30"
+      "label": "Viktor T.",
+      "location": "Lester",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p22",
-      "label": "Wen B.",
+      "label": "Wen A.",
       "location": "Sunnydale",
-      "awayFrom": "2026-08-31",
-      "awayUntil": "2026-12-30"
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p23",
-      "label": "Xiomara O.",
+      "label": "Xiomara K.",
       "location": "Sunnydale",
-      "awayFrom": "2027-05-04",
-      "awayUntil": "2027-09-05"
+      "awayFrom": "2026-11-22",
+      "awayUntil": "2026-11-28"
     },
     {
       "id": "p24",
-      "label": "Yusuf L.",
-      "location": "Lester",
-      "awayFrom": "2026-08-28",
-      "awayUntil": "2026-12-29"
+      "label": "Yusuf D.",
+      "location": "Sunnydale",
+      "awayFrom": "2026-11-12",
+      "awayUntil": "2026-11-21"
     },
     {
       "id": "p25",
-      "label": "Zara S.",
-      "location": "Sunnydale",
-      "awayFrom": "2027-04-27",
-      "awayUntil": "2027-08-29"
+      "label": "Zara T.",
+      "location": "Beechwood",
+      "awayFrom": "2026-11-17",
+      "awayUntil": "2026-12-01"
     },
     {
       "id": "p26",
-      "label": "Aditi V.",
-      "location": "Northdale",
-      "awayFrom": "2027-01-05",
-      "awayUntil": "2027-05-05"
+      "label": "Aditi S.",
+      "location": "Beechwood",
+      "awayFrom": "2026-12-05",
+      "awayUntil": "2026-12-12"
     },
     {
       "id": "p27",
-      "label": "Bruno T.",
-      "location": "Northdale",
-      "awayFrom": "2026-12-31",
-      "awayUntil": "2027-04-30"
+      "label": "Bruno W.",
+      "location": "King St N",
+      "awayFrom": "2026-11-25",
+      "awayUntil": "2026-12-07"
     },
     {
       "id": "p28",
-      "label": "Cleo K.",
-      "location": "Beechwood",
-      "awayFrom": "2026-12-29",
-      "awayUntil": "2027-05-05"
+      "label": "Cleo A.",
+      "location": "Lester",
+      "awayFrom": "2026-11-04",
+      "awayUntil": "2026-11-12"
     },
     {
       "id": "p29",
-      "label": "Dev W.",
-      "location": "Northdale",
-      "awayFrom": "2027-01-04",
-      "awayUntil": "2027-05-04"
+      "label": "Dev B.",
+      "location": "Sunnydale",
+      "awayFrom": "2026-10-25",
+      "awayUntil": "2026-10-30"
     },
     {
       "id": "p30",
-      "label": "Esme B.",
+      "label": "Esme C.",
       "location": "Beechwood",
-      "awayFrom": "2026-12-31",
-      "awayUntil": "2027-08-29"
+      "awayFrom": "2026-11-19",
+      "awayUntil": "2026-11-26"
     },
     {
       "id": "p31",
-      "label": "Finn N.",
-      "location": "Beechwood",
-      "awayFrom": "2026-09-05",
-      "awayUntil": "2027-01-02"
+      "label": "Finn C.",
+      "location": "Sunnydale",
+      "awayFrom": "2026-12-07",
+      "awayUntil": "2026-12-20"
     },
     {
       "id": "p32",
-      "label": "Gita T.",
-      "location": "King St N",
-      "awayFrom": "2027-05-03",
-      "awayUntil": "2027-09-05"
+      "label": "Gita C.",
+      "location": "Beechwood",
+      "awayFrom": "2026-09-22",
+      "awayUntil": "2026-09-30"
     },
     {
       "id": "p33",
-      "label": "Hugo V.",
-      "location": "Lester",
-      "awayFrom": "2027-01-03",
-      "awayUntil": "2027-05-01"
+      "label": "Hugo B.",
+      "location": "Northdale",
+      "awayFrom": "2026-10-27",
+      "awayUntil": "2026-11-08"
     },
     {
       "id": "p34",
-      "label": "Ines C.",
-      "location": "Beechwood",
-      "awayFrom": "2027-01-02",
-      "awayUntil": "2027-04-29"
+      "label": "Ines A.",
+      "location": "King St N",
+      "awayFrom": "2026-12-02",
+      "awayUntil": "2026-12-13"
     },
     {
       "id": "p35",
-      "label": "Jonas L.",
-      "location": "Northdale",
-      "awayFrom": "2026-08-28",
+      "label": "Jonas H.",
+      "location": "King St N",
+      "awayFrom": "2027-01-01",
       "awayUntil": "2027-01-01"
     },
     {
       "id": "p36",
-      "label": "Keiko G.",
-      "location": "Lester",
-      "awayFrom": "2027-05-01",
-      "awayUntil": "2027-08-31"
+      "label": "Keiko B.",
+      "location": "Sunnydale",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p37",
-      "label": "Luca T.",
+      "label": "Luca K.",
       "location": "Beechwood",
-      "awayFrom": "2026-09-03",
-      "awayUntil": "2026-12-31"
+      "awayFrom": "2026-12-04",
+      "awayUntil": "2026-12-15"
     },
     {
       "id": "p38",
-      "label": "Mira M.",
-      "location": "Beechwood",
-      "awayFrom": "2026-09-01",
-      "awayUntil": "2026-12-31"
+      "label": "Mira P.",
+      "location": "King St N",
+      "awayFrom": "2026-10-18",
+      "awayUntil": "2026-11-01"
     },
     {
       "id": "p39",
-      "label": "Noor N.",
-      "location": "Lester",
-      "awayFrom": "2027-01-04",
-      "awayUntil": "2027-04-28"
+      "label": "Noor L.",
+      "location": "Northdale",
+      "awayFrom": "2026-11-27",
+      "awayUntil": "2026-12-10"
     },
     {
       "id": "p40",
-      "label": "Otto V.",
-      "location": "Sunnydale",
-      "awayFrom": "2027-01-04",
-      "awayUntil": "2027-04-27"
+      "label": "Otto D.",
+      "location": "Lester",
+      "awayFrom": "2026-10-26",
+      "awayUntil": "2026-11-06"
     },
     {
       "id": "p41",
-      "label": "Pia N.",
-      "location": "Northdale",
-      "awayFrom": "2027-05-02",
-      "awayUntil": "2027-08-28"
+      "label": "Pia Z.",
+      "location": "Beechwood",
+      "awayFrom": "2026-11-18",
+      "awayUntil": "2026-11-28"
     },
     {
       "id": "p42",
-      "label": "Rafi S.",
-      "location": "Beechwood",
-      "awayFrom": "2027-05-04",
-      "awayUntil": "2027-09-01"
+      "label": "Rafi O.",
+      "location": "King St N",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p43",
-      "label": "Sana E.",
-      "location": "Northdale",
-      "awayFrom": "2026-08-28",
-      "awayUntil": "2026-12-29"
+      "label": "Sana R.",
+      "location": "King St N",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p44",
-      "label": "Theo W.",
+      "label": "Theo F.",
       "location": "Beechwood",
-      "awayFrom": "2027-01-03",
-      "awayUntil": "2027-05-03"
+      "awayFrom": "2026-12-04",
+      "awayUntil": "2026-12-13"
     },
     {
       "id": "p45",
-      "label": "Ugo V.",
-      "location": "King St N",
-      "awayFrom": "2027-05-02",
-      "awayUntil": "2027-08-28"
+      "label": "Ugo C.",
+      "location": "Beechwood",
+      "awayFrom": "2026-10-24",
+      "awayUntil": "2026-11-04"
     },
     {
       "id": "p46",
-      "label": "Vera H.",
+      "label": "Vera Z.",
       "location": "Sunnydale",
-      "awayFrom": "2027-04-28",
-      "awayUntil": "2027-08-28"
+      "awayFrom": "2026-09-23",
+      "awayUntil": "2026-09-30"
     },
     {
       "id": "p47",
-      "label": "Wes T.",
-      "location": "Sunnydale",
-      "awayFrom": "2027-01-02",
-      "awayUntil": "2027-05-03"
+      "label": "Wes Z.",
+      "location": "King St N",
+      "awayFrom": "2026-10-31",
+      "awayUntil": "2026-11-05"
     },
     {
       "id": "p48",
-      "label": "Yara B.",
-      "location": "Beechwood",
-      "awayFrom": "2027-05-05",
-      "awayUntil": "2027-08-28"
+      "label": "Yara H.",
+      "location": "Lester",
+      "awayFrom": "2026-10-31",
+      "awayUntil": "2026-11-08"
     },
     {
       "id": "p49",
-      "label": "Zane V.",
-      "location": "King St N",
-      "awayFrom": "2027-05-03",
-      "awayUntil": "2027-09-03"
+      "label": "Zane T.",
+      "location": "Beechwood",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p50",
-      "label": "Anika W.",
-      "location": "King St N",
-      "awayFrom": "2026-09-03",
-      "awayUntil": "2027-01-03"
+      "label": "Anika H.",
+      "location": "Sunnydale",
+      "awayFrom": "2026-10-14",
+      "awayUntil": "2026-10-22"
     },
     {
       "id": "p51",
-      "label": "Bo P.",
+      "label": "Bo L.",
       "location": "Beechwood",
-      "awayFrom": "2026-12-28",
-      "awayUntil": "2027-05-01"
+      "awayFrom": "2026-10-19",
+      "awayUntil": "2026-10-29"
     },
     {
       "id": "p52",
-      "label": "Cato K.",
-      "location": "Sunnydale",
-      "awayFrom": "2027-05-01",
-      "awayUntil": "2027-09-02"
+      "label": "Cato D.",
+      "location": "Beechwood",
+      "awayFrom": "2026-11-26",
+      "awayUntil": "2026-12-04"
     },
     {
       "id": "p53",
-      "label": "Dalia B.",
-      "location": "Lester",
-      "awayFrom": "2026-09-02",
-      "awayUntil": "2027-05-01"
+      "label": "Dalia T.",
+      "location": "Northdale",
+      "awayFrom": "2026-11-06",
+      "awayUntil": "2026-11-19"
     },
     {
       "id": "p54",
-      "label": "Ezra S.",
-      "location": "Lester",
-      "awayFrom": "2027-01-04",
-      "awayUntil": "2027-05-01"
+      "label": "Ezra M.",
+      "location": "Sunnydale",
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p55",
-      "label": "Fiona V.",
-      "location": "King St N",
-      "awayFrom": "2027-04-27",
-      "awayUntil": "2027-08-29"
+      "label": "Fiona R.",
+      "location": "Northdale",
+      "awayFrom": "2026-09-24",
+      "awayUntil": "2026-10-05"
     },
     {
       "id": "p56",
-      "label": "Gil P.",
+      "label": "Gil S.",
       "location": "King St N",
-      "awayFrom": "2026-09-04",
-      "awayUntil": "2026-12-28"
+      "awayFrom": "2027-01-01",
+      "awayUntil": "2027-01-01"
     },
     {
       "id": "p57",
-      "label": "Hana W.",
+      "label": "Hana E.",
       "location": "Northdale",
-      "awayFrom": "2026-08-30",
-      "awayUntil": "2027-05-04"
+      "awayFrom": "2026-12-04",
+      "awayUntil": "2026-12-11"
     },
     {
       "id": "p58",
-      "label": "Ivo N.",
+      "label": "Ivo O.",
       "location": "King St N",
-      "awayFrom": "2027-05-03",
-      "awayUntil": "2027-08-31"
+      "awayFrom": "2026-10-27",
+      "awayUntil": "2026-11-02"
     },
     {
       "id": "p59",
-      "label": "Jules B.",
+      "label": "Jules T.",
       "location": "Lester",
-      "awayFrom": "2027-01-04",
-      "awayUntil": "2027-09-05"
+      "awayFrom": "2026-11-16",
+      "awayUntil": "2026-11-28"
     }
   ],
   "items": [
     {
       "id": "i0",
-      "holderId": "p53",
-      "rawText": "IKEA MICKE desk, white, ~55in wide. small scratch on the top left corner but solid. pickup northdale, im on hickory",
+      "holderId": "p52",
+      "rawText": "power drill - black&decker, bits are in the case. ive used it maybe twice. northdale",
       "embedding": [],
-      "freeFrom": "2026-09-02",
-      "freeUntil": "2027-05-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i1",
-      "holderId": "p9",
-      "rawText": "selling my monitor - dell 24 inch 1080p, comes w/ the hdmi cable. works fine, no dead pixels",
+      "holderId": "p58",
+      "rawText": "full screwdriver set + the allen keys, for when u inevitably build ikea stuff at 1am",
       "embedding": [],
-      "freeFrom": "2026-12-30",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i2",
-      "holderId": "p52",
-      "rawText": "Queen memory foam mattress topper, barely used, kept in the bag it came in. Lester, can meet by the plaza",
+      "holderId": "p34",
+      "rawText": "steam mop, my mom made me buy it. works great actually. sunnydale",
       "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i3",
-      "holderId": "p9",
-      "rawText": "MINI FRIDGE. 3.2 cu ft i think? makes a bit of noise but it gets cold. u haul it, im on sunnydale",
+      "holderId": "p3",
+      "rawText": "air mattress queen size, comes w the pump. for when ppl crash at ur place",
       "embedding": [],
-      "freeFrom": "2026-12-30",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i4",
-      "holderId": "p5",
-      "rawText": "office chair w/ arms, black mesh back, hydraulic still works. pickup beechwood",
+      "holderId": "p44",
+      "rawText": "vacuum - dyson stick one, battery holds about 20 min now. lester",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i5",
-      "holderId": "p15",
-      "rawText": "2 monitor arms, vesa mount. one is missing a screw but it still clamps fine",
+      "holderId": "p36",
+      "rawText": "big stockpot, like the huge kind. only needed it once for a party lol",
       "embedding": [],
-      "freeFrom": "2027-01-05",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i6",
-      "holderId": "p57",
-      "rawText": "microwave 900w panasonic, clean inside. King St N near the bridge",
+      "holderId": "p21",
+      "rawText": "carpet cleaner. you WILL need this at move out, trust me. beechwood",
       "embedding": [],
-      "freeFrom": "2026-08-30",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i7",
-      "holderId": "p20",
-      "rawText": "bed frame - full size, metal, no headboard. comes apart with an allen key which i still have",
+      "holderId": "p31",
+      "rawText": "large suitcase, spinner wheels, one wheel is a bit sticky but rolls fine",
       "embedding": [],
-      "freeFrom": "2027-01-05",
-      "freeUntil": "2027-05-04"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i8",
-      "holderId": "p54",
-      "rawText": "standing desk converter thing, the kind that sits on top of your desk. VIVO brand. its heavy",
+      "holderId": "p12",
+      "rawText": "sewing machine - singer, basic model. i can show u how to thread it",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-05-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i9",
-      "holderId": "p30",
-      "rawText": "space heater, small ceramic one. ran it all winter no issues",
+      "holderId": "p4",
+      "rawText": "projector 1080p hdmi, no screen just point it at a wall. King St N",
       "embedding": [],
-      "freeFrom": "2026-12-31",
-      "freeUntil": "2027-08-29"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i10",
-      "holderId": "p22",
-      "rawText": "Full length mirror, the kind that leans on the wall. its glass so bring a car pls. northdale",
+      "holderId": "p36",
+      "rawText": "6ft step ladder. its in my hallway, im on regina",
       "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i11",
-      "holderId": "p9",
-      "rawText": "kitchen starter pack basically - 2 pots, a pan, cutting board, some utensils. all in one box",
+      "holderId": "p49",
+      "rawText": "hand truck / dolly, folds flat. moving day essential. heavy ish",
       "embedding": [],
-      "freeFrom": "2026-12-30",
-      "freeUntil": "2027-09-03"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i12",
-      "holderId": "p25",
-      "rawText": "TV 43in TCL roku tv, remote included. no stand tho, i had it wall mounted",
+      "holderId": "p48",
+      "rawText": "waffle maker. yes really. still in the box",
       "embedding": [],
-      "freeFrom": "2027-04-27",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i13",
-      "holderId": "p1",
-      "rawText": "desk lamp, cheap amazon one, usb powered. works",
+      "holderId": "p26",
+      "rawText": "basic red toolkit - hammer, pliers, wrench, the usual. northdale",
       "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-04"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i14",
-      "holderId": "p55",
-      "rawText": "portable air conditioner 8000 btu, hose included. HEAVY, needs 2 ppl. lester",
+      "holderId": "p38",
+      "rawText": "bike pump with the pressure gauge + a patch kit",
       "embedding": [],
-      "freeFrom": "2027-04-27",
-      "freeUntil": "2027-08-29"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i15",
-      "holderId": "p16",
-      "rawText": "shower caddy. ~48in wide. comes with the cable. pickup king st n",
+      "holderId": "p40",
+      "rawText": "box fan, barely used, pickup beechwood.",
       "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i16",
-      "holderId": "p31",
-      "rawText": "ikea markus chair, remote included, pickup beechwood",
+      "holderId": "p25",
+      "rawText": "extension cord",
       "embedding": [],
-      "freeFrom": "2026-09-05",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i17",
-      "holderId": "p21",
-      "rawText": "suitcase",
+      "holderId": "p25",
+      "rawText": "iron, missing the manual, the big one, still have the original box",
       "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i18",
-      "holderId": "p32",
-      "rawText": "desk chair, works perfectly, full size, pickup beechwood",
+      "holderId": "p44",
+      "rawText": "carpet cleaner. no box. pickup sunnydale.",
       "embedding": [],
-      "freeFrom": "2027-05-03",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i19",
-      "holderId": "p20",
-      "rawText": "office chair. basically new. pickup sunnydale",
+      "holderId": "p54",
+      "rawText": "impact driver, battery is fine, u haul it",
       "embedding": [],
-      "freeFrom": "2027-01-05",
-      "freeUntil": "2027-05-04"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i20",
-      "holderId": "p7",
-      "rawText": "bike. barely used. 60x30 i think",
+      "holderId": "p55",
+      "rawText": "space heater, works perfectly, im on sunview",
       "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2026-12-30"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i21",
-      "holderId": "p35",
-      "rawText": "ironing board + iron, no box, im on regina",
+      "holderId": "p20",
+      "rawText": "FOLDING COT, STANDARD SIZE, ALL THE BITS INCLUDED, IM ON UNIVERSITY AVE",
       "embedding": [],
-      "freeFrom": "2026-08-28",
+      "freeFrom": "2026-09-01",
       "freeUntil": "2027-01-01"
     },
     {
       "id": "i22",
-      "holderId": "p10",
-      "rawText": "winter tires (nobody wants these but theyre free), one leg is wobbly but it stands, 60x30 i think, pickup lester",
+      "holderId": "p16",
+      "rawText": "tire levers + patch kit, comes with the case, pickup northdale.",
       "embedding": [],
-      "freeFrom": "2027-05-05",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i23",
-      "holderId": "p59",
-      "rawText": "portable AC. im on regina",
+      "holderId": "p49",
+      "rawText": "stand mixer, one part is a bit sticky but works, full size, pickup sunnydale",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-05"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i24",
-      "holderId": "p8",
-      "rawText": "shelf unit, about 4 feet long, pickup beechwood",
+      "holderId": "p55",
+      "rawText": "folding cot. one part is a bit sticky but works",
       "embedding": [],
-      "freeFrom": "2027-04-30",
-      "freeUntil": "2027-09-04"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i25",
-      "holderId": "p56",
-      "rawText": "mattress topper, idk the measurements, remote included, im on regina",
+      "holderId": "p21",
+      "rawText": "projector, no issues, not sure on size sorry, all the bits included",
       "embedding": [],
-      "freeFrom": "2026-09-04",
-      "freeUntil": "2026-12-28"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i26",
-      "holderId": "p23",
-      "rawText": "STORAGE BINS. NO BOX",
+      "holderId": "p31",
+      "rawText": "dolly. works perfectly. the big one. u haul it. im on lester",
       "embedding": [],
-      "freeFrom": "2027-05-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i27",
-      "holderId": "p47",
-      "rawText": "rice cooker, about 4 feet long",
+      "holderId": "p7",
+      "rawText": "FOLDING CHAIRS (4), ~4FT, ALL THE BITS INCLUDED",
       "embedding": [],
-      "freeFrom": "2027-01-02",
-      "freeUntil": "2027-05-03"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i28",
-      "holderId": "p8",
-      "rawText": "printer (brother laser). still have the original box. pickup king st n",
+      "holderId": "p35",
+      "rawText": "carpet cleaner, comes with the case, pickup king st n.",
       "embedding": [],
-      "freeFrom": "2027-04-30",
-      "freeUntil": "2027-09-04"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i29",
-      "holderId": "p1",
-      "rawText": "shelf unit, works perfectly, about 4 feet long, comes with the cable, im on weber",
+      "holderId": "p9",
+      "rawText": "iron. ive had it since first year. charger included. pickup lester",
       "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i30",
-      "holderId": "p14",
-      "rawText": "air purifier, 60x30 i think, u haul it",
+      "holderId": "p3",
+      "rawText": "garment steamer. one part is a bit sticky but works. standard size",
       "embedding": [],
-      "freeFrom": "2027-04-29",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i31",
-      "holderId": "p16",
-      "rawText": "bookshelf, about 4 feet long, pickup lester",
+      "holderId": "p38",
+      "rawText": "dehumidifier, all the bits included, pickup king st n",
       "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i32",
-      "holderId": "p6",
-      "rawText": "bike. missing the manual. roughly 3ft tall. pickup sunnydale",
+      "holderId": "p1",
+      "rawText": "ring light, ~4ft",
       "embedding": [],
-      "freeFrom": "2026-12-31",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i33",
-      "holderId": "p30",
-      "rawText": "IKEA MARKUS chair. like new tbh. comes with the cable. pickup beechwood",
+      "holderId": "p32",
+      "rawText": "step ladder, ~4ft",
       "embedding": [],
-      "freeFrom": "2026-12-31",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i34",
-      "holderId": "p55",
-      "rawText": "microwave. has some scuffs",
+      "holderId": "p7",
+      "rawText": "iron, clean, ~4ft, just bring it back when ur done, pickup beechwood",
       "embedding": [],
-      "freeFrom": "2027-04-27",
-      "freeUntil": "2027-08-29"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i35",
-      "holderId": "p3",
-      "rawText": "desk lamp, like new tbh, standard size, pickup lester",
+      "holderId": "p48",
+      "rawText": "cooler, basically new",
       "embedding": [],
-      "freeFrom": "2026-12-28",
-      "freeUntil": "2027-04-30"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i36",
-      "holderId": "p46",
-      "rawText": "computer desk (glass top). no issues",
+      "holderId": "p14",
+      "rawText": "HAND TRUCK. PICKUP NORTHDALE",
       "embedding": [],
-      "freeFrom": "2027-04-28",
-      "freeUntil": "2027-08-28"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i37",
-      "holderId": "p40",
-      "rawText": "tv stand. basically new. comes with the cable",
+      "holderId": "p8",
+      "rawText": "carpet cleaner, a bit beat up but functional, standard size, just bring it back when ur done, pickup northdale",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i38",
-      "holderId": "p2",
-      "rawText": "suitcase, standard size, pickup king st n",
+      "holderId": "p46",
+      "rawText": "screwdriver set. barely used",
       "embedding": [],
-      "freeFrom": "2026-09-03",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i39",
-      "holderId": "p26",
-      "rawText": "tv, no issues, includes the allen key, pickup northdale",
+      "holderId": "p19",
+      "rawText": "air mattress, u haul it, pickup lester",
       "embedding": [],
-      "freeFrom": "2027-01-05",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i40",
-      "holderId": "p25",
-      "rawText": "ultrawide monitor (LG 29in), has some scuffs",
+      "holderId": "p6",
+      "rawText": "roasting pan. pickup sunnydale",
       "embedding": [],
-      "freeFrom": "2027-04-27",
-      "freeUntil": "2027-08-29"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i41",
-      "holderId": "p22",
-      "rawText": "extension cord + power bar, includes the allen key, im on regina",
+      "holderId": "p15",
+      "rawText": "camping stove. ive had it since first year. pickup sunnydale",
       "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i42",
-      "holderId": "p21",
-      "rawText": "kettle, basically new, remote included, im on king st",
+      "holderId": "p45",
+      "rawText": "first aid kit, just bring it back when ur done",
       "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i43",
-      "holderId": "p30",
-      "rawText": "old 1080p monitor. all screws included",
+      "holderId": "p19",
+      "rawText": "suitcase, got it secondhand already, pickup northdale",
       "embedding": [],
-      "freeFrom": "2026-12-31",
-      "freeUntil": "2027-08-29"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i44",
-      "holderId": "p4",
-      "rawText": "blender. im on university ave",
+      "holderId": "p58",
+      "rawText": "ladder. works perfectly. still have the original box. pickup king st n",
       "embedding": [],
-      "freeFrom": "2027-01-02",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i45",
-      "holderId": "p45",
-      "rawText": "dining chair. basically new. not sure on dimensions sorry. pickup beechwood",
+      "holderId": "p33",
+      "rawText": "camping stove. just bring it back when ur done",
       "embedding": [],
-      "freeFrom": "2027-05-02",
-      "freeUntil": "2027-08-28"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i46",
-      "holderId": "p16",
-      "rawText": "air fryer. clean. idk the measurements. pickup northdale",
+      "holderId": "p14",
+      "rawText": "power drill, full size, pls dont lose the small parts",
       "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i47",
-      "holderId": "p5",
-      "rawText": "air fryer, idk the measurements, pickup northdale",
+      "holderId": "p26",
+      "rawText": "drill, standard size, pickup sunnydale",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i48",
-      "holderId": "p23",
-      "rawText": "led strip lights, missing the manual, roughly 3ft tall, im on lester",
+      "holderId": "p31",
+      "rawText": "power drill, has some scuffs, not sure on size sorry, all the bits included, im on columbia",
       "embedding": [],
-      "freeFrom": "2027-05-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i49",
-      "holderId": "p48",
-      "rawText": "TV. ~48IN WIDE. PICKUP KING ST N",
+      "holderId": "p52",
+      "rawText": "first aid kit, basically new, u haul it.",
       "embedding": [],
-      "freeFrom": "2027-05-05",
-      "freeUntil": "2027-08-28"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i50",
-      "holderId": "p19",
-      "rawText": "old 1080p monitor, like new tbh, all screws included",
+      "holderId": "p23",
+      "rawText": "stand mixer, no issues, the small one",
       "embedding": [],
-      "freeFrom": "2027-05-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i51",
-      "holderId": "p7",
-      "rawText": "curtains + rod, one leg is wobbly but it stands, pickup beechwood",
+      "holderId": "p50",
+      "rawText": "ladder. one part is a bit sticky but works. idk the measurements. pickup king st n",
       "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i52",
-      "holderId": "p18",
-      "rawText": "second monitor, not sure on dimensions sorry, still have the original box",
+      "holderId": "p46",
+      "rawText": "luggage scale, clean",
       "embedding": [],
-      "freeFrom": "2027-01-05",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i53",
-      "holderId": "p4",
-      "rawText": "card table, used but fine",
+      "holderId": "p30",
+      "rawText": "camping stove. ive had it since first year. all the bits included",
       "embedding": [],
-      "freeFrom": "2027-01-02",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i54",
-      "holderId": "p7",
-      "rawText": "bookshelf, like new tbh, about 4 feet long",
+      "holderId": "p13",
+      "rawText": "ironing board. works perfectly. pickup beechwood",
       "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2026-12-30"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i55",
-      "holderId": "p2",
-      "rawText": "vacuum, used but fine, roughly 3ft tall, still have the original box",
+      "holderId": "p16",
+      "rawText": "garment bag. has some scuffs. i can show u how to use it. im on phillip st",
       "embedding": [],
-      "freeFrom": "2026-09-03",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i56",
-      "holderId": "p13",
-      "rawText": "toaster oven, a little wobbly, pickup lester.",
+      "holderId": "p5",
+      "rawText": "sleeping bag, got it secondhand already, compact, fits in a closet, pickup northdale",
       "embedding": [],
-      "freeFrom": "2027-05-02",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i57",
-      "holderId": "p34",
-      "rawText": "blender, pickup sunnydale.",
+      "holderId": "p23",
+      "rawText": "power bar. pickup sunnydale",
       "embedding": [],
-      "freeFrom": "2027-01-02",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i58",
-      "holderId": "p18",
-      "rawText": "kettle, have the receipt somewhere",
+      "holderId": "p45",
+      "rawText": "ice scraper. idk the measurements. pls dont lose the small parts. im on hickory.",
       "embedding": [],
-      "freeFrom": "2027-01-05",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i59",
-      "holderId": "p36",
-      "rawText": "mini fridge, works perfectly, pickup lester",
+      "holderId": "p54",
+      "rawText": "shop vac. no box",
       "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i60",
-      "holderId": "p25",
-      "rawText": "blender",
+      "holderId": "p47",
+      "rawText": "iron. pickup beechwood",
       "embedding": [],
-      "freeFrom": "2027-04-27",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i61",
-      "holderId": "p3",
-      "rawText": "monitor",
+      "holderId": "p40",
+      "rawText": "folding table",
       "embedding": [],
-      "freeFrom": "2026-12-28",
-      "freeUntil": "2027-04-30"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i62",
-      "holderId": "p50",
-      "rawText": "bar stool, i only had it 4 months, can help you carry it down",
+      "holderId": "p19",
+      "rawText": "HAND TRUCK, COMES WITH THE CASE, IM ON REGINA",
       "embedding": [],
-      "freeFrom": "2026-09-03",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i63",
-      "holderId": "p40",
-      "rawText": "suitcase, all screws included, im on regina",
+      "holderId": "p30",
+      "rawText": "camera tripod, full size, pickup sunnydale",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i64",
-      "holderId": "p6",
-      "rawText": "SWIFFER + MOP BUCKET, GOT IT SECONDHAND ALREADY",
+      "holderId": "p50",
+      "rawText": "toolkit, basically new, comes with the case",
       "embedding": [],
-      "freeFrom": "2026-12-31",
-      "freeUntil": "2027-05-03"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i65",
-      "holderId": "p54",
-      "rawText": "air fryer. have the receipt somewhere. pickup lester.",
+      "holderId": "p6",
+      "rawText": "hammer. clean. the big one. pickup northdale",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-05-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i66",
-      "holderId": "p59",
-      "rawText": "tv stand, honestly a bit beat up but functional, standard size, no box, pickup lester",
+      "holderId": "p26",
+      "rawText": "iron, ive had it since first year, pickup lester.",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i67",
-      "holderId": "p43",
-      "rawText": "bar stool, a little wobbly, pickup sunnydale",
+      "holderId": "p34",
+      "rawText": "garment steamer, missing the manual, comes with the case, pickup northdale",
       "embedding": [],
-      "freeFrom": "2026-08-28",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i68",
-      "holderId": "p58",
-      "rawText": "vacuum, theres a stain on one side, comes with the cable, pickup sunnydale",
+      "holderId": "p59",
+      "rawText": "karaoke mic, can drop it off if ur close",
       "embedding": [],
-      "freeFrom": "2027-05-03",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i69",
-      "holderId": "p17",
-      "rawText": "rice cooker. basically new. ~48in wide",
+      "holderId": "p36",
+      "rawText": "stand mixer, basically new, not sure on size sorry, no box, pickup lester",
       "embedding": [],
-      "freeFrom": "2026-08-30",
-      "freeUntil": "2026-12-31"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i70",
-      "holderId": "p53",
-      "rawText": "writing desk. barely used. no box.",
+      "holderId": "p30",
+      "rawText": "extension cord.",
       "embedding": [],
-      "freeFrom": "2026-09-02",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i71",
-      "holderId": "p24",
-      "rawText": "bed frame, basically new",
+      "holderId": "p17",
+      "rawText": "hammer",
       "embedding": [],
-      "freeFrom": "2026-08-28",
-      "freeUntil": "2026-12-29"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i72",
-      "holderId": "p47",
-      "rawText": "air purifier, one leg is wobbly but it stands, no box",
+      "holderId": "p50",
+      "rawText": "ice scraper. clean. pickup king st n",
       "embedding": [],
-      "freeFrom": "2027-01-02",
-      "freeUntil": "2027-05-03"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i73",
-      "holderId": "p36",
-      "rawText": "bike lock. one leg is wobbly but it stands. pickup sunnydale",
+      "holderId": "p39",
+      "rawText": "camping stove. im on lester",
       "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i74",
-      "holderId": "p4",
-      "rawText": "floor lamp. pickup lester",
+      "holderId": "p25",
+      "rawText": "step stool. all the bits included",
       "embedding": [],
-      "freeFrom": "2027-01-02",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i75",
-      "holderId": "p38",
-      "rawText": "mattress. idk the measurements. pickup sunnydale",
+      "holderId": "p59",
+      "rawText": "power drill. clean. pickup sunnydale",
       "embedding": [],
       "freeFrom": "2026-09-01",
-      "freeUntil": "2027-09-01"
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i76",
-      "holderId": "p35",
-      "rawText": "office chair",
+      "holderId": "p50",
+      "rawText": "suitcase. pickup king st n",
       "embedding": [],
-      "freeFrom": "2026-08-28",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i77",
-      "holderId": "p57",
-      "rawText": "router",
+      "holderId": "p22",
+      "rawText": "step ladder, a bit beat up but functional, comes with the case",
       "embedding": [],
-      "freeFrom": "2026-08-30",
-      "freeUntil": "2027-05-04"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i78",
-      "holderId": "p51",
-      "rawText": "nightstand, honestly a bit beat up but functional, have the receipt somewhere, im on lester",
+      "holderId": "p42",
+      "rawText": "paper shredder. missing the manual. idk the measurements. can drop it off if ur close. pickup sunnydale",
       "embedding": [],
-      "freeFrom": "2026-12-28",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i79",
-      "holderId": "p51",
-      "rawText": "storage bins.",
+      "holderId": "p0",
+      "rawText": "toolkit. basically new",
       "embedding": [],
-      "freeFrom": "2026-12-28",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i80",
-      "holderId": "p59",
-      "rawText": "portable AC, 60x30 i think, have the receipt somewhere, pickup beechwood",
+      "holderId": "p8",
+      "rawText": "air mattress, used once honestly",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i81",
-      "holderId": "p26",
-      "rawText": "DRESSER. ROUGHLY 3FT TALL. U HAUL IT. PICKUP BEECHWOOD",
+      "holderId": "p53",
+      "rawText": "dehumidifier. barely used. standard size. no box.",
       "embedding": [],
-      "freeFrom": "2027-01-05",
-      "freeUntil": "2027-05-05"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i82",
-      "holderId": "p2",
-      "rawText": "bike lock. theres a stain on one side. pickup sunnydale",
+      "holderId": "p24",
+      "rawText": "impact driver. basically new. pickup king st n.",
       "embedding": [],
-      "freeFrom": "2026-09-03",
-      "freeUntil": "2026-12-31"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i83",
-      "holderId": "p48",
-      "rawText": "air purifier. full size. pickup king st n",
+      "holderId": "p19",
+      "rawText": "luggage scale. missing the manual. not sure on size sorry. pickup northdale",
       "embedding": [],
-      "freeFrom": "2027-05-05",
-      "freeUntil": "2027-08-28"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i84",
-      "holderId": "p19",
-      "rawText": "writing desk. no issues. still have the original box. pickup beechwood",
+      "holderId": "p46",
+      "rawText": "food processor",
       "embedding": [],
-      "freeFrom": "2027-05-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i85",
-      "holderId": "p2",
-      "rawText": "ultrawide monitor (LG 29in). no issues. im on sunview.",
+      "holderId": "p56",
+      "rawText": "air mattress. charger included.",
       "embedding": [],
-      "freeFrom": "2026-09-03",
-      "freeUntil": "2026-12-31"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i86",
-      "holderId": "p19",
-      "rawText": "space heater. can help you carry it down. im on phillip st",
+      "holderId": "p26",
+      "rawText": "stand mixer, pickup king st n",
       "embedding": [],
-      "freeFrom": "2027-05-04",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i87",
-      "holderId": "p5",
-      "rawText": "printer (brother laser), clean",
+      "holderId": "p27",
+      "rawText": "steam mop",
       "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-05"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i88",
-      "holderId": "p52",
-      "rawText": "bike lock, 60x30 i think, no box",
+      "holderId": "p40",
+      "rawText": "step stool, pickup king st n",
       "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-02"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     },
     {
       "id": "i89",
-      "holderId": "p8",
-      "rawText": "IKEA MARKUS chair, have the receipt somewhere, im on university ave",
+      "holderId": "p38",
+      "rawText": "impact driver. has some scuffs.",
       "embedding": [],
-      "freeFrom": "2027-04-30",
-      "freeUntil": "2027-09-04"
-    },
-    {
-      "id": "i90",
-      "holderId": "p10",
-      "rawText": "ultrawide monitor (LG 29in). pickup king st n",
-      "embedding": [],
-      "freeFrom": "2027-05-05",
-      "freeUntil": "2027-09-03"
-    },
-    {
-      "id": "i91",
-      "holderId": "p29",
-      "rawText": "27in monitor. like new tbh. standard size. pickup king st n",
-      "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i92",
-      "holderId": "p48",
-      "rawText": "nightstand. no issues",
-      "embedding": [],
-      "freeFrom": "2027-05-05",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i93",
-      "holderId": "p18",
-      "rawText": "printer (brother laser). basically new. pickup beechwood",
-      "embedding": [],
-      "freeFrom": "2027-01-05",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i94",
-      "holderId": "p17",
-      "rawText": "TV. basically new. ~48in wide",
-      "embedding": [],
-      "freeFrom": "2026-08-30",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i95",
-      "holderId": "p9",
-      "rawText": "curtains + rod. works perfectly. ~48in wide",
-      "embedding": [],
-      "freeFrom": "2026-12-30",
-      "freeUntil": "2027-09-03"
-    },
-    {
-      "id": "i96",
-      "holderId": "p9",
-      "rawText": "toaster oven. remote included",
-      "embedding": [],
-      "freeFrom": "2026-12-30",
-      "freeUntil": "2027-09-03"
-    },
-    {
-      "id": "i97",
-      "holderId": "p1",
-      "rawText": "swiffer + mop bucket, has some scuffs, 60x30 i think, pickup king st n",
-      "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i98",
-      "holderId": "p7",
-      "rawText": "bike. i only had it 4 months. pickup lester",
-      "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i99",
-      "holderId": "p47",
-      "rawText": "shower caddy, u haul it, pickup king st n",
-      "embedding": [],
-      "freeFrom": "2027-01-02",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i100",
-      "holderId": "p11",
-      "rawText": "humidifier, 60x30 i think.",
-      "embedding": [],
-      "freeFrom": "2027-01-03",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i101",
-      "holderId": "p8",
-      "rawText": "curtains + rod. pickup northdale",
-      "embedding": [],
-      "freeFrom": "2027-04-30",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i102",
-      "holderId": "p59",
-      "rawText": "TV. full size. im on king st",
-      "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i103",
-      "holderId": "p7",
-      "rawText": "EXTENSION CORD + POWER BAR. BASICALLY NEW. ROUGHLY 3FT TALL",
-      "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i104",
-      "holderId": "p2",
-      "rawText": "futon. standard size. pickup sunnydale",
-      "embedding": [],
-      "freeFrom": "2026-09-03",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i105",
-      "holderId": "p6",
-      "rawText": "portable AC, not sure on dimensions sorry, im on university ave.",
-      "embedding": [],
-      "freeFrom": "2026-12-31",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i106",
-      "holderId": "p22",
-      "rawText": "dresser. i only had it 4 months. have the receipt somewhere",
-      "embedding": [],
-      "freeFrom": "2026-08-31",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i107",
-      "holderId": "p6",
-      "rawText": "billy bookcase. a little wobbly. ~48in wide",
-      "embedding": [],
-      "freeFrom": "2026-12-31",
-      "freeUntil": "2027-05-03"
-    },
-    {
-      "id": "i108",
-      "holderId": "p47",
-      "rawText": "second monitor, used but fine",
-      "embedding": [],
-      "freeFrom": "2027-01-02",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i109",
-      "holderId": "p36",
-      "rawText": "dining chair. full size. pickup beechwood",
-      "embedding": [],
-      "freeFrom": "2027-05-01",
-      "freeUntil": "2027-08-31"
-    },
-    {
-      "id": "i110",
-      "holderId": "p35",
-      "rawText": "air purifier, honestly a bit beat up but functional, im on university ave",
-      "embedding": [],
-      "freeFrom": "2026-08-28",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i111",
-      "holderId": "p50",
-      "rawText": "WINTER TIRES (NOBODY WANTS THESE BUT THEYRE FREE). U HAUL IT",
-      "embedding": [],
-      "freeFrom": "2026-09-03",
-      "freeUntil": "2027-01-03"
-    },
-    {
-      "id": "i112",
-      "holderId": "p58",
-      "rawText": "ironing board + iron. ~48in wide. im on king st",
-      "embedding": [],
-      "freeFrom": "2027-05-03",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i113",
-      "holderId": "p10",
-      "rawText": "ikea markus chair. no issues. includes the allen key. im on albert",
-      "embedding": [],
-      "freeFrom": "2027-05-05",
-      "freeUntil": "2027-09-03"
-    },
-    {
-      "id": "i114",
-      "holderId": "p34",
-      "rawText": "instant pot, basically new",
-      "embedding": [],
-      "freeFrom": "2027-01-02",
-      "freeUntil": "2027-04-29"
-    },
-    {
-      "id": "i115",
-      "holderId": "p33",
-      "rawText": "led strip lights. basically new. includes the allen key. pickup lester",
-      "embedding": [],
-      "freeFrom": "2027-01-03",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i116",
-      "holderId": "p13",
-      "rawText": "bookshelf, pickup king st n",
-      "embedding": [],
-      "freeFrom": "2027-05-02",
-      "freeUntil": "2027-09-01"
-    },
-    {
-      "id": "i117",
-      "holderId": "p2",
-      "rawText": "twin bed frame, pickup sunnydale.",
-      "embedding": [],
-      "freeFrom": "2026-09-03",
-      "freeUntil": "2026-12-31"
-    },
-    {
-      "id": "i118",
-      "holderId": "p5",
-      "rawText": "writing desk, barely used, can help you carry it down",
-      "embedding": [],
-      "freeFrom": "2027-01-04",
-      "freeUntil": "2027-09-05"
-    },
-    {
-      "id": "i119",
-      "holderId": "p11",
-      "rawText": "SMALL DESK. PICKUP NORTHDALE",
-      "embedding": [],
-      "freeFrom": "2027-01-03",
-      "freeUntil": "2027-09-01"
+      "freeFrom": "2026-09-01",
+      "freeUntil": "2027-01-01"
     }
   ],
   "needs": [
     {
       "id": "n0",
-      "personId": "p23",
-      "rawText": "looking for a twin bed frame",
-      "needFrom": "2026-12-30",
-      "needUntil": "2027-04-29",
-      "embedding": []
-    },
-    {
-      "id": "n1",
-      "personId": "p15",
-      "rawText": "anyone have a winter tires (nobody wants these but theyre free)",
-      "needFrom": "2026-09-01",
-      "needUntil": "2026-12-31",
+      "personId": "p39",
+      "rawText": "trying to find a power drill. moving out so its kind of urgent. im in lester",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-16",
       "embedding": []
     },
     {
       "id": "n2",
-      "personId": "p16",
-      "rawText": "want a plates and bowls",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-12-29",
+      "personId": "p39",
+      "rawText": "need a printer. my room is tiny so i cant keep it",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-08",
       "embedding": []
     },
     {
       "id": "n3",
-      "personId": "p15",
-      "rawText": "hoping someone has a computer desk (glass top)",
-      "needFrom": "2026-09-02",
-      "needUntil": "2026-12-31",
+      "personId": "p9",
+      "rawText": "hoping someone has a tent, any condition really",
+      "needFrom": "2026-09-06",
+      "needUntil": "2026-09-20",
       "embedding": []
     },
     {
       "id": "n4",
-      "personId": "p31",
-      "rawText": "hoping someone has a rice cooker. i have a car so distance is fine",
-      "needFrom": "2027-05-01",
-      "needUntil": "2027-08-30",
+      "personId": "p0",
+      "rawText": "CAN I BORROW A FOOD PROCESSOR, ONLY NEED IT FOR A COUPLE HOURS",
+      "needFrom": "2026-09-04",
+      "needUntil": "2026-09-19",
       "embedding": []
     },
     {
       "id": "n5",
-      "personId": "p51",
-      "rawText": "need a shower caddy, im in sunnydale",
-      "needFrom": "2027-04-28",
-      "needUntil": "2027-09-01",
+      "personId": "p44",
+      "rawText": "need a garment steamer. im in northdale",
+      "needFrom": "2026-10-27",
+      "needUntil": "2026-11-11",
       "embedding": []
     },
     {
       "id": "n6",
-      "personId": "p49",
-      "rawText": "looking for a nightstand. would love to not buy new. im in sunnydale",
-      "needFrom": "2026-08-31",
-      "needUntil": "2027-01-01",
+      "personId": "p13",
+      "rawText": "ISO a power bar",
+      "needFrom": "2026-12-09",
+      "needUntil": "2026-12-24",
       "embedding": []
     },
     {
       "id": "n7",
-      "personId": "p31",
-      "rawText": "looking for a blender. preferably free lol.",
-      "needFrom": "2027-05-01",
-      "needUntil": "2027-08-31",
+      "personId": "p2",
+      "rawText": "trying to find a dolly. nothing fancy",
+      "needFrom": "2026-11-17",
+      "needUntil": "2026-11-19",
       "embedding": []
     },
     {
       "id": "n8",
-      "personId": "p22",
-      "rawText": "need a floor lamp. doesnt have to be nice",
-      "needFrom": "2027-04-29",
-      "needUntil": "2027-08-31",
+      "personId": "p2",
+      "rawText": "looking to borrow a food processor",
+      "needFrom": "2026-09-16",
+      "needUntil": "2026-09-24",
       "embedding": []
     },
     {
       "id": "n9",
-      "personId": "p27",
-      "rawText": "hoping someone has a bike lock",
-      "needFrom": "2027-04-30",
-      "needUntil": "2027-08-30",
-      "embedding": []
-    },
-    {
-      "id": "n11",
       "personId": "p21",
-      "rawText": "anyone have a writing desk",
-      "needFrom": "2026-12-31",
-      "needUntil": "2027-05-02",
+      "rawText": "looking to borrow a shop vac",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-14",
       "embedding": []
     },
     {
       "id": "n12",
-      "personId": "p44",
-      "rawText": "ISO a tower fan, i have a car so distance is fine, im in northdale",
-      "needFrom": "2026-09-02",
-      "needUntil": "2027-01-03",
+      "personId": "p21",
+      "rawText": "hoping someone has a allen key set, any condition really",
+      "needFrom": "2026-10-08",
+      "needUntil": "2026-10-11",
       "embedding": []
     },
     {
       "id": "n13",
-      "personId": "p13",
-      "rawText": "in the market for a rice cooker. budget is basically zero",
-      "needFrom": "2027-01-02",
-      "needUntil": "2027-04-28",
+      "personId": "p24",
+      "rawText": "anyone have a paper shredder",
+      "needFrom": "2026-12-03",
+      "needUntil": "2026-12-19",
       "embedding": []
     },
     {
       "id": "n14",
-      "personId": "p45",
-      "rawText": "trying to find a swiffer + mop bucket",
-      "needFrom": "2026-09-02",
-      "needUntil": "2026-12-31",
+      "personId": "p29",
+      "rawText": "can i borrow a snow shovel, im in lester",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-15",
       "embedding": []
     },
     {
       "id": "n15",
-      "personId": "p0",
-      "rawText": "need a mattress topper, doesnt have to be nice, im in beechwood",
-      "needFrom": "2026-09-01",
-      "needUntil": "2026-12-31",
+      "personId": "p5",
+      "rawText": "anyone have a projector, im in beechwood",
+      "needFrom": "2026-09-06",
+      "needUntil": "2026-09-14",
       "embedding": []
     },
     {
       "id": "n16",
-      "personId": "p14",
-      "rawText": "trying to find a storage bins, im in beechwood",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-12-29",
+      "personId": "p2",
+      "rawText": "hoping someone has a folding chairs (4), i have no car so closer the better",
+      "needFrom": "2026-11-22",
+      "needUntil": "2026-12-10",
       "embedding": []
     },
     {
       "id": "n17",
-      "personId": "p29",
-      "rawText": "in the market for a dining chair",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-12-30",
+      "personId": "p43",
+      "rawText": "hoping someone has a suitcase",
+      "needFrom": "2026-09-11",
+      "needUntil": "2026-09-27",
       "embedding": []
     },
     {
       "id": "n18",
-      "personId": "p49",
-      "rawText": "need a 32in tv.",
-      "needFrom": "2026-12-29",
-      "needUntil": "2027-05-04",
+      "personId": "p23",
+      "rawText": "can i borrow a ironing board",
+      "needFrom": "2026-12-19",
+      "needUntil": "2026-12-31",
       "embedding": []
     },
     {
       "id": "n19",
-      "personId": "p46",
-      "rawText": "ISO a futon, i have a car so distance is fine, im in king st n",
-      "needFrom": "2026-09-01",
-      "needUntil": "2027-01-02",
+      "personId": "p52",
+      "rawText": "does anyone own a box fan. i have no car so closer the better",
+      "needFrom": "2026-10-11",
+      "needUntil": "2026-10-18",
       "embedding": []
     },
     {
       "id": "n20",
-      "personId": "p46",
-      "rawText": "hoping someone has a humidifier",
-      "needFrom": "2026-09-01",
-      "needUntil": "2027-01-01",
+      "personId": "p28",
+      "rawText": "anyone have a screwdriver set, can pick up anytime",
+      "needFrom": "2026-09-13",
+      "needUntil": "2026-09-28",
       "embedding": []
     },
     {
       "id": "n21",
-      "personId": "p37",
-      "rawText": "hoping someone has a humidifier, preferably free lol, im in beechwood",
-      "needFrom": "2027-01-03",
-      "needUntil": "2027-05-03",
+      "personId": "p24",
+      "rawText": "does anyone own a toolkit. only need it for a couple hours. im in sunnydale",
+      "needFrom": "2026-09-20",
+      "needUntil": "2026-09-24",
       "embedding": []
     },
     {
       "id": "n22",
-      "personId": "p14",
-      "rawText": "trying to find a gaming chair. budget is basically zero",
-      "needFrom": "2026-09-01",
-      "needUntil": "2027-01-01",
-      "embedding": []
-    },
-    {
-      "id": "n23",
-      "personId": "p50",
-      "rawText": "looking for a air fryer",
-      "needFrom": "2027-04-30",
-      "needUntil": "2027-09-02",
+      "personId": "p53",
+      "rawText": "need a iron",
+      "needFrom": "2026-09-17",
+      "needUntil": "2026-10-03",
       "embedding": []
     },
     {
       "id": "n24",
-      "personId": "p43",
-      "rawText": "ISO A GAMING CHAIR",
-      "needFrom": "2027-01-01",
-      "needUntil": "2027-05-01",
+      "personId": "p44",
+      "rawText": "can i borrow a screwdriver set. just for the weekend",
+      "needFrom": "2026-11-18",
+      "needUntil": "2026-11-20",
       "embedding": []
     },
     {
       "id": "n25",
-      "personId": "p23",
-      "rawText": "trying to find a rice cooker, any condition really",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-12-29",
+      "personId": "p59",
+      "rawText": "looking to borrow a garment steamer. im in king st n",
+      "needFrom": "2026-10-21",
+      "needUntil": "2026-10-31",
       "embedding": []
     },
     {
       "id": "n26",
-      "personId": "p11",
-      "rawText": "ANYONE HAVE A MINI FRIDGE, BUDGET IS BASICALLY ZERO",
-      "needFrom": "2027-04-29",
-      "needUntil": "2027-09-02",
+      "personId": "p21",
+      "rawText": "TRYING TO FIND A SUITCASE",
+      "needFrom": "2026-10-26",
+      "needUntil": "2026-11-11",
       "embedding": []
     },
     {
       "id": "n27",
-      "personId": "p38",
-      "rawText": "anyone have a keyboard + mouse.",
-      "needFrom": "2027-05-04",
-      "needUntil": "2027-09-04",
+      "personId": "p11",
+      "rawText": "ISO A POWER DRILL. NOTHING FANCY",
+      "needFrom": "2026-09-15",
+      "needUntil": "2026-09-29",
       "embedding": []
     },
     {
       "id": "n28",
-      "personId": "p5",
-      "rawText": "want a old 1080p monitor, i have a car so distance is fine",
-      "needFrom": "2026-09-04",
-      "needUntil": "2026-12-29",
-      "embedding": []
-    },
-    {
-      "id": "n29",
-      "personId": "p37",
-      "rawText": "hoping someone has a printer (brother laser). nothing fancy.",
-      "needFrom": "2027-05-03",
-      "needUntil": "2027-08-30",
+      "personId": "p22",
+      "rawText": "trying to find a paper shredder. only need it for a couple hours. im in sunnydale.",
+      "needFrom": "2026-11-09",
+      "needUntil": "2026-11-18",
       "embedding": []
     },
     {
       "id": "n30",
-      "personId": "p1",
-      "rawText": "trying to find a second monitor, can pick up anytime",
-      "needFrom": "2027-01-02",
-      "needUntil": "2027-05-01",
+      "personId": "p49",
+      "rawText": "hoping someone has a duffel bag",
+      "needFrom": "2026-09-28",
+      "needUntil": "2026-10-05",
       "embedding": []
     },
     {
       "id": "n31",
-      "personId": "p39",
-      "rawText": "want a small desk.",
-      "needFrom": "2026-09-03",
-      "needUntil": "2027-01-02",
+      "personId": "p47",
+      "rawText": "looking to borrow a folding table. im in king st n",
+      "needFrom": "2026-09-14",
+      "needUntil": "2026-09-19",
       "embedding": []
     },
     {
       "id": "n32",
-      "personId": "p12",
-      "rawText": "in the market for a ultrawide monitor (LG 29in). i have a car so distance is fine. im in lester",
-      "needFrom": "2026-12-31",
-      "needUntil": "2027-05-04",
+      "personId": "p55",
+      "rawText": "does anyone own a sleeping bag, would rather not buy one tbh, im in sunnydale",
+      "needFrom": "2026-11-04",
+      "needUntil": "2026-11-18",
       "embedding": []
     },
     {
       "id": "n33",
-      "personId": "p14",
-      "rawText": "anyone have a drying rack. can pick up anytime. im in lester",
-      "needFrom": "2026-09-02",
-      "needUntil": "2027-01-04",
+      "personId": "p25",
+      "rawText": "can i borrow a paper shredder. can pick up anytime",
+      "needFrom": "2026-11-05",
+      "needUntil": "2026-11-12",
       "embedding": []
     },
     {
       "id": "n34",
-      "personId": "p12",
-      "rawText": "looking for a small desk. ideally something i can carry myself",
-      "needFrom": "2027-01-04",
-      "needUntil": "2027-04-30",
+      "personId": "p11",
+      "rawText": "DOES ANYONE OWN A ALLEN KEY SET. JUST FOR THE WEEKEND. IM IN NORTHDALE",
+      "needFrom": "2026-11-10",
+      "needUntil": "2026-11-18",
+      "embedding": []
+    },
+    {
+      "id": "n36",
+      "personId": "p22",
+      "rawText": "anyone have a bike repair stand, ill give it back same day",
+      "needFrom": "2026-12-18",
+      "needUntil": "2026-12-30",
       "embedding": []
     },
     {
       "id": "n37",
-      "personId": "p1",
-      "rawText": "want a bookshelf",
-      "needFrom": "2026-09-03",
-      "needUntil": "2027-01-02",
+      "personId": "p41",
+      "rawText": "TRYING TO FIND A RING LIGHT",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-12",
       "embedding": []
     },
     {
       "id": "n38",
-      "personId": "p36",
-      "rawText": "looking for a floor lamp. nothing fancy. im in king st n",
-      "needFrom": "2026-08-31",
-      "needUntil": "2026-12-29",
+      "personId": "p56",
+      "rawText": "looking to borrow a first aid kit, for one project then im done",
+      "needFrom": "2026-10-29",
+      "needUntil": "2026-11-02",
       "embedding": []
     },
     {
       "id": "n39",
-      "personId": "p7",
-      "rawText": "ISO a desk lamp",
-      "needFrom": "2026-12-31",
-      "needUntil": "2027-04-28",
-      "embedding": []
-    },
-    {
-      "id": "n40",
-      "personId": "p51",
-      "rawText": "hoping someone has a storage bins",
-      "needFrom": "2027-04-30",
-      "needUntil": "2027-09-04",
+      "personId": "p36",
+      "rawText": "does anyone own a packing tape gun",
+      "needFrom": "2026-09-28",
+      "needUntil": "2026-10-04",
       "embedding": []
     },
     {
       "id": "n41",
-      "personId": "p24",
-      "rawText": "hoping someone has a kettle, no car so closer the better, im in northdale",
-      "needFrom": "2027-01-01",
-      "needUntil": "2027-04-28",
+      "personId": "p48",
+      "rawText": "anyone have a stand mixer, can pick up anytime, im in lester",
+      "needFrom": "2026-09-03",
+      "needUntil": "2026-09-15",
       "embedding": []
     },
     {
       "id": "n42",
-      "personId": "p4",
-      "rawText": "hoping someone has a small desk",
-      "needFrom": "2026-09-02",
-      "needUntil": "2026-12-31",
+      "personId": "p50",
+      "rawText": "can i borrow a roasting pan, can pick up anytime",
+      "needFrom": "2026-12-20",
+      "needUntil": "2026-12-26",
       "embedding": []
     },
     {
       "id": "n43",
-      "personId": "p32",
-      "rawText": "trying to find a computer desk (glass top), im in beechwood",
-      "needFrom": "2026-09-01",
-      "needUntil": "2027-01-01",
+      "personId": "p57",
+      "rawText": "hoping someone has a tire levers + patch kit. only need it for a couple hours",
+      "needFrom": "2026-11-01",
+      "needUntil": "2026-11-19",
       "embedding": []
     },
     {
       "id": "n44",
-      "personId": "p5",
-      "rawText": "hoping someone has a bike lock",
-      "needFrom": "2026-09-03",
-      "needUntil": "2027-01-03",
+      "personId": "p52",
+      "rawText": "anyone have a ladder. cant justify buying one for this. im in beechwood",
+      "needFrom": "2026-12-24",
+      "needUntil": "2026-12-28",
+      "embedding": []
+    },
+    {
+      "id": "n45",
+      "personId": "p57",
+      "rawText": "hoping someone has a air mattress, nothing fancy",
+      "needFrom": "2026-11-28",
+      "needUntil": "2026-12-02",
       "embedding": []
     },
     {
       "id": "n46",
-      "personId": "p22",
-      "rawText": "ISO a mirror. would love to not buy new.",
-      "needFrom": "2027-05-03",
-      "needUntil": "2027-08-30",
+      "personId": "p17",
+      "rawText": "can i borrow a camera tripod. would rather not buy one tbh",
+      "needFrom": "2026-11-27",
+      "needUntil": "2026-12-14",
       "embedding": []
     },
     {
       "id": "n47",
-      "personId": "p20",
-      "rawText": "ISO a bed frame. would love to not buy new",
-      "needFrom": "2026-09-02",
-      "needUntil": "2027-01-04",
-      "embedding": []
-    },
-    {
-      "id": "n48",
-      "personId": "p26",
-      "rawText": "want a drying rack",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-12-29",
+      "personId": "p4",
+      "rawText": "hoping someone has a garment bag, would rather not buy one tbh",
+      "needFrom": "2026-12-04",
+      "needUntil": "2026-12-10",
       "embedding": []
     },
     {
       "id": "n49",
-      "personId": "p11",
-      "rawText": "in the market for a fan",
-      "needFrom": "2027-05-02",
-      "needUntil": "2027-09-02",
+      "personId": "p59",
+      "rawText": "can i borrow a bike repair stand. just for the weekend. im in king st n",
+      "needFrom": "2026-12-21",
+      "needUntil": "2026-12-25",
       "embedding": []
     },
     {
       "id": "n50",
-      "personId": "p0",
-      "rawText": "want a blender. ideally something i can carry myself. im in northdale",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-12-29",
+      "personId": "p47",
+      "rawText": "LOOKING TO BORROW A TOOLKIT, ONLY NEED IT FOR A COUPLE HOURS",
+      "needFrom": "2026-11-15",
+      "needUntil": "2026-12-03",
       "embedding": []
     },
     {
       "id": "n51",
-      "personId": "p41",
-      "rawText": "ISO a office chair",
-      "needFrom": "2026-08-30",
-      "needUntil": "2027-01-04",
+      "personId": "p22",
+      "rawText": "ISO a power bar, im in sunnydale",
+      "needFrom": "2026-09-17",
+      "needUntil": "2026-09-27",
       "embedding": []
     },
     {
       "id": "n52",
-      "personId": "p22",
-      "rawText": "hoping someone has a kettle",
-      "needFrom": "2027-01-03",
-      "needUntil": "2027-05-02",
+      "personId": "p45",
+      "rawText": "can i borrow a large suitcase",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-19",
       "embedding": []
     },
     {
       "id": "n53",
-      "personId": "p22",
-      "rawText": "need a desk chair",
-      "needFrom": "2027-01-03",
-      "needUntil": "2027-05-02",
+      "personId": "p21",
+      "rawText": "can i borrow a paper shredder, im in lester",
+      "needFrom": "2026-11-09",
+      "needUntil": "2026-11-18",
       "embedding": []
     },
     {
       "id": "n54",
-      "personId": "p12",
-      "rawText": "want a rug, budget is basically zero",
-      "needFrom": "2027-04-29",
-      "needUntil": "2027-09-03",
-      "embedding": []
-    },
-    {
-      "id": "n55",
-      "personId": "p34",
-      "rawText": "want a folding table, can pick up anytime",
-      "needFrom": "2026-09-04",
-      "needUntil": "2027-01-01",
+      "personId": "p9",
+      "rawText": "iso a power bar, would rather not buy one tbh",
+      "needFrom": "2026-10-24",
+      "needUntil": "2026-11-01",
       "embedding": []
     },
     {
       "id": "n56",
-      "personId": "p0",
-      "rawText": "trying to find a winter tires (nobody wants these but theyre free). i have a car so distance is fine",
-      "needFrom": "2026-08-30",
-      "needUntil": "2027-01-02",
+      "personId": "p20",
+      "rawText": "can i borrow a suitcase. cant justify buying one for this.",
+      "needFrom": "2026-10-16",
+      "needUntil": "2026-10-28",
       "embedding": []
     },
     {
       "id": "n57",
-      "personId": "p56",
-      "rawText": "hoping someone has a mirror",
-      "needFrom": "2027-01-01",
-      "needUntil": "2027-04-28",
+      "personId": "p29",
+      "rawText": "anyone have a extension cord, cant justify buying one for this",
+      "needFrom": "2026-09-25",
+      "needUntil": "2026-10-12",
       "embedding": []
     },
     {
       "id": "n58",
-      "personId": "p46",
-      "rawText": "want a futon",
-      "needFrom": "2026-08-29",
-      "needUntil": "2026-12-30",
+      "personId": "p55",
+      "rawText": "anyone have a stud finder, any condition really, im in king st n",
+      "needFrom": "2026-10-12",
+      "needUntil": "2026-10-28",
       "embedding": []
     },
     {
       "id": "n59",
-      "personId": "p41",
-      "rawText": "want a desk lamp",
-      "needFrom": "2026-08-29",
-      "needUntil": "2026-12-29",
+      "personId": "p25",
+      "rawText": "ANYONE HAVE A FOLDING CHAIRS (4). IM IN SUNNYDALE",
+      "needFrom": "2026-10-27",
+      "needUntil": "2026-11-02",
+      "embedding": []
+    },
+    {
+      "id": "n60",
+      "personId": "p4",
+      "rawText": "ISO a ladder, nothing fancy",
+      "needFrom": "2026-11-09",
+      "needUntil": "2026-11-19",
       "embedding": []
     },
     {
       "id": "n61",
-      "personId": "p52",
-      "rawText": "hoping someone has a mattress topper.",
-      "needFrom": "2027-01-01",
-      "needUntil": "2027-05-01",
+      "personId": "p30",
+      "rawText": "does anyone own a folding chairs (4)",
+      "needFrom": "2026-12-15",
+      "needUntil": "2026-12-27",
       "embedding": []
     },
     {
       "id": "n62",
-      "personId": "p33",
-      "rawText": "hoping someone has a bar stool. would love to not buy new. im in king st n",
-      "needFrom": "2026-08-31",
-      "needUntil": "2027-01-01",
+      "personId": "p54",
+      "rawText": "anyone have a impact driver. i have no car so closer the better. im in lester",
+      "needFrom": "2026-11-22",
+      "needUntil": "2026-11-27",
       "embedding": []
     },
     {
       "id": "n63",
-      "personId": "p46",
-      "rawText": "trying to find a bike. i have a car so distance is fine",
-      "needFrom": "2026-08-31",
-      "needUntil": "2027-01-03",
+      "personId": "p6",
+      "rawText": "does anyone own a karaoke mic. im in northdale",
+      "needFrom": "2026-12-09",
+      "needUntil": "2026-12-26",
       "embedding": []
     },
     {
       "id": "n64",
-      "personId": "p29",
-      "rawText": "want a winter tires (nobody wants these but theyre free). no car so closer the better. im in beechwood",
-      "needFrom": "2026-09-02",
-      "needUntil": "2027-01-04",
+      "personId": "p8",
+      "rawText": "does anyone own a dehumidifier. any condition really",
+      "needFrom": "2026-09-04",
+      "needUntil": "2026-09-11",
+      "embedding": []
+    },
+    {
+      "id": "n65",
+      "personId": "p19",
+      "rawText": "looking to borrow a suitcase. just for the weekend",
+      "needFrom": "2026-11-06",
+      "needUntil": "2026-11-15",
       "embedding": []
     },
     {
       "id": "n66",
-      "personId": "p55",
-      "rawText": "trying to find a bookshelf. im in beechwood.",
-      "needFrom": "2026-09-01",
-      "needUntil": "2026-12-29",
+      "personId": "p47",
+      "rawText": "does anyone own a karaoke mic. cant justify buying one for this",
+      "needFrom": "2026-11-18",
+      "needUntil": "2026-11-23",
       "embedding": []
     },
     {
       "id": "n67",
-      "personId": "p32",
-      "rawText": "ISO a bike lock",
-      "needFrom": "2026-08-30",
-      "needUntil": "2027-01-03",
+      "personId": "p38",
+      "rawText": "need a ironing board. my room is tiny so i cant keep it",
+      "needFrom": "2026-12-01",
+      "needUntil": "2026-12-03",
       "embedding": []
     },
     {
       "id": "n68",
-      "personId": "p17",
-      "rawText": "need a tv, any condition really, im in northdale",
-      "needFrom": "2027-01-03",
-      "needUntil": "2027-05-04",
+      "personId": "p38",
+      "rawText": "iso a screwdriver set. would rather not buy one tbh. im in northdale",
+      "needFrom": "2026-09-02",
+      "needUntil": "2026-09-09",
       "embedding": []
     },
     {
       "id": "n69",
-      "personId": "p31",
-      "rawText": "in the market for a shelf unit, preferably free lol",
-      "needFrom": "2027-04-30",
-      "needUntil": "2027-09-01",
+      "personId": "p11",
+      "rawText": "ANYONE HAVE A MOVING STRAPS",
+      "needFrom": "2026-11-01",
+      "needUntil": "2026-11-16",
       "embedding": []
     },
     {
       "id": "n70",
-      "personId": "p25",
-      "rawText": "looking for a rice cooker, im in king st n",
-      "needFrom": "2026-09-03",
-      "needUntil": "2027-01-02",
+      "personId": "p37",
+      "rawText": "anyone have a large suitcase. any condition really",
+      "needFrom": "2026-09-19",
+      "needUntil": "2026-09-29",
       "embedding": []
     },
     {
       "id": "n71",
-      "personId": "p27",
-      "rawText": "trying to find a dining chair. any condition really",
-      "needFrom": "2027-05-02",
-      "needUntil": "2027-08-30",
+      "personId": "p22",
+      "rawText": "can i borrow a bike pump, moving out so its kind of urgent",
+      "needFrom": "2026-11-13",
+      "needUntil": "2026-11-15",
       "embedding": []
     },
     {
       "id": "n72",
-      "personId": "p53",
-      "rawText": "need a small desk",
-      "needFrom": "2027-05-03",
-      "needUntil": "2027-09-01",
+      "personId": "p55",
+      "rawText": "looking to borrow a cordless drill.",
+      "needFrom": "2026-11-12",
+      "needUntil": "2026-11-21",
       "embedding": []
     },
     {
       "id": "n73",
-      "personId": "p43",
-      "rawText": "want a plates and bowls, nothing fancy, im in beechwood",
-      "needFrom": "2027-01-04",
-      "needUntil": "2027-04-30",
+      "personId": "p52",
+      "rawText": "does anyone own a camera tripod",
+      "needFrom": "2026-11-18",
+      "needUntil": "2026-11-22",
       "embedding": []
     },
     {
       "id": "n74",
-      "personId": "p47",
-      "rawText": "trying to find a computer desk (glass top). ideally something i can carry myself.",
-      "needFrom": "2026-09-03",
-      "needUntil": "2027-01-02",
+      "personId": "p52",
+      "rawText": "anyone have a garment bag, can pick up anytime",
+      "needFrom": "2026-09-20",
+      "needUntil": "2026-09-28",
       "embedding": []
     },
     {
       "id": "n75",
-      "personId": "p45",
-      "rawText": "hoping someone has a monitor. ideally something i can carry myself. im in lester",
-      "needFrom": "2026-12-31",
-      "needUntil": "2027-04-28",
+      "personId": "p18",
+      "rawText": "can i borrow a stud finder. nothing fancy. im in lester",
+      "needFrom": "2026-09-22",
+      "needUntil": "2026-10-04",
       "embedding": []
     },
     {
       "id": "n76",
-      "personId": "p36",
-      "rawText": "need a dresser, i have a car so distance is fine",
-      "needFrom": "2026-08-30",
-      "needUntil": "2026-12-31",
+      "personId": "p12",
+      "rawText": "iso a duffel bag, for one project then im done",
+      "needFrom": "2026-09-27",
+      "needUntil": "2026-10-06",
       "embedding": []
     },
     {
       "id": "n77",
-      "personId": "p4",
-      "rawText": "need a monitor arm, doesnt have to be nice",
-      "needFrom": "2026-08-29",
-      "needUntil": "2026-12-30",
+      "personId": "p49",
+      "rawText": "hoping someone has a sewing machine, cant justify buying one for this",
+      "needFrom": "2026-10-29",
+      "needUntil": "2026-11-01",
       "embedding": []
     },
     {
       "id": "n78",
-      "personId": "p38",
-      "rawText": "want a instant pot, im in king st n",
-      "needFrom": "2027-01-01",
-      "needUntil": "2027-05-02",
+      "personId": "p43",
+      "rawText": "need a suitcase",
+      "needFrom": "2026-10-25",
+      "needUntil": "2026-11-03",
       "embedding": []
     },
     {
       "id": "n79",
-      "personId": "p11",
-      "rawText": "want a mattress topper",
-      "needFrom": "2027-04-29",
-      "needUntil": "2027-08-30",
+      "personId": "p28",
+      "rawText": "ISO a waffle maker. any condition really",
+      "needFrom": "2026-10-15",
+      "needUntil": "2026-10-26",
       "embedding": []
     },
     {
       "id": "n80",
-      "personId": "p20",
-      "rawText": "ISO a printer (brother laser). i have a car so distance is fine",
-      "needFrom": "2026-09-04",
-      "needUntil": "2027-01-03",
+      "personId": "p31",
+      "rawText": "need a serving platters, ill give it back same day",
+      "needFrom": "2026-09-09",
+      "needUntil": "2026-09-24",
       "embedding": []
     },
     {
       "id": "n81",
-      "personId": "p51",
-      "rawText": "want a storage bins, preferably free lol, im in beechwood",
-      "needFrom": "2027-04-30",
-      "needUntil": "2027-08-30",
+      "personId": "p6",
+      "rawText": "trying to find a punch bowl + ladle. im in king st n",
+      "needFrom": "2026-09-17",
+      "needUntil": "2026-09-26",
       "embedding": []
     },
     {
       "id": "n82",
-      "personId": "p48",
-      "rawText": "looking for a led strip lights",
-      "needFrom": "2026-09-01",
-      "needUntil": "2027-01-03",
-      "embedding": []
-    },
-    {
-      "id": "n83",
-      "personId": "p2",
-      "rawText": "looking for a desk",
-      "needFrom": "2026-12-31",
-      "needUntil": "2027-05-03",
+      "personId": "p4",
+      "rawText": "hoping someone has a spirit level. i have no car so closer the better. im in lester",
+      "needFrom": "2026-12-28",
+      "needUntil": "2026-12-31",
       "embedding": []
     },
     {
       "id": "n84",
-      "personId": "p53",
-      "rawText": "in the market for a humidifier. budget is basically zero",
-      "needFrom": "2027-05-02",
-      "needUntil": "2027-08-31",
+      "personId": "p0",
+      "rawText": "hoping someone has a dehumidifier. nothing fancy.",
+      "needFrom": "2026-11-09",
+      "needUntil": "2026-11-21",
+      "embedding": []
+    },
+    {
+      "id": "n85",
+      "personId": "p45",
+      "rawText": "hoping someone has a food processor. cant justify buying one for this",
+      "needFrom": "2026-09-03",
+      "needUntil": "2026-09-07",
       "embedding": []
     },
     {
       "id": "n86",
-      "personId": "p37",
-      "rawText": "hoping someone has a nightstand",
-      "needFrom": "2027-04-29",
-      "needUntil": "2027-09-04",
+      "personId": "p55",
+      "rawText": "can i borrow a packing tape gun. only need it for a couple hours",
+      "needFrom": "2026-10-25",
+      "needUntil": "2026-11-06",
       "embedding": []
     },
     {
       "id": "n87",
-      "personId": "p45",
-      "rawText": "anyone have a tower fan. ideally something i can carry myself",
-      "needFrom": "2026-12-29",
-      "needUntil": "2027-05-02",
+      "personId": "p0",
+      "rawText": "need a karaoke mic. im in sunnydale",
+      "needFrom": "2026-11-08",
+      "needUntil": "2026-11-23",
+      "embedding": []
+    },
+    {
+      "id": "n88",
+      "personId": "p9",
+      "rawText": "trying to find a carpet cleaner, im in king st n",
+      "needFrom": "2026-10-13",
+      "needUntil": "2026-10-31",
       "embedding": []
     },
     {
       "id": "n89",
-      "personId": "p19",
-      "rawText": "anyone have a mattress topper. i have a car so distance is fine. im in sunnydale",
-      "needFrom": "2026-08-29",
-      "needUntil": "2027-01-02",
+      "personId": "p45",
+      "rawText": "hoping someone has a dehumidifier, my room is tiny so i cant keep it, im in northdale",
+      "needFrom": "2026-11-12",
+      "needUntil": "2026-11-15",
+      "embedding": []
+    },
+    {
+      "id": "n90",
+      "personId": "p52",
+      "rawText": "need a raclette grill",
+      "needFrom": "2026-10-18",
+      "needUntil": "2026-10-30",
       "embedding": []
     },
     {
       "id": "n91",
-      "personId": "p0",
-      "rawText": "in the market for a keyboard + mouse, preferably free lol, im in sunnydale",
-      "needFrom": "2026-08-30",
-      "needUntil": "2027-01-01",
+      "personId": "p43",
+      "rawText": "trying to find a stand mixer. i have no car so closer the better. im in king st n",
+      "needFrom": "2026-12-24",
+      "needUntil": "2026-12-31",
       "embedding": []
     },
     {
       "id": "n92",
-      "personId": "p20",
-      "rawText": "in the market for a desk chair. any condition really",
+      "personId": "p2",
+      "rawText": "hoping someone has a extension cord, i have no car so closer the better",
       "needFrom": "2026-09-03",
-      "needUntil": "2027-01-02",
-      "embedding": []
-    },
-    {
-      "id": "n93",
-      "personId": "p53",
-      "rawText": "anyone have a storage bins, im in beechwood",
-      "needFrom": "2027-05-01",
-      "needUntil": "2027-09-02",
+      "needUntil": "2026-09-07",
       "embedding": []
     },
     {
       "id": "n94",
-      "personId": "p31",
-      "rawText": "trying to find a keyboard + mouse. any condition really",
-      "needFrom": "2027-05-01",
-      "needUntil": "2027-08-30",
+      "personId": "p54",
+      "rawText": "can i borrow a allen key set, cant justify buying one for this",
+      "needFrom": "2026-11-19",
+      "needUntil": "2026-12-06",
       "embedding": []
     },
     {
       "id": "n95",
-      "personId": "p15",
-      "rawText": "in the market for a second monitor. doesnt have to be nice",
-      "needFrom": "2026-09-01",
-      "needUntil": "2026-12-30",
+      "personId": "p22",
+      "rawText": "DOES ANYONE OWN A IRONING BOARD. ILL GIVE IT BACK SAME DAY.",
+      "needFrom": "2026-10-19",
+      "needUntil": "2026-10-23",
       "embedding": []
     },
     {
       "id": "n96",
-      "personId": "p45",
-      "rawText": "hoping someone has a curtains + rod, im in beechwood",
-      "needFrom": "2026-09-03",
-      "needUntil": "2026-12-29",
+      "personId": "p56",
+      "rawText": "iso a stud finder, any condition really",
+      "needFrom": "2026-09-16",
+      "needUntil": "2026-09-18",
       "embedding": []
     },
     {
       "id": "n97",
-      "personId": "p42",
-      "rawText": "trying to find a bike, im in beechwood",
-      "needFrom": "2026-09-04",
-      "needUntil": "2027-01-02",
-      "embedding": []
-    },
-    {
-      "id": "n98",
-      "personId": "p25",
-      "rawText": "anyone have a ikea LINNMON desk top + legs, no car so closer the better",
-      "needFrom": "2026-08-31",
-      "needUntil": "2026-12-30",
+      "personId": "p1",
+      "rawText": "looking to borrow a food processor, im in beechwood",
+      "needFrom": "2026-11-14",
+      "needUntil": "2026-12-01",
       "embedding": []
     },
     {
       "id": "n99",
-      "personId": "p33",
-      "rawText": "anyone have a desk chair, i have a car so distance is fine",
+      "personId": "p42",
+      "rawText": "does anyone own a folding chairs (4), i have no car so closer the better",
+      "needFrom": "2026-12-15",
+      "needUntil": "2026-12-23",
+      "embedding": []
+    },
+    {
+      "id": "n100",
+      "personId": "p51",
+      "rawText": "does anyone own a luggage scale. nothing fancy",
+      "needFrom": "2026-11-14",
+      "needUntil": "2026-11-26",
+      "embedding": []
+    },
+    {
+      "id": "n101",
+      "personId": "p44",
+      "rawText": "ISO a bike pump, cant justify buying one for this, im in king st n",
+      "needFrom": "2026-11-04",
+      "needUntil": "2026-11-07",
+      "embedding": []
+    },
+    {
+      "id": "n102",
+      "personId": "p15",
+      "rawText": "does anyone own a jumper cables",
+      "needFrom": "2026-11-06",
+      "needUntil": "2026-11-16",
+      "embedding": []
+    },
+    {
+      "id": "n103",
+      "personId": "p26",
+      "rawText": "can i borrow a suitcase. cant justify buying one for this.",
+      "needFrom": "2026-11-20",
+      "needUntil": "2026-11-22",
+      "embedding": []
+    },
+    {
+      "id": "n105",
+      "personId": "p34",
+      "rawText": "trying to find a snow shovel. would rather not buy one tbh",
+      "needFrom": "2026-10-08",
+      "needUntil": "2026-10-24",
+      "embedding": []
+    },
+    {
+      "id": "n106",
+      "personId": "p30",
+      "rawText": "anyone have a spirit level, cant justify buying one for this",
+      "needFrom": "2026-10-11",
+      "needUntil": "2026-10-15",
+      "embedding": []
+    },
+    {
+      "id": "n107",
+      "personId": "p19",
+      "rawText": "does anyone own a jumper cables",
+      "needFrom": "2026-09-21",
+      "needUntil": "2026-09-29",
+      "embedding": []
+    },
+    {
+      "id": "n108",
+      "personId": "p22",
+      "rawText": "ISO a ice scraper, i have no car so closer the better",
+      "needFrom": "2026-12-17",
+      "needUntil": "2026-12-22",
+      "embedding": []
+    },
+    {
+      "id": "n109",
+      "personId": "p22",
+      "rawText": "need a suitcase",
+      "needFrom": "2026-09-27",
+      "needUntil": "2026-10-07",
+      "embedding": []
+    },
+    {
+      "id": "n110",
+      "personId": "p38",
+      "rawText": "can i borrow a bike repair stand, cant justify buying one for this",
+      "needFrom": "2026-11-02",
+      "needUntil": "2026-11-07",
+      "embedding": []
+    },
+    {
+      "id": "n111",
+      "personId": "p11",
+      "rawText": "need a sleeping bag. ill give it back same day",
+      "needFrom": "2026-10-31",
+      "needUntil": "2026-11-16",
+      "embedding": []
+    },
+    {
+      "id": "n112",
+      "personId": "p20",
+      "rawText": "looking to borrow a bike pump. my room is tiny so i cant keep it",
+      "needFrom": "2026-10-25",
+      "needUntil": "2026-11-11",
+      "embedding": []
+    },
+    {
+      "id": "n113",
+      "personId": "p47",
+      "rawText": "trying to find a paper shredder. my room is tiny so i cant keep it",
+      "needFrom": "2026-09-29",
+      "needUntil": "2026-10-16",
+      "embedding": []
+    },
+    {
+      "id": "n114",
+      "personId": "p1",
+      "rawText": "looking to borrow a tire levers + patch kit. i have no car so closer the better. im in king st n.",
+      "needFrom": "2026-10-28",
+      "needUntil": "2026-11-03",
+      "embedding": []
+    },
+    {
+      "id": "n115",
+      "personId": "p24",
+      "rawText": "can i borrow a moving blankets. can pick up anytime",
+      "needFrom": "2026-10-02",
+      "needUntil": "2026-10-04",
+      "embedding": []
+    },
+    {
+      "id": "n116",
+      "personId": "p28",
+      "rawText": "trying to find a dehumidifier",
+      "needFrom": "2026-09-16",
+      "needUntil": "2026-09-19",
+      "embedding": []
+    },
+    {
+      "id": "n117",
+      "personId": "p26",
+      "rawText": "ISO a roasting pan, ill give it back same day",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-15",
+      "embedding": []
+    },
+    {
+      "id": "n118",
+      "personId": "p32",
+      "rawText": "ISO a first aid kit. any condition really",
+      "needFrom": "2026-11-19",
+      "needUntil": "2026-11-29",
+      "embedding": []
+    },
+    {
+      "id": "n119",
+      "personId": "p37",
+      "rawText": "hoping someone has a ironing board, cant justify buying one for this",
+      "needFrom": "2026-11-13",
+      "needUntil": "2026-11-22",
+      "embedding": []
+    },
+    {
+      "id": "n121",
+      "personId": "p49",
+      "rawText": "ISO a raclette grill. my room is tiny so i cant keep it.",
+      "needFrom": "2026-09-03",
+      "needUntil": "2026-09-16",
+      "embedding": []
+    },
+    {
+      "id": "n122",
+      "personId": "p39",
+      "rawText": "need a moving straps, im in sunnydale",
+      "needFrom": "2026-10-21",
+      "needUntil": "2026-11-07",
+      "embedding": []
+    },
+    {
+      "id": "n123",
+      "personId": "p32",
+      "rawText": "anyone have a space heater, my room is tiny so i cant keep it, im in beechwood",
+      "needFrom": "2026-11-18",
+      "needUntil": "2026-11-21",
+      "embedding": []
+    },
+    {
+      "id": "n124",
+      "personId": "p2",
+      "rawText": "looking to borrow a dolly. my room is tiny so i cant keep it",
+      "needFrom": "2026-09-21",
+      "needUntil": "2026-09-25",
+      "embedding": []
+    },
+    {
+      "id": "n125",
+      "personId": "p40",
+      "rawText": "can i borrow a sleeping bag, nothing fancy",
+      "needFrom": "2026-09-30",
+      "needUntil": "2026-10-13",
+      "embedding": []
+    },
+    {
+      "id": "n126",
+      "personId": "p40",
+      "rawText": "ISO a sewing machine. nothing fancy. im in northdale",
+      "needFrom": "2026-12-14",
+      "needUntil": "2026-12-19",
+      "embedding": []
+    },
+    {
+      "id": "n127",
+      "personId": "p12",
+      "rawText": "trying to find a stand mixer. just for the weekend. im in beechwood.",
+      "needFrom": "2026-12-01",
+      "needUntil": "2026-12-10",
+      "embedding": []
+    },
+    {
+      "id": "n128",
+      "personId": "p56",
+      "rawText": "hoping someone has a extension cord. any condition really",
+      "needFrom": "2026-12-03",
+      "needUntil": "2026-12-11",
+      "embedding": []
+    },
+    {
+      "id": "n129",
+      "personId": "p12",
+      "rawText": "can i borrow a bluetooth speaker. ill give it back same day. im in lester.",
+      "needFrom": "2026-09-09",
+      "needUntil": "2026-09-13",
+      "embedding": []
+    },
+    {
+      "id": "n130",
+      "personId": "p31",
+      "rawText": "does anyone own a serving platters",
+      "needFrom": "2026-11-26",
+      "needUntil": "2026-12-04",
+      "embedding": []
+    },
+    {
+      "id": "n131",
+      "personId": "p44",
+      "rawText": "anyone have a air mattress. cant justify buying one for this",
+      "needFrom": "2026-09-12",
+      "needUntil": "2026-09-29",
+      "embedding": []
+    },
+    {
+      "id": "n132",
+      "personId": "p2",
+      "rawText": "need a folding table, for one project then im done",
+      "needFrom": "2026-09-18",
+      "needUntil": "2026-09-30",
+      "embedding": []
+    },
+    {
+      "id": "n133",
+      "personId": "p15",
+      "rawText": "ISO a step stool",
+      "needFrom": "2026-09-09",
+      "needUntil": "2026-09-16",
+      "embedding": []
+    },
+    {
+      "id": "n134",
+      "personId": "p19",
+      "rawText": "anyone have a punch bowl + ladle. i have no car so closer the better.",
       "needFrom": "2026-09-02",
-      "needUntil": "2027-01-03",
+      "needUntil": "2026-09-16",
+      "embedding": []
+    },
+    {
+      "id": "n135",
+      "personId": "p23",
+      "rawText": "trying to find a sleeping bag, my room is tiny so i cant keep it",
+      "needFrom": "2026-09-22",
+      "needUntil": "2026-10-09",
+      "embedding": []
+    },
+    {
+      "id": "n137",
+      "personId": "p11",
+      "rawText": "ISO a ring light. im in king st n",
+      "needFrom": "2026-10-11",
+      "needUntil": "2026-10-15",
+      "embedding": []
+    },
+    {
+      "id": "n139",
+      "personId": "p51",
+      "rawText": "hoping someone has a toolkit, cant justify buying one for this",
+      "needFrom": "2026-11-26",
+      "needUntil": "2026-12-03",
+      "embedding": []
+    },
+    {
+      "id": "n140",
+      "personId": "p18",
+      "rawText": "need a drill",
+      "needFrom": "2026-12-04",
+      "needUntil": "2026-12-10",
+      "embedding": []
+    },
+    {
+      "id": "n141",
+      "personId": "p40",
+      "rawText": "LOOKING TO BORROW A VACUUM. ONLY NEED IT FOR A COUPLE HOURS",
+      "needFrom": "2026-12-02",
+      "needUntil": "2026-12-12",
+      "embedding": []
+    },
+    {
+      "id": "n142",
+      "personId": "p18",
+      "rawText": "ISO a large suitcase. only need it for a couple hours. im in king st n",
+      "needFrom": "2026-12-06",
+      "needUntil": "2026-12-21",
+      "embedding": []
+    },
+    {
+      "id": "n143",
+      "personId": "p40",
+      "rawText": "can i borrow a stand mixer",
+      "needFrom": "2026-09-19",
+      "needUntil": "2026-09-26",
+      "embedding": []
+    },
+    {
+      "id": "n144",
+      "personId": "p41",
+      "rawText": "hoping someone has a bike repair stand",
+      "needFrom": "2026-09-22",
+      "needUntil": "2026-10-01",
+      "embedding": []
+    },
+    {
+      "id": "n145",
+      "personId": "p52",
+      "rawText": "hoping someone has a drill, my room is tiny so i cant keep it",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-22",
+      "embedding": []
+    },
+    {
+      "id": "n146",
+      "personId": "p34",
+      "rawText": "need a iron",
+      "needFrom": "2026-12-17",
+      "needUntil": "2027-01-01",
+      "embedding": []
+    },
+    {
+      "id": "n147",
+      "personId": "p52",
+      "rawText": "anyone have a sewing machine. i have no car so closer the better",
+      "needFrom": "2026-11-21",
+      "needUntil": "2026-11-24",
+      "embedding": []
+    },
+    {
+      "id": "n148",
+      "personId": "p6",
+      "rawText": "need a camera tripod, i have no car so closer the better, im in northdale.",
+      "needFrom": "2026-09-22",
+      "needUntil": "2026-10-06",
+      "embedding": []
+    },
+    {
+      "id": "n149",
+      "personId": "p21",
+      "rawText": "looking to borrow a bike repair stand, i have no car so closer the better",
+      "needFrom": "2026-11-09",
+      "needUntil": "2026-11-27",
+      "embedding": []
+    },
+    {
+      "id": "n150",
+      "personId": "p31",
+      "rawText": "does anyone own a raclette grill. for one project then im done",
+      "needFrom": "2026-10-28",
+      "needUntil": "2026-11-08",
+      "embedding": []
+    },
+    {
+      "id": "n151",
+      "personId": "p11",
+      "rawText": "does anyone own a wrench set. only need it for a couple hours",
+      "needFrom": "2026-09-20",
+      "needUntil": "2026-09-26",
+      "embedding": []
+    },
+    {
+      "id": "n152",
+      "personId": "p31",
+      "rawText": "anyone have a power bar",
+      "needFrom": "2026-11-30",
+      "needUntil": "2026-12-05",
+      "embedding": []
+    },
+    {
+      "id": "n154",
+      "personId": "p2",
+      "rawText": "trying to find a printer, im in beechwood",
+      "needFrom": "2026-10-12",
+      "needUntil": "2026-10-26",
+      "embedding": []
+    },
+    {
+      "id": "n155",
+      "personId": "p52",
+      "rawText": "iso a moving blankets. just for the weekend",
+      "needFrom": "2026-10-18",
+      "needUntil": "2026-10-29",
+      "embedding": []
+    },
+    {
+      "id": "n156",
+      "personId": "p36",
+      "rawText": "need a roasting pan. cant justify buying one for this. im in northdale",
+      "needFrom": "2026-10-14",
+      "needUntil": "2026-10-22",
+      "embedding": []
+    },
+    {
+      "id": "n157",
+      "personId": "p59",
+      "rawText": "need a folding table. im in beechwood",
+      "needFrom": "2026-12-02",
+      "needUntil": "2026-12-16",
+      "embedding": []
+    },
+    {
+      "id": "n160",
+      "personId": "p28",
+      "rawText": "hoping someone has a large suitcase",
+      "needFrom": "2026-11-22",
+      "needUntil": "2026-12-10",
+      "embedding": []
+    },
+    {
+      "id": "n161",
+      "personId": "p27",
+      "rawText": "trying to find a food processor, im in king st n",
+      "needFrom": "2026-09-20",
+      "needUntil": "2026-10-06",
+      "embedding": []
+    },
+    {
+      "id": "n162",
+      "personId": "p26",
+      "rawText": "does anyone own a space heater, moving out so its kind of urgent, im in lester",
+      "needFrom": "2026-12-22",
+      "needUntil": "2026-12-24",
+      "embedding": []
+    },
+    {
+      "id": "n163",
+      "personId": "p12",
+      "rawText": "anyone have a wrench set",
+      "needFrom": "2026-09-28",
+      "needUntil": "2026-10-08",
+      "embedding": []
+    },
+    {
+      "id": "n164",
+      "personId": "p1",
+      "rawText": "can i borrow a extension cord, i have no car so closer the better, im in beechwood",
+      "needFrom": "2026-11-30",
+      "needUntil": "2026-12-12",
+      "embedding": []
+    },
+    {
+      "id": "n166",
+      "personId": "p13",
+      "rawText": "hoping someone has a carpet cleaner, im in lester",
+      "needFrom": "2026-11-22",
+      "needUntil": "2026-12-05",
+      "embedding": []
+    },
+    {
+      "id": "n167",
+      "personId": "p44",
+      "rawText": "trying to find a iron, im in lester",
+      "needFrom": "2026-11-21",
+      "needUntil": "2026-12-02",
+      "embedding": []
+    },
+    {
+      "id": "n168",
+      "personId": "p31",
+      "rawText": "does anyone own a cooler",
+      "needFrom": "2026-09-24",
+      "needUntil": "2026-10-10",
+      "embedding": []
+    },
+    {
+      "id": "n170",
+      "personId": "p29",
+      "rawText": "anyone have a extension cord. ill give it back same day. im in sunnydale",
+      "needFrom": "2026-10-04",
+      "needUntil": "2026-10-18",
+      "embedding": []
+    },
+    {
+      "id": "n172",
+      "personId": "p39",
+      "rawText": "trying to find a camping stove, can pick up anytime",
+      "needFrom": "2026-09-08",
+      "needUntil": "2026-09-26",
+      "embedding": []
+    },
+    {
+      "id": "n173",
+      "personId": "p37",
+      "rawText": "can i borrow a packing tape gun. ill give it back same day. im in beechwood.",
+      "needFrom": "2026-10-10",
+      "needUntil": "2026-10-22",
+      "embedding": []
+    },
+    {
+      "id": "n174",
+      "personId": "p54",
+      "rawText": "anyone have a sewing machine, for one project then im done",
+      "needFrom": "2026-12-05",
+      "needUntil": "2026-12-07",
+      "embedding": []
+    },
+    {
+      "id": "n175",
+      "personId": "p10",
+      "rawText": "can i borrow a luggage scale. only need it for a couple hours",
+      "needFrom": "2026-11-14",
+      "needUntil": "2026-11-25",
+      "embedding": []
+    },
+    {
+      "id": "n176",
+      "personId": "p19",
+      "rawText": "iso a step ladder. can pick up anytime",
+      "needFrom": "2026-09-24",
+      "needUntil": "2026-10-02",
+      "embedding": []
+    },
+    {
+      "id": "n177",
+      "personId": "p3",
+      "rawText": "does anyone own a drill. just for the weekend",
+      "needFrom": "2026-09-09",
+      "needUntil": "2026-09-13",
+      "embedding": []
+    },
+    {
+      "id": "n179",
+      "personId": "p35",
+      "rawText": "anyone have a steam mop. any condition really",
+      "needFrom": "2026-09-11",
+      "needUntil": "2026-09-18",
+      "embedding": []
+    },
+    {
+      "id": "n180",
+      "personId": "p57",
+      "rawText": "ISO a jumper cables. any condition really. im in sunnydale",
+      "needFrom": "2026-09-09",
+      "needUntil": "2026-09-27",
+      "embedding": []
+    },
+    {
+      "id": "n181",
+      "personId": "p18",
+      "rawText": "anyone have a cooler, im in northdale",
+      "needFrom": "2026-11-15",
+      "needUntil": "2026-11-17",
+      "embedding": []
+    },
+    {
+      "id": "n182",
+      "personId": "p3",
+      "rawText": "need a garment bag",
+      "needFrom": "2026-12-03",
+      "needUntil": "2026-12-15",
+      "embedding": []
+    },
+    {
+      "id": "n183",
+      "personId": "p26",
+      "rawText": "trying to find a snow shovel, i have no car so closer the better",
+      "needFrom": "2026-10-11",
+      "needUntil": "2026-10-28",
+      "embedding": []
+    },
+    {
+      "id": "n184",
+      "personId": "p11",
+      "rawText": "hoping someone has a humidifier. i have no car so closer the better",
+      "needFrom": "2026-10-14",
+      "needUntil": "2026-10-30",
+      "embedding": []
+    },
+    {
+      "id": "n185",
+      "personId": "p6",
+      "rawText": "can i borrow a sleeping bag. ill give it back same day",
+      "needFrom": "2026-11-21",
+      "needUntil": "2026-11-24",
+      "embedding": []
+    },
+    {
+      "id": "n186",
+      "personId": "p11",
+      "rawText": "can i borrow a tire levers + patch kit",
+      "needFrom": "2026-11-09",
+      "needUntil": "2026-11-14",
+      "embedding": []
+    },
+    {
+      "id": "n188",
+      "personId": "p58",
+      "rawText": "TRYING TO FIND A CAMERA TRIPOD. MOVING OUT SO ITS KIND OF URGENT. IM IN BEECHWOOD",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-23",
+      "embedding": []
+    },
+    {
+      "id": "n189",
+      "personId": "p22",
+      "rawText": "anyone have a camping stove",
+      "needFrom": "2026-11-06",
+      "needUntil": "2026-11-16",
+      "embedding": []
+    },
+    {
+      "id": "n190",
+      "personId": "p3",
+      "rawText": "LOOKING TO BORROW A AIR PUMP",
+      "needFrom": "2026-09-21",
+      "needUntil": "2026-09-27",
+      "embedding": []
+    },
+    {
+      "id": "n191",
+      "personId": "p14",
+      "rawText": "can i borrow a cooler. im in northdale",
+      "needFrom": "2026-12-09",
+      "needUntil": "2026-12-13",
+      "embedding": []
+    },
+    {
+      "id": "n192",
+      "personId": "p45",
+      "rawText": "need a shop vac, only need it for a couple hours.",
+      "needFrom": "2026-11-27",
+      "needUntil": "2026-12-12",
+      "embedding": []
+    },
+    {
+      "id": "n194",
+      "personId": "p26",
+      "rawText": "looking to borrow a serving platters. can pick up anytime. im in northdale",
+      "needFrom": "2026-11-12",
+      "needUntil": "2026-11-20",
+      "embedding": []
+    },
+    {
+      "id": "n195",
+      "personId": "p13",
+      "rawText": "looking to borrow a ring light, im in lester.",
+      "needFrom": "2026-11-13",
+      "needUntil": "2026-11-26",
+      "embedding": []
+    },
+    {
+      "id": "n196",
+      "personId": "p9",
+      "rawText": "can i borrow a moving straps. just for the weekend",
+      "needFrom": "2026-09-25",
+      "needUntil": "2026-10-04",
+      "embedding": []
+    },
+    {
+      "id": "n197",
+      "personId": "p25",
+      "rawText": "NEED A LUGGAGE SCALE. NOTHING FANCY. IM IN LESTER",
+      "needFrom": "2026-11-12",
+      "needUntil": "2026-11-16",
+      "embedding": []
+    },
+    {
+      "id": "n198",
+      "personId": "p12",
+      "rawText": "does anyone own a ring light. i have no car so closer the better. im in northdale",
+      "needFrom": "2026-10-20",
+      "needUntil": "2026-11-02",
+      "embedding": []
+    },
+    {
+      "id": "n199",
+      "personId": "p4",
+      "rawText": "hoping someone has a suitcase",
+      "needFrom": "2026-12-22",
+      "needUntil": "2026-12-28",
+      "embedding": []
+    },
+    {
+      "id": "n200",
+      "personId": "p49",
+      "rawText": "DOES ANYONE OWN A AIR PUMP, JUST FOR THE WEEKEND",
+      "needFrom": "2026-12-17",
+      "needUntil": "2026-12-25",
+      "embedding": []
+    },
+    {
+      "id": "n201",
+      "personId": "p3",
+      "rawText": "HOPING SOMEONE HAS A WRENCH SET, ILL GIVE IT BACK SAME DAY, IM IN SUNNYDALE",
+      "needFrom": "2026-11-30",
+      "needUntil": "2026-12-03",
+      "embedding": []
+    },
+    {
+      "id": "n202",
+      "personId": "p46",
+      "rawText": "need a raclette grill. for one project then im done",
+      "needFrom": "2026-10-31",
+      "needUntil": "2026-11-16",
+      "embedding": []
+    },
+    {
+      "id": "n203",
+      "personId": "p33",
+      "rawText": "hoping someone has a jumper cables. just for the weekend",
+      "needFrom": "2026-12-06",
+      "needUntil": "2026-12-12",
+      "embedding": []
+    },
+    {
+      "id": "n204",
+      "personId": "p10",
+      "rawText": "need a suitcase",
+      "needFrom": "2026-12-02",
+      "needUntil": "2026-12-08",
+      "embedding": []
+    },
+    {
+      "id": "n205",
+      "personId": "p22",
+      "rawText": "can i borrow a hammer, nothing fancy, im in lester",
+      "needFrom": "2026-11-25",
+      "needUntil": "2026-12-06",
+      "embedding": []
+    },
+    {
+      "id": "n206",
+      "personId": "p49",
+      "rawText": "anyone have a folding chairs (4). any condition really",
+      "needFrom": "2026-12-11",
+      "needUntil": "2026-12-13",
+      "embedding": []
+    },
+    {
+      "id": "n207",
+      "personId": "p54",
+      "rawText": "looking to borrow a stand mixer. can pick up anytime",
+      "needFrom": "2026-10-01",
+      "needUntil": "2026-10-11",
+      "embedding": []
+    },
+    {
+      "id": "n208",
+      "personId": "p49",
+      "rawText": "can i borrow a power bar, can pick up anytime",
+      "needFrom": "2026-09-21",
+      "needUntil": "2026-09-24",
+      "embedding": []
+    },
+    {
+      "id": "n209",
+      "personId": "p33",
+      "rawText": "NEED A CORDLESS DRILL, IM IN KING ST N",
+      "needFrom": "2026-10-05",
+      "needUntil": "2026-10-18",
+      "embedding": []
+    },
+    {
+      "id": "n210",
+      "personId": "p25",
+      "rawText": "can i borrow a first aid kit, would rather not buy one tbh",
+      "needFrom": "2026-12-17",
+      "needUntil": "2026-12-29",
+      "embedding": []
+    },
+    {
+      "id": "n211",
+      "personId": "p0",
+      "rawText": "need a duffel bag. im in beechwood",
+      "needFrom": "2026-09-23",
+      "needUntil": "2026-10-06",
+      "embedding": []
+    },
+    {
+      "id": "n212",
+      "personId": "p41",
+      "rawText": "looking to borrow a ring light. just for the weekend. im in beechwood",
+      "needFrom": "2026-09-05",
+      "needUntil": "2026-09-12",
+      "embedding": []
+    },
+    {
+      "id": "n213",
+      "personId": "p48",
+      "rawText": "trying to find a folding cot. any condition really",
+      "needFrom": "2026-11-22",
+      "needUntil": "2026-12-06",
+      "embedding": []
+    },
+    {
+      "id": "n214",
+      "personId": "p43",
+      "rawText": "trying to find a air pump",
+      "needFrom": "2026-11-18",
+      "needUntil": "2026-12-03",
+      "embedding": []
+    },
+    {
+      "id": "n215",
+      "personId": "p14",
+      "rawText": "looking to borrow a camera tripod, can pick up anytime, im in king st n",
+      "needFrom": "2026-10-18",
+      "needUntil": "2026-11-03",
+      "embedding": []
+    },
+    {
+      "id": "n216",
+      "personId": "p38",
+      "rawText": "anyone have a impact driver. only need it for a couple hours. im in beechwood",
+      "needFrom": "2026-09-29",
+      "needUntil": "2026-10-06",
+      "embedding": []
+    },
+    {
+      "id": "n217",
+      "personId": "p12",
+      "rawText": "can i borrow a step stool",
+      "needFrom": "2026-12-01",
+      "needUntil": "2026-12-03",
+      "embedding": []
+    },
+    {
+      "id": "n218",
+      "personId": "p59",
+      "rawText": "NEED A LARGE SUITCASE. ILL GIVE IT BACK SAME DAY. IM IN BEECHWOOD",
+      "needFrom": "2026-12-18",
+      "needUntil": "2026-12-27",
+      "embedding": []
+    },
+    {
+      "id": "n219",
+      "personId": "p11",
+      "rawText": "looking to borrow a serving platters. cant justify buying one for this",
+      "needFrom": "2026-09-28",
+      "needUntil": "2026-10-04",
+      "embedding": []
+    },
+    {
+      "id": "n220",
+      "personId": "p27",
+      "rawText": "looking to borrow a iron, any condition really",
+      "needFrom": "2026-10-09",
+      "needUntil": "2026-10-12",
+      "embedding": []
+    },
+    {
+      "id": "n221",
+      "personId": "p31",
+      "rawText": "looking to borrow a stand mixer, cant justify buying one for this, im in lester",
+      "needFrom": "2026-11-15",
+      "needUntil": "2026-11-17",
+      "embedding": []
+    },
+    {
+      "id": "n223",
+      "personId": "p30",
+      "rawText": "need a air mattress, can pick up anytime",
+      "needFrom": "2026-11-07",
+      "needUntil": "2026-11-15",
+      "embedding": []
+    },
+    {
+      "id": "n224",
+      "personId": "p6",
+      "rawText": "can i borrow a bike repair stand, moving out so its kind of urgent",
+      "needFrom": "2026-11-27",
+      "needUntil": "2026-12-03",
+      "embedding": []
+    },
+    {
+      "id": "n225",
+      "personId": "p20",
+      "rawText": "hoping someone has a snow shovel, i have no car so closer the better, im in northdale",
+      "needFrom": "2026-09-01",
+      "needUntil": "2026-09-12",
+      "embedding": []
+    },
+    {
+      "id": "n227",
+      "personId": "p25",
+      "rawText": "looking to borrow a roasting pan. ill give it back same day",
+      "needFrom": "2026-10-15",
+      "needUntil": "2026-11-01",
+      "embedding": []
+    },
+    {
+      "id": "n228",
+      "personId": "p19",
+      "rawText": "anyone have a sleeping bag",
+      "needFrom": "2026-12-18",
+      "needUntil": "2026-12-31",
+      "embedding": []
+    },
+    {
+      "id": "n229",
+      "personId": "p1",
+      "rawText": "can i borrow a waffle maker, my room is tiny so i cant keep it",
+      "needFrom": "2026-10-02",
+      "needUntil": "2026-10-08",
+      "embedding": []
+    },
+    {
+      "id": "n230",
+      "personId": "p48",
+      "rawText": "need a punch bowl + ladle",
+      "needFrom": "2026-11-28",
+      "needUntil": "2026-12-04",
+      "embedding": []
+    },
+    {
+      "id": "n231",
+      "personId": "p40",
+      "rawText": "ISO a moving straps, my room is tiny so i cant keep it",
+      "needFrom": "2026-10-08",
+      "needUntil": "2026-10-19",
+      "embedding": []
+    },
+    {
+      "id": "n232",
+      "personId": "p19",
+      "rawText": "hoping someone has a humidifier, would rather not buy one tbh",
+      "needFrom": "2026-10-08",
+      "needUntil": "2026-10-14",
+      "embedding": []
+    },
+    {
+      "id": "n233",
+      "personId": "p55",
+      "rawText": "trying to find a suitcase, only need it for a couple hours",
+      "needFrom": "2026-12-10",
+      "needUntil": "2026-12-23",
+      "embedding": []
+    },
+    {
+      "id": "n234",
+      "personId": "p37",
+      "rawText": "anyone have a folding table",
+      "needFrom": "2026-10-08",
+      "needUntil": "2026-10-13",
+      "embedding": []
+    },
+    {
+      "id": "n235",
+      "personId": "p57",
+      "rawText": "ISO a sewing machine, my room is tiny so i cant keep it, im in sunnydale.",
+      "needFrom": "2026-10-28",
+      "needUntil": "2026-10-30",
+      "embedding": []
+    },
+    {
+      "id": "n236",
+      "personId": "p12",
+      "rawText": "does anyone own a camping stove",
+      "needFrom": "2026-11-05",
+      "needUntil": "2026-11-17",
+      "embedding": []
+    },
+    {
+      "id": "n237",
+      "personId": "p28",
+      "rawText": "looking to borrow a food processor",
+      "needFrom": "2026-11-28",
+      "needUntil": "2026-12-08",
+      "embedding": []
+    },
+    {
+      "id": "n238",
+      "personId": "p43",
+      "rawText": "trying to find a bluetooth speaker. would rather not buy one tbh",
+      "needFrom": "2026-09-18",
+      "needUntil": "2026-09-29",
+      "embedding": []
+    },
+    {
+      "id": "n239",
+      "personId": "p36",
+      "rawText": "looking to borrow a food processor, ill give it back same day",
+      "needFrom": "2026-09-20",
+      "needUntil": "2026-10-06",
+      "embedding": []
+    },
+    {
+      "id": "n240",
+      "personId": "p28",
+      "rawText": "does anyone own a steam mop",
+      "needFrom": "2026-11-16",
+      "needUntil": "2026-11-28",
+      "embedding": []
+    },
+    {
+      "id": "n241",
+      "personId": "p21",
+      "rawText": "trying to find a space heater.",
+      "needFrom": "2026-09-15",
+      "needUntil": "2026-09-27",
+      "embedding": []
+    },
+    {
+      "id": "n242",
+      "personId": "p15",
+      "rawText": "need a step stool. would rather not buy one tbh. im in sunnydale.",
+      "needFrom": "2026-11-01",
+      "needUntil": "2026-11-19",
+      "embedding": []
+    },
+    {
+      "id": "n243",
+      "personId": "p27",
+      "rawText": "anyone have a space heater, im in king st n",
+      "needFrom": "2026-10-22",
+      "needUntil": "2026-11-03",
+      "embedding": []
+    },
+    {
+      "id": "n244",
+      "personId": "p48",
+      "rawText": "does anyone own a carpet cleaner. for one project then im done",
+      "needFrom": "2026-09-22",
+      "needUntil": "2026-09-26",
+      "embedding": []
+    },
+    {
+      "id": "n246",
+      "personId": "p8",
+      "rawText": "hoping someone has a camera tripod. cant justify buying one for this",
+      "needFrom": "2026-11-01",
+      "needUntil": "2026-11-18",
+      "embedding": []
+    },
+    {
+      "id": "n247",
+      "personId": "p51",
+      "rawText": "HOPING SOMEONE HAS A RING LIGHT. CANT JUSTIFY BUYING ONE FOR THIS",
+      "needFrom": "2026-11-05",
+      "needUntil": "2026-11-14",
+      "embedding": []
+    },
+    {
+      "id": "n248",
+      "personId": "p44",
+      "rawText": "need a projector. only need it for a couple hours. im in king st n",
+      "needFrom": "2026-09-14",
+      "needUntil": "2026-09-20",
+      "embedding": []
+    },
+    {
+      "id": "n249",
+      "personId": "p11",
+      "rawText": "does anyone own a spirit level. for one project then im done",
+      "needFrom": "2026-09-23",
+      "needUntil": "2026-10-02",
+      "embedding": []
+    },
+    {
+      "id": "n250",
+      "personId": "p35",
+      "rawText": "ISO a cooler, my room is tiny so i cant keep it",
+      "needFrom": "2026-10-26",
+      "needUntil": "2026-11-08",
+      "embedding": []
+    },
+    {
+      "id": "n252",
+      "personId": "p33",
+      "rawText": "ISO a bluetooth speaker. cant justify buying one for this",
+      "needFrom": "2026-10-08",
+      "needUntil": "2026-10-22",
+      "embedding": []
+    },
+    {
+      "id": "n253",
+      "personId": "p0",
+      "rawText": "need a vacuum",
+      "needFrom": "2026-12-14",
+      "needUntil": "2026-12-29",
+      "embedding": []
+    },
+    {
+      "id": "n254",
+      "personId": "p47",
+      "rawText": "can i borrow a allen key set. moving out so its kind of urgent",
+      "needFrom": "2026-12-16",
+      "needUntil": "2027-01-01",
+      "embedding": []
+    },
+    {
+      "id": "n255",
+      "personId": "p4",
+      "rawText": "does anyone own a suitcase, ill give it back same day, im in sunnydale.",
+      "needFrom": "2026-11-30",
+      "needUntil": "2026-12-08",
+      "embedding": []
+    },
+    {
+      "id": "n256",
+      "personId": "p23",
+      "rawText": "iso a iron, my room is tiny so i cant keep it",
+      "needFrom": "2026-10-05",
+      "needUntil": "2026-10-20",
+      "embedding": []
+    },
+    {
+      "id": "n257",
+      "personId": "p48",
+      "rawText": "anyone have a impact driver",
+      "needFrom": "2026-09-04",
+      "needUntil": "2026-09-14",
+      "embedding": []
+    },
+    {
+      "id": "n258",
+      "personId": "p22",
+      "rawText": "trying to find a tire levers + patch kit. ill give it back same day",
+      "needFrom": "2026-10-14",
+      "needUntil": "2026-10-17",
+      "embedding": []
+    },
+    {
+      "id": "n259",
+      "personId": "p55",
+      "rawText": "can i borrow a jumper cables, i have no car so closer the better",
+      "needFrom": "2026-11-29",
+      "needUntil": "2026-12-13",
       "embedding": []
     }
   ]

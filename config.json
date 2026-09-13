@@ -1,14 +1,20 @@
 {
   "actor": "student",
   "actorPlural": "students",
-  "cycle": "co-op term",
-  "cyclePlural": "co-op terms",
+  "cycle": "month",
+  "cyclePlural": "months",
   "place": "Waterloo",
-  "cycleBoundaries": ["2026-09-01", "2027-01-01", "2027-05-01", "2027-09-01"],
+  "cycleBoundaries": [
+    "2026-09-01",
+    "2026-10-01",
+    "2026-11-01",
+    "2026-12-01",
+    "2027-01-01"
+  ],
   "locations": ["Northdale", "Lester", "Sunnydale", "Beechwood", "King St N"],
   "ui": {
     "productName": "Chain",
-    "tagline": "Items that never go into storage.",
+    "tagline": "One of these on the street, not one in every room.",
     "itemNoun": "item",
     "itemNounPlural": "items",
     "needNoun": "need",
@@ -18,7 +24,11 @@
     "removeActionLabel": "remove this person"
   },
   "penalties": {
-    "lambdaGapPerDay": 0.01,
-    "muDistance": 0.15
+    "lambdaGapPerDay": 0.03,
+    "muDistance": 0.2
+  },
+  "constraints": {
+    "maxIdleDays": 10,
+    "minMatchScore": 0.3
   }
 }
