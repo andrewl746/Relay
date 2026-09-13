@@ -7,6 +7,7 @@ import { sendVerificationEmail } from "@/lib/onboarding/email";
 import { rememberWant } from "@/lib/providers/backboard";
 import { CODE_LENGTH, CODE_TTL_MINUTES, MAX_ATTEMPTS, generateCode, hashCode } from "@/lib/onboarding/otp";
 import { getProfile } from "@/lib/onboarding/profile";
+import { RESIDENCE_NOT_LISTED, residenceAddress } from "@/lib/onboarding/residences";
 import { getUniversity } from "@/lib/onboarding/universities";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseUser } from "@/lib/supabase/session";
@@ -38,17 +39,29 @@ export async function saveProfileStep(_prev: ActionState, formData: FormData): P
   const fullName = String(formData.get("fullName") ?? "").trim();
   const universityId = String(formData.get("universityId") ?? "").trim();
   const livingSituation = String(formData.get("livingSituation") ?? "").trim();
-  const street = String(formData.get("street") ?? "").trim();
-  const city = String(formData.get("city") ?? "").trim();
-  const province = String(formData.get("province") ?? "").trim();
-  const country = String(formData.get("country") ?? "").trim();
-  const postalCode = String(formData.get("postalCode") ?? "").trim();
+  const residenceId = String(formData.get("residenceId") ?? "").trim();
 
   if (!fullName) return { status: "error", message: "Enter your name." };
   if (!getUniversity(universityId)) return { status: "error", message: "Choose a university from the list." };
   if (livingSituation !== "on_campus" && livingSituation !== "off_campus") {
     return { status: "error", message: "Choose whether you live on or off campus." };
   }
+
+  // A listed residence's address comes from our table, not the form.
+  const typed = livingSituation === "off_campus" || residenceId === RESIDENCE_NOT_LISTED;
+  if (!typed && !residenceId) return { status: "error", message: "Choose your residence." };
+  const address = typed
+    ? {
+        street: String(formData.get("street") ?? "").trim(),
+        city: String(formData.get("city") ?? "").trim(),
+        province: String(formData.get("province") ?? "").trim(),
+        country: String(formData.get("country") ?? "").trim(),
+        postalCode: String(formData.get("postalCode") ?? "").trim(),
+      }
+    : residenceAddress(universityId, residenceId);
+  if (!address) return { status: "error", message: "Choose a residence from the list." };
+  const { street, city, province, country, postalCode } = address;
+
   if (!street) return { status: "error", message: "Enter your street address." };
   if (!city) return { status: "error", message: "Enter your city." };
   if (!province) return { status: "error", message: "Enter your province or state." };

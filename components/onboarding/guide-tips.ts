@@ -9,7 +9,7 @@ export type GuideTip = { mood: Mood; text: string };
  *
  * A guide that says something untrue is worse than none, so every claim here is
  * backed by the step's code. If one of these changes, change the tip with it:
- * - campus address: profile-form.tsx submits the university's campus address as hidden fields
+ * - residence address: profile-form.tsx sends residenceId; saveProfileStep fills the address from lib/onboarding/residences.ts
  * - pickup spot: lib/hub/actions.ts posts with `pickupArea: user.home`
  * - change it later: settings-form.tsx and lib/hub/settings-actions.ts edit living situation and address
  * - 10 minutes, "Resend code": CODE_TTL_MINUTES in lib/onboarding/otp.ts, verify-email-form.tsx
@@ -25,7 +25,7 @@ const TIPS: Record<OnboardingStep, GuideTip[]> = {
     { mood: "hi", text: "Hi, I’m Parcel. Four quick steps and you’re set up. Relay stays open behind me the whole time." },
     {
       mood: "pointing",
-      text: "Living on campus? Pick your university, choose On campus, and Relay fills in the campus address for you.",
+      text: "Living on campus? Pick your university, choose On campus, then your residence, and Relay fills in the address for you.",
     },
     { mood: "thinking", text: "Your address becomes the pickup spot on things you post. You can change it later in Settings." },
   ],

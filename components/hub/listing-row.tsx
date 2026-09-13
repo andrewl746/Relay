@@ -25,7 +25,7 @@ export function ListingRow({ listing }: { listing: BoardListing }) {
         className="group grid grid-cols-[auto_1fr] items-start gap-4 px-4 py-4 transition-colors duration-100 hover:bg-surface-2 sm:grid-cols-[auto_1fr_auto] sm:gap-5 sm:px-5"
       >
         <Thumb
-          word={listing.kind}
+          category={listing.category}
           photoUrl={listing.photoUrl}
           alt={listing.title}
           size="list"

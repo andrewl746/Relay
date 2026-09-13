@@ -166,7 +166,7 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
 
       <SlotRows defaultPlace={defaultPlace} />
 
-      {state.status === "error" && state.message && <p className="gh-flash-error">{state.message}</p>}
+      {state.status === "error" && state.message && <p className="rounded-sm border border-accent/40 bg-accent-tint px-3.5 py-3 text-[14px] text-ink">{state.message}</p>}
 
       <button type="submit" disabled={pending} className={`${btnPrimary} w-full sm:w-auto`}>
         {pending ? "Listing…" : "List it"}

@@ -32,7 +32,9 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
   const viewHref = (value: string) => {
     const search = new URLSearchParams();
     if (value !== "all") search.set("view", value);
-    if (query) search.set("q", query);
+    // "Matches my list" means the whole list, same as "Show my matches" — a
+    // leftover search would silently narrow it, often to nothing.
+    if (query && value !== "matches") search.set("q", query);
     const qs = search.toString();
     return qs ? `/browse?${qs}` : "/browse";
   };
