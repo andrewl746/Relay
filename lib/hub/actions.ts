@@ -7,6 +7,7 @@ import { whoWants, type WantMemory } from "@/lib/providers/backboard";
 import { USER_COOKIE } from "./dev-login";
 import { getCurrentUser } from "./session";
 import { resetPlanCache } from "./matching";
+import { canBeUrgent, parseUrgency } from "./urgency";
 import { listings, users, wants } from "./mock-data";
 import { createClient } from "../supabase/server";
 import { getSupabaseUser } from "../supabase/session";
@@ -161,6 +162,8 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
     status: "available",
     createdAt: new Date().toISOString(),
     photoUrl,
+    // Dropped server-side too if the deadline is more than a week out.
+    urgency: parseUrgency(formData.get("urgency"), expiresAt),
   };
 
   listings.unshift(newListing);
@@ -220,6 +223,9 @@ export async function updateListing(
   listing.priceCents = fields.priceCents;
   listing.condition = fields.condition;
   listing.expiresAt = fields.expiresAt;
+  // The edit form has no scream meter, so keep the original reading unless
+  // the new deadline is too far out for it to count.
+  if (!canBeUrgent(fields.expiresAt)) listing.urgency = null;
   listing.photoUrl = parsePhoto(formData);
 
   resetPlanCache();

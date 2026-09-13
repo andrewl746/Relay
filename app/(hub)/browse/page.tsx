@@ -167,7 +167,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                     listings={board.finalCall}
                   />
                 )}
-                <BoardSection title="Soonest deadline first" listings={board.rest} />
+                <BoardSection title="Most urgent first" listings={board.rest} />
               </>
             )}
           </div>

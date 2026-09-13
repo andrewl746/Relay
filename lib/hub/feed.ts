@@ -1,6 +1,7 @@
 import { hoursLeft, isFinalCall } from "./format";
 import { searchTerms } from "./search";
 import type { Category, Listing, OfferType } from "./types";
+import { urgencyRank } from "./urgency";
 
 export type BoardFilters = {
   categories: Category[];
@@ -117,8 +118,12 @@ export function filterBoard<T extends Listing>(
 
 export function rankByUrgency<T extends Listing>(listings: T[]) {
   const deadline = (l: T) => (l.expiresAt ? Date.parse(l.expiresAt) : Number.POSITIVE_INFINITY);
+  // Loudest scream first, then soonest deadline, then newest.
   const sorted = [...listings].sort(
-    (a, b) => deadline(a) - deadline(b) || Date.parse(b.createdAt) - Date.parse(a.createdAt),
+    (a, b) =>
+      urgencyRank(b) - urgencyRank(a) ||
+      deadline(a) - deadline(b) ||
+      Date.parse(b.createdAt) - Date.parse(a.createdAt),
   );
   return {
     finalCall: sorted.filter((l) => l.expiresAt && isFinalCall(l.expiresAt)),

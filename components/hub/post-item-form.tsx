@@ -7,6 +7,7 @@ import { categoryLabel, formatWhen } from "@/lib/hub/format";
 import type { Category, OfferType } from "@/lib/hub/types";
 import { ChoiceChips, Field, SlotRows } from "./form-fields";
 import { PhotoField } from "./photo-field";
+import { ScreamMeter } from "./scream-meter";
 import { btnPrimary, btnTertiary, fieldClass } from "./ui";
 
 const initialState: CreateListingResult = { status: "error", message: "" };
@@ -15,6 +16,7 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
   const [category, setCategory] = useState<Category>("furniture");
   const [offerType, setOfferType] = useState<OfferType>("sale");
   const [hasDeadline, setHasDeadline] = useState(true);
+  const [expiresLocal, setExpiresLocal] = useState("2026-09-15T12:00");
   const [state, formAction, pending] = useActionState(createListing, initialState);
 
   if (state.status === "ok") {
@@ -149,18 +151,23 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           </span>
         </label>
         {hasDeadline && (
-          <div className="mt-4 sm:max-w-xs">
-            <Field label="Gone by" htmlFor="expiresAt">
-              <input
-                id="expiresAt"
-                name="expiresAt"
-                type="datetime-local"
-                required
-                defaultValue="2026-09-15T12:00"
-                className={`${fieldClass} data`}
-              />
-            </Field>
-          </div>
+          <>
+            <div className="mt-4 sm:max-w-xs">
+              <Field label="Gone by" htmlFor="expiresAt">
+                <input
+                  id="expiresAt"
+                  name="expiresAt"
+                  type="datetime-local"
+                  required
+                  value={expiresLocal}
+                  onChange={(e) => setExpiresLocal(e.target.value)}
+                  className={`${fieldClass} data`}
+                />
+              </Field>
+            </div>
+            {/* Same offset parseListingFields applies on the server. */}
+            <ScreamMeter expiresAt={expiresLocal ? `${expiresLocal}:00-04:00` : null} />
+          </>
         )}
       </fieldset>
 
