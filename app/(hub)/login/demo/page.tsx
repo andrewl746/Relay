@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/lib/hub/session";
 
 export const metadata = { title: "Choose a student" };
 
-export default async function LoginPage({ searchParams }: PageProps<"/login">) {
+export default async function LoginPage({ searchParams }: PageProps<"/login/demo">) {
   const next = (await searchParams).next;
   const [users, university, current] = await Promise.all([getUsers(), getUniversity(), getCurrentUser()]);
 
