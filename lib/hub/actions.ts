@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { whoWants, type WantMemory } from "@/lib/providers/backboard";
 import { USER_COOKIE } from "./dev-login";
 import { getCurrentUser } from "./session";
 import { resetPlanCache } from "./matching";
@@ -126,7 +127,7 @@ function parsePhoto(formData: FormData): string | null {
 
 export type CreateListingResult =
   | { status: "error"; message: string }
-  | { status: "ok"; id: string; title: string; expiresAt: string | null };
+  | { status: "ok"; id: string; title: string; expiresAt: string | null; waiting: WantMemory[] };
 
 export async function createListing(_prev: CreateListingResult, formData: FormData): Promise<CreateListingResult> {
   const fields = parseListingFields(formData);
@@ -166,7 +167,13 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
   revalidatePath("/");
   revalidatePath("/wants");
 
-  return { status: "ok", id: newListing.id, title: newListing.title, expiresAt: newListing.expiresAt };
+  // Who already asked for this: a Backboard memory search over every student's
+  // wants, so "IKEA desk" still finds "desk big enough for a laptop". Title only,
+  // because that is what the distance cut was calibrated on. [] if Backboard is down.
+  const poster = user.name.split(" ")[0];
+  const waiting = (await whoWants(title)).filter((w) => w.name !== poster);
+
+  return { status: "ok", id: newListing.id, title: newListing.title, expiresAt: newListing.expiresAt, waiting };
 }
 
 // Soft delete: mark it removed rather than splicing it out of the array.

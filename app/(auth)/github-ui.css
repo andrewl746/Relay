@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+/* Onboarding's component classes, drawn from the site palette in app/globals.css.
+   This used to be its own GitHub-style system — beige, a red accent, 14px type,
+   light-only — and read as a different product from the pages either side of it.
+   The gh-* names stay so the onboarding components didn't need rewriting; every
+   value now points at a site token, so it follows dark mode like everything else.
+   Don't add colours here: map to a token in globals.css. */
+:root {
+  --gh-canvas: var(--surface);
+  --gh-canvas-subtle: var(--bg);
+  --gh-canvas-inset: var(--surface-2);
+  --gh-border: var(--border-strong);
+  --gh-border-muted: var(--border);
+  --gh-fg: var(--ink);
+  --gh-fg-muted: var(--ink-2);
+  --gh-fg-subtle: var(--ink-3);
+  --gh-accent: var(--accent);
+  --gh-accent-subtle: var(--accent-tint);
+  --gh-success: var(--done);
+  --gh-success-subtle: var(--surface-2);
+  /* One accent, so errors use it too — same as the listing page's blocked states. */
+  --gh-danger: var(--accent);
+  --gh-danger-subtle: var(--accent-tint);
+}
+
+@theme inline {
+  --color-gh-canvas: var(--gh-canvas);
+  --color-gh-canvas-subtle: var(--gh-canvas-subtle);
+  --color-gh-canvas-inset: var(--gh-canvas-inset);
+  --color-gh-border: var(--gh-border);
+  --color-gh-border-muted: var(--gh-border-muted);
+  --color-gh-fg: var(--gh-fg);
+  --color-gh-fg-muted: var(--gh-fg-muted);
+  --color-gh-fg-subtle: var(--gh-fg-subtle);
+  --color-gh-accent: var(--gh-accent);
+  --color-gh-accent-subtle: var(--gh-accent-subtle);
+  --color-gh-success: var(--gh-success);
+  --color-gh-success-subtle: var(--gh-success-subtle);
+  --color-gh-danger: var(--gh-danger);
+  --color-gh-danger-subtle: var(--gh-danger-subtle);
+}
+
+/* No background, same rule as .hub: the kraft grain behind the page is the ground. */
+.gh {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.gh :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@layer components {
+  /* = .board */
+  .gh-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md, 8px);
+    box-shadow: var(--lift);
+  }
+
+  /* = fieldClass in components/hub/ui.tsx */
+  .gh-input {
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    padding: 10px 12px;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .gh-input:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+  }
+
+  .gh-input::placeholder {
+    color: var(--ink-3);
+  }
+
+  .gh-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .gh-hint {
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-top: 4px;
+  }
+
+  /* = btnSecondary */
+  .gh-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--ink);
+    transition: background-color 75ms ease;
+  }
+
+  .gh-btn:hover {
+    background: var(--surface-2);
+  }
+
+  /* = btnPrimary */
+  .gh-btn-primary {
+    border-color: transparent;
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .gh-btn-primary:hover {
+    background: var(--accent);
+    filter: brightness(1.08);
+  }
+
+  .gh-btn-primary:disabled,
+  .gh-btn-secondary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: none;
+  }
+
+  .gh-link {
+    color: var(--accent);
+    font-weight: 600;
+    transition: color 100ms ease;
+  }
+
+  .gh-link:hover {
+    color: var(--ink);
+  }
+
+  .gh-flash-error,
+  .gh-flash-success {
+    display: flex;
+    gap: 8px;
+    border-left: 2px solid var(--accent);
+    background: var(--surface-2);
+    color: var(--ink);
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .gh-flash-success {
+    border-left-color: var(--done);
+  }
+}

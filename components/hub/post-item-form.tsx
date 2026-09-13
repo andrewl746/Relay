@@ -25,6 +25,21 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           “{state.title}” is on the board
           {state.expiresAt ? `, gone by ${formatWhen(state.expiresAt)} unless someone claims it.` : "."}
         </p>
+        {state.waiting.length > 0 && (
+          <div className="mt-4 border-t border-rule pt-4">
+            <p className="font-semibold">
+              {state.waiting.length === 1 ? "Someone is" : `${state.waiting.length} students are`} already looking for this
+            </p>
+            <ul className="mt-1 space-y-1">
+              {state.waiting.map((w) => (
+                <li key={w.name + w.text}>
+                  <span className="font-semibold">{w.name}</span> wants “{w.text}”
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-[13px] text-ink-2">Matched by meaning against every student’s list in Backboard memory.</p>
+          </div>
+        )}
         <div className="mt-5 flex flex-wrap items-center gap-5">
           <Link href="/" className={btnPrimary}>
             See it on the board

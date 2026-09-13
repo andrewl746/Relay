@@ -32,6 +32,10 @@ Read in this order: **this file → [PIVOTS.md](PIVOTS.md) → [docs/PROJECT.md]
 | Layout | One `SiteFooter` in the root layout, always below the fold. More space above page h1s. Navbar more translucent |
 | Landing (`/welcome`) | Hub header, `.board` sections, token classes; Kandinsky shapes replaced by an SVG relay-route animation (no JS) |
 | Small | Logo visible in dark mode everywhere; buttons get `cursor: pointer`; empty-state links all `btnTertiary`; bare empty states on cards; navbar avatar 28→36px; `UWaterloo` / `UofT`; home greeting varies per person but is stable across visits |
+| **Backboard (sponsor)** | **Live at runtime, on the free credit.** Every want is a Backboard memory; posting a listing searches them by meaning and the confirmation names who's already looking for it. §7 |
+| Onboarding | Restyled onto the site palette and components (it was a separate beige, red-accent, light-only theme). Follows dark mode |
+| Headers | Landing, sign-in, legal and onboarding share `PlainHeader`, the same height as the hub header (59.34px). They had drifted apart |
+| Landing links | "Sign in" → `/login`; "Get started" and "Find what you need" → `/register`. Same Google flow, different copy |
 
 ---
 
@@ -111,7 +115,7 @@ it are now real. Parts are still a mockup. This table is the truth as of now.
 | Search | **Real, and not Ctrl-F** — see §4a |
 | **Voice input** | **Real.** Speak into the board search or your wants list and the form submits. `components/hub/voice-input.tsx`. Pivot 4 |
 | Claiming | **Real.** `lib/hub/claim-actions.ts` writes a claim to `data/runtime.json`; `/handoffs` reads it back. Verified end to end |
-| Posting an item | **Still a mockup.** Form → React state → fake confirmation. `lib/relay/actions.ts#postItem` exists and is tested; the form does not call it yet |
+| Posting an item | **Real, in memory.** `lib/hub/actions.ts#createListing` adds to the `listings` array (lost on dev restart), with photo upload and edit/remove. Then it asks **Backboard memory** who already wants the item and shows them on the confirmation. It still doesn't go through `lib/relay/actions.ts#postItem`, so the engine never sees hub posts |
 | Wants list | **Still client-side.** Lost on refresh. `addNeed` exists, unwired |
 | Notifications | Hardcoded rows in `lib/hub/mock-data.ts` |
 | Room bundles | Form only |
@@ -202,10 +206,46 @@ Read these before you debug something that looks mysterious.
     before hydration, so the server's attributes can never match. It only silences that one
     element's attributes. Removing it brings back the hydration error on every page for
     anyone with a stored theme.
+11. **Backboard's `searchMemories` score is a distance, not a similarity.** Lower is
+    closer: the right object scored 0.44–0.52, unrelated wants 0.7+. It also ignores
+    `limit`. A "minimum score" filter matched everything. `MAX_WANT_DISTANCE = 0.58` was
+    calibrated by `npm run seed:backboard -- --probe-only` (6 probes, all correct).
+    Re-run it if you change what gets stored.
 
 ---
 
 ## 7. Snowflake — tested, blocked, do not re-litigate
+
+> **Update (post-Pivot 4):** a card was added to the Snowflake account and Cortex is reported
+> working. Not yet verified from the app: `SNOWFLAKE_ACCOUNT` and `SNOWFLAKE_PAT` are still
+> empty in `.env.local` and `MATCH_PROVIDER=stub`. Once the user sets those two, run
+> `npm run check`. Before switching the provider on, note that `lib/hub/semantic.ts`
+> re-embeds every board item on every search. That's free on the stub, but a paid Cortex
+> call per search.
+>
+> **Sponsor criteria (from the user):** Backboard's prize only requires *using* the
+> service. Snowflake's is the same, but AI capabilities are preferred there.
+>
+> **Backboard — integrated, verified end to end.** The Free plan's $5 credit covers
+> Memory & RAG only. LLM chat fails with "free credit is reserved for Memory & RAG", so
+> `extractNeedMetadata` (a tool call) still returns defaults. BYOK on the Free plan is the
+> other route to chat. What runs now, all in `lib/providers/backboard.ts`:
+>
+> - A `relay-wants` assistant holds one memory per want, stored as
+>   `"<want text> — wanted by <first name>"`. Search returns only content and score, no
+>   metadata, so the name is in the content.
+> - `rememberWant` is called from onboarding's `finishWants`. The demo wants go in with
+>   **`npm run seed:backboard`**, which resets and reseeds 10 memories, then prints a
+>   calibration table.
+> - `whoWants(title)` runs in `createListing`, and `PostItemForm` shows "N students are
+>   already looking for this". Verified: posting "5-shelf bookcase" named Jordan
+>   (bookshelf) and Owen (shelving) in 1.4s.
+> - Both functions never throw. A post still saves if Backboard is down.
+> - Cost is about $0.01 per memory operation. ~$4.8 of the free credit was left after
+>   seeding. Don't call `whoWants` on page renders.
+>
+> **Pitch line:** "Backboard remembers what every student said they need. When you post
+> something, it tells you who's already waiting for it."
 
 The event has a **separate 30-point Snowflake track**.
 
@@ -305,6 +345,15 @@ places.**
 - Nav holds where you *go* (Browse, Post, Handoffs). The profile menu holds what's *yours*
   (My list, My posts, Settings). Nothing has two homes. The header is **sticky** and paints
   its own translucent ground (`bg-bg/60`, 14px blur).
+- **Two headers, one height.** `SiteHeader` is the hub header, with account controls.
+  `PlainHeader` (`components/hub/plain-header.tsx`) is for everything outside the hub:
+  landing, `/login`, `/register`, legal, onboarding. Its row is pinned to SiteHeader's
+  measured height (17px nav text × 1.55 + `py-4` = 58.34px). Change the nav links and you
+  change both. Don't hand-roll a header on a new page.
+- **Onboarding uses the site design.** `app/(auth)/github-ui.css` keeps its `gh-*` class
+  names, but every value is now a site token: `.gh-card` = `.board`, `.gh-input` =
+  `fieldClass`, `.gh-btn-primary` = `btnPrimary`. Errors use the accent. It used to be a
+  separate beige, red-accent, light-only theme. Add colours to `globals.css`, never there.
 - The logo is `components/hub/logo.tsx`: the PNG as a **CSS mask**, so one asset takes a
   real `background-color` — ink normally, accent on hover, correct in dark mode. Tinting
   via `currentColor` does not fade, because there is no specified-value change to animate.
@@ -343,7 +392,8 @@ removed as needed.**
   Secret are already there; the toggle is simply off). Deliberately not done for you —
   changing someone's account settings isn't ours to do.
 - Generate a **Snowflake PAT**, set `SNOWFLAKE_ACCOUNT` / `SNOWFLAKE_PAT`. Never ask a
-  model to generate or read that token.
+  model to generate or read that token. **Still empty as of the Cortex card being added.**
+- Backboard LLM chat needs *paid* credits; the free $5 only covers Memory & RAG.
 - Run migrations **0003_wants / 0004_delete_account / 0005_avatar** in the SQL editor.
   **0005 is confirmed missing and breaks every settings save** (§6 #9). 0003/0004 unverified.
 - `RESEND_API_KEY` + `RESEND_FROM_EMAIL` (domain is verified, key isn't in `.env.local`).
@@ -383,6 +433,9 @@ npm run chains       # print computed chains to the terminal
 npm run check        # provider smoke test — run after ANY stub weight change
 npm run check:store  # end-to-end write-path test
 npm run check:search # the bookshelf test — "bookshelf" must find a bookcase
+npm run seed:backboard            # reset + load demo wants into Backboard memory (~$0.10)
+npm run seed:backboard -- --probe-only  # recheck the match cutoff without reseeding
+npm run check:backboard           # the LLM extraction path — fails on free credit, by design
 npm run reset        # wipe runtime.json before a demo run
 npm run typecheck
 ```
