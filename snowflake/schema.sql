@@ -1,17 +1,26 @@
 -- Relay corpus in Snowflake. Run on a fresh account:  Snowsight -> SQL file -> Run all
 --
--- TRIAL LIMITATION, verified 2026-09-13 on a standard 30-day trial:
---   AI_EMBED    -> "AI function _AI_EMBED_WITH_PROMPT_1024 is not available for trial accounts"
---   AI_COMPLETE -> "AI function _COMPLETE_WITH_PROMPT_HISTORY_LLM is not available for trial accounts"
---   VECTOR_COSINE_SIMILARITY -> works
+-- CORTEX AI IS GATED ON TRIAL ACCOUNTS. Verified twice, 2026-09-13:
+--   30-day trial  (yclkqnw-kf57737) and
+--   120-day STUDENT trial (nakkqzo-wk53488) -- the one the handbook promises.
 --
--- So the LLM functions are gated but the vector engine is not. The PivotHacks
--- handbook promises a *120-day student trial*, which is a different SKU -- get
--- that one from an organizer before writing off the track.
+--   AI_EMBED                      -> "not available for trial accounts"
+--   AI_COMPLETE                   -> "not available for trial accounts"
+--   SNOWFLAKE.CORTEX.EMBED_TEXT_768 -> "not available for trial accounts"
+--   SNOWFLAKE.CORTEX.COMPLETE     -> "not available for trial accounts"
+--   VECTOR_COSINE_SIMILARITY      -> WORKS
+--   ALTER ACCOUNT SET CORTEX_ENABLED_CROSS_REGION='ANY_REGION' -> ran clean,
+--     changed nothing. It is a SKU gate, not a region problem.
 --
--- Fallback if Cortex stays gated: embed locally, store the vectors here, and
--- run retrieval as SQL. The corpus and the similarity search still live in
--- Snowflake; only the embedding function moves.
+-- So the LLM functions are unavailable but the vector engine is not. That still
+-- leaves a real and defensible use of Snowflake:
+--
+--   corpus lives here  ->  embeddings stored as VECTOR columns
+--                      ->  retrieval runs HERE as SQL vector search
+--   only the embedding FUNCTION moves off-platform (lib/providers/*)
+--
+-- Ask an organizer before writing the track off: if Cortex is gated for
+-- everyone, every Snowflake-track team is blocked and they need to know.
 
 CREATE DATABASE IF NOT EXISTS RELAY;
 CREATE SCHEMA IF NOT EXISTS RELAY.CORE;
