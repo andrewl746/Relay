@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { addWant, removeWant } from "@/lib/hub/actions";
 import { CloseIcon } from "./icons";
 import { VoiceInput } from "./voice-input";
 import { btnSecondary, fieldClass } from "./ui";
@@ -17,24 +18,44 @@ export function WantsList({ initial, prefill }: { initial: WantRow[]; prefill: s
   const [rows, setRows] = useState(initial);
   const [text, setText] = useState(prefill);
   const [budget, setBudget] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [, startTransition] = useTransition();
+
+  // Saving revalidates the page, which hands down fresh rows with real match
+  // counts. Take them, but keep "found it" ticks — those only live here.
+  const [prevInitial, setPrevInitial] = useState(initial);
+  if (initial !== prevInitial) {
+    setPrevInitial(initial);
+    const found = new Set(rows.filter((r) => r.fulfilled).map((r) => r.id));
+    setRows(initial.map((r) => (found.has(r.id) ? { ...r, fulfilled: true } : r)));
+  }
 
   const ordered = [...rows.filter((r) => !r.fulfilled), ...rows.filter((r) => r.fulfilled)];
 
   const add = () => {
     const value = text.trim();
     if (!value) return;
+    const pendingId = `pending-${Date.now()}`;
     setRows((current) => [
       ...current,
-      {
-        id: `new-${current.length}-${value}`,
-        text: value,
-        budget: budget ? `under $${budget}` : null,
-        matchCount: 0,
-        fulfilled: false,
-      },
+      { id: pendingId, text: value, budget: budget ? `under $${budget}` : null, matchCount: 0, fulfilled: false },
     ]);
     setText("");
     setBudget("");
+    setError(null);
+    startTransition(async () => {
+      const result = await addWant(value, budget);
+      if (result.status === "error") {
+        setRows((current) => current.filter((r) => r.id !== pendingId));
+        setText(value);
+        setError(result.message);
+      }
+    });
+  };
+
+  const remove = (id: string) => {
+    setRows((current) => current.filter((r) => r.id !== id));
+    if (!id.startsWith("pending-")) startTransition(() => removeWant(id));
   };
 
   return (
@@ -64,7 +85,7 @@ export function WantsList({ initial, prefill }: { initial: WantRow[]; prefill: s
             </span>
             <button
               type="button"
-              onClick={() => setRows((current) => current.filter((r) => r.id !== row.id))}
+              onClick={() => remove(row.id)}
               aria-label={`Remove “${row.text}”`}
               className="grid size-9 shrink-0 place-items-center rounded-1 text-ink-2 hover:bg-paper-raised hover:text-ink"
             >
@@ -110,6 +131,11 @@ export function WantsList({ initial, prefill }: { initial: WantRow[]; prefill: s
             Add to list
           </button>
         </div>
+        {error && (
+          <p role="alert" className="mt-2 text-[13px] font-semibold text-accent">
+            {error}
+          </p>
+        )}
         <p className="mt-2 text-[13px] text-ink-2">
           Say it or write it, however you’d actually say it. “Somewhere to sit” still finds chairs.
         </p>

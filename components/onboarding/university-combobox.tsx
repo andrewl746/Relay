@@ -1,14 +1,16 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
+import { fieldClass } from "@/components/hub/ui";
 import { getUniversity, searchUniversities, type University } from "@/lib/onboarding/universities";
+import { hintClass, labelClass } from "./shell";
 
 export function UniversityCombobox({
   defaultUniversityId,
   onSelect,
 }: {
   defaultUniversityId?: string | null
-  /** Lets the parent react to the choice — the profile form needs the campus address. */
+  /** Lets the parent react to the choice — the profile form needs its residences. */
   onSelect?: (university: University | null) => void
 }) {
   const listId = useId();
@@ -35,7 +37,7 @@ export function UniversityCombobox({
 
   return (
     <div className="relative">
-      <label htmlFor="university" className="gh-label">
+      <label htmlFor="university" className={labelClass}>
         University
       </label>
       <input
@@ -67,11 +69,13 @@ export function UniversityCombobox({
             e.preventDefault();
             choose(matches[activeIndex]);
           } else if (e.key === "Escape") {
+            // Handled: closing the list shouldn't also fold Parcel's corner around it.
+            e.preventDefault();
             setOpen(false);
           }
         }}
         placeholder="Start typing your school's name"
-        className="gh-input"
+        className={fieldClass}
       />
       <input type="hidden" name="universityId" value={selected?.id ?? ""} />
 
@@ -79,7 +83,7 @@ export function UniversityCombobox({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-10 mt-1 w-full overflow-hidden rounded-md border border-gh-border bg-gh-canvas shadow-lg"
+          className="absolute z-10 mt-1 w-full overflow-hidden rounded-sm border border-border-strong bg-surface shadow-[var(--lift-2)]"
         >
           {matches.map((u, i) => (
             <li key={u.id} role="option" aria-selected={i === activeIndex}>
@@ -87,12 +91,12 @@ export function UniversityCombobox({
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => choose(u)}
-                className={`block w-full px-3 py-2 text-left text-[14px] ${
-                  i === activeIndex ? "bg-gh-canvas-inset" : ""
+                className={`block w-full px-3 py-2.5 text-left text-[15px] text-ink ${
+                  i === activeIndex ? "bg-surface-2" : ""
                 }`}
               >
                 {u.name}
-                <span className="ml-1 text-gh-fg-subtle">· {u.shortName}</span>
+                <span className="ml-1 text-ink-3">· {u.shortName}</span>
               </button>
             </li>
           ))}
@@ -100,7 +104,7 @@ export function UniversityCombobox({
       )}
 
       {!selected && query && !open && (
-        <p className="gh-hint text-gh-danger">Choose a university from the list.</p>
+        <p className={`${hintClass} font-semibold text-accent`}>Choose a university from the list.</p>
       )}
     </div>
   );

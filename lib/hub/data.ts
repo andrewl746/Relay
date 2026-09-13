@@ -1,7 +1,6 @@
-import { filterBoard, rankByUrgency, type BoardMode, type BoardView } from "./feed";
+import { filterBoard, rankByUrgency, type BoardFilters, type BoardView } from "./feed";
 import { hybridSearch, hybridSearchMany, type SearchDoc, type SearchHit } from "./semantic";
 import { isGoneByTonight } from "./format";
-import { effectiveExpiry } from "./urgency";
 import { handoffs, listings, notifications, slots, university, users, wants } from "./mock-data";
 import { evaluate, plansFor, type Plan } from "./matching";
 import { createClient } from "../supabase/server";
@@ -47,13 +46,13 @@ export type BoardListing = Listing & { itemCount: number; isMatch: boolean; sell
 
 export async function getBoard({
   view,
-  mode,
   query,
+  filters,
   user,
 }: {
   view: BoardView;
-  mode?: BoardMode;
   query?: string;
+  filters?: BoardFilters;
   user: User;
 }) {
   // Only things this person could actually collect count as a match on the
@@ -78,20 +77,17 @@ export async function getBoard({
   // Search scores against the whole board, not just the current view, so the
   // embedding gates see a real distribution even when a filter leaves five
   // listings. See ./semantic.ts for how the tiers are decided.
-  const inView = filterBoard(open, view, mode ?? "any", { matchedIds });
+  const inView = filterBoard(open, view, undefined, { matchedIds, searchableText, filters });
   let shown = inView;
-  let semantic = false;
-  let searched = false;
-
+  const searched = Boolean(query?.trim());
   if (query?.trim()) {
-    searched = true;
     const hits = await hybridSearch(query, open.map(searchDoc));
-    semantic = hits.some((h) => h.via === "embedding");
 
-    // Order by how well each listing answers the question — never by deadline,
-    // which would bury the best answer under whatever happens to expire
-    // soonest. The tier decides first: a title match is the words the student
-    // actually typed, so it outranks anything the vectors merely found similar.
+    // Order by how well each listing answers the question. Ranking search
+    // results by deadline buries the best answer under whatever expires
+    // soonest, which is right for browsing and wrong for answering. The tier
+    // decides first: a title match is the words the student actually typed, so
+    // it outranks anything the vectors merely found similar.
     const TIER = { title: 2, text: 1, embedding: 0 } as const;
     const rank = new Map(hits.map((h) => [h.id, h]));
     shown = inView
@@ -103,16 +99,11 @@ export async function getBoard({
       });
   }
 
-  const deadlines = open.flatMap((l) => {
-    const at = effectiveExpiry(l);
-    return at ? [at] : [];
-  });
-
+  const deadlines = open.flatMap((l) => (l.expiresAt ? [l.expiresAt] : []));
   return {
     // Searching answers a question; browsing answers "what is about to be
-    // thrown out". Only the second one wants a deadline ordering.
+    // thrown out". Only the second one wants the scream-and-deadline ordering.
     ...(searched ? { finalCall: [] as BoardListing[], rest: shown } : rankByUrgency(shown)),
-    semantic,
     total: open.length,
     goneTonight: deadlines.filter(isGoneByTonight).length,
     lastDeadline: deadlines.sort().at(-1) ?? null,
@@ -165,7 +156,6 @@ export async function getWants(userId: string): Promise<Want[]> {
     userId: row.user_id,
     text: row.text,
     maxPriceCents: row.max_price_cents,
-    urgency: "medium" as const,
     // The wants table has no needed-by date. Empty means no deadline to
     // matching.ts — created_at would read as a deadline already missed and
     // mark every match "after you need it".
@@ -234,7 +224,7 @@ export async function getMatches(user: User): Promise<MatchDetail[]> {
         wantIds: covered.map((w) => w.id),
         score: Math.max(...hits.map((h) => HIT_SCORE[h.via])),
         reason: matchReason(covered, hits),
-      }),
+      }, covered),
     );
     plans = [...authored, ...searched].sort((a, b) => b.rank - a.rank);
   }
@@ -275,11 +265,6 @@ function runtimeHandoffs(): Handoff[] {
     if (!listing) return [];
     return [{
       id: c.id,
-      buyerName: "",
-      buyerContact: "",
-      payment: null,
-      urgency: "medium" as const,
-      dueBack: null,
       listingId: c.listingId,
       slotId: c.slotId,
       buyerId: c.buyerId,

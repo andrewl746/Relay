@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import type { ProfileRow } from "../onboarding/profile";
+import { tradeBlocker, type ProfileRow } from "../onboarding/profile";
 import { getMyProfile, getSupabaseUser } from "../supabase/session";
 import { getUser, getUsers } from "./data";
 import { USER_COOKIE } from "./dev-login";
@@ -25,6 +25,16 @@ function profileToUser(id: string, email: string | undefined, profile: ProfileRo
           ? "Living off campus"
           : "",
   };
+}
+
+/**
+ * The setup step a signed-in account must finish before posting or claiming,
+ * or null. Setup no longer blocks the whole site, so the pages and the actions
+ * behind them both check this. Demo accounts are seeded complete: always null.
+ */
+export async function getTradeBlocker(): Promise<1 | 2 | null> {
+  if (!(await getSupabaseUser())) return null;
+  return tradeBlocker(await getMyProfile());
 }
 
 export async function getCurrentUser(): Promise<User> {

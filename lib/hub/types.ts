@@ -31,6 +31,7 @@ export type Urgency = "low" | "medium" | "high";
 export type MoveStatus = "leaving" | "arriving" | "staying";
 export type PlaceKind = "seller" | "campus";
 export type ListingStatus = "available" | "claimed" | "removed";
+export type UrgencyTier = "not-urgent" | "urgent" | "very-urgent";
 
 export type University = {
   id: string;
@@ -65,10 +66,10 @@ export type Listing = {
   condition: Condition;
   pickupArea: string;
   /** How the seller wants to be reached once someone claims it. */
-  contact: string;
-  urgency: Urgency;
+  /** How the seller wants to be reached once someone claims it. */
+  contact?: string;
   /** How long the borrower keeps it, for the two modes that come back. */
-  returnDays: number | null;
+  returnDays?: number | null;
   expiresAt: string | null;
   isBundle: boolean;
   parentId: string | null;
@@ -76,6 +77,8 @@ export type Listing = {
   createdAt: string;
   /** Seller-uploaded photo (a resized JPEG data URL). Absent means show the placeholder. */
   photoUrl?: string | null;
+  /** From the SCREAM! meter on the post form. Only set when the deadline is within a week. */
+  urgency?: UrgencyTier | null;
 };
 
 export type TimeSlot = {
@@ -93,7 +96,7 @@ export type Want = {
   text: string;
   maxPriceCents: number | null;
   neededBy: string;
-  urgency: Urgency;
+  urgency?: Urgency;
   fulfilled: boolean;
 };
 
@@ -116,12 +119,12 @@ export type Handoff = {
   buyerId: string;
   sellerId: string;
   /** What the buyer entered at checkout, so the seller knows who to expect. */
-  buyerName: string;
-  buyerContact: string;
-  payment: PaymentMethod;
-  urgency: Urgency;
-  /** Set for borrow and loan: when the owner gets it back. */
-  dueBack: string | null;
+  buyerName?: string;
+  buyerContact?: string;
+  payment?: PaymentMethod;
+  urgency?: Urgency;
+  /** Set for lend and rent: when the owner gets it back. */
+  dueBack?: string | null;
   createdAt: string;
 };
 

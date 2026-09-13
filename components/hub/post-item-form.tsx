@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { createListing, type CreateListingResult } from "@/lib/hub/actions";
 import { categoryLabel, formatWhen } from "@/lib/hub/format";
-import { RETURNS, type Category, type OfferType, type Urgency } from "@/lib/hub/types";
-import { LIFESPAN_DAYS } from "@/lib/hub/urgency";
+import type { Category, OfferType } from "@/lib/hub/types";
 import { ChoiceChips, Field, SlotRows } from "./form-fields";
 import { PhotoField } from "./photo-field";
+import { ScreamMeter } from "./scream-meter";
 import { btnPrimary, btnTertiary, fieldClass } from "./ui";
 
 const initialState: CreateListingResult = { status: "error", message: "" };
@@ -15,8 +15,8 @@ const initialState: CreateListingResult = { status: "error", message: "" };
 export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
   const [category, setCategory] = useState<Category>("furniture");
   const [offerType, setOfferType] = useState<OfferType>("sale");
-  const [urgency, setUrgency] = useState<Urgency>("low");
   const [hasDeadline, setHasDeadline] = useState(true);
+  const [expiresLocal, setExpiresLocal] = useState("2026-09-15T12:00");
   const [state, formAction, pending] = useActionState(createListing, initialState);
 
   if (state.status === "ok") {
@@ -27,6 +27,21 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           “{state.title}” is on the board
           {state.expiresAt ? `, gone by ${formatWhen(state.expiresAt)} unless someone claims it.` : "."}
         </p>
+        {state.waiting.length > 0 && (
+          <div className="mt-4 border-t border-rule pt-4">
+            <p className="font-semibold">
+              {state.waiting.length === 1 ? "Someone is" : `${state.waiting.length} students are`} already looking for this
+            </p>
+            <ul className="mt-1 space-y-1">
+              {state.waiting.map((w) => (
+                <li key={w.name + w.text}>
+                  <span className="font-semibold">{w.name}</span> wants “{w.text}”
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-[13px] text-ink-2">Matched by meaning against every student’s list in Backboard memory.</p>
+          </div>
+        )}
         <div className="mt-5 flex flex-wrap items-center gap-5">
           <Link href="/" className={btnPrimary}>
             See it on the board
@@ -90,21 +105,6 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
         />
       </div>
 
-      {RETURNS[offerType] && (
-        <div className="sm:max-w-xs">
-          <Field label="How long can they keep it" hint="We put the return date on both handoff cards." htmlFor="returnDays">
-            <select id="returnDays" name="returnDays" defaultValue="7" className={fieldClass}>
-              <option value="1">1 day</option>
-              <option value="3">3 days</option>
-              <option value="7">1 week</option>
-              <option value="14">2 weeks</option>
-              <option value="30">1 month</option>
-              <option value="105">The whole term</option>
-            </select>
-          </Field>
-        </div>
-      )}
-
       <div className="grid gap-6 sm:grid-cols-2">
         {(offerType === "sale" || offerType === "rent") && (
           <Field label={offerType === "rent" ? "Price per term" : "Price"} htmlFor="price">
@@ -134,34 +134,6 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
         </Field>
       </div>
 
-      <div className="border-t border-rule pt-6">
-        <ChoiceChips
-          legend="How badly do you need it gone?"
-          name="urgency"
-          value={urgency}
-          onChange={setUrgency}
-          options={[
-            { value: "low", label: "No rush" },
-            { value: "medium", label: "Soon" },
-            { value: "high", label: "Urgent" },
-          ]}
-        />
-        <p className="mt-2 text-[13px] text-ink-2">
-          {urgency === "high"
-            ? "Urgent means this comes off the board in 48 hours — we stop offering pickup times after that, and if two people want it, it goes to whoever has no other option."
-            : `We'll keep this live for ${LIFESPAN_DAYS[urgency]} days.`}
-        </p>
-      </div>
-
-      <div className="grid gap-6 sm:grid-cols-2">
-        <Field label="Where do they pick it up" hint="A building or an intersection is enough." htmlFor="pickupArea">
-          <input id="pickupArea" name="pickupArea" placeholder="318 Lester St" className={fieldClass} />
-        </Field>
-        <Field label="How should they reach you" htmlFor="contact">
-          <input id="contact" name="contact" placeholder="you@uwaterloo.ca" className={fieldClass} />
-        </Field>
-      </div>
-
       <fieldset className="border-y border-rule py-5">
         <legend className="sr-only">Deadline</legend>
         <label className="flex cursor-pointer items-start gap-3">
@@ -179,24 +151,29 @@ export function PostItemForm({ defaultPlace }: { defaultPlace: string }) {
           </span>
         </label>
         {hasDeadline && (
-          <div className="mt-4 sm:max-w-xs">
-            <Field label="Gone by" htmlFor="expiresAt">
-              <input
-                id="expiresAt"
-                name="expiresAt"
-                type="datetime-local"
-                required
-                defaultValue="2026-09-15T12:00"
-                className={`${fieldClass} data`}
-              />
-            </Field>
-          </div>
+          <>
+            <div className="mt-4 sm:max-w-xs">
+              <Field label="Gone by" htmlFor="expiresAt">
+                <input
+                  id="expiresAt"
+                  name="expiresAt"
+                  type="datetime-local"
+                  required
+                  value={expiresLocal}
+                  onChange={(e) => setExpiresLocal(e.target.value)}
+                  className={`${fieldClass} data`}
+                />
+              </Field>
+            </div>
+            {/* Same offset parseListingFields applies on the server. */}
+            <ScreamMeter expiresAt={expiresLocal ? `${expiresLocal}:00-04:00` : null} />
+          </>
         )}
       </fieldset>
 
       <SlotRows defaultPlace={defaultPlace} />
 
-      {state.status === "error" && state.message && <p className="gh-flash-error">{state.message}</p>}
+      {state.status === "error" && state.message && <p className="rounded-sm border border-accent/40 bg-accent-tint px-3.5 py-3 text-[14px] text-ink">{state.message}</p>}
 
       <button type="submit" disabled={pending} className={`${btnPrimary} w-full sm:w-auto`}>
         {pending ? "Listing…" : "List it"}

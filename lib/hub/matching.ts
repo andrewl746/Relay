@@ -2,7 +2,7 @@ import { NOW } from "./clock";
 import { formatDate, formatWhen } from "./format";
 import { formatWalk, walkKm } from "./geo";
 import { listings, matches, slots, users, wants } from "./mock-data";
-import { effectiveExpiry, hasExpired, URGENCY_RANK, wantUrgency } from "./urgency";
+import { URGENCY_RANK, wantUrgency } from "./urgency";
 import type { Listing, Match, TimeSlot, User, Want } from "./types";
 
 /**
@@ -140,10 +140,11 @@ export function pickupOptions(buyer: User, listing: Listing) {
   return { verdicts, usable, first: usable[0] ?? null };
 }
 
-export function evaluate(buyer: User, match: Match): Plan {
+/** `wantPool` defaults to the seed; signed-in accounts' wants live in Supabase, so callers pass them in. */
+export function evaluate(buyer: User, match: Match, wantPool: Want[] = wants): Plan {
   const listing = listings.find((l) => l.id === match.listingId)!;
   const seller = users.find((u) => u.id === listing.sellerId);
-  const matched = wants.filter((w) => match.wantIds.includes(w.id));
+  const matched = wantPool.filter((w) => match.wantIds.includes(w.id));
   const allSlots = slotsFor(listing);
 
   const base = {
@@ -169,8 +170,8 @@ export function evaluate(buyer: User, match: Match): Plan {
 
   // 1. Has the seller's window already shut? An urgent seller shuts it sooner
   //    than the date on the listing, and that shorter life is binding here.
-  if (hasExpired(listing)) {
-    return blocked({ kind: "expired", text: `Gone since ${formatWhen(effectiveExpiry(listing)!)}.` });
+  if (listing.expiresAt && Date.parse(listing.expiresAt) <= NOW.getTime()) {
+    return blocked({ kind: "expired", text: `Gone since ${formatWhen(listing.expiresAt)}.` });
   }
 
   // 2. Can they afford it?
@@ -225,7 +226,7 @@ export function evaluate(buyer: User, match: Match): Plan {
   const slot = inTime[0];
   const km = walkKm(buyer.moveStatus === "arriving" ? buyer.destination : buyer.home, slot.place);
 
-  const closeCandidates = [inTime[inTime.length - 1].endsAt, effectiveExpiry(listing)].filter(Boolean) as string[];
+  const closeCandidates = [inTime[inTime.length - 1].endsAt, listing.expiresAt].filter(Boolean) as string[];
   const closesAt = closeCandidates.reduce((a, b) => (Date.parse(a) <= Date.parse(b) ? a : b));
   const closesInHours = (Date.parse(closesAt) - NOW.getTime()) / HOUR;
   const urgency = Math.max(0, Math.min(1, 1 - closesInHours / URGENCY_HORIZON_HOURS));

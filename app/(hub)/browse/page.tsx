@@ -2,12 +2,13 @@ import Form from "next/form";
 import { Suspense } from "react";
 import { ResetSearchOnReload } from "@/components/hub/reset-search-on-reload";
 import Link from "next/link";
+import { BrowseFilters } from "@/components/hub/browse-filters";
 import { SearchIcon } from "@/components/hub/icons";
 import { ListingRow } from "@/components/hub/listing-row";
 import { VoiceInput } from "@/components/hub/voice-input";
 import { btnSecondary, btnTertiary, EmptyState, Eyebrow, fieldClass, SectionTitle } from "@/components/hub/ui";
 import { getBoard, getMatches, getUniversity, getWants, type BoardListing } from "@/lib/hub/data";
-import { boardModes, boardViews, parseBoardMode, parseBoardView } from "@/lib/hub/feed";
+import { activeFilterCount, appendFilters, boardViews, parseBoardFilters, parseBoardView } from "@/lib/hub/feed";
 import { formatShortDate, moveLine } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
 
@@ -18,34 +19,39 @@ function one(value: string | string[] | undefined) {
 export default async function BrowsePage({ searchParams }: PageProps<"/browse">) {
   const params = await searchParams;
   const view = parseBoardView(one(params.view));
-  const mode = parseBoardMode(one(params.mode));
   const query = one(params.q)?.trim() || undefined;
+  const filters = parseBoardFilters(params);
+  const filterCount = activeFilterCount(filters);
 
   const user = await getCurrentUser();
   const [university, board, wants, matches] = await Promise.all([
     getUniversity(),
-    getBoard({ view, mode, query, user }),
+    getBoard({ view, query, filters, user }),
     getWants(user.id),
     getMatches(user),
   ]);
   const shown = board.finalCall.length + board.rest.length;
 
-  const href = (next: { view?: string; mode?: string }) => {
+  const viewHref = (value: string) => {
     const search = new URLSearchParams();
-    const v = next.view ?? view;
-    const m = next.mode ?? mode;
-    if (v !== "all") search.set("view", v);
-    if (m !== "any") search.set("mode", m);
-    if (query) search.set("q", query);
+    if (value !== "all") search.set("view", value);
+    // "Matches my list" means the whole list, same as "Show my matches" — a
+    // leftover search or filter would silently narrow it, often to nothing.
+    if (value !== "matches") {
+      if (query) search.set("q", query);
+      appendFilters(search, filters);
+    }
     const qs = search.toString();
     return qs ? `/browse?${qs}` : "/browse";
   };
-  const chip = (active: boolean) =>
-    `inline-flex min-h-9 items-center rounded-full border px-3.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-[90ms] ${
-      active
-        ? "border-ink bg-ink text-bg"
-        : "border-border-strong bg-surface-2 text-ink-2 hover:border-ink-3 hover:text-ink"
-    }`;
+
+  const clearFiltersHref = (() => {
+    const search = new URLSearchParams();
+    if (view !== "all") search.set("view", view);
+    if (query) search.set("q", query);
+    const qs = search.toString();
+    return qs ? `/browse?${qs}` : "/browse";
+  })();
 
   return (
     <div className="mx-auto max-w-[1120px] px-4 pt-12 pb-16 sm:px-6 sm:pt-16">
@@ -67,19 +73,26 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
 
           <Form action="/browse" className="mt-6 flex flex-wrap gap-2">
             {view !== "all" && <input type="hidden" name="view" value={view} />}
-            {mode !== "any" && <input type="hidden" name="mode" value={mode} />}
-            <label className="relative flex-1">
-              <span className="sr-only">Search listings</span>
-              <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-2" />
-              <input
-                key={query ?? ""}
-                id="board-search"
-                name="q"
-                defaultValue={query}
-                placeholder="What do you need? Try “lamp” or “BIOL 130”"
-                className={`${fieldClass} min-h-11 pl-9`}
+            <div className="relative flex-1">
+              <label className="relative block">
+                <span className="sr-only">Search listings</span>
+                <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-2" />
+                <input
+                  key={query ?? ""}
+                  id="board-search"
+                  name="q"
+                  defaultValue={query}
+                  placeholder="What do you need? Try “lamp” or “BIOL 130”"
+                  className={`${fieldClass} min-h-11 pr-12 pl-9`}
+                />
+              </label>
+              <BrowseFilters
+                key={clearFiltersHref + JSON.stringify(filters)}
+                filters={filters}
+                activeCount={filterCount}
+                clearHref={clearFiltersHref}
               />
-            </label>
+            </div>
             <button type="submit" className={btnSecondary}>
               Search
             </button>
@@ -87,35 +100,52 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
             <VoiceInput targetId="board-search" submitOnFinish label="Say it" />
           </Form>
 
-          <nav aria-label="Filter listings" className="-mx-4 mt-4 space-y-2 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0">
+          <nav
+            aria-label="Filter listings"
+            className="-mx-4 mt-4 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0"
+          >
             <ul className="flex gap-2">
-              {boardViews.map((v) => (
-                <li key={v.value}>
-                  <Link href={href({ view: v.value })} scroll={false} aria-current={v.value === view ? "true" : undefined} className={chip(v.value === view)}>
-                    {v.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            {/* The axis a general marketplace has no row for: am I keeping it? */}
-            <ul className="flex items-center gap-2">
-              {boardModes.map((m, i) => (
-                <li key={m.value} className="flex items-center gap-2">
-                  {m.group && m.group !== boardModes[i - 1]?.group && (
-                    <span className="pl-1 text-[12px] font-semibold tracking-wide text-ink-3 uppercase">{m.group}</span>
-                  )}
-                  <Link href={href({ mode: m.value })} scroll={false} aria-current={m.value === mode ? "true" : undefined} className={chip(m.value === mode)}>
-                    {m.label}
-                  </Link>
-                </li>
-              ))}
+              {boardViews.map((v) => {
+                const active = v.value === view;
+                return (
+                  <li key={v.value}>
+                    <Link
+                      href={viewHref(v.value)}
+                      scroll={false}
+                      aria-current={active ? "true" : undefined}
+                      className={`inline-flex min-h-9 items-center rounded-full border px-3.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-[90ms] ${
+                        active
+                          ? "border-ink bg-ink text-bg"
+                          : // Hover brightens the border, not the fill: bg-surface is DARKER than
+                            // surface-2 in dark mode, so the old hover nearly erased the chip (1.08:1).
+                            "border-border-strong bg-surface-2 text-ink-2 hover:border-ink-3 hover:text-ink"
+                      }`}
+                    >
+                      {v.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
           <div className="mt-6">
             {shown === 0 ? (
               <div className="board px-5">
-              <EmptyState title={query ? `Nothing matches “${query}” right now.` : "Nothing here right now."}>
+              <EmptyState
+                title={
+                  query
+                    ? `Nothing matches “${query}” right now.`
+                    : filterCount > 0
+                      ? "Nothing matches these filters right now."
+                      : "Nothing here right now."
+                }
+              >
+                {filterCount > 0 && (
+                  <Link href={clearFiltersHref} scroll={false} className={`${btnTertiary} mb-2 inline-block`}>
+                    Clear filters
+                  </Link>
+                )}
                 <p>
                   Add it to your list and we’ll tell you the moment someone posts. Most things show up in the last
                   two weeks of term.
@@ -137,7 +167,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                     listings={board.finalCall}
                   />
                 )}
-                <BoardSection title="Soonest deadline first" listings={board.rest} />
+                <BoardSection title="Most urgent first" listings={board.rest} />
               </>
             )}
           </div>

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { mutate } from "@/lib/relay/runtime";
 import { getListing } from "./data";
-import { getCurrentUser } from "./session";
+import { getCurrentUser, getTradeBlocker } from "./session";
 
 /**
  * Records a claim, then sends the user to the confirmation.
@@ -20,6 +20,7 @@ export async function claimListing(formData: FormData) {
   const listingId = String(formData.get("listingId") ?? "");
   const slotId = String(formData.get("slotId") ?? "");
   if (!listingId || !slotId) throw new Error("Pick a pickup time first.");
+  if (await getTradeBlocker()) throw new Error("Finish setting up your account before you claim.");
 
   const [user, listing] = await Promise.all([getCurrentUser(), getListing(listingId)]);
   if (!listing) throw new Error("That listing no longer exists.");

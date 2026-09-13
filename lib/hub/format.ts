@@ -142,8 +142,8 @@ export function formatPrice(listing: Pick<Listing, "offerType" | "priceCents">) 
 
 /** "Back by Sep 20" — only the two modes that return have one. */
 export function formatReturn(listing: Pick<Listing, "offerType" | "returnDays">) {
-  if (!RETURNS[listing.offerType] || listing.returnDays === null) return null;
   const days = listing.returnDays;
+  if (!RETURNS[listing.offerType] || days === null || days === undefined) return null;
   if (days === 1) return "Back the next day";
   if (days >= 90) return "Yours for the term";
   if (days % 7 === 0) return `Yours for ${days / 7} week${days === 7 ? "" : "s"}`;

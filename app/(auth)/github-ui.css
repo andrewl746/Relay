@@ -1,23 +1,27 @@
 @import "tailwindcss";
 
-/* A dense, bordered, form-first system in the spirit of a developer-tool auth page —
-   distinct on purpose from the ledger system in app/(hub), since sign-in/onboarding
-   is a different job than browsing listings. */
+/* Onboarding's component classes, drawn from the site palette in app/globals.css.
+   This used to be its own GitHub-style system — beige, a red accent, 14px type,
+   light-only — and read as a different product from the pages either side of it.
+   The gh-* names stay so the onboarding components didn't need rewriting; every
+   value now points at a site token, so it follows dark mode like everything else.
+   Don't add colours here: map to a token in globals.css. */
 :root {
-  --gh-canvas: #F3EADB;
-  --gh-canvas-subtle: #E8DAC2;
-  --gh-canvas-inset: #D9C3A0;
-  --gh-border: #C4A87E;
-  --gh-border-muted: #D2B88F;
-  --gh-fg: #2B2118;
-  --gh-fg-muted: #6A5744;
-  --gh-fg-subtle: #9C876A;
-  --gh-accent: #B33A1E;
-  --gh-accent-subtle: #F0D9C8;
-  --gh-success: #2F5D3A;
-  --gh-success-subtle: #D9E5D3;
-  --gh-danger: #B33A1E;
-  --gh-danger-subtle: #F2DAD2;
+  --gh-canvas: var(--surface);
+  --gh-canvas-subtle: var(--bg);
+  --gh-canvas-inset: var(--surface-2);
+  --gh-border: var(--border-strong);
+  --gh-border-muted: var(--border);
+  --gh-fg: var(--ink);
+  --gh-fg-muted: var(--ink-2);
+  --gh-fg-subtle: var(--ink-3);
+  --gh-accent: var(--accent);
+  --gh-accent-subtle: var(--accent-tint);
+  --gh-success: var(--done);
+  --gh-success-subtle: var(--surface-2);
+  /* One accent, so errors use it too — same as the listing page's blocked states. */
+  --gh-danger: var(--accent);
+  --gh-danger-subtle: var(--accent-tint);
 }
 
 @theme inline {
@@ -37,132 +41,124 @@
   --color-gh-danger-subtle: var(--gh-danger-subtle);
 }
 
+/* No background, same rule as .hub: the kraft grain behind the page is the ground. */
 .gh {
-  background: var(--gh-canvas-subtle);
-  color: var(--gh-fg);
-  font-size: 14px;
-  line-height: 1.5;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 .gh :focus-visible {
-  outline: 2px solid var(--gh-accent);
-  outline-offset: -1px;
-  border-radius: 6px;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 @layer components {
+  /* = .board */
   .gh-card {
-    background: var(--gh-canvas);
-    border: 1px solid var(--gh-border);
-    border-radius: 12px;
-    box-shadow: 0 1px 0 rgba(31, 35, 40, 0.04);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md, 8px);
+    box-shadow: var(--lift);
   }
 
+  /* = fieldClass in components/hub/ui.tsx */
   .gh-input {
     display: block;
     width: 100%;
-    border-radius: 6px;
-    border: 1px solid var(--gh-border);
-    background: var(--gh-canvas);
-    padding: 5px 12px;
-    font-size: 14px;
-    color: var(--gh-fg);
-    box-shadow: inset 0 1px 0 rgba(208, 215, 222, 0.2);
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    padding: 10px 12px;
+    font-size: 15px;
+    color: var(--ink);
   }
 
   .gh-input:focus-visible {
-    border-color: var(--gh-accent);
+    border-color: var(--accent);
     outline: none;
-    box-shadow: 0 0 0 3px var(--gh-accent-subtle);
   }
 
   .gh-input::placeholder {
-    color: var(--gh-fg-subtle);
+    color: var(--ink-3);
   }
 
   .gh-label {
     display: block;
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .gh-hint {
-    font-size: 12px;
-    color: var(--gh-fg-muted);
-    margin-top: 6px;
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-top: 4px;
   }
 
+  /* = btnSecondary */
   .gh-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     width: 100%;
-    min-height: 34px;
-    padding: 5px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    border: 1px solid var(--gh-border);
-    background: var(--gh-canvas-subtle);
-    color: var(--gh-fg);
-    transition: background-color 80ms ease;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--ink);
+    transition: background-color 75ms ease;
   }
 
   .gh-btn:hover {
-    background: var(--gh-canvas-inset);
+    background: var(--surface-2);
   }
 
+  /* = btnPrimary */
   .gh-btn-primary {
-    border-color: rgba(27, 31, 36, 0.15);
-    background: var(--gh-success);
-    color: #ffffff;
+    border-color: transparent;
+    background: var(--accent);
+    color: var(--on-accent);
   }
 
   .gh-btn-primary:hover {
-    background: #1a7f37;
+    background: var(--accent);
+    filter: brightness(1.08);
   }
 
-  .gh-btn-primary:disabled {
-    background: #94d3a2;
-    border-color: transparent;
-    cursor: not-allowed;
-  }
-
+  .gh-btn-primary:disabled,
   .gh-btn-secondary:disabled {
-    color: var(--gh-fg-subtle);
+    opacity: 0.4;
     cursor: not-allowed;
+    filter: none;
   }
 
   .gh-link {
-    color: var(--gh-accent);
-    font-weight: 500;
+    color: var(--accent);
+    font-weight: 600;
+    transition: color 100ms ease;
   }
 
   .gh-link:hover {
-    text-decoration: underline;
+    color: var(--ink);
   }
 
-  .gh-flash-error {
-    display: flex;
-    gap: 8px;
-    border: 1px solid rgba(207, 34, 46, 0.4);
-    background: var(--gh-danger-subtle);
-    color: var(--gh-danger);
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-
+  .gh-flash-error,
   .gh-flash-success {
     display: flex;
     gap: 8px;
-    border: 1px solid rgba(26, 127, 55, 0.3);
-    background: var(--gh-success-subtle);
-    color: var(--gh-success);
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 13px;
+    border-left: 2px solid var(--accent);
+    background: var(--surface-2);
+    color: var(--ink);
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .gh-flash-success {
+    border-left-color: var(--done);
   }
 }

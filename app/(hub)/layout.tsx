@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Link from "next/link";
-import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
+import { OnboardingCorner } from "@/components/onboarding/onboarding-corner";
 import { SiteHeader } from "@/components/hub/site-header";
 import { SITE_NAME } from "@/lib/hub/site";
 import { getMyProfile, getSupabaseUser } from "@/lib/supabase/session";
@@ -37,15 +36,15 @@ export const metadata: Metadata = {
 };
 
 export default async function HubLayout({ children }: { children: ReactNode }) {
-  if (await getSupabaseUser()) {
-    const profile = await getMyProfile();
-    if (!profile?.onboarding_completed) redirect("/onboarding/profile");
-  }
+  const user = await getSupabaseUser();
+  const profile = user ? await getMyProfile() : null;
 
   return (
     <div className={`${archivo.variable} ${plex.variable} hub flex min-h-full flex-1 flex-col font-sans`}>
       <SiteHeader />
       <main className="flex-1">{children}</main>
+      {/* Unfinished setup doesn't take over the site: it waits in Parcel's corner. */}
+      {user && <OnboardingCorner profile={profile} fallbackName={user.user_metadata?.full_name ?? null} />}
     </div>
   );
 }

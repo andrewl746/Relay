@@ -19,7 +19,7 @@ export default async function ConfirmedPage({ params, searchParams }: PageProps<
   if (!slot) redirect(`/listings/${listing.id}/claim`);
 
   const seller = firstName(listing.seller.name);
-  const dueBack = RETURNS[listing.offerType] ? dueBackFrom(slot.startsAt, listing.returnDays) : null;
+  const dueBack = RETURNS[listing.offerType] ? dueBackFrom(slot.startsAt, listing.returnDays ?? null) : null;
   const paid = query.payment && query.payment !== "cash";
 
   return (

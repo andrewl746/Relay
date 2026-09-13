@@ -2,9 +2,9 @@
 
 import { useActionState, useState } from "react";
 import { finishWants, type ActionState } from "@/app/(onboarding)/actions";
+import { btnPrimary, btnSecondary, fieldClass } from "@/components/hub/ui";
 import { INTEREST_SUGGESTIONS } from "@/lib/onboarding/interests";
-
-const fieldClass = "gh-input";
+import { errorClass, labelClass } from "./shell";
 
 const initialState: ActionState = { status: "idle" };
 
@@ -35,14 +35,14 @@ export function WantsStepForm({ interests }: { interests: string[] }) {
 
       {suggestions.length > 0 && (
         <div>
-          <p className="gh-label">Quick add, based on what you picked</p>
+          <p className={labelClass}>Quick add, based on what you picked</p>
           <div className="flex flex-wrap gap-2">
             {suggestions.map((label) => (
               <button
                 key={label}
                 type="button"
                 onClick={() => add(label)}
-                className="inline-flex min-h-9 items-center rounded-full border border-gh-border px-3 text-[13px] font-medium hover:border-gh-accent hover:bg-gh-accent-subtle"
+                className="inline-flex min-h-9 items-center rounded-full border border-border-strong bg-surface px-3.5 text-[14px] font-medium text-ink transition-colors duration-100 hover:border-accent hover:bg-accent-tint"
               >
                 + {label}
               </button>
@@ -52,7 +52,7 @@ export function WantsStepForm({ interests }: { interests: string[] }) {
       )}
 
       <div>
-        <label htmlFor="want-text" className="gh-label">
+        <label htmlFor="want-text" className={labelClass}>
           Something else
         </label>
         <div className="flex flex-col gap-2 sm:flex-row">
@@ -71,9 +71,9 @@ export function WantsStepForm({ interests }: { interests: string[] }) {
             placeholder="Describe it your way, like “somewhere to put my books”"
             className={`${fieldClass} flex-1`}
           />
-          <label className="relative sm:w-28">
+          <label className="relative sm:w-32">
             <span className="sr-only">Budget in dollars, optional</span>
-            <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[13px] text-gh-fg-subtle">
+            <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[13px] text-ink-3">
               under $
             </span>
             <input
@@ -91,7 +91,7 @@ export function WantsStepForm({ interests }: { interests: string[] }) {
               setText("");
               setBudget("");
             }}
-            className="gh-btn w-auto shrink-0 px-5"
+            className={`${btnSecondary} shrink-0`}
           >
             Add
           </button>
@@ -103,12 +103,12 @@ export function WantsStepForm({ interests }: { interests: string[] }) {
           {items.map((item) => (
             <li
               key={item.key}
-              className="flex items-center justify-between gap-3 rounded-md border border-gh-border px-3 py-2 text-[14px]"
+              className="flex items-center justify-between gap-3 rounded-sm border border-border bg-surface-2 px-3.5 py-2.5 text-[15px] text-ink"
             >
               <span>
                 {item.text}
                 {item.maxPriceCents !== null && (
-                  <span className="ml-2 text-[12px] text-gh-fg-muted">
+                  <span className="ml-2 text-[13px] text-ink-2">
                     under ${(item.maxPriceCents / 100).toFixed(0)}
                   </span>
                 )}
@@ -117,7 +117,7 @@ export function WantsStepForm({ interests }: { interests: string[] }) {
                 type="button"
                 onClick={() => setItems((current) => current.filter((i) => i.key !== item.key))}
                 aria-label={`Remove ${item.text}`}
-                className="text-[13px] font-medium text-gh-fg-muted hover:text-gh-danger"
+                className="text-[14px] font-semibold text-ink-2 hover:text-accent"
               >
                 Remove
               </button>
@@ -126,9 +126,9 @@ export function WantsStepForm({ interests }: { interests: string[] }) {
         </ul>
       )}
 
-      {state.status === "error" && <p className="gh-flash-error">{state.message}</p>}
+      {state.status === "error" && <p className={errorClass}>{state.message}</p>}
 
-      <button type="submit" disabled={pending} className="gh-btn gh-btn-primary">
+      <button type="submit" disabled={pending} className={`${btnPrimary} w-full`}>
         {pending ? "Saving…" : items.length > 0 ? "Finish" : "Skip for now"}
       </button>
     </form>

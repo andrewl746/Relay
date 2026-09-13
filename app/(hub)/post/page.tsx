@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { PostItemForm } from "@/components/hub/post-item-form";
 import { btnSecondary, PageShell, PageTitle } from "@/components/hub/ui";
-import { getCurrentUser } from "@/lib/hub/session";
+import { SetupRequired } from "@/components/onboarding/setup-required";
+import { getCurrentUser, getTradeBlocker } from "@/lib/hub/session";
 
 export const metadata = { title: "Post an item" };
 
 export default async function PostPage() {
-  const user = await getCurrentUser();
+  const [user, blocker] = await Promise.all([getCurrentUser(), getTradeBlocker()]);
+  if (blocker) return <SetupRequired step={blocker} action="post" title="Post an item" />;
 
   return (
     <PageShell>
