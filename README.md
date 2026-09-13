@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Relay
 
-## Getting Started
+**Craigslist for co-op students, where everything is keyed to the term.**
 
-First, run the development server:
+Sublet your place, sell or rent out your furniture, and hand it all to the person arriving
+as you leave — before the date you both already know.
+
+Built at [PivotHacks](https://pivothacks.ca) · Builder's Club, Waterloo ON · 12 hours.
+
+---
+
+## Why
+
+Co-op rotates thousands of students out of a city and thousands more into it, on the same
+two weeks, three times a year. The leaver pays rent on an empty room and curbs a $200 desk.
+The arriver, 400 km away, can't find a 4-month place and buys the same desk new.
+
+The two sides are never online at the same time, and every tool they use sorts by *recency*.
+
+Relay makes the **date** the primary key: rank by time pressure, match by window overlap,
+let prices decay toward a floor as the deadline closes.
+
+## Docs
+
+| | |
+|---|---|
+| [docs/PROJECT.md](docs/PROJECT.md) | Product, scope, feature specs, data model, architecture, pivot log, build plan, pitch |
+| [docs/DESIGN.md](docs/DESIGN.md) | Visual system — tokens, type, components, screens, motion, a11y |
+
+## Stack
+
+Next.js 16.3.5 (App Router, Server Components) · React 19 · Tailwind v4 · Postgres.
+
+> Next 16 renamed `middleware.ts` → `proxy.ts` and moved caching to Cache Components
+> (`cacheComponents: true` + `use cache`). Check `node_modules/next/dist/docs/` before
+> writing anything that touches either — see [AGENTS.md](AGENTS.md).
+
+## Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*Scaffolded from `create-next-app`; disclosed as a starter template per event rules.*
