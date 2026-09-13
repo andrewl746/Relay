@@ -270,7 +270,7 @@ export default function LandingPage() {
       <section className="relative z-10 border-t border-[var(--kraft-300)] bg-[var(--kraft-100)]">
         <div className="mx-auto max-w-[720px] px-6 py-20 text-center">
           <Stamp className="mb-6">
-            <span className="stencil-label border border-[var(--rule-strong)] bg-[var(--kraft-50)] px-3 py-1.5">
+            <span className="text-[13px] font-semibold tracking-[0.02em] text-[var(--ink-2)] border border-[var(--rule-strong)] bg-[var(--kraft-50)] px-3 py-1.5">
               Free to join
             </span>
           </Stamp>

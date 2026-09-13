@@ -28,11 +28,11 @@ export default async function NotificationsPage() {
           and we’ll tell you when someone posts a match.
         </EmptyState>
       ) : (
-        <ul className="border-t border-rule-strong">
+        <ul className="board divide-y divide-border overflow-hidden">
           {notifications.map((n) => (
             <li key={n.id} className="relative border-b border-rule">
               {!n.read && <span aria-hidden="true" className="absolute inset-y-0 left-0 w-0.5 bg-ink" />}
-              <Link href={n.href} className="group block py-3 pr-1 pl-4 transition-colors duration-[90ms] hover:bg-paper-raised">
+              <Link href={n.href} className="group block py-3 pr-1 pl-4 transition-colors duration-[90ms] hover:bg-surface-2">
                 <span className="flex items-baseline justify-between gap-4">
                   <span className={`t-eyebrow ${n.read ? "text-ink-2" : "text-ink"}`}>
                     {kindLabel[n.kind]}
@@ -40,7 +40,7 @@ export default async function NotificationsPage() {
                   </span>
                   <span className="data shrink-0 text-[13px] text-ink-2">{formatWhen(n.createdAt)}</span>
                 </span>
-                <span className={`mt-1 block group-hover:underline group-hover:underline-offset-[3px] ${n.read ? "text-ink-2" : "font-semibold"}`}>
+                <span className={`mt-1 block transition-colors duration-100 group-hover:text-accent ${n.read ? "text-ink-2" : "font-semibold"}`}>
                   {n.text}
                 </span>
               </Link>

@@ -30,11 +30,11 @@ export default async function MyPostsPage() {
       ) : (
         <>
           {live.length > 0 && (
-            <section className="mb-8">
-              <h2 className="t-eyebrow border-b border-rule-strong pb-2 text-ink-2">
+            <section className="board mb-6 overflow-hidden">
+              <h2 className="border-b border-border px-5 py-3.5 text-[19px] font-semibold tracking-[-0.01em] text-ink">
                 Live · {live.length} {live.length === 1 ? "post" : "posts"}
               </h2>
-              <ul className="-mx-4 sm:mx-0">
+              <ul className="divide-y divide-border">
                 {live.map((l) => (
                   <MyListingRow key={l.id} listing={l} />
                 ))}
@@ -43,11 +43,11 @@ export default async function MyPostsPage() {
           )}
 
           {claimed.length > 0 && (
-            <section className="mb-8">
-              <h2 className="t-eyebrow border-b border-rule-strong pb-2 text-ink-2">
+            <section className="board mb-6 overflow-hidden">
+              <h2 className="border-b border-border px-5 py-3.5 text-[19px] font-semibold tracking-[-0.01em] text-ink">
                 Claimed, pickup pending · {claimed.length}
               </h2>
-              <ul className="-mx-4 sm:mx-0">
+              <ul className="divide-y divide-border">
                 {claimed.map((l) => (
                   <MyListingRow key={l.id} listing={l} />
                 ))}
@@ -56,9 +56,9 @@ export default async function MyPostsPage() {
           )}
 
           {removed.length > 0 && (
-            <section>
-              <h2 className="t-eyebrow border-b border-rule-strong pb-2 text-ink-2">Removed · {removed.length}</h2>
-              <ul className="-mx-4 sm:mx-0">
+            <section className="board overflow-hidden">
+              <h2 className="border-b border-border px-5 py-3.5 text-[19px] font-semibold tracking-[-0.01em] text-ink">Removed · {removed.length}</h2>
+              <ul className="divide-y divide-border">
                 {removed.map((l) => (
                   <MyListingRow key={l.id} listing={l} />
                 ))}

@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useActionState, useState } from "react";
 import { ThemeToggle } from "@/components/theme";
 import { saveSettings, type SettingsState } from "@/lib/hub/settings-actions";
 import { getUniversity, UNIVERSITIES, type University } from "@/lib/onboarding/universities";
+import { UserSwitcher } from "./user-switcher";
 import { btnPrimary, btnSecondary, fieldClass, SectionTitle } from "./ui";
 
 const initial: SettingsState = { status: "idle" };
@@ -35,9 +37,18 @@ function Row({ title, hint, children }: { title: string; hint?: string; children
 export function SettingsForm({
   defaults,
   deleteAction,
+  signOutAction,
+  signedIn,
+  demoUsers,
+  currentUserId,
 }: {
   defaults: SettingsDefaults;
   deleteAction: () => Promise<void>;
+  signOutAction: () => Promise<void>;
+  /** False in demo mode: there is no profile row to edit and nothing to delete. */
+  signedIn: boolean;
+  demoUsers: { id: string; label: string }[];
+  currentUserId: string;
 }) {
   const [state, formAction, pending] = useActionState(saveSettings, initial);
   const [onCampus, setOnCampus] = useState(defaults.livingSituation !== "off_campus");
@@ -46,6 +57,34 @@ export function SettingsForm({
   );
   const [avatar, setAvatar] = useState(defaults.avatarUrl ?? "");
   const [confirming, setConfirming] = useState(false);
+
+  // Demo students are rows in a seed file, not accounts. There is no profile
+  // to save, no photo to change and no account to delete, so the form is not
+  // shown at all — an editable form that silently discards what you type is
+  // worse than no form. What a demo student does have is which student you
+  // are looking at, which is the only setting that means anything here.
+  if (!signedIn) {
+    return (
+      <div className="space-y-6">
+        <Row
+          title="Demo student"
+          hint="You're browsing the seeded demo. Every student sees a different board — different matches, different pickup times they can actually make."
+        >
+          <UserSwitcher users={demoUsers} currentUserId={currentUserId} />
+        </Row>
+
+        <Row title="Appearance" hint="Applies on this device.">
+          <ThemeToggle />
+        </Row>
+
+        <Row title="Your own account" hint="Sign in with your university Google account to post, claim and keep a list of your own.">
+          <Link href="/login" className={btnPrimary}>
+            Sign in
+          </Link>
+        </Row>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -208,6 +247,14 @@ export function SettingsForm({
 
       <Row title="Appearance" hint="Applies on this device.">
         <ThemeToggle />
+      </Row>
+
+      <Row title="Session" hint={`Signed in as ${defaults.email}.`}>
+        <form action={signOutAction}>
+          <button type="submit" className={btnSecondary}>
+            Sign out
+          </button>
+        </form>
       </Row>
 
       <section className="rounded-md border border-accent/40 bg-surface p-5 sm:p-6">

@@ -4,6 +4,7 @@ import { ResetSearchOnReload } from "@/components/hub/reset-search-on-reload";
 import Link from "next/link";
 import { SearchIcon } from "@/components/hub/icons";
 import { ListingRow } from "@/components/hub/listing-row";
+import { VoiceInput } from "@/components/hub/voice-input";
 import { btnSecondary, btnTertiary, EmptyState, Eyebrow, fieldClass, SectionTitle } from "@/components/hub/ui";
 import { getBoard, getMatches, getUniversity, getWants, type BoardListing } from "@/lib/hub/data";
 import { boardViews, parseBoardView } from "@/lib/hub/feed";
@@ -54,13 +55,14 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
             {board.lastDeadline && ` · last deadline ${formatShortDate(board.lastDeadline)}`}
           </p>
 
-          <Form action="/browse" className="mt-6 flex gap-2">
+          <Form action="/browse" className="mt-6 flex flex-wrap gap-2">
             {view !== "all" && <input type="hidden" name="view" value={view} />}
             <label className="relative flex-1">
               <span className="sr-only">Search listings</span>
               <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-2" />
               <input
                 key={query ?? ""}
+                id="board-search"
                 name="q"
                 defaultValue={query}
                 placeholder="What do you need? Try “lamp” or “BIOL 130”"
@@ -70,6 +72,8 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
             <button type="submit" className={btnSecondary}>
               Search
             </button>
+            {/* Say what you need and the search runs — no typing, no form. */}
+            <VoiceInput targetId="board-search" submitOnFinish label="Say it" />
           </Form>
 
           <nav
@@ -101,6 +105,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
 
           <div className="mt-6">
             {shown === 0 ? (
+              <div className="board px-5">
               <EmptyState title={query ? `Nothing matches “${query}” right now.` : "Nothing here right now."}>
                 <p>
                   Add it to your list and we’ll tell you the moment someone posts. Most things show up in the last
@@ -113,6 +118,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                   {query ? `Add “${query}” to my list` : "Go to my list"}
                 </Link>
               </EmptyState>
+              </div>
             ) : (
               <>
                 {board.finalCall.length > 0 && (
@@ -128,9 +134,9 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
           </div>
         </section>
 
-        <aside className="space-y-10 lg:pt-2">
+        <aside className="space-y-6">
           {user.moveStatus === "leaving" ? (
-            <section>
+            <section className="board p-5">
               <SectionTitle>Moving out</SectionTitle>
               <p className="mt-2 text-[17px] font-semibold">Post your whole room in one go</p>
               <p className="mt-1 text-ink-2">
@@ -144,7 +150,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
               </Link>
             </section>
           ) : (
-            <section>
+            <section className="board p-5">
               <SectionTitle>Your list · {moveLine(user)}</SectionTitle>
               {wants.length === 0 ? (
                 <p className="mt-2 text-ink-2">
@@ -176,7 +182,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
             </section>
           )}
 
-          <section>
+          <section className="board p-5">
             <SectionTitle>How it works</SectionTitle>
             <ol className="mt-3 space-y-3">
               {[
@@ -203,13 +209,13 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
 function BoardSection({ title, listings, urgent = false }: { title: string; listings: BoardListing[]; urgent?: boolean }) {
   if (listings.length === 0) return null;
   return (
-    <section className="mb-10">
+    <section className="board mb-6 overflow-hidden">
       <h2
-        className={`mb-1 text-[14px] font-semibold ${urgent ? "text-accent" : "text-ink-3"}`}
+        className={`border-b border-border px-5 py-3.5 text-[15px] font-semibold ${urgent ? "text-accent" : "text-ink-2"}`}
       >
         {title}
       </h2>
-      <ul className="divide-y divide-border border-y border-border">
+      <ul className="divide-y divide-border">
         {listings.map((l) => (
           <ListingRow key={l.id} listing={l} />
         ))}

@@ -43,10 +43,14 @@ html[data-theme="dark"] { color-scheme: dark; }
   --ink-2: #57534E;       /*  7.0:1 */
   --ink-3: #8A837B;       /*  3.4:1 — >=18.66px bold or non-text only */
 
-  /* the single theme colour. 6.0:1 on white both ways, so it is safe as
-     text on paper AND as a fill with white text on top. */
-  --accent: #A8431A;
-  --accent-tint: #F6E9E2; /* wash for selected rows */
+  /* The single theme colour. Blue, not the burnt sienna it was: on a warm
+     paper ground that red-brown read as the cardboard itself gone damp, and
+     every accented word looked like part of the texture rather than a thing
+     you could click. Blue ink on kraft is also just what a shipping stamp is.
+     6.2:1 on white both ways, so it is safe as text on paper AND as a fill
+     with white text on top. */
+  --accent: #1A56DB;
+  --accent-tint: #E8EEFC; /* wash for selected rows */
 
   /* confirmed. the one other hue, kept muted and used only for a completed tick */
   --done: #2D6A4F;
@@ -102,7 +106,7 @@ html[data-theme="dark"] { color-scheme: dark; }
 /*
  * Dark. Only the surface and ink tokens are redefined — every component reads
  * those, so nothing else needs touching. The accent lifts slightly because
- * #A8431A on a dark ground is 3.2:1; #E2683C is 6.1:1.
+ * #1A56DB on a dark ground is 3.0:1; #5B9BFF is 6.6:1.
  *
  * Applied by [data-theme="dark"] so the setting wins in both directions, and
  * under prefers-color-scheme only when the user has not chosen explicitly.
@@ -116,8 +120,8 @@ html[data-theme="dark"] { color-scheme: dark; }
   --ink: #F0EBE2;
   --ink-2: #B3AB9D;
   --ink-3: #7C7466;
-  --accent: #E2683C;
-  --accent-tint: #3A2419;
+  --accent: #5B9BFF;
+  --accent-tint: #1C2742;
   --done: #6FAF87;
   --lift: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .35);
   --lift-2: 0 2px 4px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .45);
@@ -133,8 +137,8 @@ html[data-theme="dark"] { color-scheme: dark; }
     --ink: #F0EBE2;
     --ink-2: #B3AB9D;
     --ink-3: #7C7466;
-    --accent: #E2683C;
-    --accent-tint: #3A2419;
+    --accent: #5B9BFF;
+    --accent-tint: #1C2742;
     --done: #6FAF87;
     --lift: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .35);
     --lift-2: 0 2px 4px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .45);
@@ -223,7 +227,7 @@ body::before {
   background-image: url("/cardboard-bg.jpg");
   background-size: 520px auto;
   background-repeat: repeat;
-  opacity: 0.06;
+  opacity: 0.05;
   pointer-events: none;
 }
 
@@ -354,4 +358,23 @@ a:focus-visible {
   border-left: var(--tri, 28px) solid transparent;
   border-right: var(--tri, 28px) solid transparent;
   border-bottom: calc(var(--tri, 28px) * 1.7) solid currentColor;
+}
+
+/* ---- shared-element navigation ----------------------------------------- */
+/*
+ * A board thumbnail and the listing hero carry the same view-transition-name,
+ * so the browser tweens one into the other. See components/hub/transition-link.
+ * Only the timing is set here; the geometry is the browser's own.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

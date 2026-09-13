@@ -18,7 +18,7 @@ export default async function AccountPage() {
 
       {/* Profile Card */}
       <div className="rounded-[4px] border border-[var(--bezel)] bg-[var(--panel)] p-6 mb-6">
-        <div className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] mb-4">Profile</div>
+        <div className="text-[13px] font-semibold text-[var(--text-muted)] mb-4">Profile</div>
         <div className="grid sm:grid-cols-3 gap-4">
           <div>
             <div className="text-[12px] text-[var(--text-muted)]">Name</div>
@@ -37,7 +37,7 @@ export default async function AccountPage() {
 
       {/* Network Stats */}
       <div className="rounded-[4px] border border-[var(--bezel)] bg-[var(--panel)] p-6 mb-6">
-        <div className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] mb-4">Network Stats</div>
+        <div className="text-[13px] font-semibold text-[var(--text-muted)] mb-4">Network Stats</div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
             { value: stats.items, label: 'Items', color: 'var(--text-primary)' },
@@ -49,7 +49,7 @@ export default async function AccountPage() {
               <div className="font-[family-name:var(--font-data)] text-[24px] font-semibold" style={{ color: s.color }}>
                 {s.value}
               </div>
-              <div className="mt-1 text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)]">
+              <div className="mt-1 text-[13px] font-semibold text-[var(--text-muted)]">
                 {s.label}
               </div>
             </div>
@@ -59,7 +59,7 @@ export default async function AccountPage() {
 
       {/* Active Needs */}
       <div className="rounded-[4px] border border-[var(--bezel)] bg-[var(--panel)] p-6 mb-6">
-        <div className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] mb-4">
+        <div className="text-[13px] font-semibold text-[var(--text-muted)] mb-4">
           Your Active Needs ({wants.length})
         </div>
         {wants.length === 0 ? (
@@ -78,7 +78,7 @@ export default async function AccountPage() {
 
       {/* Your Items */}
       <div className="rounded-[4px] border border-[var(--bezel)] bg-[var(--panel)] p-6">
-        <div className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] mb-4">
+        <div className="text-[13px] font-semibold text-[var(--text-muted)] mb-4">
           Your Items ({myItems.length})
         </div>
         {myItems.length === 0 ? (

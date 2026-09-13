@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CloseIcon } from "./icons";
+import { VoiceInput } from "./voice-input";
 import { btnSecondary, fieldClass } from "./ui";
 
 export type WantRow = {
@@ -104,12 +105,13 @@ export function WantsList({ initial, prefill }: { initial: WantRow[]; prefill: s
               className={`${fieldClass} data pl-[4.5rem]`}
             />
           </label>
+          <VoiceInput targetId="want-text" submitOnFinish label="Say it" />
           <button type="submit" className={btnSecondary}>
             Add to list
           </button>
         </div>
         <p className="mt-2 text-[13px] text-ink-2">
-          Write it how you’d say it. “Somewhere to sit” still finds chairs.
+          Say it or write it, however you’d actually say it. “Somewhere to sit” still finds chairs.
         </p>
       </form>
     </div>

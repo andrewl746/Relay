@@ -28,8 +28,11 @@
   --radius-2: 4px;
 }
 
+/* No background here on purpose. The kraft grain is a fixed layer behind the
+   whole document (app/globals.css, body::before); painting an opaque colour on
+   this wrapper covered it, which is why every signed-in page was flat white
+   while the landing page had texture. */
 .hub {
-  background: var(--paper);
   color: var(--ink);
   font-size: 15px;
   line-height: 1.55;
@@ -63,12 +66,21 @@
     font-size: 14px;
   }
 
+  /*
+   * Small label above a value.
+   *
+   * Was 11px/700 uppercase at 0.14em tracking. That is a dashboard chrome
+   * label, and it was carrying real sentences — "Doesn't work with your
+   * dates", "Held for someone else" — set in tiny shouty caps that nobody
+   * reads at a glance. Sentence case at a legible size, still quiet because
+   * it is grey and one step down, not because it is small and screaming.
+   */
   .t-eyebrow {
-    font-size: 11px;
-    line-height: 1.2;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
   }
 }
 

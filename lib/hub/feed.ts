@@ -1,4 +1,5 @@
 import { hoursLeft, isFinalCall } from "./format";
+import { searchTerms } from "./search";
 import type { Listing } from "./types";
 
 export type BoardView = "all" | "furniture" | "school" | "free" | "rent" | "matches";
@@ -22,10 +23,13 @@ export function filterBoard<T extends Listing>(
   query: string | undefined,
   { matchedIds, searchableText }: { matchedIds: Set<string>; searchableText: (l: T) => string },
 ) {
-  const q = query?.trim().toLowerCase();
+  const terms = query?.trim() ? searchTerms(query) : [];
   return listings.filter((l) => {
     if (l.expiresAt && hoursLeft(l.expiresAt) <= 0) return false;
-    if (q && !searchableText(l).toLowerCase().includes(q)) return false;
+    if (terms.length > 0) {
+      const text = searchableText(l).toLowerCase();
+      if (!terms.every((group) => group.some((w) => text.includes(w)))) return false;
+    }
     switch (view) {
       case "furniture":
       case "school":

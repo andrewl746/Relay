@@ -45,7 +45,7 @@ export function DevLogin({
       className="space-y-6"
     >
       <fieldset>
-        <legend className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)]">Select Profile</legend>
+        <legend className="text-[13px] font-semibold text-[var(--text-muted)]">Select Profile</legend>
         <div className="mt-3 border-t border-[var(--bezel)]">
           {users.map((u) => (
             <label key={u.id} className="flex min-h-12 cursor-pointer items-center gap-3 border-b border-[var(--bezel)] py-3 hover:bg-[var(--panel)] transition-colors duration-75">
@@ -70,7 +70,7 @@ export function DevLogin({
       </fieldset>
 
       <div>
-        <label htmlFor="email" className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)]">
+        <label htmlFor="email" className="text-[13px] font-semibold text-[var(--text-muted)]">
           Email
         </label>
         <input

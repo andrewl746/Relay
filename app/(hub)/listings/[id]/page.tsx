@@ -49,7 +49,13 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
       <BackLink href="/">All listings</BackLink>
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-        <Thumb word={listing.kind} photoUrl={listing.photoUrl} alt={listing.title} size="hero" />
+        <Thumb
+          word={listing.kind}
+          photoUrl={listing.photoUrl}
+          alt={listing.title}
+          size="hero"
+          transitionName={`thumb-${listing.id}`}
+        />
 
         <div>
           <Eyebrow>
@@ -160,7 +166,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
             )}
           </div>
 
-          <section className="mt-8">
+          <section className="board mt-8 p-5">
             <SectionTitle>Pickup times {firstName(seller.name)} offered</SectionTitle>
             <ul className="mt-2 border-t border-rule">
               {verdicts.map(({ slot, usable, why }) => (
@@ -188,7 +194,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
           </section>
 
           {!isOwn && first && (
-            <section className="mt-8">
+            <section className="board mt-8 p-5">
               <SectionTitle>The walk</SectionTitle>
               <div className="mt-2">
                 <PickupMap
@@ -204,7 +210,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
       </div>
 
       {listing.isBundle && (
-        <section className="mt-12 rounded-2 border border-rule-strong bg-paper-raised">
+        <section className="board mt-12 overflow-hidden">
           <div className="border-b border-rule-strong px-5 py-4">
             <Eyebrow strong>Whole room · {listing.pickupArea}</Eyebrow>
             <p className="mt-1 text-[13px] text-ink-2">
@@ -237,7 +243,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
         </section>
       )}
 
-      <section className="mt-12 bg-paper-sunk px-5 py-4">
+      <section className="board mt-12 px-5 py-4">
         <p className="max-w-[68ch]">
           Pay {firstName(seller.name)} directly when you pick it up. We never handle money, so never send anything
           before you’ve seen the item.

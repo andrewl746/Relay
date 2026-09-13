@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { countdown, type CountdownTier } from "@/lib/hub/format";
 import { BackIcon } from "./icons";
 
@@ -51,8 +51,8 @@ export function PageTitle({ title, lede }: { title: string; lede?: ReactNode }) 
 
 export function BackLink({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <Link href={href} className="mb-6 inline-flex min-h-11 items-center gap-1 text-[13px] font-semibold text-ink-2 hover:text-ink">
-      <BackIcon className="size-4" />
+    <Link href={href} className="mb-6 -ml-2 inline-flex min-h-11 items-center gap-1.5 rounded-sm px-2 text-[16px] font-semibold text-ink-2 transition-colors duration-100 hover:bg-surface-2 hover:text-ink">
+      <BackIcon className="size-5" />
       {children}
     </Link>
   );
@@ -68,9 +68,9 @@ export function Eyebrow({ children, strong = false }: { children: ReactNode; str
 }
 
 /**
- * Falls back to a category glyph when the listing has no photo — a word in a
- * grey box reads as a broken image, and several stacked read as a catalogue
- * that failed to load.
+ * The listing's photo, falling back to a category glyph when it has none — a
+ * word in a grey box reads as a broken image, and several stacked read as a
+ * catalogue that failed to load.
  */
 const THUMB_ICON: { match: RegExp; icon: EmptyIcon }[] = [
   { match: /desk|chair|shelf|table|lamp|bed|mattress|sofa|dresser|furniture/i, icon: "box" },
@@ -83,25 +83,38 @@ export function Thumb({
   photoUrl,
   alt = "",
   size = "row",
+  /**
+   * Shared identity across a navigation. The board row and the listing hero
+   * pass the same name, so the browser tweens the one growing into the other
+   * rather than painting a new page over it. See components/hub/transition-link.
+   */
+  transitionName,
 }: {
   word: string;
   photoUrl?: string | null;
   alt?: string;
-  size?: "row" | "hero";
+  size?: "row" | "list" | "hero";
+  transitionName?: string;
 }) {
   const icon = THUMB_ICON.find((t) => t.match.test(word))?.icon ?? "box";
+  const box = {
+    row: "size-16 sm:size-[72px]",
+    list: "size-[104px] sm:size-[132px]",
+    hero: "aspect-[4/3] w-full",
+  }[size];
+  const glyph = { row: "size-7", list: "size-12", hero: "size-16" }[size];
+
   return (
     <div
       aria-hidden={photoUrl && alt ? undefined : "true"}
-      className={`grid shrink-0 place-items-center overflow-hidden rounded-md bg-surface-2 text-ink-3 ${
-        size === "row" ? "size-16 sm:size-[72px]" : "aspect-[4/3] w-full"
-      }`}
+      className={`grid shrink-0 place-items-center overflow-hidden rounded-md border border-border bg-surface-2 text-ink-3 ${box}`}
+      style={transitionName ? ({ viewTransitionName: transitionName } as CSSProperties) : undefined}
     >
       {photoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element -- data URL, nothing for next/image to optimize
         <img src={photoUrl} alt={alt} className="size-full object-cover" />
       ) : (
-        <span className={size === "row" ? "size-7" : "size-16"}>
+        <span className={glyph}>
           <EmptyIconArt name={icon} />
         </span>
       )}

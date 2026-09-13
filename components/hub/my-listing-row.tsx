@@ -29,7 +29,7 @@ export function MyListingRow({ listing }: { listing: MyListing }) {
         <Thumb word={listing.kind} photoUrl={listing.photoUrl} />
         <div className="min-w-0 flex-1">
           <p className="t-eyebrow mb-1 text-ink-2">{statusLabel[listing.status]}</p>
-          <p className="t-listing line-clamp-2 text-[17px] leading-[1.25] group-hover:underline group-hover:underline-offset-[3px] sm:line-clamp-1">
+          <p className="line-clamp-2 text-[17px] leading-[1.25] font-semibold transition-colors duration-100 group-hover:text-accent sm:line-clamp-1">
             {listing.title}
           </p>
           <p className="mt-0.5 truncate text-[13px] font-medium text-ink-2">{meta}</p>
@@ -43,7 +43,7 @@ export function MyListingRow({ listing }: { listing: MyListing }) {
         <div className="flex items-center gap-5 pb-3 pl-3 sm:pl-4">
           <Link
             href={`/posts/${listing.id}/edit`}
-            className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-2 underline underline-offset-[3px] hover:text-ink"
+            className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-2 transition-colors duration-100 hover:text-accent"
           >
             <PencilIcon className="size-3.5" />
             Edit

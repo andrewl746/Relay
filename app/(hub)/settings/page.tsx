@@ -1,16 +1,20 @@
 import { SettingsForm, type SettingsDefaults } from "@/components/hub/settings-form";
 import { PageShell, PageTitle } from "@/components/hub/ui";
 import { getProfile } from "@/lib/onboarding/profile";
+import { getUsers } from "@/lib/hub/data";
 import { getCurrentUser } from "@/lib/hub/session";
-import { deleteAccount } from "@/lib/supabase/actions";
+import { deleteAccount, signOut } from "@/lib/supabase/actions";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseUser } from "@/lib/supabase/session";
 
 export const metadata = { title: "Settings" };
 
 export default async function SettingsPage() {
-  const user = await getCurrentUser();
-  const authUser = await getSupabaseUser();
+  const [user, authUser, demoUsers] = await Promise.all([
+    getCurrentUser(),
+    getSupabaseUser(),
+    getUsers(),
+  ]);
 
   // Signed in with Supabase: read the real profile. Demo mode: show what the
   // demo user has, so the page is still explorable without auth configured.
@@ -42,7 +46,14 @@ export default async function SettingsPage() {
     <PageShell>
       <PageTitle title="Settings" lede="Your profile, where you are, and how Relay looks." />
       <div className="max-w-[720px]">
-        <SettingsForm defaults={defaults} deleteAction={deleteAccount} />
+        <SettingsForm
+          defaults={defaults}
+          deleteAction={deleteAccount}
+          signOutAction={signOut}
+          signedIn={Boolean(authUser)}
+          currentUserId={user.id}
+          demoUsers={demoUsers.map((u) => ({ id: u.id, label: `${u.name} · ${u.moveStatus}` }))}
+        />
       </div>
     </PageShell>
   );

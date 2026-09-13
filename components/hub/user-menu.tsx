@@ -16,11 +16,14 @@ export function UserMenu({
   name,
   email,
   avatarUrl,
+  signedIn,
   signOutAction,
 }: {
   name: string;
   email: string;
   avatarUrl?: string | null;
+  /** False in demo mode, where there is no session to end. */
+  signedIn: boolean;
   signOutAction: () => Promise<void>;
 }) {
   const [open, setOpen] = useState(false);
@@ -68,7 +71,7 @@ export function UserMenu({
         >
           <div className="border-b border-border px-3 py-2.5">
             <p className="truncate text-[14px] font-semibold">{name}</p>
-            <p className="truncate text-[12px] text-ink-2">{email}</p>
+            <p className="truncate text-[12px] text-ink-2">{signedIn ? email : "Demo student · not signed in"}</p>
           </div>
 
           {[
@@ -89,15 +92,26 @@ export function UserMenu({
 
           <div className="my-1 border-t border-border" />
 
-          <form action={signOutAction}>
-            <button
-              type="submit"
+          {signedIn ? (
+            <form action={signOutAction}>
+              <button
+                type="submit"
+                role="menuitem"
+                className="w-full px-3 py-2.5 text-left text-[14px] hover:bg-surface-2"
+              >
+                Sign out
+              </button>
+            </form>
+          ) : (
+            <Link
+              href="/login"
               role="menuitem"
-              className="w-full px-3 py-2.5 text-left text-[14px] hover:bg-surface-2"
+              onClick={() => setOpen(false)}
+              className="block px-3 py-2.5 text-[14px] font-semibold text-accent hover:bg-surface-2"
             >
-              Sign out
-            </button>
-          </form>
+              Sign in
+            </Link>
+          )}
 
         </div>
       )}

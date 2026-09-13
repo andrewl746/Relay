@@ -56,7 +56,7 @@ export default function OnboardingPage() {
 
         {/* University */}
         <div className="mb-8">
-          <label className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] block mb-3">
+          <label className="text-[13px] font-semibold text-[var(--text-muted)] block mb-3">
             University
           </label>
           <select
@@ -73,7 +73,7 @@ export default function OnboardingPage() {
 
         {/* Location */}
         <div className="mb-8">
-          <label className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] block mb-3">
+          <label className="text-[13px] font-semibold text-[var(--text-muted)] block mb-3">
             Neighbourhood
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -96,7 +96,7 @@ export default function OnboardingPage() {
 
         {/* Pickup Windows */}
         <div className="mb-10">
-          <label className="text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)] block mb-3">
+          <label className="text-[13px] font-semibold text-[var(--text-muted)] block mb-3">
             Pickup Windows
           </label>
           <div className="flex gap-2">
@@ -105,7 +105,7 @@ export default function OnboardingPage() {
                 key={w}
                 type="button"
                 onClick={() => toggleWindow(w)}
-                className={`flex-1 rounded-[2px] border px-4 py-3 text-[14px] font-bold uppercase tracking-wide transition-all duration-75 ${
+                className={`flex-1 rounded-[2px] border px-4 py-3 text-[14px] font-semibold transition-all duration-75 ${
                   windows.has(w)
                     ? 'border-[var(--active-route)] bg-[var(--active-route)] text-white'
                     : 'border-[var(--bezel)] bg-[var(--panel)] text-[var(--text-muted)] hover:border-[var(--text-muted)]'

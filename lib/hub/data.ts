@@ -1,4 +1,6 @@
 import { filterBoard, rankByUrgency, type BoardView } from "./feed";
+import { matchesTerms, searchTerms } from "./search";
+import { semanticHits } from "./semantic";
 import { isGoneByTonight } from "./format";
 import { handoffs, listings, matches, notifications, slots, university, users, wants } from "./mock-data";
 import { plansFor, type Plan } from "./matching";
@@ -29,7 +31,7 @@ function childrenOf(listingId: string) {
   return listings.filter((l) => l.parentId === listingId);
 }
 
-export type BoardListing = Listing & { itemCount: number; isMatch: boolean };
+export type BoardListing = Listing & { itemCount: number; isMatch: boolean; sellerName: string };
 
 export async function getBoard({ view, query, userId }: { view: BoardView; query?: string; userId: string }) {
   // Only things this person could actually collect count as a match on the
@@ -43,12 +45,30 @@ export async function getBoard({ view, query, userId }: { view: BoardView; query
   );
   const open: BoardListing[] = listings
     .filter((l) => l.parentId === null && l.status === "available")
-    .map((l) => ({ ...l, itemCount: childrenOf(l.id).length, isMatch: matchedIds.has(l.id) }));
+    .map((l) => ({
+      ...l,
+      itemCount: childrenOf(l.id).length,
+      isMatch: matchedIds.has(l.id),
+      sellerName: users.find((u) => u.id === l.sellerId)?.name ?? "A student",
+    }));
 
-  const shown = filterBoard(open, view, query, {
-    matchedIds,
-    searchableText: (l) => [l.title, l.description, l.kind, ...childrenOf(l.id).map((c) => c.title)].join(" "),
-  });
+  const searchableText = (l: BoardListing) =>
+    [l.title, l.description, l.kind, ...childrenOf(l.id).map((c) => c.title)].join(" ");
+
+  // Filter the view first, then search inside it. Search is the union of a
+  // literal/synonym match and an embedding match (./semantic.ts) — the model
+  // can add results a table never would, and if it is unavailable the lexical
+  // half still answers, so search degrades instead of breaking.
+  const inView = filterBoard(open, view, undefined, { matchedIds, searchableText });
+  let shown = inView;
+  if (query?.trim()) {
+    const terms = searchTerms(query);
+    const semantic = await semanticHits(
+      query,
+      inView.map((l) => ({ id: l.id, text: searchableText(l) })),
+    );
+    shown = inView.filter((l) => matchesTerms(searchableText(l), terms) || semantic.has(l.id));
+  }
 
   const deadlines = open.flatMap((l) => (l.expiresAt ? [l.expiresAt] : []));
   return {

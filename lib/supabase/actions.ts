@@ -1,12 +1,18 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { USER_COOKIE } from "../hub/dev-login";
 import { createClient } from "./server";
 
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  redirect("/login");
+  // Drop the demo identity too. Without this, signing out landed straight
+  // back in the hub as whichever seeded student the dev-login cookie still
+  // named — you appeared to be logged in as a stranger.
+  (await cookies()).delete(USER_COOKIE);
+  redirect("/welcome");
 }
 
 /**
