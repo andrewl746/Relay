@@ -59,6 +59,20 @@ export async function getBoard({ view, query, userId }: { view: BoardView; query
   };
 }
 
+export type MyListing = Listing & { itemCount: number };
+
+/**
+ * What a seller has posted, newest first. Includes claimed listings so the
+ * seller can see a handoff is pending — once both sides confirm a handoff,
+ * this is where the listing will stop showing up (see lib/hub/actions.ts).
+ */
+export async function getMyListings(userId: string): Promise<MyListing[]> {
+  return listings
+    .filter((l) => l.sellerId === userId && l.parentId === null)
+    .map((l) => ({ ...l, itemCount: childrenOf(l.id).length }))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+}
+
 export type ListingDetail = Listing & { seller: User; slots: TimeSlot[]; items: Listing[] };
 
 export async function getListing(id: string): Promise<ListingDetail | null> {
