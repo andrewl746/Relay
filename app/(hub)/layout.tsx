@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
+import { SiteFooter } from "@/components/hub/site-footer";
 import { SiteHeader } from "@/components/hub/site-header";
 import { getProfile } from "@/lib/onboarding/profile";
 import { SITE_NAME } from "@/lib/hub/site";
@@ -50,6 +51,7 @@ export default async function HubLayout({ children }: { children: ReactNode }) {
     <div className={`${archivo.variable} ${plex.variable} hub flex min-h-full flex-1 flex-col font-sans`}>
       <SiteHeader />
       <main className="flex-1">{children}</main>
+      <SiteFooter />
       <footer className="border-t border-rule">
         <div className="mx-auto flex max-w-[1120px] flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-4 py-6 text-[13px] text-ink-2 sm:px-6">
           <p>{SITE_NAME} never handles money. Pay when you pick something up, never before you’ve seen it.</p>

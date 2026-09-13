@@ -1,22 +1,9 @@
 @import "tailwindcss";
 
-/* Corrugated kraft — mapped onto the existing token names so every component
-   adapts without being touched. See app/globals.css for the full rationale. */
+/* The hub inherits the single palette from app/globals.css. These aliases
+   exist only because components reference the older token names. Do not
+   redefine colours here — one palette, one place. */
 :root {
-  --paper: #F3EADB;        /* page ground — light kraft */
-  --paper-raised: #E8DAC2; /* the box face */
-  --paper-sunk: #D9C3A0;   /* inside the box */
-  --ink: #2B2118;          /* stencil ink            13:1  */
-  --ink-2: #6A5744;        /*                        5.8:1 */
-  --ink-3: #9C876A;        /* large / non-text only  2.9:1 */
-  --rule: rgba(43, 33, 24, 0.16);
-  --rule-strong: rgba(43, 33, 24, 0.38);
-  --signal: #C3352B;       /* FRAGILE red — urgent, overdue, idle   4.97:1 */
-  --signal-fill: #C3352B;
-  --amber: #8A5A00;        /* shipping amber — money                5.2:1  */
-  --amber-fill: #E8B923;
-  --seal: #1B4F9C;         /* stamp green — held, confirmed         6.4:1  */
-  --seal-fill: #1B4F9C;
   --ease: cubic-bezier(0.34, 1.28, 0.64, 1);
 }
 

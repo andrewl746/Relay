@@ -8,7 +8,7 @@ export default async function PostRoomPage() {
   const user = await getCurrentUser();
 
   return (
-    <PageShell width="narrow">
+    <PageShell>
       <BackLink href="/post">Post a single item instead</BackLink>
       <PageTitle
         title="Post your room"

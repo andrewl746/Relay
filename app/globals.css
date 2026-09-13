@@ -20,101 +20,125 @@ html {
 }
 
 :root {
-  /* kraft ramp — light board to fold-shadow */
-  --kraft-50: #F3EADB;   /* page ground */
-  --kraft-100: #E8DAC2;  /* raised panel, the box face */
-  --kraft-200: #D9C3A0;  /* inset / inside the box */
-  --kraft-300: #C4A87E;  /* corrugation, edges */
-  --kraft-400: #A88857;  /* fold shadow */
-
-  /* stencil ink */
-  --ink: #2B2118;
-  --ink-2: #6A5744;
-  --ink-3: #9C876A;      /* >=18.66px bold or non-text only — 2.9:1 */
-
-  --rule: rgba(43, 33, 24, 0.16);
-  --rule-strong: rgba(43, 33, 24, 0.38);
-
   /*
-   * Kandinsky on kraft. Bauhaus primaries are what spot-colour printing on
-   * packaging actually looks like — one or two flat inks on brown board — so
-   * the palette and the material agree instead of fighting.
+   * One accent, everything else paper and ink.
    *
-   * Contrast measured against --kraft-50.
+   * The previous ramp was beige all the way down, which reads as 1991 PC
+   * plastic rather than paper, and three competing Kandinsky primaries made
+   * every screen look like a warning. Cardboard now comes from TEXTURE and
+   * STRUCTURE, not from tinting every surface brown.
    */
-  --kand-blue: #1B4F9C;    /* cobalt   — held, confirmed, in use     6.6:1 */
-  --kand-red: #C3352B;     /* vermilion— urgent, overdue, idle       4.6:1 */
-  --kand-yellow: #E8B923;  /* cadmium  — FILL ONLY (1.6:1 as text);
-                              ink on yellow is 8.5:1                       */
-  --kand-ink-blue: #12386F; /* deeper blue for small text on kraft   9.5:1 */
 
-  /* semantic aliases — colour still means state, never decoration */
-  --signal: var(--kand-red);
-  --amber: #8A5A00;        /* ochre for money TEXT; yellow is the fill      */
-  --seal: var(--kand-blue);
+  /* surfaces — warm white, not beige */
+  --bg: #FAF8F5;          /* page */
+  --surface: #FFFFFF;     /* cards sit ON the page, lighter than it */
+  --surface-2: #F4F1EC;   /* inset wells, table stripes */
+  --border: #E7E2DA;
+  --border-strong: #D2CABE;
 
-  /* packing tape */
-  --tape: rgba(214, 186, 132, 0.62);
-  --tape-edge: rgba(168, 136, 87, 0.45);
+  /* ink */
+  --ink: #1C1917;         /* 16.9:1 on --bg */
+  --ink-2: #57534E;       /*  7.0:1 */
+  --ink-3: #8A837B;       /*  3.4:1 — >=18.66px bold or non-text only */
+
+  /* the single theme colour. 6.0:1 on white both ways, so it is safe as
+     text on paper AND as a fill with white text on top. */
+  --accent: #A8431A;
+  --accent-tint: #F6E9E2; /* wash for selected rows */
+
+  /* confirmed. the one other hue, kept muted and used only for a completed tick */
+  --done: #2D6A4F;
+
+  /* legacy aliases — components still reference these names */
+  --kraft-50: var(--bg);
+  --kraft-100: var(--surface);
+  --kraft-200: var(--surface-2);
+  --kraft-300: var(--border);
+  --kraft-400: var(--border-strong);
+  --paper: var(--bg);
+  --paper-raised: var(--surface);
+  --paper-sunk: var(--surface-2);
+  --rule: var(--border);
+  --rule-strong: var(--border-strong);
+  --signal: var(--accent);
+  --signal-fill: var(--accent);
+  --amber: var(--ink-2);
+  --amber-fill: var(--accent);
+  --seal: var(--done);
+  --seal-fill: var(--done);
+  --kand-blue: var(--accent);
+  --kand-red: var(--accent);
+  --kand-yellow: var(--accent-tint);
+  --tape: rgba(210, 202, 190, 0.5);
+  --tape-edge: rgba(168, 160, 148, 0.4);
+  --chassis: var(--bg);
+  --panel: var(--surface);
+  --bezel: var(--border);
+  --text-primary: var(--ink);
+  --text-muted: var(--ink-2);
+  --active-route: var(--accent);
+  --secured: var(--done);
+  --alert: var(--accent);
 
   --font-display: var(--font-archivo), system-ui, sans-serif;
   --font-ui: var(--font-archivo), system-ui, sans-serif;
   --font-data: var(--font-plex), ui-monospace, monospace;
 
-  /* board has thickness: a hard offset edge, never a blur */
-  --edge-1: 0 2px 0 var(--kraft-300);
-  --edge-2: 0 3px 0 var(--kraft-300), 0 6px 0 var(--kraft-400);
+  /* one soft shadow; cards lift off the page instead of being outlined twice */
+  --lift: 0 1px 2px rgba(28, 25, 23, .04), 0 2px 8px rgba(28, 25, 23, .05);
+  --lift-2: 0 2px 4px rgba(28, 25, 23, .05), 0 8px 24px rgba(28, 25, 23, .07);
 
-  /* Legacy names from the tactical era. Some pages read these raw, not via
-     Tailwind, so they must resolve in :root and not only in @theme. */
-  --chassis: var(--kraft-50);
-  --panel: var(--kraft-100);
-  --bezel: var(--kraft-300);
-  --text-primary: var(--ink);
-  --text-muted: var(--ink-2);
-  --active-route: var(--signal);
-  --secured: var(--seal);
-  --alert: var(--amber);
+  /* one spacing rhythm — see .shell */
+  --page-max: 1100px;
+  --page-gutter: 24px;
 
   --dur-snap: 90ms;
   --dur-fold: 260ms;
-  --ease-box: cubic-bezier(0.34, 1.28, 0.64, 1); /* slight overshoot — weight */
+  --ease-box: cubic-bezier(0.34, 1.28, 0.64, 1);
 }
 
 @theme inline {
-  --color-kraft-50: var(--kraft-50);
-  --color-kraft-100: var(--kraft-100);
-  --color-kraft-200: var(--kraft-200);
-  --color-kraft-300: var(--kraft-300);
-  --color-kraft-400: var(--kraft-400);
-
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
-  --color-signal: var(--signal);
-  --color-amber: var(--amber);
-  --color-seal: var(--seal);
-  --color-tape: var(--tape);
-  --color-kand-blue: var(--kand-blue);
-  --color-kand-red: var(--kand-red);
-  --color-kand-yellow: var(--kand-yellow);
+  --color-accent: var(--accent);
+  --color-accent-tint: var(--accent-tint);
+  --color-done: var(--done);
 
-  /* legacy aliases so the tactical-era components keep resolving */
-  --color-chassis: var(--kraft-50);
-  --color-panel: var(--kraft-100);
-  --color-bezel: var(--kraft-300);
+  --color-paper: var(--bg);
+  --color-paper-raised: var(--surface);
+  --color-paper-sunk: var(--surface-2);
+  --color-rule: var(--border);
+  --color-rule-strong: var(--border-strong);
+  --color-signal: var(--accent);
+  --color-signal-fill: var(--accent);
+  --color-amber: var(--ink-2);
+  --color-seal: var(--done);
+  --color-kraft-50: var(--bg);
+  --color-kraft-100: var(--surface);
+  --color-kraft-200: var(--surface-2);
+  --color-kraft-300: var(--border);
+  --color-kraft-400: var(--border-strong);
+  --color-chassis: var(--bg);
+  --color-panel: var(--surface);
+  --color-bezel: var(--border);
   --color-text-primary: var(--ink);
   --color-text-muted: var(--ink-2);
-  --color-active-route: var(--signal);
-  --color-secured: var(--seal);
-  --color-alert: var(--amber);
+  --color-active-route: var(--accent);
+  --color-secured: var(--done);
+  --color-alert: var(--accent);
 
   --font-display: var(--font-display);
   --font-ui: var(--font-ui);
   --font-data: var(--font-data);
 
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
 }
 
 body {
@@ -125,30 +149,40 @@ body {
 }
 
 /*
- * Corrugation. A single repeating gradient at very low alpha — the flutes you
- * see edge-on when you look into a box. Fixed attachment so it reads as the
- * material the page is printed on rather than something that scrolls with it.
+ * Texture.
+ *
+ * Bauhaus says the material should be honest about what it is, so the grain is
+ * a real photograph of board rather than a CSS approximation of one — but it
+ * sits at 6% on a warm white ground, so it reads as the tooth of paper, not as
+ * a brown wallpaper. Fixed attachment: it is the surface the page is printed
+ * on, so it does not slide when you scroll.
  */
-.corrugated,
 body {
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgba(168, 136, 87, 0.055) 0px,
-    rgba(168, 136, 87, 0.055) 1px,
-    transparent 1px,
-    transparent 7px
-  );
+  background-color: var(--bg);
+  background-image: url("/cardboard-bg.jpg");
+  background-size: 520px auto;
+  background-repeat: repeat;
   background-attachment: fixed;
 }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  opacity: 0.94;
+  pointer-events: none;
+  z-index: -1;
+}
 
+/* An honest sheet: white, lifted, one hairline. Not outlined twice. */
 /* A cardboard panel: kraft face, corrugated edge, real thickness. */
 .board {
-  background: var(--kraft-100);
-  border: 1px solid var(--kraft-300);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  box-shadow: var(--edge-1);
+  box-shadow: var(--lift);
 }
-.board-thick { box-shadow: var(--edge-2); }
+.board-thick { box-shadow: var(--lift-2); }
 
 /*
  * A strip of packing tape. Sits across a corner or a seam; deliberately a

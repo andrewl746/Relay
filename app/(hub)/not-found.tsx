@@ -3,7 +3,7 @@ import { btnSecondary, PageShell, PageTitle } from "@/components/hub/ui";
 
 export default function NotFound() {
   return (
-    <PageShell width="narrow">
+    <PageShell>
       <PageTitle
         title="That’s not on the board"
         lede="It may have been claimed, or its deadline passed. Most things get posted in the last two weeks of term."

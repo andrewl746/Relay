@@ -14,19 +14,19 @@ const STEPS = [
     n: '01',
     title: 'Say what you need',
     body: 'Type it how you’d say it out loud — "need a drill saturday, putting up shelves". No categories, no filters.',
-    color: 'var(--kand-blue)',
+    color: 'var(--accent)',
   },
   {
     n: '02',
-    title: 'We find who has one',
-    body: 'Someone in your building or the next street over. You get a name, an address, the days it’s free, and what it costs.',
-    color: 'var(--kand-yellow)',
+    title: 'See who has one free',
+    body: 'Someone in your building or the next street over. You get their name, the area, which days it’s free, and what it costs.',
+    color: 'var(--accent)',
   },
   {
     n: '03',
-    title: 'Pick it up, pass it on',
-    body: 'We already know who needs it after you, so the next handoff is arranged before you even have it.',
-    color: 'var(--kand-red)',
+    title: 'Pick it up, bring it back',
+    body: 'Agree a time, collect it, return it on the date you both agreed. Buying something outright works the same way, minus the return.',
+    color: 'var(--accent)',
   },
 ]
 
@@ -91,10 +91,11 @@ export default function LandingPage() {
       <section className="relative z-10 flex flex-col items-center overflow-hidden px-6 pt-20 pb-20 text-center sm:pt-28">
         {/* Bauhaus shapes — flat spot colours, purely decorative */}
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <span className="shape-circle absolute left-[6%] top-[14%] size-28 bg-[var(--kand-blue)] opacity-[0.24] sm:size-40" />
-          <span className="shape-tri absolute right-[9%] top-[22%] text-[var(--kand-red)] opacity-[0.26] [--tri:34px] sm:[--tri:52px]" />
-          <span className="shape-circle absolute bottom-[8%] right-[18%] size-16 bg-[var(--kand-yellow)] opacity-[0.5] sm:size-24" />
-          <span className="absolute bottom-[22%] left-[14%] h-[3px] w-24 bg-[var(--kand-red)] opacity-[0.45] sm:w-36" />
+          {/* Bauhaus: a few flat shapes in the one theme colour, varied only by
+              weight. Three hues competing was the problem, not the geometry. */}
+          <span className="shape-circle absolute left-[7%] top-[16%] size-28 bg-accent opacity-[0.10] sm:size-40" />
+          <span className="shape-tri absolute right-[10%] top-[24%] text-accent opacity-[0.14] [--tri:32px] sm:[--tri:48px]" />
+          <span className="absolute bottom-[24%] left-[15%] h-[3px] w-24 bg-accent opacity-[0.3] sm:w-32" />
         </div>
         {/* CSS-driven, not motion: the hero must never depend on hydration.
             A JS entry animation starts at opacity 0, so any hiccup leaves the
@@ -116,8 +117,8 @@ export default function LandingPage() {
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/login"
-              className="inline-flex min-h-12 items-center justify-center rounded-[4px] bg-[var(--signal)] px-8 text-[15px] font-bold tracking-wide text-[var(--kraft-50)] transition-transform duration-75 hover:-translate-y-[1px] active:translate-y-[2px]"
-              style={{ boxShadow: '0 3px 0 #7C2814' }}
+              className="inline-flex min-h-12 items-center justify-center rounded-[4px] bg-accent px-8 text-[15px] font-semibold text-white transition-colors duration-75 hover:brightness-[1.08]"
+              
             >
               Find what you need
             </Link>
@@ -176,8 +177,8 @@ export default function LandingPage() {
           Stuff you need once
         </h2>
         <p className="mb-10 max-w-[560px] text-[16px] text-[var(--ink-2)]">
-          Nobody should own four of these per building. Borrow for a day or two,
-          hand it to whoever needs it next.
+          Nobody needs four of these per building. Borrow one for a day or two,
+          then it goes back and someone else gets a turn.
         </p>
 
         <Conveyor className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -240,21 +241,21 @@ export default function LandingPage() {
       {/* Reassurance */}
       <section className="relative z-10 mx-auto max-w-[1000px] px-6 py-20">
         <Conveyor className="grid gap-6 sm:grid-cols-3">
-          <Crate className="border-t-4 pt-5" style={{ borderColor: 'var(--kand-blue)' }}>
+          <Crate className="border-t-4 pt-5" style={{ borderColor: 'var(--accent)' }}>
             <h3 className="mb-2 text-[17px] font-semibold">Students only</h3>
             <p className="text-[15px] leading-relaxed text-[var(--ink-2)]">
               You sign up with your university email, so everyone here is someone
               you could run into on campus.
             </p>
           </Crate>
-          <Crate className="border-t-4 pt-5" style={{ borderColor: 'var(--kand-yellow)' }}>
+          <Crate className="border-t-4 pt-5" style={{ borderColor: 'var(--ink-3)' }}>
             <h3 className="mb-2 text-[17px] font-semibold">You keep the money</h3>
             <p className="text-[15px] leading-relaxed text-[var(--ink-2)]">
               Relay shows the price and the dates. You and the other person settle
               it however you like — we never touch your payments.
             </p>
           </Crate>
-          <Crate className="border-t-4 pt-5" style={{ borderColor: 'var(--kand-red)' }}>
+          <Crate className="border-t-4 pt-5" style={{ borderColor: 'var(--accent)' }}>
             <h3 className="mb-2 text-[17px] font-semibold">It comes back</h3>
             <p className="text-[15px] leading-relaxed text-[var(--ink-2)]">
               Every loan has a return date agreed up front, and you always know
@@ -280,8 +281,8 @@ export default function LandingPage() {
           </p>
           <Link
             href="/login"
-            className="inline-flex min-h-12 items-center justify-center rounded-[4px] bg-[var(--signal)] px-8 text-[15px] font-bold tracking-wide text-[var(--kraft-50)] transition-transform duration-75 hover:-translate-y-[1px] active:translate-y-[2px]"
-            style={{ boxShadow: '0 3px 0 #7C2814' }}
+            className="inline-flex min-h-12 items-center justify-center rounded-[4px] bg-accent px-8 text-[15px] font-semibold text-white transition-colors duration-75 hover:brightness-[1.08]"
+            
           >
             Get started
           </Link>

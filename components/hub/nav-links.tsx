@@ -3,15 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+/*
+ * No "Home" item on purpose. With a horizontal top nav the logo is the home
+ * affordance, so a Home tab is a second control for the same destination —
+ * GitHub, Notion, Figma and Linear all drop it. An explicit Home belongs in a
+ * sidebar nav, where the logo is usually a workspace switcher instead.
+ */
 const links = [
-  { href: "/", label: "Browse" },
+  { href: "/browse", label: "Browse" },
   { href: "/wants", label: "My list" },
   { href: "/post", label: "Post" },
   { href: "/handoffs", label: "Handoffs" },
 ];
 
 function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/" || pathname.startsWith("/listings");
+  if (href === "/browse") return pathname === "/browse" || pathname.startsWith("/listings");
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 

@@ -94,7 +94,7 @@ export function DevLogin({
       <button
         type="submit"
         disabled={loading}
-        className="w-full sm:w-auto inline-flex min-h-11 items-center justify-center rounded-[2px] bg-[var(--active-route)] px-6 text-[15px] font-bold text-[#0D0E12] transition-all duration-75 hover:brightness-110 disabled:opacity-50"
+        className="w-full sm:w-auto inline-flex min-h-11 items-center justify-center rounded-[2px] bg-[var(--active-route)] px-6 text-[15px] font-bold text-white transition-all duration-75 hover:brightness-110 disabled:opacity-50"
       >
         {loading ? "Authorizing..." : `Continue as ${selected?.name.split(" ")[0] ?? "user"}`}
       </button>

@@ -1,208 +1,131 @@
-import Form from "next/form";
 import Link from "next/link";
-import { SearchIcon } from "@/components/hub/icons";
 import { ListingRow } from "@/components/hub/listing-row";
-import { btnSecondary, btnTertiary, EmptyState, Eyebrow, fieldClass } from "@/components/hub/ui";
-import { getBoard, getMatches, getUniversity, getWants, type BoardListing } from "@/lib/hub/data";
-import { boardViews, parseBoardView } from "@/lib/hub/feed";
-import { formatShortDate, moveLine } from "@/lib/hub/format";
+import { btnPrimary, btnSecondary, Eyebrow, PageShell } from "@/components/hub/ui";
+import { getBoard, getHandoffs, getMatches, getUniversity, getWants } from "@/lib/hub/data";
+import { formatShortDate } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
 
-function one(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
+export const metadata = { title: "Home — Relay" };
+
+function firstName(name: string) {
+  return name.trim().split(/\s+/)[0] || "there";
 }
 
-export default async function BrowsePage({ searchParams }: PageProps<"/">) {
-  const params = await searchParams;
-  const view = parseBoardView(one(params.view));
-  const query = one(params.q)?.trim() || undefined;
-
+export default async function HomePage() {
   const user = await getCurrentUser();
-  const [university, board, wants, matches] = await Promise.all([
+  const [university, board, wants, matches, handoffs] = await Promise.all([
     getUniversity(),
-    getBoard({ view, query, userId: user.id }),
+    getBoard({ view: "all", userId: user.id }),
     getWants(user.id),
     getMatches(user.id),
+    getHandoffs(user.id),
   ]);
-  const shown = board.finalCall.length + board.rest.length;
 
-  const viewHref = (value: string) => {
-    const search = new URLSearchParams();
-    if (value !== "all") search.set("view", value);
-    if (query) search.set("q", query);
-    const qs = search.toString();
-    return qs ? `/?${qs}` : "/";
-  };
+  const leavingSoon = [...board.finalCall, ...board.rest].slice(0, 4);
+  const upcoming = [...handoffs.pickingUp, ...handoffs.handingOff].slice(0, 3);
+  const openWants = wants.filter((w) => !w.fulfilled);
 
   return (
-    <div className="mx-auto max-w-[1120px] px-4 pt-8 pb-16 sm:px-6">
-      <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[1fr_320px]">
-        <section aria-labelledby="board-title" className="min-w-0">
-          {board.lastDeadline && (
-            <p className="t-eyebrow text-signal">Move-out week · last deadline {formatShortDate(board.lastDeadline)}</p>
-          )}
-          <h1 id="board-title" className="t-display mt-2 text-[clamp(34px,5.5vw,54px)] leading-[1.02]">
-            Everything here is leaving
-          </h1>
-          <p className="mt-3 text-[17px] text-ink-2">
-            {board.total} listings at {university.shortName}
-            {board.goneTonight > 0 && ` · ${board.goneTonight} gone by tonight`}
-          </p>
+    <PageShell>
+      <header className="mb-8">
+        <h1 className="text-[30px] leading-tight font-semibold tracking-[-0.02em]">
+          Hi {firstName(user.name)}
+        </h1>
+        <p className="mt-1 text-[16px] text-ink-2">
+          {matches.length > 0
+            ? `${matches.length} thing${matches.length === 1 ? "" : "s"} on your list just turned up at ${university.shortName}.`
+            : `Here's what's moving around ${university.shortName} right now.`}
+        </p>
+      </header>
 
-          <Form action="/" className="mt-6 flex gap-2">
-            {view !== "all" && <input type="hidden" name="view" value={view} />}
-            <label className="relative flex-1">
-              <span className="sr-only">Search listings</span>
-              <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-2" />
-              <input
-                key={query ?? ""}
-                name="q"
-                defaultValue={query}
-                placeholder="What do you need? Try “lamp” or “BIOL 130”"
-                className={`${fieldClass} min-h-11 pl-9`}
-              />
-            </label>
-            <button type="submit" className={btnSecondary}>
-              Search
-            </button>
-          </Form>
+      <div className="mb-10 flex flex-wrap gap-3">
+        <Link href="/browse" className={btnPrimary}>
+          Find something
+        </Link>
+        <Link href="/post" className={btnSecondary}>
+          Lend or sell something
+        </Link>
+      </div>
 
-          <nav
-            aria-label="Filter listings"
-            className="-mx-4 mt-4 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:px-0"
-          >
-            <ul className="flex gap-2">
-              {boardViews.map((v) => {
-                const active = v.value === view;
-                return (
-                  <li key={v.value}>
-                    <Link
-                      href={viewHref(v.value)}
-                      scroll={false}
-                      aria-current={active ? "true" : undefined}
-                      className={`inline-flex min-h-11 items-center rounded-1 border px-3 text-[13px] font-semibold whitespace-nowrap transition-colors duration-[90ms] ${
-                        active ? "border-ink bg-ink text-paper" : "border-rule hover:border-rule-strong hover:bg-paper-raised"
-                      }`}
-                    >
-                      {v.label}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-
-          <div className="mt-6">
-            {shown === 0 ? (
-              <EmptyState title={query ? `Nothing matches “${query}” right now.` : "Nothing here right now."}>
-                <p>
-                  Add it to your list and we’ll tell you the moment someone posts. Most things show up in the last
-                  two weeks of term.
-                </p>
-                <Link
-                  href={query ? `/wants?add=${encodeURIComponent(query)}` : "/wants"}
-                  className={`${btnSecondary} mt-4`}
-                >
-                  {query ? `Add “${query}” to my list` : "Go to my list"}
-                </Link>
-              </EmptyState>
-            ) : (
-              <>
-                {board.finalCall.length > 0 && (
-                  <BoardSection
-                    title={`Final call · ${board.finalCall.length} ${board.finalCall.length === 1 ? "item" : "items"}`}
-                    urgent
-                    listings={board.finalCall}
-                  />
-                )}
-                <BoardSection title="Soonest deadline first" listings={board.rest} />
-              </>
-            )}
+      <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
+        {/* Leaving soon */}
+        <section className="board overflow-hidden">
+          <div className="flex items-center justify-between border-b border-border px-5 py-3.5">
+            <Eyebrow>Leaving soon</Eyebrow>
+            <Link href="/browse" className="text-[13px] font-semibold text-accent hover:underline">
+              Browse all
+            </Link>
           </div>
+          {leavingSoon.length > 0 ? (
+            <ul>
+              {leavingSoon.map((listing) => (
+                <ListingRow key={listing.id} listing={listing} />
+              ))}
+            </ul>
+          ) : (
+            <p className="px-5 py-8 text-[15px] text-ink-2">
+              Nothing listed yet. Be the first to post something.
+            </p>
+          )}
         </section>
 
-        <aside className="space-y-10 lg:pt-2">
-          {user.moveStatus === "leaving" ? (
-            <section>
-              <Eyebrow>Moving out</Eyebrow>
-              <p className="mt-2 text-[17px] font-semibold">Post your whole room in one go</p>
-              <p className="mt-1 text-ink-2">
-                One incoming student claims all of it in a single pickup. No eight separate conversations.
+        <div className="flex flex-col gap-6">
+          {/* Your list */}
+          <section className="board p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <Eyebrow>Your list</Eyebrow>
+              <Link href="/wants" className="text-[13px] font-semibold text-accent hover:underline">
+                Edit
+              </Link>
+            </div>
+            {openWants.length > 0 ? (
+              <ul className="space-y-2">
+                {openWants.slice(0, 5).map((want) => (
+                  <li key={want.id} className="flex items-start gap-2 text-[15px]">
+                    <span aria-hidden className="mt-[7px] size-1.5 shrink-0 rounded-full bg-ink-3" />
+                    <span className="min-w-0 flex-1 truncate">{want.text}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-[15px] text-ink-2">
+                Tell us what you need and we&rsquo;ll watch for it.{" "}
+                <Link href="/wants" className="font-semibold text-accent hover:underline">
+                  Add something
+                </Link>
               </p>
-              <Link href="/post/room" className={`${btnSecondary} mt-4 w-full`}>
-                Post my room
-              </Link>
-              <Link href="/post" className={`${btnTertiary} mt-3 inline-block text-[13px]`}>
-                Or post a single item
-              </Link>
-            </section>
-          ) : (
-            <section>
-              <Eyebrow>Your list · {moveLine(user)}</Eyebrow>
-              {wants.length === 0 ? (
-                <p className="mt-2 text-ink-2">
-                  Write down what you need before you arrive and we’ll match it as people post.
-                </p>
-              ) : (
-                <ul className="mt-3 border-t border-rule">
-                  {wants.map((w) => {
-                    const count = matches.filter((m) => m.wantIds.includes(w.id)).length;
-                    return (
-                      <li key={w.id} className="flex items-baseline justify-between gap-3 border-b border-rule py-2">
-                        <span className={w.fulfilled ? "text-ink-3 line-through" : ""}>{w.text}</span>
-                        <span className={`shrink-0 text-[13px] ${count > 0 && !w.fulfilled ? "font-semibold" : "text-ink-2"}`}>
-                          {w.fulfilled ? "found it" : count > 0 ? `● ${count} ${count === 1 ? "match" : "matches"}` : "○ none yet"}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-              <div className="mt-4 flex flex-wrap items-center gap-4">
-                <Link href="/?view=matches" className={btnSecondary}>
-                  Show my matches
-                </Link>
-                <Link href="/wants" className={`${btnTertiary} text-[13px]`}>
-                  Edit list
-                </Link>
-              </div>
-            </section>
-          )}
-
-          <section>
-            <Eyebrow>How it works</Eyebrow>
-            <ol className="mt-3 space-y-3">
-              {[
-                ["Find it", "Everything is sorted by when it has to be gone, so nothing gets thrown out first."],
-                ["Pick a time", "The owner already set pickup times. Choose one, no messaging."],
-                ["Pick it up", "Meet at the time and place on your confirmation. Pay in person."],
-              ].map(([title, body], i) => (
-                <li key={title} className="grid grid-cols-[1.5rem_1fr] gap-x-2">
-                  <span className="data font-semibold">{i + 1}</span>
-                  <span>
-                    <span className="block font-semibold">{title}</span>
-                    <span className="block text-ink-2">{body}</span>
-                  </span>
-                </li>
-              ))}
-            </ol>
+            )}
           </section>
-        </aside>
-      </div>
-    </div>
-  );
-}
 
-function BoardSection({ title, listings, urgent = false }: { title: string; listings: BoardListing[]; urgent?: boolean }) {
-  if (listings.length === 0) return null;
-  return (
-    <section className="mb-8">
-      <h2 className={`t-eyebrow border-b border-rule-strong pb-2 ${urgent ? "text-signal" : "text-ink-2"}`}>{title}</h2>
-      <ul className="-mx-4 sm:mx-0">
-        {listings.map((l) => (
-          <ListingRow key={l.id} listing={l} />
-        ))}
-      </ul>
-    </section>
+          {/* Handoffs */}
+          <section className="board p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <Eyebrow>Coming up</Eyebrow>
+              <Link href="/handoffs" className="text-[13px] font-semibold text-accent hover:underline">
+                All handoffs
+              </Link>
+            </div>
+            {upcoming.length > 0 ? (
+              <ul className="space-y-3">
+                {upcoming.map((h) => (
+                  <li key={h.id}>
+                    <Link href={`/handoffs/${h.id}`} className="block hover:underline">
+                      <span className="block text-[15px] font-semibold">{h.listing.title}</span>
+                      <span className="data block text-[13px] text-ink-2">
+                        {formatShortDate(h.slot.startsAt)} · {h.slot.place}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-[15px] text-ink-2">
+                Nothing scheduled. Claim something and you&rsquo;ll see the pickup here.
+              </p>
+            )}
+          </section>
+        </div>
+      </div>
+    </PageShell>
   );
 }

@@ -22,9 +22,12 @@ export async function SiteHeader() {
   return (
     <header className="border-b border-rule-strong">
       <div className="mx-auto flex max-w-[1120px] flex-wrap items-center gap-x-3 px-4 sm:gap-x-6 sm:px-6 lg:flex-nowrap">
-        <Link href="/" className="flex min-h-14 items-center gap-2.5" aria-label={SITE_NAME}>
+        <Link href="/" className="flex min-h-14 items-center gap-3" aria-label={`${SITE_NAME} home`}>
           <Image src="/relay-black.png" alt={SITE_NAME} width={160} height={58} priority className="h-7 w-auto" />
-          <span className="hidden text-[13px] font-medium text-ink-2 sm:inline">{university.shortName}</span>
+          <span aria-hidden className="hidden h-6 w-px bg-border-strong sm:block" />
+          <span className="hidden text-[17px] font-semibold text-ink-2 sm:inline">
+            {university.shortName}
+          </span>
         </Link>
 
         <div className="ml-auto flex items-center gap-1 lg:order-last">

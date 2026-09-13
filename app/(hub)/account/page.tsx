@@ -13,7 +13,7 @@ export default async function AccountPage() {
   const myItems = snap.data.items.filter(i => i.holderId === user.id);
 
   return (
-    <PageShell width="wide">
+    <PageShell>
       <div className="mb-8">
         <h1 className="font-[family-name:var(--font-display)] text-[28px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
           ACCOUNT
