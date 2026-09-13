@@ -135,8 +135,13 @@ export async function findAnswers(me: Me, text: string, from: string, to: string
   for (const c of candidates) {
     const owner = people.get(c.item.holderId)
     if (!owner) continue
-    const pool = needs.filter((n) => !claimedBy.has(n.id) || claimedBy.get(n.id) === c.item.id)
-    const chain = chainForItem(c.item, eligibleNeeds(c.item, pool, table), table, people)
+    // Off the table: needs routed on another item, and needs booked on another item.
+    const pool = needs.filter(
+      (n) =>
+        (!claimedBy.has(n.id) || claimedBy.get(n.id) === c.item.id) &&
+        (!snap.pinned.has(n.id) || snap.pinned.get(n.id) === c.item.id),
+    )
+    const chain = chainForItem(c.item, eligibleNeeds(c.item, pool, table), table, people, { pinned: snap.pinned })
     const at = chain.hops.findIndex((h) => h.needId === PREVIEW)
 
     if (at === -1) {

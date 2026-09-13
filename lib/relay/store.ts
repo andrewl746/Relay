@@ -20,6 +20,8 @@ export type Snapshot = {
   data: Dataset
   table: MatchTable
   chains: Chain[]
+  /** Booked needs -> the item they were booked on. The route keeps them there. */
+  pinned: Map<string, string>
   chainOf: (itemId: string) => Chain
   itemById: (id: string) => Item | undefined
   personById: (id: string) => Person | undefined
@@ -40,11 +42,6 @@ const EMPTY_CHAIN = (itemId: string): Chain => ({
 })
 
 /**
- * Built per request. The DP is ~12ms over the whole network and runtime rows
- * change under us on every write, so caching would buy nothing and would serve
- * a stale board straight after someone posts something.
- */
-/**
  * Lay what a person told Relay about themselves over what the corpus assumed,
  * so the engine routes on where they actually live and when they can meet.
  */
@@ -60,6 +57,11 @@ function withProfile(person: Person, profile: Profile | undefined): Person {
   }
 }
 
+/**
+ * Built per request. The DP is ~12ms over the whole network and runtime rows
+ * change under us on every write, so caching would buy nothing and would serve
+ * a stale board straight after someone posts something.
+ */
 export function snapshot(): Snapshot {
   const seed = dataset()
   const runtime = readRuntime()
@@ -71,7 +73,9 @@ export function snapshot(): Snapshot {
   }
   const table: MatchTable = { ...matches(), ...runtime.matches }
 
-  const chains = assignAll(data, table, {})
+  // A booking pins its need to the item it was booked on (AssignOptions.pinned).
+  const pinned = new Map(runtime.accepted.map((a) => [a.needId, a.itemId]))
+  const chains = assignAll(data, table, { pinned })
   const byItem = new Map(chains.map((c) => [c.itemId, c]))
   const items = new Map(data.items.map((i) => [i.id, i]))
   const people = new Map(data.people.map((p) => [p.id, p]))
@@ -81,6 +85,7 @@ export function snapshot(): Snapshot {
     data,
     table,
     chains,
+    pinned,
     chainOf: (id) => byItem.get(id) ?? EMPTY_CHAIN(id),
     itemById: (id) => items.get(id),
     personById: (id) => people.get(id),

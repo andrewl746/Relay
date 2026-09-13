@@ -4,10 +4,9 @@ import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { config } from '../config.ts'
-import { USER_COOKIE } from '../hub/dev-login.ts'
 import { acceptHop, addNeed, postItem } from './actions.ts'
 import { addDays, daysBetween, isDay, today } from './dates.ts'
-import { getMe } from './me.ts'
+import { getMe, PERSON_COOKIE } from './me.ts'
 import {
   confirmSlip,
   createPerson,
@@ -21,11 +20,14 @@ import {
   WINDOWS,
   type ProfilePatch,
 } from './memory.ts'
+import { routes } from './routes.ts'
+import { mutate, type PickupWindow } from './runtime.ts'
 import { snapshot } from './store.ts'
-import type { PickupWindow } from './runtime.ts'
 
 /**
- * The form actions behind every redesigned screen.
+ * Relay's form actions: signing in, setup, asking, booking, lending, and the
+ * controls over what Relay remembers. Where each one lands afterwards is in
+ * ./routes.ts.
  *
  * Server Functions are reachable by direct POST, so each one resolves the
  * signed-in person itself and validates its own input; nothing trusts a hidden
@@ -36,7 +38,7 @@ const text = (fd: FormData, key: string) => String(fd.get(key) ?? '').trim()
 const query = (o: Record<string, string>) => new URLSearchParams(o).toString()
 
 async function signInAs(id: string) {
-  ;(await cookies()).set(USER_COOKIE, id, {
+  ;(await cookies()).set(PERSON_COOKIE, id, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -47,7 +49,7 @@ async function signInAs(id: string) {
 
 async function signedIn() {
   const me = await getMe()
-  if (!me) redirect('/hello')
+  if (!me) redirect(routes.signIn)
   return me
 }
 
@@ -81,40 +83,40 @@ function readProfile(fd: FormData, fallbackName: string): ProfilePatch | { error
 
 export async function startNew(formData: FormData) {
   const name = text(formData, 'name').slice(0, 40)
-  if (name.length < 2) redirect('/hello?error=name')
+  if (name.length < 2) redirect(`${routes.signIn}?error=name`)
   const profile = createPerson(name)
   await signInAs(profile.id)
-  redirect('/start')
+  redirect(routes.setup)
 }
 
 export async function continueAs(formData: FormData) {
   const person = findPerson(text(formData, 'personId'))
-  if (!person) redirect('/hello')
+  if (!person) redirect(routes.signIn)
   recordVisit(person)
   await signInAs(person.id)
-  redirect('/')
+  redirect(routes.need)
 }
 
 export async function signOut() {
-  ;(await cookies()).delete(USER_COOKIE)
-  redirect('/hello')
+  ;(await cookies()).delete(PERSON_COOKIE)
+  redirect(routes.signIn)
 }
 
 export async function saveSetup(formData: FormData) {
   const me = await signedIn()
   const patch = readProfile(formData, me.profile.name)
-  if ('error' in patch) redirect(`/start?error=${patch.error}`)
+  if ('error' in patch) redirect(`${routes.setup}?error=${patch.error}`)
   updateProfile(me.id, { ...patch, setupDone: true })
-  redirect('/')
+  redirect(routes.need)
 }
 
 export async function saveProfile(formData: FormData) {
   const me = await signedIn()
   const patch = readProfile(formData, me.profile.name)
-  if ('error' in patch) redirect(`/you?error=${patch.error}`)
+  if ('error' in patch) redirect(`${routes.profile}?error=${patch.error}`)
   updateProfile(me.id, patch)
   revalidatePath('/', 'layout')
-  redirect('/you?saved=1')
+  redirect(`${routes.profile}?saved=1`)
 }
 
 // ---------------------------------------------------------------- need
@@ -123,9 +125,20 @@ export async function find(formData: FormData) {
   const me = await signedIn()
   const q = text(formData, 'q').slice(0, 400)
   const { from, to } = readWindow(formData)
-  if (q.length < 3) redirect(`/?${query({ from, to, error: 'short' })}`)
+  if (q.length < 3) redirect(`${routes.need}?${query({ from, to, error: 'short' })}`)
   rememberSearch(me.id, { text: q, from, to })
-  redirect(`/?${query({ q, from, to })}`)
+  redirect(`${routes.need}?${query({ q, from, to })}`)
+}
+
+/** Take back a booking the route couldn't carry: the accepted hop, its need, and that need's scores. */
+function unbook(acceptedId: string, needId: string) {
+  mutate((r) => {
+    r.accepted = r.accepted.filter((a) => a.id !== acceptedId)
+    r.needs = r.needs.filter((n) => n.id !== needId)
+    for (const key of Object.keys(r.matches)) {
+      if (key.startsWith(`${needId}|`)) delete r.matches[key]
+    }
+  })
 }
 
 export async function book(formData: FormData) {
@@ -134,33 +147,34 @@ export async function book(formData: FormData) {
   const q = text(formData, 'q').slice(0, 400)
   const { from, to } = readWindow(formData)
   const item = snapshot().itemById(itemId)
-  if (!item || item.holderId === me.id || q.length < 3) redirect('/')
+  if (!item || item.holderId === me.id || q.length < 3) redirect(routes.need)
 
   const need = await addNeed({ personId: me.id, text: q, needFrom: from, needUntil: to })
-  // Pin the window the route gives this need on that item. If the network
-  // re-planned around the new row, the booking still holds the dates asked for.
-  const hop = snapshot()
-    .chainOf(itemId)
-    .hops.find((h) => h.needId === need.id)
   const cost = item.deal === 'sale' ? item.price : item.price * Math.max(1, daysBetween(from, to))
-  const accepted = await acceptHop({
-    itemId,
-    needId: need.id,
-    personId: me.id,
-    from: hop?.from ?? from,
-    to: hop?.to ?? to,
-    cost,
-  })
+  const accepted = await acceptHop({ itemId, needId: need.id, personId: me.id, from, to, cost })
+
+  // Accepting pins the need to this item, so the route keeps it here instead
+  // of handing it to whichever similar item the greedy pass reaches first. If
+  // it still can't be carried — someone booked an overlapping stretch between
+  // the answer being shown and this click — take the booking back out rather
+  // than confirm a handoff the owner will never see.
+  const routed = snapshot()
+    .chainOf(itemId)
+    .hops.some((h) => h.needId === need.id)
+  if (!routed) {
+    unbook(accepted.id, need.id)
+    redirect(`${routes.need}?${query({ q, from, to, error: 'taken' })}`)
+  }
 
   rememberSearch(me.id, { text: q, from, to })
-  redirect(`/handoffs?booked=${accepted.id}`)
+  redirect(`${routes.handoffs}?booked=${accepted.id}`)
 }
 
 export async function dismiss(formData: FormData) {
   const me = await signedIn()
   dismissItem(me.id, text(formData, 'itemId'))
   const { from, to } = readWindow(formData)
-  redirect(`/?${query({ q: text(formData, 'q'), from, to })}`)
+  redirect(`${routes.need}?${query({ q: text(formData, 'q'), from, to })}`)
 }
 
 // ---------------------------------------------------------------- handoffs
@@ -169,7 +183,7 @@ export async function markDone(formData: FormData) {
   const me = await signedIn()
   const key = text(formData, 'key')
   if (key) confirmSlip(me.id, key)
-  revalidatePath('/handoffs')
+  revalidatePath(routes.handoffs)
 }
 
 // ---------------------------------------------------------------- shelf
@@ -186,11 +200,11 @@ export async function lend(formData: FormData) {
   if (!isDay(freeFrom) || freeFrom < t) freeFrom = t
   if (!isDay(freeUntil) || freeUntil <= freeFrom) freeUntil = last
 
-  if (description.length < 3) redirect('/shelf?error=text')
-  if (!Number.isFinite(price) || price < 0) redirect('/shelf?error=price')
+  if (description.length < 3) redirect(`${routes.shelf}?error=text`)
+  if (!Number.isFinite(price) || price < 0) redirect(`${routes.shelf}?error=price`)
 
   const posted = await postItem({ holderId: me.id, text: description, deal, price, freeFrom, freeUntil })
-  redirect(`/shelf?${query({ added: posted.id, matched: String(posted.matched) })}`)
+  redirect(`${routes.shelf}?${query({ added: posted.id, matched: String(posted.matched) })}`)
 }
 
 // ---------------------------------------------------------------- memory
@@ -198,7 +212,7 @@ export async function lend(formData: FormData) {
 export async function restore(formData: FormData) {
   const me = await signedIn()
   restoreItem(me.id, text(formData, 'itemId'))
-  revalidatePath('/you')
+  revalidatePath(routes.profile)
 }
 
 export async function forgetMemory(formData: FormData) {

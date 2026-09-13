@@ -35,6 +35,13 @@ const MAX_IDLE = config.constraints.maxIdleDays
  */
 const MIN_SCORE = config.constraints.minMatchScore
 
+/**
+ * Added to a booked need's score inside the DP, so no mix of unbooked needs can
+ * outweigh keeping it. A score is at most ~1.5 and an item sees dozens of
+ * candidates, so this always dominates. Taken back out of the reported value.
+ */
+const PIN_BONUS = 1000
+
 function distance(a: Person | undefined, b: Person | undefined): number {
   if (!a || !b) return 0
   if (a.location === b.location) return 0
@@ -71,6 +78,12 @@ export type AssignOptions = {
   mu?: number
   maxIdleDays?: number
   minMatchScore?: number
+  /**
+   * Booked needs -> the item they were booked on. A booking is a commitment,
+   * not a proposal: the need is only routed on that item, and that item's DP
+   * keeps it whenever it is feasible at all.
+   */
+  pinned?: Map<string, string>
 }
 
 /**
@@ -96,13 +109,12 @@ export function chainForItem(
     a.needUntil < b.needUntil ? -1 : a.needUntil > b.needUntil ? 1 : 0,
   )
   const n = cands.length
-  const score = cands.map(
-    (need) => {
-      const base = table[`${need.id}|${item.id}`]?.score ?? 0;
-      const mult = (config.penalties as any).urgencyMultipliers?.[need.urgency] ?? 1;
-      return base * mult;
-    },
-  )
+  const pinnedHere = (need: Need) => opts.pinned?.get(need.id) === item.id
+  const score = cands.map((need) => {
+    const base = table[`${need.id}|${item.id}`]?.score ?? 0
+    const mult = config.penalties.urgencyMultipliers[need.urgency] ?? 1
+    return base * mult + (pinnedHere(need) ? PIN_BONUS : 0)
+  })
 
   const dp = new Array<number>(n).fill(-Infinity)
   const prev = new Array<number>(n).fill(-1)
@@ -214,7 +226,8 @@ export function chainForItem(
     totalGapDays: hops.reduce((s, h) => s + h.gapDays, 0),
     totalDistance: hops.reduce((s, h) => s + h.distance, 0),
     totalMatchScore: hops.reduce((s, h) => s + h.matchScore, 0),
-    value: hops.length === 0 ? 0 : best,
+    // Bookings rode in on PIN_BONUS; report what the route is actually worth.
+    value: hops.length === 0 ? 0 : best - PIN_BONUS * order.filter((idx) => pinnedHere(cands[idx])).length,
   }
 }
 
@@ -249,6 +262,7 @@ export function assignAll(
   opts: AssignOptions = {},
 ): Chain[] {
   const excluded = new Set(opts.excludePersonIds ?? [])
+  const pinned = opts.pinned ?? new Map<string, string>()
   const peopleById = new Map(data.people.map((p) => [p.id, p]))
 
   const people = data.people.filter((p) => !excluded.has(p.id))
@@ -268,7 +282,10 @@ export function assignAll(
   const eligible = new Map<string, Need[]>()
   const scarcity = new Map<string, number>()
   for (const item of items) {
-    const cands = eligibleNeeds(item, needs, table, opts.minMatchScore)
+    // A booked need is only ever routed on the item it was booked on.
+    const cands = eligibleNeeds(item, needs, table, opts.minMatchScore).filter(
+      (n) => !pinned.has(n.id) || pinned.get(n.id) === item.id,
+    )
     eligible.set(item.id, cands)
     scarcity.set(
       item.id,
