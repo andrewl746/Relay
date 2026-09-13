@@ -150,7 +150,7 @@ export function VoiceInput({
         title={listening ? "Stop listening" : label}
         className={`inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-sm border px-3.5 text-[15px] font-semibold transition-colors duration-100 ${
           listening
-            ? "border-accent bg-accent text-white"
+            ? "border-accent bg-accent text-on-accent"
             : "border-border-strong bg-surface text-ink hover:bg-surface-2"
         }`}
       >

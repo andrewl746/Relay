@@ -10,7 +10,7 @@ export default async function PostPage() {
 
   return (
     <PageShell>
-      <PageTitle title="Post an item" lede="Takes about a minute. Students at your school see it right away." />
+      <PageTitle title="Post an item" lede="List an item for sale or borrow across campus." />
 
       <div className="board mb-10 flex flex-wrap items-center justify-between gap-4 px-5 py-4">
         <div>

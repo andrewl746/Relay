@@ -1,10 +1,37 @@
 # Handoff — read this first
 
 You are picking up **Relay**, a PivotHacks project, mid-build. This file is the
-fastest path to being useful. It is current as of the **Pivot 4 (voice)** commit — the last pivot of the event.
+fastest path to being useful. It is current as of the **post-Pivot-4 polish pass**, on top of
+teammate commit `3b28dc2`. Pivot 4 (voice) was the last pivot of the event.
 
 Read in this order: **this file → [PIVOTS.md](PIVOTS.md) → [docs/PROJECT.md](docs/PROJECT.md)**.
 [docs/DESIGN.md](docs/DESIGN.md) only when you touch UI.
+
+---
+
+## 0. What changed since the Pivot 4 version of this file
+
+**Teammate commits, merged into `main`:**
+
+| Commit | What |
+|---|---|
+| `9a976a9` `ac36625` | **Relay backend** (Adarsh): per-person memory, `relay-person` cookie identity, answer engine, and **booking pins** in `lib/assign.ts` so a booked need stays on the item it was booked on. See §5 |
+| `85ff019` | Favicon / apple-icon from the logo |
+| `3b28dc2` | UI lint errors fixed without changing output: theme toggle and voice input read browser state through `useSyncExternalStore` instead of setState-in-effect; `/chains` timing moved out of render. **Lint is at 0 errors** |
+
+**Polish pass (this session; uncommitted in the working tree when written):**
+
+| Area | Change |
+|---|---|
+| Board → listing | Fixed a **multi-second freeze** on every click. Now React `<ViewTransition>`; `TransitionLink` deleted. §8 |
+| Real-account speed | Navigation made ~5 Supabase Auth round trips + 3 profile reads per click. Now one each, via `cache()`. §6 #8 |
+| Settings | Changing university clears the verified email and redirects to `/onboarding/verify`; a finished account returns to `/settings` afterwards, not through interests/wants again. **All settings saves fail until migration 0005 is run** — §6 #9 |
+| Hydration error | `<html suppressHydrationWarning>` — `themeScript` stamps `data-theme` before React hydrates |
+| Type | Merriweather for headings, Archivo for everything else; every page h1 bigger; `text-wrap: pretty/balance` |
+| Colour | Dark-mode accent fills were 2.8:1. `--on-accent` token flips text to black in dark (7.6:1). Filter chips got a visible border; hover no longer darkens them into the page |
+| Layout | One `SiteFooter` in the root layout, always below the fold. More space above page h1s. Navbar more translucent |
+| Landing (`/welcome`) | Hub header, `.board` sections, token classes; Kandinsky shapes replaced by an SVG relay-route animation (no JS) |
+| Small | Logo visible in dark mode everywhere; buttons get `cursor: pointer`; empty-state links all `btnTertiary`; bare empty states on cards; navbar avatar 28→36px; `UWaterloo` / `UofT`; home greeting varies per person but is stable across visits |
 
 ---
 
@@ -79,7 +106,7 @@ it are now real. Parts are still a mockup. This table is the truth as of now.
 | Thing | Reality |
 |---|---|
 | Google sign-in | **Real.** Supabase SSR auth, `app/(auth)/`, `/auth/callback`. Needs the provider toggle ON in the Supabase dashboard (see SETUP.md) |
-| Profile / settings | **Real.** `/settings` writes name, university, living situation, address and avatar to Supabase through a validating server action. Delete-account goes through the `delete_own_account()` SECURITY DEFINER function |
+| Profile / settings | **Real.** `/settings` writes name, university, living situation, address and avatar to Supabase through a validating server action (`lib/hub/settings-actions.ts`). Changing university drops `university_email_verified` and redirects to re-verify. Delete-account goes through the `delete_own_account()` SECURITY DEFINER function. **Needs migration 0005** or every save fails |
 | Demo mode | A cookie-picked seeded student, no auth. Switching demo students lives in **Settings**, not the header. Signing out clears this cookie too, so you don't land back in the hub as a stranger |
 | Search | **Real, and not Ctrl-F** — see §4a |
 | **Voice input** | **Real.** Speak into the board search or your wants list and the form submits. `components/hub/voice-input.tsx`. Pivot 4 |
@@ -88,7 +115,7 @@ it are now real. Parts are still a mockup. This table is the truth as of now.
 | Wants list | **Still client-side.** Lost on refresh. `addNeed` exists, unwired |
 | Notifications | Hardcoded rows in `lib/hub/mock-data.ts` |
 | Room bundles | Form only |
-| `.edu` verification | `isUniversityEmail()` in `lib/hub/email.ts` is correct and **called from nowhere**. Resend OTP path exists, needs `RESEND_API_KEY` |
+| University email verification | **Real in onboarding.** `sendVerificationCode` (`app/(onboarding)/actions.ts`) checks `isUniversityEmail()` against the chosen university's domain and stores a hashed OTP. Without `RESEND_API_KEY` the code is shown on screen instead of emailed. The hub itself does not gate on verification |
 
 `lib/hub/*` still has its own types (`Listing`, `Want`, `Claim`, `TimeSlot`) that **shadow**
 the engine's. `lib/hub/scheduling.ts` admits it in a comment: *"Naive stand-in… The
@@ -125,6 +152,15 @@ limits, the lexical half still answers and search degrades instead of breaking.
 | `runtime.ts` | User-created items/needs/accepted hops as JSON on disk (`data/runtime.json`, gitignored). Survives a dev restart mid-demo; `cat`-able when something looks wrong on stage |
 | `store.ts` | Merges the immutable seed corpus with runtime rows into **one** `Dataset` and hands it to the engine. Nothing downstream knows which rows came from where — a posted item competes for needs on identical terms. Built per request (the DP is 12ms; caching would serve a stale board right after a post) |
 | `actions.ts` | `postItem` / `addNeed` / `acceptHop`. Each validates its own input — Server Functions take direct POSTs, not just calls from our UI |
+| `memory.ts` · `me.ts` | *(teammate, `9a976a9`)* Runtime people and profiles (neighbourhood, pickup windows, away dates, searches, dismissed). Identity is the httpOnly **`relay-person`** cookie — deliberately not `relay-user`, which is the hub's demo login; sharing it signed you out of one side when you signed into the other |
+| `ui-actions.ts` · `routes.ts` | Server actions for sign-in/out, setup, find, **book** (addNeed + acceptHop, then confirms the route actually carries it and undoes if not), dismiss, lend. Redirect targets live in `routes.ts` |
+| `answer.ts` · `views.ts` | Previews a typed need through the per-item DP with the same pins as the store; bookable answers plus misses with a reason and retry window. Views build handoff slips, receipts, shelf, typical rates |
+
+**Booking pins** (`ac36625`): `assignAll` is greedy across items, so adding a booked need
+could reshuffle the scarcity pass onto a *similar* item — the borrower saw a booking on one
+drill while the route gave it to another. `AssignOptions.pinned` makes a pinned need eligible
+only on its item, with a bonus inside that item's DP (subtracted from the reported value).
+`npm run check:store` asserts it. **Nothing in the current hub UI calls `ui-actions.ts` yet.**
 
 **Verified end to end** by `npm run check:store`: *"need a power drill this saturday,
 putting up shelves"* → embedded → matched to a real drill → routed Oct 2–5 at $4/day.
@@ -152,6 +188,20 @@ Read these before you debug something that looks mysterious.
 6. **`lib/data.ts` caches only in production, on purpose.** Reseeding is half of every
    pivot response and a cache that survives it shows you the old world.
 7. **Deleting `.next` while the dev server runs** breaks it until restart.
+8. **Go through the cached Supabase getters.** `getSupabaseUser()` and `getMyProfile()` in
+   `lib/supabase/session.ts` are wrapped in React `cache()`. Each `auth.getUser()` is a
+   150–300ms round trip, and the layout, header and page each asked separately. That made
+   real-account navigation take seconds while demo mode was instant. In render paths, never
+   call `supabase.auth.getUser()` or `getProfile()` directly. A server action that *writes*
+   the profile re-reads it with `getProfile`. The middleware uses `getClaims()`.
+9. **Migration 0005 is not run, so every `/settings` save fails.** Confirmed against the live
+   project: `column profiles.avatar_url does not exist`. The action sends `avatar_url` on
+   every save, so the user sees "Couldn't save that" whatever they changed. The real error
+   is now logged as `saveSettings failed:`. Fix: run `supabase/migrations/0005_avatar.sql`.
+10. **`<html suppressHydrationWarning>` is load-bearing.** `themeScript` sets `data-theme`
+    before hydration, so the server's attributes can never match. It only silences that one
+    element's attributes. Removing it brings back the hydration error on every page for
+    anyone with a stored theme.
 
 ---
 
@@ -206,14 +256,28 @@ places.**
   which repaints the backdrop every scroll frame and stalled Lenis).
 - **`.hub` must not paint a background.** It used to, which covered the texture and left
   every signed-in page flat white.
-- **One accent**, `--accent: #1A56DB` (dark: `#5B9BFF`). 6.2:1 on white both directions, so
-  it is safe as text on paper *and* as a fill with white on top. It was a burnt sienna
-  before; on a warm paper ground that read as the cardboard gone damp.
+- **One accent**, `--accent: #1A56DB` (dark: `#5B9BFF`) for text, links and rules. It was a
+  burnt sienna before; on a warm paper ground that read as the cardboard gone damp.
+- **Accent fills take `text-on-accent`, never `text-white`.** Same accent in both themes; the
+  text flips: white in light (6.2:1), black in dark (7.6:1 on `#5B9BFF`). White on the dark
+  accent was 2.8:1. A separate darker dark-mode fill was tried and rejected — it split the brand.
 - **Measure contrast, don't estimate it.** A previous build had near-black text on the red
-  fill — about 2:1 — on the single most urgent element on screen.
+  fill — about 2:1 — on the single most urgent element on screen. Text passing isn't enough
+  either: the browse filter chips were 6.6:1 text on a shape 1.2:1 from the page, and their
+  hover (`bg-surface`) is *darker* than rest in dark mode, so it made them vanish. Chips now
+  carry a `border-border-strong` that steps to `ink-3` on hover.
+- **Step badges on `/welcome` vary by hue, not lightness**
+  (`oklch(from var(--accent) l c calc(h ± n))`). Darkening sank them into the dark card;
+  lightening broke the text contrast.
 
 **Type and structure**
 
+- **Two faces:** Archivo for everything you read and click, **Merriweather for `h1`–`h3`**
+  (`--font-display`, set by a base rule in `globals.css`). Both self-hosted in `app/fonts/`.
+  Body text is `text-wrap: pretty`, headings `balance` — no one-word last lines.
+- **One footer**, `SiteFooter`, rendered once in `app/layout.tsx` after a `min-h-svh` wrapper,
+  so every page fills the screen and the footer is always below the fold. Don't add
+  per-layout footers back.
 - Every page uses `PageShell` (one width), `PageTitle` (one h1), `SectionTitle` (19px).
   Pages used to roll their own h1 at 28px bold / 30px semibold / a 54px clamp.
 - **`.t-eyebrow` is 13px sentence case now.** It was 11px bold uppercase at 0.14em, which
@@ -221,19 +285,36 @@ places.**
 - **Every section on every page sits on a `.board` card.** Bare sections on the page ground
   looked unfinished next to the home screen.
 - **Hover = colour or fill, not an underline.** Underlines-on-hover were pulled back to a
-  minimum site-wide; row titles shift to the accent instead.
+  minimum site-wide; row titles shift to the accent instead. The one underlined style is
+  `btnTertiary` (always underlined, text brightens on hover), and **every empty-state
+  call to action uses it** — they used to be four different treatments.
+- **Buttons show `cursor: pointer`** via one base rule in `globals.css`. Tailwind v4's
+  preflight resets them to `default`.
+- **Page h1s:** `PageTitle` is `clamp(32px, 4.5vw, 42px)` with `pt-12 sm:pt-16` above it
+  in `PageShell`. Browse duplicates both, so change them together.
+- **University short names are acronyms** (`UWaterloo`, `UofT`), in both
+  `lib/onboarding/universities.ts` and `lib/hub/mock-data.ts`.
+- **Home greeting** comes from a fixed list, picked by hashing the person's id. Different
+  students see different lines; one student sees the same line on every visit. Not
+  `Math.random` — that changed on every reload.
+- **`/welcome` is built from hub parts:** the same sticky header (without account controls),
+  `btnPrimary`/`btnSecondary`, `.board` sections, no page background. The hero animation
+  (`RelayRoute`) is SVG + SMIL: a parcel moving down a dotted route and pausing at each
+  stop. No JS, because the hero must never depend on hydration. Reduced motion keeps the
+  route and hides the parcel.
 - Nav holds where you *go* (Browse, Post, Handoffs). The profile menu holds what's *yours*
   (My list, My posts, Settings). Nothing has two homes. The header is **sticky** and paints
-  its own translucent ground.
+  its own translucent ground (`bg-bg/60`, 14px blur).
 - The logo is `components/hub/logo.tsx`: the PNG as a **CSS mask**, so one asset takes a
   real `background-color` — ink normally, accent on hover, correct in dark mode. Tinting
   via `currentColor` does not fade, because there is no specified-value change to animate.
-- Board→listing navigation is a **shared-element view transition**
-  (`components/hub/transition-link.tsx`); the thumbnail grows into the hero. React's own
-  `<ViewTransition>` would replace it but only exists in the **experimental** React
-  channel — this repo is on stable React 19.2, so the native API is driven by hand. The
-  awkward part (resolving the transition promise only after React commits the new route)
-  is documented in the file. **Don't "simplify" it back to resolving immediately.**
+- Board→listing navigation is a **shared-element view transition**: `Thumb` in
+  `components/hub/ui.tsx` wraps itself in React's `<ViewTransition name>`, and the
+  thumbnail grows into the hero. The App Router ships React canary, so this works on
+  plain `next/link` with no config (see `node_modules/next/dist/docs/01-app/02-guides/view-transitions.md`).
+  It replaced a hand-rolled `TransitionLink` whose resolver lived in the row being
+  unmounted — the promise never settled and every click froze the page for seconds.
+  **Don't drive `document.startViewTransition` by hand again.**
 
 ---
 
@@ -249,8 +330,8 @@ removed as needed.**
    `User`→`Person`. **The DP already computes the time slot the claim flow currently
    fakes** — that's the integration that makes the engine visible in the product.
 2. **Wire the forms to `lib/relay/actions.ts`** so posting and wants actually persist.
-3. **Real session**: signed `httpOnly` cookie, and call the `isUniversityEmail()` that
-   already exists.
+3. **Real session**: signed `httpOnly` cookie for the hub's demo login. The Relay backend
+   already has its own (`relay-person`, §5); Supabase sign-in is real.
 4. **Voice on the post form** (the Pivot 4 option we cut). Needs entity extraction —
    "lending my drill, four dollars a day, pickup at V1" → five fields. `lib/providers/
    backboard.ts#extractNeedMetadata` is structurally correct and blocked on billing.
@@ -264,6 +345,7 @@ removed as needed.**
 - Generate a **Snowflake PAT**, set `SNOWFLAKE_ACCOUNT` / `SNOWFLAKE_PAT`. Never ask a
   model to generate or read that token.
 - Run migrations **0003_wants / 0004_delete_account / 0005_avatar** in the SQL editor.
+  **0005 is confirmed missing and breaks every settings save** (§6 #9). 0003/0004 unverified.
 - `RESEND_API_KEY` + `RESEND_FROM_EMAIL` (domain is verified, key isn't in `.env.local`).
 - Optional: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` — without it the pickup map degrades to a
   written description rather than drawing a fake map.

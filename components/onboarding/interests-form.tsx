@@ -57,7 +57,7 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
                   aria-hidden
                   className={`absolute top-3 right-3 grid size-6 place-items-center rounded-full border-2 text-[13px] font-bold transition-colors ${
                     on
-                      ? "border-[var(--kand-red)] bg-[var(--kand-red)] text-[var(--kraft-50)]"
+                      ? "border-accent bg-accent text-on-accent"
                       : "border-[var(--kraft-400)] text-transparent"
                   }`}
                 >

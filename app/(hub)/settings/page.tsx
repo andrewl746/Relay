@@ -1,11 +1,9 @@
 import { SettingsForm, type SettingsDefaults } from "@/components/hub/settings-form";
 import { PageShell, PageTitle } from "@/components/hub/ui";
-import { getProfile } from "@/lib/onboarding/profile";
 import { getUsers } from "@/lib/hub/data";
 import { getCurrentUser } from "@/lib/hub/session";
 import { deleteAccount, signOut } from "@/lib/supabase/actions";
-import { createClient } from "@/lib/supabase/server";
-import { getSupabaseUser } from "@/lib/supabase/session";
+import { getMyProfile, getSupabaseUser } from "@/lib/supabase/session";
 
 export const metadata = { title: "Settings" };
 
@@ -18,11 +16,7 @@ export default async function SettingsPage() {
 
   // Signed in with Supabase: read the real profile. Demo mode: show what the
   // demo user has, so the page is still explorable without auth configured.
-  let profile: Awaited<ReturnType<typeof getProfile>> = null;
-  if (authUser) {
-    const supabase = await createClient();
-    profile = await getProfile(supabase, authUser.id);
-  }
+  const profile = authUser ? await getMyProfile() : null;
 
   const googlePhoto =
     (authUser?.user_metadata?.avatar_url as string | undefined) ??

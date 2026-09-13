@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
-import { getProfile, type ProfileRow } from "../onboarding/profile";
-import { createClient } from "../supabase/server";
-import { getSupabaseUser } from "../supabase/session";
+import type { ProfileRow } from "../onboarding/profile";
+import { getMyProfile, getSupabaseUser } from "../supabase/session";
 import { getUser, getUsers } from "./data";
 import { USER_COOKIE } from "./dev-login";
 import { DEFAULT_USER_ID } from "./site";
@@ -31,9 +30,7 @@ function profileToUser(id: string, email: string | undefined, profile: ProfileRo
 export async function getCurrentUser(): Promise<User> {
   const supabaseUser = await getSupabaseUser();
   if (supabaseUser) {
-    const supabase = await createClient();
-    const profile = await getProfile(supabase, supabaseUser.id);
-    return profileToUser(supabaseUser.id, supabaseUser.email, profile);
+    return profileToUser(supabaseUser.id, supabaseUser.email, await getMyProfile());
   }
 
   const id = (await cookies()).get(USER_COOKIE)?.value;

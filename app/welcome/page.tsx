@@ -1,6 +1,6 @@
-import Image from 'next/image'
 import Link from 'next/link'
-import { SiteFooter } from '@/components/hub/site-footer'
+import { Logo } from '@/components/hub/logo'
+import { btnPrimary, btnSecondary } from '@/components/hub/ui'
 import { Belt } from '@/components/motion/belt'
 import { Conveyor, Crate, Stamp } from '@/components/motion/box'
 
@@ -15,7 +15,9 @@ const STEPS = [
     n: '01',
     title: 'Say what you need',
     body: 'Type it how you’d say it out loud — "need a drill saturday, putting up shelves". No categories, no filters.',
-    color: 'var(--accent)',
+    // Three blues by hue, not lightness, so --on-accent keeps its contrast:
+    // white 5.8–6.4:1 in light, black 7.4–7.8:1 in dark.
+    color: 'oklch(from var(--accent) l c calc(h - 20))',
   },
   {
     n: '02',
@@ -27,7 +29,7 @@ const STEPS = [
     n: '03',
     title: 'Pick it up, bring it back',
     body: 'Agree a time, collect it, return it on the date you both agreed. Buying something outright works the same way, minus the return.',
-    color: 'var(--accent)',
+    color: 'oklch(from var(--accent) l c calc(h + 15))',
   },
 ]
 
@@ -67,230 +69,216 @@ const BUY = [
   { item: 'Desk lamp', price: '$8' },
 ]
 
+const REASSURANCE = [
+  {
+    title: 'Students only',
+    body: 'You sign up with your university email, so everyone here is someone you could run into on campus.',
+  },
+  {
+    title: 'You keep the money',
+    body: 'Relay shows the price and the dates. You and the other person settle it however you like — we never touch your payments.',
+  },
+  {
+    title: 'It comes back',
+    body: 'Every loan has a return date agreed up front, and you always know who it goes to next.',
+  },
+]
+
+/**
+ * The hero's motion: a parcel working its way down a route, pausing at each
+ * door it's handed to. SVG + SMIL rather than JS, because the hero must never
+ * depend on hydration. The three curves are mirror images of one another, so
+ * the stops sit at exactly a third of the path each and keyPoints can pause
+ * on them. Reduced motion keeps the route and drops the parcel.
+ */
+const ROUTE = 'M30 20 C30 85 130 85 130 150 S30 215 30 280 S130 345 130 410'
+const STOPS = [[30, 20], [130, 150], [30, 280], [130, 410]]
+
+function RelayRoute({ className, begin }: { className: string; begin: string }) {
+  const timing = { dur: '9s', begin, repeatCount: 'indefinite' }
+  return (
+    <svg aria-hidden viewBox="0 0 160 430" className={`pointer-events-none absolute hidden h-[430px] w-[160px] lg:block ${className}`}>
+      <path d={ROUTE} fill="none" stroke="var(--border-strong)" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="0 9" />
+      {STOPS.map(([x, y]) => (
+        <circle key={y} cx={x} cy={y} r="6" fill="var(--bg)" stroke="var(--ink-3)" strokeWidth="2" />
+      ))}
+      <g className="motion-reduce:hidden" opacity="0">
+        <rect x="-9" y="-9" width="18" height="18" rx="3" fill="var(--accent)" />
+        <path d="M-9 -3h18M0 -9v6" stroke="var(--bg)" strokeWidth="1.5" opacity="0.6" />
+        <animateMotion {...timing} path={ROUTE} calcMode="linear" keyPoints="0;0;0.3333;0.3333;0.6667;0.6667;1;1" keyTimes="0;0.1;0.3;0.4;0.6;0.7;0.9;1" />
+        <animate {...timing} attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.92;1" />
+      </g>
+    </svg>
+  )
+}
+
 export default function LandingPage() {
   return (
-    <div className="min-h-screen overflow-hidden bg-[var(--kraft-50)] text-[var(--ink)]">
-      {/* Nav */}
-      <nav className="relative z-10 flex items-center justify-between border-b border-[var(--kraft-300)] px-6 py-5">
-        <Image
-          src="/relay-black.png"
-          alt="Relay"
-          width={200}
-          height={72}
-          priority
-          className="h-9 w-auto"
-        />
-        <Link
-          href="/login"
-          className="text-[14px] font-semibold underline decoration-[var(--kraft-400)] underline-offset-4 transition-colors hover:text-[var(--signal)]"
-        >
-          Sign in
-        </Link>
-      </nav>
+    // clip, not hidden: overflow-hidden makes a scroll container, which would
+    // stop the sticky header sticking. No background — the kraft grain behind
+    // the page is the ground, same as every signed-in screen.
+    <div className="overflow-x-clip text-ink">
+      {/* The hub's header, minus the account controls. */}
+      <header className="sticky top-0 z-40 border-b border-border bg-bg/60 backdrop-blur-[14px] backdrop-saturate-150">
+        <div className="mx-auto flex min-h-14 max-w-[1120px] items-center gap-3 px-4 sm:px-6">
+          <Link href="/welcome" className="group flex min-h-14 items-center" aria-label="Relay home">
+            <Logo className="h-8 bg-ink transition-colors duration-200 ease-out group-hover:bg-accent" />
+          </Link>
+          <nav aria-label="Main" className="ml-auto flex items-center gap-2 sm:gap-4">
+            <Link href="/login" className="px-2 py-3 text-[17px] font-semibold text-ink-2 transition-colors duration-100 hover:text-ink">
+              Sign in
+            </Link>
+            <Link href="/login" className={btnPrimary}>
+              Get started
+            </Link>
+          </nav>
+        </div>
+      </header>
 
       {/* Hero */}
-      <section className="relative z-10 flex flex-col items-center overflow-hidden px-6 pt-20 pb-20 text-center sm:pt-28">
-        {/* Bauhaus shapes — flat spot colours, purely decorative */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          {/* Bauhaus: a few flat shapes in the one theme colour, varied only by
-              weight. Three hues competing was the problem, not the geometry. */}
-          <span className="shape-circle absolute left-[7%] top-[16%] size-28 bg-accent opacity-[0.10] sm:size-40" />
-          <span className="shape-tri absolute right-[10%] top-[24%] text-accent opacity-[0.14] [--tri:32px] sm:[--tri:48px]" />
-          <span className="absolute bottom-[24%] left-[15%] h-[3px] w-24 bg-accent opacity-[0.3] sm:w-32" />
-        </div>
+      <section className="relative mx-auto flex max-w-[1120px] flex-col items-center px-5 pt-20 pb-16 text-center sm:px-6 sm:pt-24">
+        <RelayRoute className="top-12 left-[2%]" begin="0s" />
+        <RelayRoute className="top-24 right-[2%] -scale-x-100" begin="-4.5s" />
+
         {/* CSS-driven, not motion: the hero must never depend on hydration.
             A JS entry animation starts at opacity 0, so any hiccup leaves the
             headline blank — which happened repeatedly while building this.
             These keyframes run without JS and always end visible. */}
         <div className="anim-slide">
-          <h1 className="stencil max-w-[13ch] text-[clamp(38px,7.5vw,72px)] leading-[0.95]">
-            Borrow it from someone down the hall
+          <h1 className="stencil max-w-[13ch] text-[clamp(44px,8.5vw,84px)] leading-[1.3]">
+            Why buy, when you can borrow?
           </h1>
         </div>
 
         <div className="anim-slide" style={{ animationDelay: '90ms' }}>
-          <p className="mx-auto mt-7 max-w-[520px] text-[18px] leading-relaxed text-[var(--ink-2)]">
+          <p className="mx-auto mt-7 max-w-[520px] text-[18px] leading-relaxed text-ink-2">
             You need a drill for one Saturday afternoon. Buying one costs $60 and
             then it lives in your closet forever. Someone four doors down already
             has one — rent it for <strong className="mark font-semibold">$4 a day</strong>.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href="/login"
-              className="inline-flex min-h-12 items-center justify-center rounded-[4px] bg-accent px-8 text-[15px] font-semibold text-white transition-colors duration-75 hover:brightness-[1.08]"
-              
-            >
+            <Link href="/login" className={btnPrimary}>
               Find what you need
             </Link>
-            <Link
-              href="/post"
-              className="board inline-flex min-h-12 items-center justify-center px-8 text-[15px] font-semibold"
-            >
+            <Link href="/post" className={btnSecondary}>
               Lend out your stuff
             </Link>
           </div>
 
-          <p className="mt-4 text-[13px] text-[var(--ink-2)]">
-            Free to join with your university email.
-          </p>
+          <p className="mt-4 text-[13px] text-ink-2">Free to join with your university email.</p>
         </div>
       </section>
 
       {/* The belt: what is actually moving around a building right now. Two
-          rows running opposite ways so the hero has motion without anything
-          blinking or sliding in on scroll. */}
-      <section aria-label="Things students are lending right now" className="relative z-10 space-y-3 pb-16">
+          rows running opposite ways, full-bleed on purpose. */}
+      <section aria-label="Things students are lending right now" className="space-y-3 pb-16">
         <Belt items={BELT_A} direction="left" seconds={42} />
         <Belt items={BELT_B} direction="right" seconds={50} />
       </section>
 
-      {/* How it works */}
-      <section className="relative z-10 border-y border-[var(--kraft-300)] bg-[var(--kraft-100)]">
-        <div className="mx-auto max-w-[1000px] px-6 py-20">
-          <h2 className="stencil mb-12 text-center text-[clamp(26px,4vw,40px)]">
-            How it works
-          </h2>
-          <Conveyor className="grid gap-6 sm:grid-cols-3">
+      <div className="mx-auto max-w-[var(--page-max)] space-y-16 px-5 pb-20 sm:px-6">
+        {/* How it works */}
+        <section className="board px-6 py-14 sm:px-10">
+          <h2 className="stencil mb-12 text-center text-[clamp(26px,4vw,40px)]">How it works</h2>
+          <Conveyor className="grid gap-8 sm:grid-cols-3">
             {STEPS.map((s) => (
               <Crate key={s.n}>
                 <div
-                  className={`data mb-4 inline-flex size-9 items-center justify-center text-[13px] font-bold ${
-                    s.n === '02' ? 'text-[var(--ink)]' : 'text-[var(--kraft-50)]'
-                  }`}
+                  className="data mb-4 inline-flex size-9 items-center justify-center rounded-sm text-[13px] font-bold text-on-accent"
                   style={{ background: s.color }}
                 >
                   {s.n}
                 </div>
                 <h3 className="mb-3 text-[19px] font-semibold">{s.title}</h3>
-                <p className="text-[15px] leading-relaxed text-[var(--ink-2)]">
-                  {s.body}
-                </p>
+                <p className="text-[15px] leading-relaxed text-ink-2">{s.body}</p>
               </Crate>
             ))}
           </Conveyor>
-        </div>
-      </section>
+        </section>
 
-      {/* What you can borrow */}
-      <section className="relative z-10 mx-auto max-w-[1000px] px-6 py-20">
-        <h2 className="stencil mb-3 text-[clamp(26px,4vw,40px)]">
-          Stuff you need once
-        </h2>
-        <p className="mb-10 max-w-[560px] text-[16px] text-[var(--ink-2)]">
-          Nobody needs four of these per building. Borrow one for a day or two,
-          then it goes back and someone else gets a turn.
-        </p>
+        {/* What you can borrow */}
+        <section>
+          <h2 className="stencil mb-3 text-[clamp(26px,4vw,40px)]">Stuff you need once</h2>
+          <p className="mb-10 max-w-[560px] text-[16px] text-ink-2">
+            Nobody needs four of these per building. Borrow one for a day or two,
+            then it goes back and someone else gets a turn.
+          </p>
 
-        <Conveyor className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {BORROW.map((b) => (
-            <Crate
-              key={b.item}
-              className="board flex items-start justify-between gap-4 p-5"
-            >
-              <div>
-                <div className="text-[17px] font-semibold">{b.item}</div>
-                <div className="mt-1 text-[14px] text-[var(--ink-2)]">{b.note}</div>
-              </div>
-              <div className="shrink-0 text-right">
-                <span className="data text-[22px] font-semibold text-[var(--amber)]">
-                  {b.price}
-                </span>
-                <span className="data text-[13px] text-[var(--ink-2)]">{b.unit}</span>
-              </div>
-            </Crate>
-          ))}
-        </Conveyor>
-      </section>
+          <Conveyor className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {BORROW.map((b) => (
+              <Crate key={b.item} className="board flex items-start justify-between gap-4 p-5">
+                <div>
+                  <div className="text-[17px] font-semibold">{b.item}</div>
+                  <div className="mt-1 text-[14px] text-ink-2">{b.note}</div>
+                </div>
+                <div className="shrink-0 text-right">
+                  <span className="data text-[22px] font-semibold">{b.price}</span>
+                  <span className="data text-[13px] text-ink-2">{b.unit}</span>
+                </div>
+              </Crate>
+            ))}
+          </Conveyor>
+        </section>
 
-      {/* Moving out */}
-      <section className="relative z-10 border-y border-[var(--kraft-300)] bg-[var(--kraft-100)]">
-        <div className="mx-auto grid max-w-[1000px] items-center gap-12 px-6 py-20 lg:grid-cols-2">
+        {/* Moving out */}
+        <section className="board grid items-center gap-10 px-6 py-12 sm:px-10 lg:grid-cols-2">
           <div>
-            <h2 className="stencil mb-4 text-[clamp(26px,4vw,40px)]">
-              Moving out? Don&rsquo;t bin it.
-            </h2>
-            <p className="mb-6 text-[16px] leading-relaxed text-[var(--ink-2)]">
+            <h2 className="stencil mb-4 text-[clamp(26px,4vw,40px)]">Moving out? Don&rsquo;t bin it.</h2>
+            <p className="mb-6 text-[16px] leading-relaxed text-ink-2">
               The water filter, the kettle, the mini fridge — you&rsquo;re not
               taking them home and someone moving in this week would rather pay
               you than pay full price. List it in about a minute.
             </p>
             <Link
               href="/post"
-              className="text-[15px] font-semibold underline decoration-[var(--kraft-400)] underline-offset-4 hover:text-[var(--signal)]"
+              className="text-[15px] font-semibold text-accent transition-colors duration-100 hover:text-ink"
             >
               List something you&rsquo;re leaving behind →
             </Link>
           </div>
 
-          <Conveyor className="grid gap-3">
+          {/* Inset wells, not cards on a card. */}
+          <Conveyor className="grid gap-2">
             {BUY.map((b) => (
-              <Crate
-                key={b.item}
-                className="board flex items-center justify-between px-5 py-4"
-              >
+              <Crate key={b.item} className="flex items-center justify-between rounded-md bg-surface-2 px-5 py-4">
                 <span className="text-[16px] font-medium">{b.item}</span>
-                <span className="data text-[18px] font-semibold text-[var(--amber)]">
-                  {b.price}
-                </span>
+                <span className="data text-[18px] font-semibold">{b.price}</span>
               </Crate>
             ))}
           </Conveyor>
-        </div>
-      </section>
+        </section>
 
-      {/* Reassurance */}
-      <section className="relative z-10 mx-auto max-w-[1000px] px-6 py-20">
-        <Conveyor className="grid gap-6 sm:grid-cols-3">
-          <Crate className="border-t-4 pt-5" style={{ borderColor: 'var(--accent)' }}>
-            <h3 className="mb-2 text-[17px] font-semibold">Students only</h3>
-            <p className="text-[15px] leading-relaxed text-[var(--ink-2)]">
-              You sign up with your university email, so everyone here is someone
-              you could run into on campus.
-            </p>
-          </Crate>
-          <Crate className="border-t-4 pt-5" style={{ borderColor: 'var(--ink-3)' }}>
-            <h3 className="mb-2 text-[17px] font-semibold">You keep the money</h3>
-            <p className="text-[15px] leading-relaxed text-[var(--ink-2)]">
-              Relay shows the price and the dates. You and the other person settle
-              it however you like — we never touch your payments.
-            </p>
-          </Crate>
-          <Crate className="border-t-4 pt-5" style={{ borderColor: 'var(--accent)' }}>
-            <h3 className="mb-2 text-[17px] font-semibold">It comes back</h3>
-            <p className="text-[15px] leading-relaxed text-[var(--ink-2)]">
-              Every loan has a return date agreed up front, and you always know
-              who it goes to next.
-            </p>
-          </Crate>
-        </Conveyor>
-      </section>
+        {/* Reassurance */}
+        <section className="board px-6 py-10 sm:px-10">
+          <Conveyor className="grid gap-8 sm:grid-cols-3">
+            {REASSURANCE.map((r) => (
+              <Crate key={r.title} className="border-t-2 border-accent pt-5">
+                <h3 className="mb-2 text-[17px] font-semibold">{r.title}</h3>
+                <p className="text-[15px] leading-relaxed text-ink-2">{r.body}</p>
+              </Crate>
+            ))}
+          </Conveyor>
+        </section>
 
-      {/* Final CTA */}
-      <section className="relative z-10 border-t border-[var(--kraft-300)] bg-[var(--kraft-100)]">
-        <div className="mx-auto max-w-[720px] px-6 py-20 text-center">
+        {/* Final CTA */}
+        <section className="board px-6 py-16 text-center">
           <Stamp className="mb-6">
-            <span className="text-[13px] font-semibold tracking-[0.02em] text-[var(--ink-2)] border border-[var(--rule-strong)] bg-[var(--kraft-50)] px-3 py-1.5">
+            <span className="border border-border-strong bg-surface-2 px-3 py-1.5 text-[13px] font-semibold tracking-[0.02em] text-ink-2">
               Free to join
             </span>
           </Stamp>
-          <h2 className="stencil mb-4 text-[clamp(28px,4.5vw,44px)] leading-[1.02]">
+          <h2 className="stencil mx-auto mb-4 max-w-[720px] text-[clamp(28px,4.5vw,44px)] leading-[1.1]">
             Your building already owns everything in it
           </h2>
-          <p className="mx-auto mb-9 max-w-[460px] text-[16px] text-[var(--ink-2)]">
+          <p className="mx-auto mb-9 max-w-[460px] text-[16px] text-ink-2">
             Start with one thing you need this week.
           </p>
-          <Link
-            href="/login"
-            className="inline-flex min-h-12 items-center justify-center rounded-[4px] bg-accent px-8 text-[15px] font-semibold text-white transition-colors duration-75 hover:brightness-[1.08]"
-            
-          >
+          <Link href="/login" className={btnPrimary}>
             Get started
           </Link>
-        </div>
-      </section>
-
-      <SiteFooter />
+        </section>
+      </div>
     </div>
   )
 }

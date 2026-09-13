@@ -3,7 +3,7 @@ import type { Handoff, Listing, Match, TimeSlot, University, User, UserNotificat
 export const university: University = {
   id: "uw",
   name: "University of Waterloo",
-  shortName: "Waterloo",
+  shortName: "UWaterloo",
   emailDomain: "uwaterloo.ca",
 };
 

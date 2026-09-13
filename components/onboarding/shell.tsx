@@ -66,7 +66,7 @@ export function OnboardingShell({
           ← {backLabel ?? "Back"}
         </Link>
       )}
-      <h1 className="text-xl font-semibold text-gh-fg">{title}</h1>
+      <h1 className="text-[28px] leading-tight font-semibold text-gh-fg">{title}</h1>
       {description && <p className="mt-1 text-[13px] text-gh-fg-muted">{description}</p>}
       <div className="mt-6">{children}</div>
     </div>

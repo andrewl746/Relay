@@ -103,7 +103,7 @@ export function SettingsForm({
             ) : (
               <span
                 aria-hidden
-                className="flex size-16 items-center justify-center rounded-full bg-accent text-[28px] font-bold text-white"
+                className="flex size-16 items-center justify-center rounded-full bg-accent text-[28px] font-bold text-on-accent"
                 style={{ lineHeight: 1 }}
               >
                 {defaults.fullName.trim().charAt(0).toUpperCase() || "?"}
@@ -161,6 +161,7 @@ export function SettingsForm({
                   </option>
                 ))}
               </select>
+              <p className="mt-1 text-[13px] text-ink-2">Switching universities means verifying your new university email.</p>
             </div>
             <p className="text-[14px] text-ink-2">
               Signed in as <span className="font-semibold text-ink">{defaults.email}</span>
@@ -271,7 +272,7 @@ export function SettingsForm({
           <form action={deleteAction} className="flex flex-wrap gap-3">
             <button
               type="submit"
-              className="inline-flex min-h-11 items-center justify-center rounded-sm bg-accent px-5 text-[15px] font-semibold text-white"
+              className="inline-flex min-h-11 items-center justify-center rounded-sm bg-accent px-5 text-[15px] font-semibold text-on-accent"
             >
               Yes, delete it
             </button>

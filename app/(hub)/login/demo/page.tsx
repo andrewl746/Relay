@@ -12,7 +12,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login/demo
   return (
     <PageShell>
       <div className="mb-8">
-        <h1 className="font-[family-name:var(--font-display)] text-[32px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
+        <h1 className="font-[family-name:var(--font-display)] text-[40px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
           AUTHORIZE
         </h1>
         <p className="mt-2 text-[var(--text-muted)] max-w-[52ch]">

@@ -24,7 +24,7 @@ export default function Page() {
   return (
     <main className="flex-1 px-6 py-5 md:px-10">
       <header className="mb-5">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-4xl font-semibold tracking-tight">
           {config.ui.productName}
         </h1>
         <p className="text-sm text-neutral-500">{config.ui.tagline}</p>

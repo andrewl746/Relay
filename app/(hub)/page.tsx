@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ListingRow } from "@/components/hub/listing-row";
-import { btnPrimary, btnSecondary, CardEmpty, PageShell, PageTitle, SectionTitle } from "@/components/hub/ui";
+import { btnPrimary, btnSecondary, btnTertiary, CardEmpty, PageShell, PageTitle, SectionTitle } from "@/components/hub/ui";
 import { getBoard, getHandoffs, getMatches, getUniversity, getWants } from "@/lib/hub/data";
 import { formatShortDate } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
@@ -9,6 +9,22 @@ export const metadata = { title: "Home" };
 
 function firstName(name: string) {
   return name.trim().split(/\s+/)[0] || "there";
+}
+
+const GREETINGS = [
+  (n: string) => `Hi ${n}!`,
+  (n: string) => `Welcome back, ${n}.`,
+  (n: string) => `Good to see you, ${n}!`,
+  (n: string) => `What do you need, ${n}?`,
+  (n: string) => `Hey ${n}, what’s new?`,
+  (n: string) => `Back again, ${n}?`,
+];
+
+// Picked from the person's id, not Math.random: each student gets their own
+// line, and it stays the same every visit and every session.
+function greeting(user: { id: string; name: string }) {
+  const hash = [...user.id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 0);
+  return GREETINGS[hash % GREETINGS.length](firstName(user.name));
 }
 
 export default async function HomePage() {
@@ -28,7 +44,7 @@ export default async function HomePage() {
   return (
     <PageShell>
       <PageTitle
-        title={`Hi ${firstName(user.name)}`}
+        title={greeting(user)}
         lede={
           matches.length > 0
             ? `${matches.length} thing${matches.length === 1 ? "" : "s"} on your list just turned up at ${university.shortName}.`
@@ -107,8 +123,9 @@ export default async function HomePage() {
               </ul>
             ) : (
               <CardEmpty icon="list" title="Nothing on your list yet">
-                Tell us what you need and we&rsquo;ll watch for it.{" "}
-                <Link href="/wants" className="font-semibold text-accent transition-colors duration-100 hover:text-ink">
+                Tell us what you need and we&rsquo;ll watch for it.
+                <br />
+                <Link href="/wants" className={btnTertiary}>
                   Add something
                 </Link>
               </CardEmpty>

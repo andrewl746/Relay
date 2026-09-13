@@ -38,10 +38,10 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
   };
 
   return (
-    <div className="mx-auto max-w-[1120px] px-4 pt-8 pb-16 sm:px-6">
+    <div className="mx-auto max-w-[1120px] px-4 pt-12 pb-16 sm:px-6 sm:pt-16">
       <div className="grid gap-x-12 gap-y-10 lg:grid-cols-[1fr_320px]">
         <section aria-labelledby="board-title" className="min-w-0">
-          <h1 id="board-title" className="text-[30px] leading-[1.12] font-semibold tracking-[-0.02em] text-ink">
+          <h1 id="board-title" className="text-[clamp(32px,4.5vw,42px)] leading-[1.1] font-semibold tracking-[-0.02em] text-ink">
             Everything here is leaving
           </h1>
           <p className="mt-2 text-[16px] text-ink-2">
@@ -89,10 +89,12 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                       href={viewHref(v.value)}
                       scroll={false}
                       aria-current={active ? "true" : undefined}
-                      className={`inline-flex min-h-9 items-center rounded-full px-3.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-[90ms] ${
+                      className={`inline-flex min-h-9 items-center rounded-full border px-3.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-[90ms] ${
                         active
-                          ? "bg-ink text-bg"
-                          : "bg-surface-2 text-ink-2 hover:bg-surface hover:text-ink"
+                          ? "border-ink bg-ink text-bg"
+                          : // Hover brightens the border, not the fill: bg-surface is DARKER than
+                            // surface-2 in dark mode, so the old hover nearly erased the chip (1.08:1).
+                            "border-border-strong bg-surface-2 text-ink-2 hover:border-ink-3 hover:text-ink"
                       }`}
                     >
                       {v.label}
@@ -113,7 +115,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                 </p>
                 <Link
                   href={query ? `/wants?add=${encodeURIComponent(query)}` : "/wants"}
-                  className={`${btnSecondary} mt-4`}
+                  className={btnTertiary}
                 >
                   {query ? `Add “${query}” to my list` : "Go to my list"}
                 </Link>

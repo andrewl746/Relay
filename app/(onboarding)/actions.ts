@@ -132,12 +132,17 @@ export async function confirmVerificationCode(_prev: ActionState, formData: Form
   }
 
   await supabase.from("email_verifications").update({ consumed_at: new Date().toISOString() }).eq("id", record.id);
+
+  // Re-verifying after a university change: back to settings, not through
+  // interests and wants a second time.
+  const profile = await getProfile(supabase, user.id);
+  const reverify = Boolean(profile?.onboarding_completed);
   await supabase
     .from("profiles")
-    .update({ university_email_verified: true, onboarding_step: "interests" })
+    .update(reverify ? { university_email_verified: true } : { university_email_verified: true, onboarding_step: "interests" })
     .eq("id", user.id);
 
-  redirect("/onboarding/interests");
+  redirect(reverify ? "/settings" : "/onboarding/interests");
 }
 
 export async function saveInterests(_prev: ActionState, formData: FormData): Promise<ActionState> {

@@ -51,6 +51,10 @@ html[data-theme="dark"] { color-scheme: dark; }
      with white text on top. */
   --accent: #1A56DB;
   --accent-tint: #E8EEFC; /* wash for selected rows */
+  /* Text on an accent fill. One accent in both themes, so the text flips
+     instead: white here (6.2:1), black in dark (7.6:1 on #5B9BFF). White on
+     the dark accent was 2.8:1; a separate darker fill split the brand. */
+  --on-accent: #FFFFFF;
 
   /* confirmed. the one other hue, kept muted and used only for a completed tick */
   --done: #2D6A4F;
@@ -86,7 +90,7 @@ html[data-theme="dark"] { color-scheme: dark; }
   --secured: var(--done);
   --alert: var(--accent);
 
-  --font-display: var(--font-archivo), system-ui, sans-serif;
+  --font-display: var(--font-merriweather), Georgia, serif;
   --font-ui: var(--font-archivo), system-ui, sans-serif;
   --font-data: var(--font-plex), ui-monospace, monospace;
 
@@ -122,6 +126,7 @@ html[data-theme="dark"] { color-scheme: dark; }
   --ink-3: #7C7466;
   --accent: #5B9BFF;
   --accent-tint: #1C2742;
+  --on-accent: #000000;
   --done: #6FAF87;
   --lift: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .35);
   --lift-2: 0 2px 4px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .45);
@@ -139,6 +144,7 @@ html[data-theme="dark"] { color-scheme: dark; }
     --ink-3: #7C7466;
     --accent: #5B9BFF;
     --accent-tint: #1C2742;
+    --on-accent: #000000;
     --done: #6FAF87;
     --lift: 0 1px 2px rgba(0, 0, 0, .3), 0 2px 8px rgba(0, 0, 0, .35);
     --lift-2: 0 2px 4px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .45);
@@ -159,6 +165,7 @@ html[data-theme="dark"] { color-scheme: dark; }
   --color-ink-3: var(--ink-3);
   --color-accent: var(--accent);
   --color-accent-tint: var(--accent-tint);
+  --color-on-accent: var(--on-accent);
   --color-done: var(--done);
 
   --color-paper: var(--bg);
@@ -197,6 +204,25 @@ body {
   color: var(--ink);
   font-family: var(--font-ui);
   font-variation-settings: "wdth" 100;
+}
+
+/* Headings are the serif; everything else stays Archivo. Base layer, so a
+   font-* utility on a heading still wins. No one-word last lines anywhere:
+   body text is `pretty` (inherited), headings `balance` their lines. */
+@layer base {
+  body {
+    text-wrap: pretty;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  /* Tailwind v4's preflight resets buttons to cursor:default. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  input:is([type="submit"], [type="button"], [type="reset"]):not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /*
@@ -286,7 +312,7 @@ html.lenis body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Stencilled on the side of a box: condensed, heavy, wide-tracked. */
+/* Landing-page display headings: the heading serif, heavy and tight. */
 .display-heading,
 .stencil {
   font-family: var(--font-display);
@@ -351,19 +377,11 @@ a:focus-visible {
   color: var(--ink);
 }
 
-/* Bauhaus shapes. Decorative only, so they are aria-hidden at the call site. */
-.shape-circle { border-radius: 9999px; }
-.shape-tri {
-  width: 0; height: 0;
-  border-left: var(--tri, 28px) solid transparent;
-  border-right: var(--tri, 28px) solid transparent;
-  border-bottom: calc(var(--tri, 28px) * 1.7) solid currentColor;
-}
 
 /* ---- shared-element navigation ----------------------------------------- */
 /*
  * A board thumbnail and the listing hero carry the same view-transition-name,
- * so the browser tweens one into the other. See components/hub/transition-link.
+ * so the browser tweens one into the other. See Thumb in components/hub/ui.tsx.
  * Only the timing is set here; the geometry is the browser's own.
  */
 ::view-transition-old(root),

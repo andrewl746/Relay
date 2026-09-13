@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MyListingRow } from "@/components/hub/my-listing-row";
-import { btnSecondary, EmptyState, PageShell, PageTitle } from "@/components/hub/ui";
+import { btnTertiary, EmptyState, PageShell, PageTitle } from "@/components/hub/ui";
 import { getMyListings } from "@/lib/hub/data";
 import { getCurrentUser } from "@/lib/hub/session";
 
@@ -21,12 +21,14 @@ export default async function MyPostsPage() {
       />
 
       {myListings.length === 0 ? (
+        <div className="board px-5">
         <EmptyState title="You haven't posted anything yet.">
           <p>List your first item and it&apos;ll show up here.</p>
-          <Link href="/post" className={`${btnSecondary} mt-4`}>
+          <Link href="/post" className={btnTertiary}>
             Post an item
           </Link>
         </EmptyState>
+        </div>
       ) : (
         <>
           {live.length > 0 && (

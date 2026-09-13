@@ -66,7 +66,7 @@ export function ThemeToggle() {
           aria-checked={theme === o.value}
           onClick={() => applyTheme(o.value)}
           className={`min-h-9 rounded-sm px-4 text-[14px] font-semibold transition-colors ${
-            theme === o.value ? "bg-accent text-white" : "text-ink-2 hover:text-ink"
+            theme === o.value ? "bg-accent text-on-accent" : "text-ink-2 hover:text-ink"
           }`}
         >
           {o.label}

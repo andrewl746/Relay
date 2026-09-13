@@ -7,7 +7,7 @@ export const metadata = { title: "Create your account" };
 export default function RegisterPage() {
   return (
     <div className="rounded-md border border-border bg-surface p-6 shadow-[var(--lift)] sm:p-8">
-      <h1 className="text-[26px] leading-tight font-semibold tracking-[-0.02em]">
+      <h1 className="text-[34px] leading-tight font-semibold tracking-[-0.02em]">
         Create your {SITE_NAME} account
       </h1>
       <p className="mt-2 text-[15px] text-ink-2">
