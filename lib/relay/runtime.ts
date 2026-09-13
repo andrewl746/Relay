@@ -108,9 +108,22 @@ export function readRuntime(): Runtime {
   }
 }
 
+/**
+ * ponytail: the Relay engine's own state is still a local JSON file, which on a
+ * serverless host means per-instance and, outside /tmp, not writable at all.
+ * Failing soft here keeps /chains rendering instead of 500ing — reads already
+ * degrade to an empty runtime — but a write made there will not be seen by the
+ * next request. The hub's listings and claims were moved to Supabase (see
+ * lib/hub/listing-store.ts and claim-store.ts); do the same for these tables if
+ * the Relay engine needs to survive a deploy.
+ */
 export function writeRuntime(next: Runtime): void {
-  mkdirSync(join(process.cwd(), 'data'), { recursive: true })
-  writeFileSync(file(), JSON.stringify(next, null, 2))
+  try {
+    mkdirSync(join(process.cwd(), 'data'), { recursive: true })
+    writeFileSync(file(), JSON.stringify(next, null, 2))
+  } catch (err) {
+    console.warn('[runtime] not persisted (read-only filesystem?):', err)
+  }
 }
 
 export function mutate(fn: (r: Runtime) => void): Runtime {
