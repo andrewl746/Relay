@@ -88,6 +88,16 @@ export function chainForItem(
     const dist0 = distance(holder, peopleById.get(cands[i].personId))
     dp[i] = score[i] - lambda * gap0 - mu * dist0
 
+    // A sale transfers the object permanently, so THIS routing ends at the
+    // first hop — there is no second loan to schedule. That makes it exactly
+    // the base case above, and the predecessor search below is skipped rather
+    // than special-cased anywhere else in the engine.
+    //
+    // It does not end the item's life: ownership moves to the buyer, who can
+    // relist it later (for loan or for sale) and start a fresh chain under a
+    // new holder. That relisting is a runtime action, not an engine concern.
+    if (item.deal === 'sale') continue
+
     for (let j = 0; j < i; j++) {
       if (cands[j].needUntil > cands[i].needFrom) continue // overlap
       const gap = Math.max(0, days(cands[j].needUntil, cands[i].needFrom))
@@ -234,6 +244,17 @@ export function assignAll(
  * exists to drive to zero, and the one that jumps when a person is removed.
  */
 export function idleDays(item: Item, chain: Chain): number {
+  // A sold object stops being idle the day it sells — after that it is not
+  // sitting unused, it belongs to someone. So idle is the time it spent on the
+  // market, not the rest of the window. Counting the tail would make every
+  // sale look like a failure.
+  if (item.deal === 'sale') {
+    const hop = chain.hops[0]
+    return hop
+      ? Math.max(0, days(item.freeFrom, hop.from))
+      : Math.max(0, days(item.freeFrom, item.freeUntil))
+  }
+
   const total = Math.max(0, days(item.freeFrom, item.freeUntil))
   const covered = chain.hops.reduce((s, h) => {
     const from = h.from < item.freeFrom ? item.freeFrom : h.from
@@ -241,4 +262,13 @@ export function idleDays(item: Item, chain: Chain): number {
     return s + Math.max(0, days(from, to))
   }, 0)
   return Math.max(0, total - covered)
+}
+
+/** What the owner makes: per-day for a rental, the price once for a sale. */
+export function earnings(item: Item, chain: Chain): number {
+  if (item.deal === 'sale') return chain.hops.length > 0 ? item.price : 0
+  return chain.hops.reduce(
+    (s, h) => s + item.price * Math.max(0, days(h.from, h.to)),
+    0,
+  )
 }

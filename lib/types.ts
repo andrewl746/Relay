@@ -12,6 +12,15 @@ export type Person = {
   awayUntil: string
 }
 
+/**
+ * Whether the object comes back to its owner. Structural, not domain
+ * vocabulary: `rent` returns after each loan and can be scheduled repeatedly,
+ * `sale` transfers ownership once. A sold item is not gone — its new owner can
+ * relist it, which starts a fresh chain. The words a user sees come from
+ * config.json.
+ */
+export type Deal = 'rent' | 'sale'
+
 export type Item = {
   id: string
   /** Person who physically has it right now. */
@@ -21,6 +30,15 @@ export type Item = {
   embedding: number[]
   freeFrom: string
   freeUntil: string
+  deal: Deal
+  /** Per day for `rent`; the whole price for `sale`. */
+  price: number
+  /**
+   * Reserved. A `place` is an item that does not move: distance penalty is
+   * always 0, idle days are vacant days, price is rent. The engine needs no
+   * change to route one. Not built — see docs/PROJECT.md §11.
+   */
+  kind?: 'thing' | 'place'
 }
 
 export type Need = {
