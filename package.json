@@ -15,7 +15,8 @@
     "check:store": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-store.ts",
     "reset": "node --experimental-strip-types scripts/reset.ts",
     "check:backboard": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-backboard.ts",
-    "check:search": "node --experimental-strip-types scripts/check-search.ts"
+    "check:search": "node --experimental-strip-types scripts/check-search.ts",
+    "seed:backboard": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/seed-backboard.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

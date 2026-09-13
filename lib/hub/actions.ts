@@ -3,10 +3,13 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { whoWants, type WantMemory } from "@/lib/providers/backboard";
 import { USER_COOKIE } from "./dev-login";
 import { getCurrentUser } from "./session";
 import { resetPlanCache } from "./matching";
-import { listings, users } from "./mock-data";
+import { listings, users, wants } from "./mock-data";
+import { createClient } from "../supabase/server";
+import { getSupabaseUser } from "../supabase/session";
 import type { Category, Condition, Listing, OfferType } from "./types";
 
 export async function loginAction(userId: string, email: string) {
@@ -23,6 +26,61 @@ export async function loginAction(userId: string, email: string) {
     maxAge: 60 * 60 * 24 * 30,
     sameSite: "lax"
   });
+}
+
+function revalidateWants() {
+  resetPlanCache();
+  revalidatePath("/wants");
+  revalidatePath("/browse");
+  revalidatePath("/");
+}
+
+export type AddWantResult = { status: "ok"; id: string } | { status: "error"; message: string };
+
+/**
+ * Signed-in accounts keep their list in Supabase, where getWants reads it;
+ * demo accounts keep it in the seed arrays, same as their listings.
+ */
+export async function addWant(text: string, budgetDollars: string): Promise<AddWantResult> {
+  const value = text.trim();
+  if (!value) return { status: "error", message: "Say what you need." };
+  const dollars = budgetDollars.trim() ? Number(budgetDollars) : null;
+  if (dollars !== null && (!Number.isFinite(dollars) || dollars < 0)) {
+    return { status: "error", message: "Budget should be a number of dollars." };
+  }
+  const maxPriceCents = dollars === null ? null : Math.round(dollars * 100);
+
+  const supabaseUser = await getSupabaseUser();
+  if (supabaseUser) {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("wants")
+      .insert({ user_id: supabaseUser.id, text: value, max_price_cents: maxPriceCents })
+      .select("id")
+      .single();
+    if (error || !data) return { status: "error", message: "Couldn't save that. Try again." };
+    revalidateWants();
+    return { status: "ok", id: data.id };
+  }
+
+  const user = await getCurrentUser();
+  const id = `w-${Date.now().toString(36)}`;
+  wants.push({ id, userId: user.id, text: value, maxPriceCents, neededBy: "", fulfilled: false });
+  revalidateWants();
+  return { status: "ok", id };
+}
+
+export async function removeWant(wantId: string): Promise<void> {
+  const supabaseUser = await getSupabaseUser();
+  if (supabaseUser) {
+    const supabase = await createClient();
+    await supabase.from("wants").delete().eq("id", wantId).eq("user_id", supabaseUser.id);
+  } else {
+    const user = await getCurrentUser();
+    const index = wants.findIndex((w) => w.id === wantId && w.userId === user.id);
+    if (index >= 0) wants.splice(index, 1);
+  }
+  revalidateWants();
 }
 
 type ParsedListingFields = {
@@ -69,7 +127,7 @@ function parsePhoto(formData: FormData): string | null {
 
 export type CreateListingResult =
   | { status: "error"; message: string }
-  | { status: "ok"; id: string; title: string; expiresAt: string | null };
+  | { status: "ok"; id: string; title: string; expiresAt: string | null; waiting: WantMemory[] };
 
 export async function createListing(_prev: CreateListingResult, formData: FormData): Promise<CreateListingResult> {
   const fields = parseListingFields(formData);
@@ -109,7 +167,13 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
   revalidatePath("/");
   revalidatePath("/wants");
 
-  return { status: "ok", id: newListing.id, title: newListing.title, expiresAt: newListing.expiresAt };
+  // Who already asked for this: a Backboard memory search over every student's
+  // wants, so "IKEA desk" still finds "desk big enough for a laptop". Title only,
+  // because that is what the distance cut was calibrated on. [] if Backboard is down.
+  const poster = user.name.split(" ")[0];
+  const waiting = (await whoWants(title)).filter((w) => w.name !== poster);
+
+  return { status: "ok", id: newListing.id, title: newListing.title, expiresAt: newListing.expiresAt, waiting };
 }
 
 // Soft delete: mark it removed rather than splicing it out of the array.

@@ -1,57 +1,111 @@
 import { getProvider, providerName } from "../providers/index.ts";
 import { cosine } from "../vector.ts";
+import { matchesTerms, searchTerms } from "./search.ts";
 
 /**
- * Search that isn't Ctrl-F.
+ * Hybrid search: literal words decide what is guaranteed, embeddings decide
+ * what else is close enough to earn a place.
  *
- * The board's text filter is a lookup table (./search.ts) — it knows that a
- * bookshelf is a bookcase because someone wrote that down. This is the other
- * half: the same embedding provider the routing engine uses to match a need to
- * an item, pointed at the search box, so a query that nobody wrote a synonym
- * for still finds things.
+ * Three tiers, from most to least certain:
  *
- * It is the same seam as everywhere else — MATCH_PROVIDER=stub is the offline
- * hashed-bag model, MATCH_PROVIDER=snowflake embeds through Cortex — so the
- * search box gets better the moment the provider does, with no change here.
+ *   title       every search term is a word in the title, kind, or one of a
+ *               bundle's item titles. Always shown — if you typed "bed" and
+ *               the listing says bed, no model gets to hide it.
+ *   text        the terms only appear in the description. Sellers mention
+ *               other objects in passing ("fits beside a desk"), so a
+ *               description hit also has to be at least loosely similar.
+ *   embedding   no literal hit at all. Only paraphrase lives here, so the bar
+ *               is strict: close to the best hit for this query, above an
+ *               absolute floor, and clearly separated from the rest of the
+ *               board rather than just the top of a flat distribution.
  *
- * Two guards, both learned rather than assumed:
+ * Every gate is relative to this query's own score distribution because
+ * absolute cosine isn't comparable across queries or providers: the offline
+ * stub tops out near 0.2 for "bed" and 0.6 for "lamp", and a real model has a
+ * much higher baseline for unrelated text.
  *
- *   relative cut   absolute cosine is not comparable across queries. "fridge"
- *                  tops out at 0.63 against this corpus and "bookshelf" at
- *                  0.25, so one fixed threshold either drops the second query
- *                  or floods the first. Keep what is close to the best hit for
- *                  THIS query instead.
- *   floor          if even the best hit is weak, the query is about something
- *                  the board doesn't have. Return nothing and let the lexical
- *                  half answer, rather than ranking noise.
- *
- * Results are unioned with the lexical hits, never substituted for them, so
- * turning the model off can only remove results — it can't break search.
+ * If the provider fails, the lexical tiers still answer, so turning the model
+ * off can only remove paraphrase results — it can't break search.
  */
 
-/** Keep hits within this fraction of the best score for the query. */
-const RELATIVE_CUT = 0.5;
-/** Below this, even the best hit is noise. */
-const FLOOR = 0.12;
+/** Paraphrase must score at least this fraction of the best hit. */
+const STRICT_RELATIVE = 0.75;
+/** …and stand this many standard deviations above the board's mean. */
+const STRICT_Z = 2;
+/** …and never below this, however flat the distribution. */
+const STRICT_FLOOR = 0.2;
+/** A description mention needs only loose similarity to back it up. */
+const TEXT_RELATIVE = 0.4;
+const TEXT_FLOOR = 0.1;
 
-export async function semanticHits(
-  query: string,
-  items: { id: string; text: string }[],
-): Promise<Set<string>> {
-  if (items.length === 0 || !query.trim()) return new Set();
+const COLLECTIVE = new Set(["set", "kit", "supplies", "pack", "bundle", "pair", "lot", "collection"]);
 
+export type SearchDoc = {
+  id: string;
+  /** Title, kind, and bundle item titles — what the listing IS. */
+  title: string;
+  /** Free text the seller wrote around it. */
+  body: string;
+};
+
+export type SearchHit = { id: string; via: "title" | "text" | "embedding"; similarity: number | null };
+
+/**
+ * Run several queries against the same documents with one embedding call.
+ * Returns, per query, the hits in document order.
+ */
+export async function hybridSearchMany(queries: string[], docs: SearchDoc[]): Promise<SearchHit[][]> {
+  if (queries.length === 0) return [];
+  if (docs.length === 0) return queries.map(() => []);
+
+  let vectors: number[][] | null = null;
   try {
-    const [q, ...vectors] = await getProvider().embed([query, ...items.map((i) => i.text)]);
-    const scored = items.map((item, i) => ({ id: item.id, score: cosine(q, vectors[i]) }));
-    const best = Math.max(...scored.map((s) => s.score));
-    if (best < FLOOR) return new Set();
-    const cut = Math.max(best * RELATIVE_CUT, FLOOR);
-    return new Set(scored.filter((s) => s.score >= cut).map((s) => s.id));
+    vectors = await getProvider().embed([...queries, ...docs.map((d) => `${d.title}. ${d.body}`)]);
   } catch (err) {
-    // A search box is not worth taking the board down for. Whatever the
-    // provider did — no key, rate limit, network — the lexical half still
-    // answered, so log it and return nothing.
     console.warn(`[search] ${providerName()} embed failed, lexical only:`, err);
-    return new Set();
   }
+
+  return queries.map((query, qi) => {
+    const terms = searchTerms(query);
+    const sims = vectors ? docs.map((_, di) => cosine(vectors![qi], vectors![queries.length + di])) : null;
+
+    let strictCut = Infinity;
+    let textCut = -Infinity;
+    if (sims && query.trim()) {
+      const best = Math.max(...sims);
+      const mean = sims.reduce((a, b) => a + b, 0) / sims.length;
+      const sd = Math.sqrt(sims.reduce((a, b) => a + (b - mean) ** 2, 0) / sims.length);
+      strictCut = Math.max(STRICT_FLOOR, best * STRICT_RELATIVE, mean + STRICT_Z * sd);
+      textCut = Math.max(TEXT_FLOOR, best * TEXT_RELATIVE);
+    }
+
+    // The last term names the object ("desk LAMP", "mini FRIDGE"); earlier
+    // ones modify it. A listing that shares only a modifier is a different
+    // object that happens to use the same word, and similarity from that
+    // shared word must not carry it in. Collective words ("cookware SET")
+    // don't name anything, so the head is the last term that isn't one.
+    const headIndex = terms.findLastIndex((g) => !g.some((w) => COLLECTIVE.has(w)));
+    const head = headIndex >= 0 ? terms[headIndex] : terms.at(-1);
+    const modifiers = terms.filter((g) => g !== head);
+
+    const hits: SearchHit[] = [];
+    docs.forEach((doc, di) => {
+      const similarity = sims ? sims[di] : null;
+      const text = `${doc.title} ${doc.body}`;
+      if (matchesTerms(doc.title, terms)) {
+        hits.push({ id: doc.id, via: "title", similarity });
+      } else if (matchesTerms(text, terms) && (similarity === null || similarity >= textCut)) {
+        hits.push({ id: doc.id, via: "text", similarity });
+      } else if (similarity !== null && similarity >= strictCut) {
+        const onlyModifier =
+          head !== undefined && !matchesTerms(text, [head]) && modifiers.some((m) => matchesTerms(text, [m]));
+        if (!onlyModifier) hits.push({ id: doc.id, via: "embedding", similarity });
+      }
+    });
+    return hits;
+  });
+}
+
+export async function hybridSearch(query: string, docs: SearchDoc[]): Promise<SearchHit[]> {
+  return (await hybridSearchMany([query], docs))[0];
 }
