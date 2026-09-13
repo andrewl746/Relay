@@ -36,16 +36,16 @@ export function OnboardingShell({
                   aria-hidden="true"
                   className={`grid size-5 shrink-0 place-items-center rounded-full text-[11px] font-semibold ${
                     state === "done"
-                      ? "bg-gh-success text-white"
+                      ? "bg-gh-success text-on-accent"
                       : state === "current"
-                        ? "bg-gh-accent text-white"
+                        ? "bg-gh-accent text-on-accent"
                         : "border border-gh-border text-gh-fg-subtle"
                   }`}
                 >
                   {state === "done" ? "✓" : n}
                 </span>
                 <span
-                  className={`hidden text-[12px] sm:inline ${
+                  className={`hidden text-[13px] sm:inline ${
                     state === "upcoming" ? "text-gh-fg-subtle" : "font-medium text-gh-fg"
                   }`}
                 >

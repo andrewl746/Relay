@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { Logo } from "@/components/hub/logo";
+import { PlainHeader } from "@/components/hub/plain-header";
 import { getProfile } from "@/lib/onboarding/profile";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseUser } from "@/lib/supabase/session";
@@ -17,10 +17,7 @@ export default async function OnboardingLayout({ children }: { children: ReactNo
 
   return (
     <div className="gh flex min-h-full flex-1 flex-col">
-      <header className="border-b border-gh-border-muted px-4 py-4">
-        {/* .gh is a light-only theme, so the mark stays dark ink even in dark mode. */}
-        <Logo className="h-7 bg-gh-fg" />
-      </header>
+      <PlainHeader href="/" />
       <main className="flex flex-1 items-start justify-center px-4 py-10 sm:py-16">
         {/* Step 3 is a grid of tiles, so the shell has to be able to get wide.
             Each step sets its own width via OnboardingShell. */}

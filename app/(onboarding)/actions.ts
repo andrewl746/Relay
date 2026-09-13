@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { isUniversityEmail } from "@/lib/hub/email";
 import { sendVerificationEmail } from "@/lib/onboarding/email";
+import { rememberWant } from "@/lib/providers/backboard";
 import { CODE_LENGTH, CODE_TTL_MINUTES, MAX_ATTEMPTS, generateCode, hashCode } from "@/lib/onboarding/otp";
 import { getProfile } from "@/lib/onboarding/profile";
 import { getUniversity } from "@/lib/onboarding/universities";
@@ -179,6 +180,11 @@ export async function finishWants(_prev: ActionState, formData: FormData): Promi
   if (rows.length > 0) {
     const { error: wantsError } = await supabase.from("wants").insert(rows);
     if (wantsError) return { status: "error", message: "Couldn't save your list. Try again." };
+
+    // Into Backboard memory too, so a later post of any of these finds them.
+    const profile = await getProfile(supabase, user.id);
+    const first = profile?.full_name?.split(" ")[0] || "A student";
+    await Promise.all(rows.map((row) => rememberWant(first, row.text)));
   }
 
   const { error } = await supabase

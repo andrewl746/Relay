@@ -140,3 +140,73 @@ export async function extractNeedMetadata(text: string): Promise<NeedMetadata> {
     return DEFAULTS
   }
 }
+
+/**
+ * Memory — every student's wants list, kept in Backboard, so a new listing can
+ * be checked against what people have already asked for.
+ *
+ * Memory rather than chat on purpose: the account's free credit covers Memory
+ * & RAG and refuses LLM calls, which is why extractNeedMetadata above returns
+ * defaults. Search results come back as content + score with no metadata, so
+ * the student's first name is written into the content itself.
+ */
+const WANTS_ASSISTANT = 'relay-wants'
+const WANTED_BY = ' — wanted by '
+/**
+ * searchMemories' `score` is a DISTANCE: lower is closer. Calibrated by
+ * npm run seed:backboard: right object 0.44–0.52, bookcase→shelving 0.57,
+ * desk→chair 0.62, unrelated 0.7+. It also ignores `limit`, so we trim.
+ */
+export const MAX_WANT_DISTANCE = 0.58
+
+let wantsAssistantPromise: Promise<string> | null = null
+
+export function wantsAssistantId(bb: BackboardClient): Promise<string> {
+  wantsAssistantPromise ??= (async () => {
+    const [existing] = await bb.listAssistants({ name: WANTS_ASSISTANT, limit: 1 })
+    if (existing?.assistantId) return existing.assistantId
+    const created = await bb.createAssistant({
+      name: WANTS_ASSISTANT,
+      description: 'What Relay students have said they need',
+      system_prompt: 'Stores what students need to borrow or buy.',
+    })
+    return created.assistantId
+  })()
+  return wantsAssistantPromise
+}
+
+export type WantMemory = { name: string; text: string; score: number }
+
+/** Never throws: a want still saves when Backboard is down or unconfigured. */
+export async function rememberWant(firstName: string, text: string): Promise<void> {
+  const bb = getBackboardClient()
+  if (!bb) return
+  try {
+    await bb.addMemory(await wantsAssistantId(bb), { content: `${text}${WANTED_BY}${firstName}` })
+  } catch (err) {
+    wantsAssistantPromise = null
+    console.error('[backboard] rememberWant failed:', err)
+  }
+}
+
+/** Students whose list matches this text by meaning, best first. [] on any failure. */
+export async function whoWants(text: string, limit = 5, maxDistance = MAX_WANT_DISTANCE): Promise<WantMemory[]> {
+  const bb = getBackboardClient()
+  if (!bb || !text.trim()) return []
+  try {
+    const res = await bb.searchMemories(await wantsAssistantId(bb), text, limit)
+    const rows: { content?: string; score?: number }[] = res?.memories ?? []
+    return rows
+      .filter((m) => typeof m.score === 'number' && m.score <= maxDistance && m.content?.includes(WANTED_BY))
+      .sort((a, b) => a.score! - b.score!)
+      .slice(0, limit)
+      .map((m) => {
+        const [want, name] = m.content!.split(WANTED_BY)
+        return { name, text: want, score: m.score! }
+      })
+  } catch (err) {
+    wantsAssistantPromise = null
+    console.error('[backboard] whoWants failed:', err)
+    return []
+  }
+}

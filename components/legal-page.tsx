@@ -1,6 +1,5 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
-import { Logo } from "@/components/hub/logo";
+import { PlainHeader } from "@/components/hub/plain-header";
 
 /** Shared frame for Terms and Privacy. Plain, readable, one measure. */
 export function LegalPage({
@@ -14,11 +13,7 @@ export function LegalPage({
 }) {
   return (
     <div className="flex flex-1 flex-col text-ink">
-      <header className="border-b border-border px-5 py-4 sm:px-6">
-        <Link href="/" aria-label="Relay home" className="group inline-flex items-center">
-          <Logo className="h-7 bg-ink transition-colors duration-200 ease-out group-hover:bg-accent" />
-        </Link>
-      </header>
+      <PlainHeader href="/" />
 
       <main className="mx-auto w-full max-w-[680px] flex-1 px-5 py-14 sm:px-6">
         <h1 className="text-[clamp(36px,5vw,46px)] leading-tight font-semibold tracking-[-0.02em]">{title}</h1>

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Logo } from '@/components/hub/logo'
+import { PlainHeader } from '@/components/hub/plain-header'
 import { btnPrimary, btnSecondary } from '@/components/hub/ui'
 import { Belt } from '@/components/motion/belt'
 import { Conveyor, Crate, Stamp } from '@/components/motion/box'
@@ -118,22 +118,19 @@ export default function LandingPage() {
     // stop the sticky header sticking. No background — the kraft grain behind
     // the page is the ground, same as every signed-in screen.
     <div className="overflow-x-clip text-ink">
-      {/* The hub's header, minus the account controls. */}
-      <header className="sticky top-0 z-40 border-b border-border bg-bg/60 backdrop-blur-[14px] backdrop-saturate-150">
-        <div className="mx-auto flex min-h-14 max-w-[1120px] items-center gap-3 px-4 sm:px-6">
-          <Link href="/welcome" className="group flex min-h-14 items-center" aria-label="Relay home">
-            <Logo className="h-8 bg-ink transition-colors duration-200 ease-out group-hover:bg-accent" />
-          </Link>
-          <nav aria-label="Main" className="ml-auto flex items-center gap-2 sm:gap-4">
-            <Link href="/login" className="px-2 py-3 text-[17px] font-semibold text-ink-2 transition-colors duration-100 hover:text-ink">
-              Sign in
-            </Link>
-            <Link href="/login" className={btnPrimary}>
-              Get started
-            </Link>
-          </nav>
-        </div>
-      </header>
+      {/* Sign in and Get started are the same Google flow; they land on /login
+          and /register so the copy matches what the person clicked. */}
+      <PlainHeader>
+        <Link
+          href="/login"
+          className="px-2 py-3 text-[17px] font-semibold text-ink-2 transition-colors duration-100 hover:text-ink"
+        >
+          Sign in
+        </Link>
+        <Link href="/register" className={btnPrimary}>
+          Get started
+        </Link>
+      </PlainHeader>
 
       {/* Hero */}
       <section className="relative mx-auto flex max-w-[1120px] flex-col items-center px-5 pt-20 pb-16 text-center sm:px-6 sm:pt-24">
@@ -150,15 +147,16 @@ export default function LandingPage() {
           </h1>
         </div>
 
-        <div className="anim-slide" style={{ animationDelay: '90ms' }}>
+        <div className="anim-slide" style={{ animationDelay: "90ms" }}>
           <p className="mx-auto mt-7 max-w-[520px] text-[18px] leading-relaxed text-ink-2">
-            You need a drill for one Saturday afternoon. Buying one costs $60 and
-            then it lives in your closet forever. Someone four doors down already
-            has one — rent it for <strong className="mark font-semibold">$4 a day</strong>.
+            You need a drill for one Saturday afternoon. Buying one costs $60
+            and then it lives in your closet forever. Someone four doors down
+            already has one — rent it for{" "}
+            <strong className="mark font-semibold">$4 a day</strong>.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link href="/login" className={btnPrimary}>
+            <Link href="/register" className={btnPrimary}>
               Find what you need
             </Link>
             <Link href="/post" className={btnSecondary}>
@@ -166,13 +164,18 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          <p className="mt-4 text-[13px] text-ink-2">Free to join with your university email.</p>
+          <p className="mt-4 text-[13px] text-ink-2">
+            Free to join with your university email.
+          </p>
         </div>
       </section>
 
       {/* The belt: what is actually moving around a building right now. Two
           rows running opposite ways, full-bleed on purpose. */}
-      <section aria-label="Things students are lending right now" className="space-y-3 pb-16">
+      <section
+        aria-label="Things students are lending right now"
+        className="space-y-3 pb-16"
+      >
         <Belt items={BELT_A} direction="left" seconds={42} />
         <Belt items={BELT_B} direction="right" seconds={50} />
       </section>
@@ -180,7 +183,9 @@ export default function LandingPage() {
       <div className="mx-auto max-w-[var(--page-max)] space-y-16 px-5 pb-20 sm:px-6">
         {/* How it works */}
         <section className="board px-6 py-14 sm:px-10">
-          <h2 className="stencil mb-12 text-center text-[clamp(26px,4vw,40px)]">How it works</h2>
+          <h2 className="stencil mb-12 text-center text-[clamp(26px,4vw,40px)]">
+            How it works
+          </h2>
           <Conveyor className="grid gap-8 sm:grid-cols-3">
             {STEPS.map((s) => (
               <Crate key={s.n}>
@@ -191,7 +196,9 @@ export default function LandingPage() {
                   {s.n}
                 </div>
                 <h3 className="mb-3 text-[19px] font-semibold">{s.title}</h3>
-                <p className="text-[15px] leading-relaxed text-ink-2">{s.body}</p>
+                <p className="text-[15px] leading-relaxed text-ink-2">
+                  {s.body}
+                </p>
               </Crate>
             ))}
           </Conveyor>
@@ -199,21 +206,28 @@ export default function LandingPage() {
 
         {/* What you can borrow */}
         <section>
-          <h2 className="stencil mb-3 text-[clamp(26px,4vw,40px)]">Stuff you need once</h2>
+          <h2 className="stencil mb-3 text-[clamp(26px,4vw,40px)]">
+            Stuff you need once
+          </h2>
           <p className="mb-10 max-w-[560px] text-[16px] text-ink-2">
-            Nobody needs four of these per building. Borrow one for a day or two,
-            then it goes back and someone else gets a turn.
+            Nobody needs four of these per building. Borrow one for a day or
+            two, then it goes back and someone else gets a turn.
           </p>
 
           <Conveyor className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {BORROW.map((b) => (
-              <Crate key={b.item} className="board flex items-start justify-between gap-4 p-5">
+              <Crate
+                key={b.item}
+                className="board flex items-start justify-between gap-4 p-5"
+              >
                 <div>
                   <div className="text-[17px] font-semibold">{b.item}</div>
                   <div className="mt-1 text-[14px] text-ink-2">{b.note}</div>
                 </div>
                 <div className="shrink-0 text-right">
-                  <span className="data text-[22px] font-semibold">{b.price}</span>
+                  <span className="data text-[22px] font-semibold">
+                    {b.price}
+                  </span>
                   <span className="data text-[13px] text-ink-2">{b.unit}</span>
                 </div>
               </Crate>
@@ -224,7 +238,9 @@ export default function LandingPage() {
         {/* Moving out */}
         <section className="board grid items-center gap-10 px-6 py-12 sm:px-10 lg:grid-cols-2">
           <div>
-            <h2 className="stencil mb-4 text-[clamp(26px,4vw,40px)]">Moving out? Don&rsquo;t bin it.</h2>
+            <h2 className="stencil mb-4 text-[clamp(26px,4vw,40px)]">
+              Moving out? Don&rsquo;t bin it.
+            </h2>
             <p className="mb-6 text-[16px] leading-relaxed text-ink-2">
               The water filter, the kettle, the mini fridge — you&rsquo;re not
               taking them home and someone moving in this week would rather pay
@@ -241,9 +257,14 @@ export default function LandingPage() {
           {/* Inset wells, not cards on a card. */}
           <Conveyor className="grid gap-2">
             {BUY.map((b) => (
-              <Crate key={b.item} className="flex items-center justify-between rounded-md bg-surface-2 px-5 py-4">
+              <Crate
+                key={b.item}
+                className="flex items-center justify-between rounded-md bg-surface-2 px-5 py-4"
+              >
                 <span className="text-[16px] font-medium">{b.item}</span>
-                <span className="data text-[18px] font-semibold">{b.price}</span>
+                <span className="data text-[18px] font-semibold">
+                  {b.price}
+                </span>
               </Crate>
             ))}
           </Conveyor>
@@ -255,7 +276,9 @@ export default function LandingPage() {
             {REASSURANCE.map((r) => (
               <Crate key={r.title} className="border-t-2 border-accent pt-5">
                 <h3 className="mb-2 text-[17px] font-semibold">{r.title}</h3>
-                <p className="text-[15px] leading-relaxed text-ink-2">{r.body}</p>
+                <p className="text-[15px] leading-relaxed text-ink-2">
+                  {r.body}
+                </p>
               </Crate>
             ))}
           </Conveyor>
@@ -269,16 +292,16 @@ export default function LandingPage() {
             </span>
           </Stamp>
           <h2 className="stencil mx-auto mb-4 max-w-[720px] text-[clamp(28px,4.5vw,44px)] leading-[1.1]">
-            Your building already owns everything in it
+            Don&rsquo;t waste your money.
           </h2>
           <p className="mx-auto mb-9 max-w-[460px] text-[16px] text-ink-2">
-            Start with one thing you need this week.
+            Let&rsquo;s try and spend a litte less cash, alright?
           </p>
-          <Link href="/login" className={btnPrimary}>
+          <Link href="/register" className={btnPrimary}>
             Get started
           </Link>
         </section>
       </div>
     </div>
-  )
+  );
 }
