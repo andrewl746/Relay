@@ -13,15 +13,17 @@ const LAMBDA = config.penalties.lambdaGapPerDay
 const MU = config.penalties.muDistance
 
 /**
- * Nobody in the chain has room to warehouse the thing. A handoff that would
- * leave an item parked longer than this is not a cheaper chain, it is an
- * impossible one — the holder has nowhere to put it. Hard constraint, not a
- * penalty, because "I physically cannot store this" does not trade off against
- * a better match score.
+ * How long a borrower may sit on the item waiting for the NEXT borrower.
  *
- * Applies between holders only. The stretch before the first loan is the
- * owner's own item sitting in the owner's own room, which is allowed — it is
- * still counted as idle in the accounting.
+ * A hop is a loan, not a change of ownership. The normal flow is
+ * owner -> borrower -> owner -> borrower: the thing goes home in between, which
+ * is always allowed because it is the owner's own shelf.
+ *
+ * The optimization worth computing is the DIRECT handoff — one borrower passing
+ * straight to the next, saving the owner two trips. That is only physically
+ * reasonable if the wait is short, because a first-year's apartment has no
+ * storage. Past this many days it routes home instead. Not a hard constraint on
+ * the chain any more; a constraint on which of the two routes is available.
  */
 const MAX_IDLE = config.constraints.maxIdleDays
 
@@ -88,14 +90,31 @@ export function chainForItem(
     const dist0 = distance(holder, peopleById.get(cands[i].personId))
     dp[i] = score[i] - lambda * gap0 - mu * dist0
 
+    // A sale transfers the object permanently, so THIS routing ends at the
+    // first hop — there is no second loan to schedule. That makes it exactly
+    // the base case above, and the predecessor search below is skipped rather
+    // than special-cased anywhere else in the engine.
+    //
+    // It does not end the item's life: ownership moves to the buyer, who can
+    // relist it later (for loan or for sale) and start a fresh chain under a
+    // new holder. That relisting is a runtime action, not an engine concern.
+    if (item.deal === 'sale') continue
+
     for (let j = 0; j < i; j++) {
       if (cands[j].needUntil > cands[i].needFrom) continue // overlap
       const gap = Math.max(0, days(cands[j].needUntil, cands[i].needFrom))
-      if (gap > maxIdle) continue // no one has room to hold it that long
-      const dist = distance(
-        peopleById.get(cands[j].personId),
-        peopleById.get(cands[i].personId),
-      )
+      // Two ways to get from one loan to the next:
+      //   direct   — the previous borrower hands straight to the next one.
+      //              Saves the owner two trips, but only if the wait is short
+      //              enough that someone can keep it (MAX_IDLE).
+      //   via home — it goes back to the owner in between. Always available,
+      //              and the trip out is measured from the owner.
+      const dist = gap <= maxIdle
+        ? distance(
+            peopleById.get(cands[j].personId),
+            peopleById.get(cands[i].personId),
+          )
+        : distance(holder, peopleById.get(cands[i].personId))
       const v = dp[j] + score[i] - lambda * gap - mu * dist
       if (v > dp[i]) {
         dp[i] = v
@@ -123,9 +142,11 @@ export function chainForItem(
     const gapDays = prevNeed
       ? Math.max(0, days(prevNeed.needUntil, need.needFrom))
       : Math.max(0, days(item.freeFrom, need.needFrom))
-    const dist = prevNeed
+    // Direct only when the previous borrower could hold it until this one.
+    const direct = prevNeed != null && gapDays <= maxIdle
+    const dist = direct
       ? distance(
-          peopleById.get(prevNeed.personId),
+          peopleById.get(prevNeed!.personId),
           peopleById.get(need.personId),
         )
       : distance(holder, peopleById.get(need.personId))
@@ -139,6 +160,7 @@ export function chainForItem(
       reason: m?.reason ?? 'no reason recorded',
       gapDays,
       distance: dist,
+      viaOwner: !direct,
     }
   })
 
@@ -160,6 +182,9 @@ export function eligibleNeeds(
   minScore = MIN_SCORE,
 ): Need[] {
   return needs.filter((need) => {
+    // You cannot borrow your own thing. The seed generates needs for everyone,
+    // so without this an owner shows up as a borrower in their own chain.
+    if (need.personId === item.holderId) return false
     const m = table[`${need.id}|${item.id}`]
     if (!m) return false
     if (m.score < minScore) return false
@@ -234,6 +259,17 @@ export function assignAll(
  * exists to drive to zero, and the one that jumps when a person is removed.
  */
 export function idleDays(item: Item, chain: Chain): number {
+  // A sold object stops being idle the day it sells — after that it is not
+  // sitting unused, it belongs to someone. So idle is the time it spent on the
+  // market, not the rest of the window. Counting the tail would make every
+  // sale look like a failure.
+  if (item.deal === 'sale') {
+    const hop = chain.hops[0]
+    return hop
+      ? Math.max(0, days(item.freeFrom, hop.from))
+      : Math.max(0, days(item.freeFrom, item.freeUntil))
+  }
+
   const total = Math.max(0, days(item.freeFrom, item.freeUntil))
   const covered = chain.hops.reduce((s, h) => {
     const from = h.from < item.freeFrom ? item.freeFrom : h.from
@@ -241,4 +277,13 @@ export function idleDays(item: Item, chain: Chain): number {
     return s + Math.max(0, days(from, to))
   }, 0)
   return Math.max(0, total - covered)
+}
+
+/** What the owner makes: per-day for a rental, the price once for a sale. */
+export function earnings(item: Item, chain: Chain): number {
+  if (item.deal === 'sale') return chain.hops.length > 0 ? item.price : 0
+  return chain.hops.reduce(
+    (s, h) => s + item.price * Math.max(0, days(h.from, h.to)),
+    0,
+  )
 }

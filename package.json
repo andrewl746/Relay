@@ -7,10 +7,13 @@
     "build": "next build",
     "start": "next start -p 4287",
     "lint": "eslint",
-    "seed": "node --experimental-strip-types scripts/seed.ts",
-    "pipeline": "node --experimental-strip-types scripts/prepare.ts",
-    "chains": "node --experimental-strip-types scripts/chains.ts",
-    "typecheck": "tsc --noEmit"
+    "seed": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/seed.ts",
+    "pipeline": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/prepare.ts",
+    "chains": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/chains.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-provider.ts",
+    "check:store": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-store.ts",
+    "reset": "node --experimental-strip-types scripts/reset.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -27,6 +30,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
+    "server-only": "^0.0.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

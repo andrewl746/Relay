@@ -19,7 +19,11 @@ import { dirname, join } from 'node:path'
 import type { Person, Item, Need, Dataset } from '../lib/types.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-const config: { locations: string[]; cycleBoundaries: string[] } = JSON.parse(
+const config: {
+  locations: string[]
+  cycleBoundaries: string[]
+  pricing: { defaultRatePerDay: number }
+} = JSON.parse(
   readFileSync(join(root, 'config.json'), 'utf8'),
 )
 
@@ -162,6 +166,51 @@ const OBJECTS: string[] = [
   'first aid kit',
 ]
 
+/**
+ * Things you keep, not things you borrow. A student moving out of residence
+ * does not need their water filter, and the student arriving will not pay $50
+ * for a new one. Ownership transfers once — in the engine, a chain of length 1
+ * — after which the buyer owns it and can relist it themselves.
+ *
+ * Prices are what a used one actually goes for between students, not retail.
+ * The whole point is that it beats both the dumpster and the store.
+ */
+const SELL_OBJECTS: [string, number][] = [
+  ['brita water filter', 12],
+  ['desk lamp', 8],
+  ['drying rack', 10],
+  ['shower caddy', 5],
+  ['laundry hamper', 6],
+  ['cutlery set', 8],
+  ['plates and bowls, set of 4', 12],
+  ['mugs, 3 of them', 5],
+  ['mattress topper, twin xl', 25],
+  ['mini fridge', 45],
+  ['electric kettle', 14],
+  ['toaster', 10],
+  ['rice cooker', 18],
+  ['microwave', 35],
+  ['storage bins, 3 stackable', 12],
+  ['full length mirror', 15],
+  ['bed risers', 8],
+  ['desk chair', 30],
+  ['power bar with surge protection', 7],
+  ['clothing rack', 14],
+  ['shoe rack', 9],
+  ['bedside table', 20],
+]
+
+const SELL_VOICE: string[] = [
+  'brita water filter + 2 unused cartridges. im moving out friday, dont want to bin it. $12',
+  'desk lamp, white, the clip on kind. works fine i just have 2. $8 beechwood',
+  'drying rack. folds flat. honestly just come take it, $5',
+  'mini fridge - works, freezer compartment is small but fine. $45, u haul it. lester',
+  'twin xl mattress topper, washed. moving home and it wont fit in the car. $25',
+  'electric kettle + a toaster, $20 for both. northdale, gone by sunday',
+  'plates bowls and cutlery, enough for 4. leaving res, dont need any of it. $18',
+  'full length mirror, the lean against the wall kind. no chips. $15 king st n',
+]
+
 const CONDITION: string[] = [
   'barely used',
   'used once honestly',
@@ -278,10 +327,61 @@ function itemText(): string {
 }
 
 function needText(): string {
-  const parts: string[] = [`${pick(NEED_OPENERS)} a ${pick(OBJECTS)}`]
+  const pool = chance(0.3) ? SELL_OBJECTS.map(([o]) => o) : OBJECTS
+  const parts: string[] = [`${pick(NEED_OPENERS)} a ${pick(pool)}`]
   if (chance(0.7)) parts.push(pick(NEED_TAILS))
   if (chance(0.3)) parts.push(`im in ${pick(config.locations).toLowerCase()}`)
   return rough(parts.join(chance(0.5) ? ', ' : '. '))
+}
+
+/** A sale listing: the object, a price, and usually a move-out deadline. */
+function sellText(): [string, number] {
+  const [object, base] = pick(SELL_OBJECTS)
+  // Used goods between students scatter around the going rate.
+  const price = Math.max(3, Math.round(base * (0.7 + rand() * 0.6)))
+  const parts: string[] = [object]
+  if (chance(0.6)) parts.push(pick(CONDITION))
+  if (chance(0.4)) parts.push(pick(SELL_TAILS))
+  parts.push(`$${price}`)
+  if (chance(0.5)) parts.push(`pickup ${pick(config.locations).toLowerCase()}`)
+  return [rough(parts.join(chance(0.5) ? ', ' : '. ')), price]
+}
+
+const SELL_TAILS: string[] = [
+  'moving out so it needs to go',
+  'leaving res, dont need it',
+  'gone by sunday',
+  'first come',
+  'dont want to move it home',
+  'u haul it',
+  'can meet on campus',
+]
+
+/**
+ * Daily rental rate by object class. Mirrors config.pricing.ratesByClass —
+ * duplicated here as a keyword table rather than importing the provider's
+ * concept logic, because seed data should not depend on a matcher.
+ */
+const RATE_WORDS: [RegExp, number][] = [
+  [/carpet cleaner|steam mop|shop vac|vacuum|shampooer/, 12],
+  [/hand truck|dolly|moving|packing tape/, 8],
+  [/projector|speaker|karaoke|tripod|ring light/, 8],
+  [/camping|tent|cooler|shovel|scraper|sleeping bag/, 6],
+  [/stockpot|roasting|waffle|raclette|mixer|processor|punch|platters|folding/, 6],
+  [/ladder|stool|air mattress|cot/, 5],
+  [/sewing|iron|steamer/, 5],
+  [/humidifier|dehumidifier|heater|fan/, 5],
+  [/suitcase|luggage|duffel|garment bag/, 3],
+  [/bike|tire|patch kit/, 3],
+  [/printer|shredder/, 3],
+  [/extension cord|power bar|jumper/, 2],
+  [/first aid/, 2],
+]
+
+function rateFor(text: string): number {
+  const t = text.toLowerCase()
+  for (const [re, rate] of RATE_WORDS) if (re.test(t)) return rate
+  return config.pricing.defaultRatePerDay
 }
 
 // ---------------------------------------------------------------- generate
@@ -303,26 +403,65 @@ for (let i = 0; i < TARGET_PEOPLE; i++) {
   })
 }
 
+/** Share of generated items that are for sale rather than for loan. */
+const SALE_SHARE = 0.3
+
 const items: Item[] = []
 for (let i = 0; i < TARGET_ITEMS; i++) {
   const holder = people[int(0, people.length - 1)]
-  // The owner keeps the thing all term and lends it out repeatedly. What the
-  // chain schedules is circulation, not a one-way handoff at a term boundary.
+  const hwRent = HANDWRITTEN.length
+  const hwSale = hwRent + SELL_VOICE.length
+
+  let rawText: string
+  let deal: 'rent' | 'sale'
+  let price: number
+
+  if (i < hwRent) {
+    rawText = HANDWRITTEN[i]
+    deal = 'rent'
+    price = rateFor(rawText)
+  } else if (i < hwSale) {
+    rawText = SELL_VOICE[i - hwRent]
+    deal = 'sale'
+    // Read the price back out of the text the human wrote, so the listing and
+    // the data can never disagree on screen.
+    price = Number(rawText.match(/\$(\d+)/)?.[1] ?? 15)
+  } else if (chance(SALE_SHARE)) {
+    ;[rawText, price] = sellText()
+    deal = 'sale'
+  } else {
+    rawText = itemText()
+    deal = 'rent'
+    price = rateFor(rawText)
+  }
+
+  // A loan: the owner keeps the thing all term and lends it out repeatedly.
+  // What the chain schedules is circulation, not a one-way handoff.
+  //
+  // A sale: it has to be gone before they move out. That deadline is real time
+  // pressure, and it is where the original move-out framing survives — as one
+  // property of one item kind, not as the whole product.
   items.push({
     id: `i${i}`,
     holderId: holder.id,
-    rawText: i < HANDWRITTEN.length ? HANDWRITTEN[i] : itemText(),
+    rawText,
     embedding: [],
     freeFrom: TERM_START,
-    freeUntil: TERM_END,
+    freeUntil: deal === 'sale' ? shift(TERM_START, int(18, TERM_DAYS - 5)) : TERM_END,
+    deal,
+    price,
   })
 }
 
 const needs: Need[] = []
 for (let i = 0; i < TARGET_NEEDS; i++) {
   const person = people[int(0, people.length - 1)]
-  // Days to weeks, not months. You borrow the drill for an afternoon.
-  const len = int(2, 18)
+  // You borrow a drill for an afternoon, not a fortnight. Most loans are a day
+  // or two; a few run a week (a carpet cleaner before an inspection, a suitcase
+  // over reading week). The old int(2,18) meant a single borrower could hold a
+  // drill for 15 days, which congested the network, blocked realistic short
+  // bookings, and contradicted the whole premise.
+  const len = chance(0.7) ? int(1, 3) : chance(0.75) ? int(4, 7) : int(8, 14)
   const start = int(0, TERM_DAYS - len)
   const from = shift(TERM_START, start)
   const until = shift(TERM_START, start + len)

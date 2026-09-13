@@ -166,17 +166,40 @@ function conceptsOf(tokens: string[]): Set<string> {
   return out
 }
 
+/**
+ * Weights. Naming the object has to beat sharing its category.
+ *
+ * These were TOKEN=1 / CONCEPT=2, which inverted that: "::tools" outweighed the
+ * literal word "drill", so every tools-class item tied with the actual drill and
+ * L2 normalization broke the tie by length — a short "screwdriver set" outranked
+ * "power drill - black&decker, bits are in the case...". That is the one query
+ * the demo is built on.
+ *
+ * A concept is a bridge for paraphrase ("folding table" ~ "desk"). It should
+ * decide ties, not win outright, so an object noun now outweighs it.
+ */
+const W_TOKEN = 1
+const W_NOUN = 3 // token that names a thing, per PHRASES/CONCEPTS
+const W_TRIGRAM = 0.3
+const W_CONCEPT = 1.2
+
+/** Tokens that name an object, rather than filler that survived STOP. */
+const NOUNS = new Set([
+  ...Object.keys(CONCEPTS),
+  ...Object.keys(PHRASES).flatMap((p) => p.split(' ')),
+])
+
 function embedOne(text: string): number[] {
   const v = new Array<number>(DIM).fill(0)
   const tokens = tokenize(text)
   for (const t of tokens) {
-    v[hash(t)] += 1
+    v[hash(t)] += NOUNS.has(t) ? W_NOUN : W_TOKEN
     if (t.length >= 4) {
       for (let i = 0; i + 3 <= t.length; i++)
-        v[hash(`#${t.slice(i, i + 3)}`)] += 0.3
+        v[hash(`#${t.slice(i, i + 3)}`)] += W_TRIGRAM
     }
   }
-  for (const g of conceptsOf(tokens)) v[hash(`::${g}`)] += 2
+  for (const g of conceptsOf(tokens)) v[hash(`::${g}`)] += W_CONCEPT
   let norm = 0
   for (const x of v) norm += x * x
   norm = Math.sqrt(norm)

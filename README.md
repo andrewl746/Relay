@@ -85,6 +85,7 @@ spinner.
 
 | | |
 |---|---|
+| [HANDOFF.md](HANDOFF.md) | **Start here if you are new to this repo.** What is real vs mocked, landmines, next steps |
 | [docs/PROJECT.md](docs/PROJECT.md) | Problem, pricing, engine, screens, data model, build plan, pitch + judge Q&A |
 | [docs/DESIGN.md](docs/DESIGN.md) | Visual system — tokens, type, components, screens, a11y |
 | [PIVOTS.md](PIVOTS.md) | **Live.** One entry per pivot. Adaptability is 30 of 100 points |
