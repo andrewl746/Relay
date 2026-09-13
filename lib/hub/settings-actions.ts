@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { getProfile } from "@/lib/onboarding/profile";
 import { getUniversity } from "@/lib/onboarding/universities";
 import { createClient } from "@/lib/supabase/server";
@@ -51,7 +50,7 @@ export async function saveSettings(
 
   const supabase = await createClient();
   // A verified email proves you study at ONE university. Moving to another
-  // drops that proof, and the save sends you to verify the new domain.
+  // drops that proof, and Parcel's corner then asks you to verify the new domain.
   const current = await getProfile(supabase, user.id);
   const universityChanged = current?.university_id !== universityId;
 
@@ -79,6 +78,5 @@ export async function saveSettings(
   }
 
   revalidatePath("/", "layout");
-  if (universityChanged) redirect("/onboarding/verify");
   return { status: "saved" };
 }

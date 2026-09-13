@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { whoWants, type WantMemory } from "@/lib/providers/backboard";
 import { USER_COOKIE } from "./dev-login";
-import { getCurrentUser } from "./session";
+import { getCurrentUser, getTradeBlocker } from "./session";
 import { resetPlanCache } from "./matching";
 import { canBeUrgent, parseUrgency } from "./urgency";
 import { listings, users, wants } from "./mock-data";
@@ -131,6 +131,10 @@ export type CreateListingResult =
   | { status: "ok"; id: string; title: string; expiresAt: string | null; waiting: WantMemory[] };
 
 export async function createListing(_prev: CreateListingResult, formData: FormData): Promise<CreateListingResult> {
+  if (await getTradeBlocker()) {
+    return { status: "error", message: "Finish setting up your account in Parcel’s corner before you post." };
+  }
+
   const fields = parseListingFields(formData);
   if ("error" in fields) return { status: "error", message: fields.error };
   const { title, description, category, offerType, condition, priceCents, expiresAt } = fields;

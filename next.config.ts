@@ -17,6 +17,15 @@ const nextConfig: NextConfig = {
     // serve it as-is and skip the worker pool entirely.
     unoptimized: true,
   },
+  async redirects() {
+    // Setup moved off its own pages and into Parcel's corner on the site, so
+    // old links to a step (or the old demo setup page) land on the board, where
+    // the corner picks up.
+    return [
+      { source: "/onboarding", destination: "/", permanent: false },
+      { source: "/onboarding/:step(profile|verify|interests|wants)", destination: "/", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;
