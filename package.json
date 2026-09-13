@@ -6,7 +6,11 @@
     "dev": "next dev -p 4287",
     "build": "next build",
     "start": "next start -p 4287",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "node scripts/seed.ts",
+    "pipeline": "node scripts/prepare.ts",
+    "chains": "node scripts/chains.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "next": "16.3.5",
