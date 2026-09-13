@@ -456,8 +456,12 @@ for (let i = 0; i < TARGET_ITEMS; i++) {
 const needs: Need[] = []
 for (let i = 0; i < TARGET_NEEDS; i++) {
   const person = people[int(0, people.length - 1)]
-  // Days to weeks, not months. You borrow the drill for an afternoon.
-  const len = int(2, 18)
+  // You borrow a drill for an afternoon, not a fortnight. Most loans are a day
+  // or two; a few run a week (a carpet cleaner before an inspection, a suitcase
+  // over reading week). The old int(2,18) meant a single borrower could hold a
+  // drill for 15 days, which congested the network, blocked realistic short
+  // bookings, and contradicted the whole premise.
+  const len = chance(0.7) ? int(1, 3) : chance(0.75) ? int(4, 7) : int(8, 14)
   const start = int(0, TERM_DAYS - len)
   const from = shift(TERM_START, start)
   const until = shift(TERM_START, start + len)
