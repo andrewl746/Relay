@@ -33,7 +33,7 @@ export default async function HomePage() {
     getUniversity(),
     getBoard({ view: "all", userId: user.id }),
     getWants(user.id),
-    getMatches(user.id),
+    getMatches(user),
     getHandoffs(user.id),
   ]);
 

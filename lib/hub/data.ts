@@ -3,7 +3,7 @@ import { matchesTerms, searchTerms } from "./search";
 import { semanticHits } from "./semantic";
 import { isGoneByTonight } from "./format";
 import { handoffs, listings, matches, notifications, slots, university, users, wants } from "./mock-data";
-import { plansFor, type Plan } from "./matching";
+import { evaluate, lexicalWantMatches, plansFor, type Plan } from "./matching";
 import { createClient } from "../supabase/server";
 import { readRuntime } from "@/lib/relay/runtime";
 import type { Handoff, Listing, Match, TimeSlot, User, Want } from "./types";
@@ -138,13 +138,36 @@ export type MatchDetail = Match & { listing: Listing; wants: Want[]; plan: Plan 
 /**
  * Matches, ordered by what this person can actually do about them.
  *
- * The semantic pairing is authored; everything about the ordering, and whether
- * a pair survives at all, is computed in lib/hub/matching.ts from when they
- * land, when the seller leaves, what pickup times exist, what they budgeted,
- * and who else is competing for the same object.
+ * The semantic pairing is authored (or, once it's wired up, embedded);
+ * everything about the ordering, and whether a pair survives at all, is
+ * computed in lib/hub/matching.ts from when they land, when the seller
+ * leaves, what pickup times exist, what they budgeted, and who else is
+ * competing for the same object.
+ *
+ * Any want nobody has authored a pairing for — every real (non-seed) want,
+ * since the embedding provider isn't wired into this flow yet — would
+ * otherwise sit at zero matches even when a plainly matching listing exists.
+ * Those fall back to a literal/synonym search of the want's own text against
+ * listing title/description (the same one browse's search box uses), so "my
+ * list" never reports nothing just because nobody hand-authored that pairing.
  */
-export async function getMatches(userId: string): Promise<MatchDetail[]> {
-  return plansFor(userId).map((plan) => ({
+export async function getMatches(user: User): Promise<MatchDetail[]> {
+  const authored = plansFor(user.id);
+  const authoredWantIds = new Set(authored.flatMap((p) => p.match.wantIds));
+
+  const wantsList = await getWants(user.id);
+  const openWants = wantsList.filter((w) => !w.fulfilled && !authoredWantIds.has(w.id));
+
+  let plans = authored;
+  if (openWants.length > 0) {
+    const pool = listings.filter(
+      (l) => l.status === "available" && l.parentId === null && l.sellerId !== user.id,
+    );
+    const lexical = lexicalWantMatches(openWants, pool).map((m) => evaluate(user, m));
+    plans = [...authored, ...lexical].sort((a, b) => b.rank - a.rank);
+  }
+
+  return plans.map((plan) => ({
     ...plan.match,
     listing: plan.listing,
     wants: plan.wants,
@@ -153,8 +176,8 @@ export async function getMatches(userId: string): Promise<MatchDetail[]> {
 }
 
 /** Just the ones they can actually act on. */
-export async function getReachableMatches(userId: string): Promise<MatchDetail[]> {
-  return (await getMatches(userId)).filter((m) => m.plan.feasible && m.plan.contest?.youWin !== false);
+export async function getReachableMatches(user: User): Promise<MatchDetail[]> {
+  return (await getMatches(user)).filter((m) => m.plan.feasible && m.plan.contest?.youWin !== false);
 }
 
 export type HandoffDetail = Handoff & { listing: Listing; slot: TimeSlot; buyer: User; seller: User };
