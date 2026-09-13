@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ListingRow } from "@/components/hub/listing-row";
-import { btnPrimary, btnSecondary, Eyebrow, PageShell } from "@/components/hub/ui";
+import { btnPrimary, btnSecondary, PageShell, SectionTitle } from "@/components/hub/ui";
 import { getBoard, getHandoffs, getMatches, getUniversity, getWants } from "@/lib/hub/data";
 import { formatShortDate } from "@/lib/hub/format";
 import { getCurrentUser } from "@/lib/hub/session";
@@ -50,8 +50,8 @@ export default async function HomePage() {
       <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
         {/* Leaving soon */}
         <section className="board overflow-hidden">
-          <div className="flex items-center justify-between border-b border-border px-5 py-3.5">
-            <Eyebrow>Leaving soon</Eyebrow>
+          <div className="flex items-center justify-between border-b border-border px-5 py-4">
+            <SectionTitle>Leaving soon</SectionTitle>
             <Link href="/browse" className="text-[13px] font-semibold text-accent hover:underline">
               Browse all
             </Link>
@@ -73,7 +73,7 @@ export default async function HomePage() {
           {/* Your list */}
           <section className="board p-5">
             <div className="mb-3 flex items-center justify-between">
-              <Eyebrow>Your list</Eyebrow>
+              <SectionTitle>Your list</SectionTitle>
               <Link href="/wants" className="text-[13px] font-semibold text-accent hover:underline">
                 Edit
               </Link>
@@ -100,7 +100,7 @@ export default async function HomePage() {
           {/* Handoffs */}
           <section className="board p-5">
             <div className="mb-3 flex items-center justify-between">
-              <Eyebrow>Coming up</Eyebrow>
+              <SectionTitle>Coming up</SectionTitle>
               <Link href="/handoffs" className="text-[13px] font-semibold text-accent hover:underline">
                 All handoffs
               </Link>

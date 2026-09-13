@@ -51,6 +51,11 @@ export function BackLink({ href, children }: { href: string; children: ReactNode
   );
 }
 
+/** Card/section heading. Reads as a heading, unlike the 11px eyebrow. */
+export function SectionTitle({ children }: { children: ReactNode }) {
+  return <h2 className="text-[19px] font-semibold tracking-[-0.01em] text-ink">{children}</h2>;
+}
+
 export function Eyebrow({ children, strong = false }: { children: ReactNode; strong?: boolean }) {
   return <p className={`t-eyebrow ${strong ? "text-ink" : "text-ink-2"}`}>{children}</p>;
 }

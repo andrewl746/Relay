@@ -15,7 +15,7 @@ export function ListingRow({ listing }: { listing: BoardListing }) {
       {edge && <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-0.5 ${edge}`} />}
       <Link
         href={`/listings/${listing.id}`}
-        className="group flex items-center gap-3 py-3 pr-1 pl-3 transition-colors duration-[90ms] hover:bg-paper-raised sm:gap-4 sm:pl-4"
+        className="group flex items-center gap-3 px-4 py-3.5 transition-colors duration-[90ms] hover:bg-surface-2 sm:gap-4 sm:px-5"
       >
         <Thumb word={listing.kind} />
         <div className="min-w-0 flex-1">
