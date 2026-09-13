@@ -57,11 +57,10 @@ export default function Board({
 }) {
   const [excluded, setExcluded] = useState<string[]>([])
   const [selected, setSelected] = useState<string | null>(null)
-  // The timing readout is measured on whichever machine rendered, so it differs
-  // between server and client. Show it only once we are definitely on the
-  // client, otherwise React reports a hydration mismatch.
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  // How long a full re-plan takes. Timing is a side effect, so it is measured
+  // after render rather than during it. Null until then, which also keeps the
+  // server and client markup identical: the server's clock isn't this machine's.
+  const [ms, setMs] = useState<number | null>(null)
 
   const peopleById = useMemo(
     () => new Map(data.people.map((p) => [p.id, p])),
@@ -73,10 +72,19 @@ export default function Board({
   )
 
   // The only live computation on the page. Everything upstream is precomputed.
-  const { chains, ms } = useMemo(() => {
-    const t = performance.now()
-    const result = assignAll(data, table, { excludePersonIds: excluded })
-    return { chains: result, ms: performance.now() - t }
+  const chains = useMemo(
+    () => assignAll(data, table, { excludePersonIds: excluded }),
+    [data, table, excluded],
+  )
+  useEffect(() => {
+    // A task rather than an animation frame: frames don't run in a hidden tab,
+    // and the readout should already be there when someone switches to it.
+    const timer = setTimeout(() => {
+      const t = performance.now()
+      assignAll(data, table, { excludePersonIds: excluded })
+      setMs(performance.now() - t)
+    }, 0)
+    return () => clearTimeout(timer)
   }, [data, table, excluded])
 
   const byItem = useMemo(
@@ -141,7 +149,7 @@ export default function Board({
           <b className="text-neutral-900">{excluded.length}</b> removed
         </span>
         <span className="text-neutral-400">
-          {mounted ? `recomputed in ${ms.toFixed(1)}ms` : ' '}
+          {ms === null ? ' ' : `recomputed in ${ms.toFixed(1)}ms`}
         </span>
       </div>
 

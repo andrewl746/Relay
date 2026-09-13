@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 /**
  * Say it instead of typing it.
@@ -63,6 +63,9 @@ function writeValue(el: HTMLInputElement | HTMLTextAreaElement, text: string) {
   el.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
+/** Speech support does not change while the page is open; nothing to subscribe to. */
+const neverChanges = () => () => {};
+
 export function VoiceInput({
   targetId,
   submitOnFinish = false,
@@ -74,15 +77,14 @@ export function VoiceInput({
   submitOnFinish?: boolean;
   label?: string;
 }) {
-  const [supported, setSupported] = useState(false);
+  // A fact about the browser rather than state: false on the server and during
+  // hydration, then whatever this browser actually supports.
+  const supported = useSyncExternalStore(neverChanges, () => recognitionCtor() !== null, () => false);
   const [listening, setListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const rec = useRef<Recognition | null>(null);
 
-  useEffect(() => {
-    setSupported(recognitionCtor() !== null);
-    return () => rec.current?.abort();
-  }, []);
+  useEffect(() => () => rec.current?.abort(), []);
 
   const stop = () => {
     rec.current?.stop();
