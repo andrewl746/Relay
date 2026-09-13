@@ -2,7 +2,6 @@ import { NOW } from "./clock";
 import { formatDate, formatWhen } from "./format";
 import { formatWalk, walkKm } from "./geo";
 import { listings, matches, slots, users, wants } from "./mock-data";
-import { matchesTerms, searchTerms } from "./search";
 import type { Listing, Match, TimeSlot, User, Want } from "./types";
 
 /**
@@ -305,45 +304,6 @@ function resolveContests(byUser: Map<string, Plan[]>) {
       };
     }
   }
-}
-
-// ---------------------------------------------------------------- lexical fallback
-
-function childrenOf(listingId: string): Listing[] {
-  return listings.filter((l) => l.parentId === listingId);
-}
-
-function searchableText(l: Listing): string {
-  return [l.title, l.description, l.kind, ...childrenOf(l.id).map((c) => c.title)].join(" ");
-}
-
-/**
- * Every want here is one nobody has hand-authored a semantic match for (see
- * data.ts's getMatches) — either because the embedding provider found nothing,
- * or because it's a real (non-seed) want the demo dataset never anticipated.
- * Rather than leave it at zero matches, run the same literal/synonym search
- * browse's search box uses (./search.ts), against the want's own text instead
- * of a typed query. Lower confidence than an authored or embedded match, but a
- * true "no matches" beats a false one either way.
- */
-export function lexicalWantMatches(wantsList: Want[], pool: Listing[]): Match[] {
-  const out: Match[] = [];
-  for (const want of wantsList) {
-    const terms = searchTerms(want.text);
-    if (terms.length === 0) continue;
-    for (const listing of pool) {
-      if (!matchesTerms(searchableText(listing), terms)) continue;
-      out.push({
-        id: `lex-${want.id}-${listing.id}`,
-        userId: want.userId,
-        listingId: listing.id,
-        wantIds: [want.id],
-        score: 0.55,
-        reason: `Text match on your want for "${want.text}".`,
-      });
-    }
-  }
-  return out;
 }
 
 // ---------------------------------------------------------------- entry point

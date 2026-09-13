@@ -23,7 +23,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
   const user = await getCurrentUser();
   const [university, board, wants, matches] = await Promise.all([
     getUniversity(),
-    getBoard({ view, query, userId: user.id }),
+    getBoard({ view, query, user }),
     getWants(user.id),
     getMatches(user),
   ]);
@@ -92,13 +92,9 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                       className={`inline-flex min-h-9 items-center rounded-full border px-3.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-[90ms] ${
                         active
                           ? "border-ink bg-ink text-bg"
-<<<<<<< Updated upstream
                           : // Hover brightens the border, not the fill: bg-surface is DARKER than
                             // surface-2 in dark mode, so the old hover nearly erased the chip (1.08:1).
                             "border-border-strong bg-surface-2 text-ink-2 hover:border-ink-3 hover:text-ink"
-=======
-                          : "border-border-strong bg-surface text-ink-2 hover:bg-surface-2 hover:text-ink"
->>>>>>> Stashed changes
                       }`}
                     >
                       {v.label}
