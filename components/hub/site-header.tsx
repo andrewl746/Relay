@@ -20,7 +20,7 @@ export async function SiteHeader() {
   return (
     <header className="border-b border-rule-strong">
       <div className="mx-auto flex max-w-[1120px] flex-wrap items-center gap-x-3 px-4 sm:gap-x-6 sm:px-6 lg:flex-nowrap">
-        <Link href="/browse" className="flex min-h-14 items-baseline gap-2">
+        <Link href="/" className="flex min-h-14 items-baseline gap-2">
           <span className="t-display text-[20px] whitespace-nowrap">{SITE_NAME}</span>
           <span className="hidden text-[13px] font-medium text-ink-2 sm:inline">{university.shortName}</span>
         </Link>

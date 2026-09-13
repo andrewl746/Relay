@@ -12,7 +12,7 @@ function one(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
-export default async function BrowsePage({ searchParams }: PageProps<"/browse">) {
+export default async function BrowsePage({ searchParams }: PageProps<"/">) {
   const params = await searchParams;
   const view = parseBoardView(one(params.view));
   const mode = parseBoardMode(one(params.mode));
@@ -35,7 +35,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
     if (m !== "any") search.set("mode", m);
     if (query) search.set("q", query);
     const qs = search.toString();
-    return qs ? `/browse?${qs}` : "/browse";
+    return qs ? `/?${qs}` : "/";
   };
   const chip = (active: boolean) =>
     `inline-flex min-h-11 items-center rounded-1 border px-3 text-[13px] font-semibold whitespace-nowrap transition-colors duration-[90ms] ${
@@ -57,7 +57,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
             {board.goneTonight > 0 && ` · ${board.goneTonight} gone by tonight`}
           </p>
 
-          <Form action="/browse" className="mt-6 flex gap-2">
+          <Form action="/" className="mt-6 flex gap-2">
             {view !== "all" && <input type="hidden" name="view" value={view} />}
             {mode !== "any" && <input type="hidden" name="mode" value={mode} />}
             <label className="relative flex-1">
@@ -173,7 +173,7 @@ export default async function BrowsePage({ searchParams }: PageProps<"/browse">)
                 </ul>
               )}
               <div className="mt-4 flex flex-wrap items-center gap-4">
-                <Link href="/browse?view=matches" className={btnSecondary}>
+                <Link href="/?view=matches" className={btnSecondary}>
                   Show my matches
                 </Link>
                 <Link href="/wants" className={`${btnTertiary} text-[13px]`}>
