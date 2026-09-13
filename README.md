@@ -75,7 +75,7 @@ spinner.
 | | |
 |---|---|
 | ✅ | Chain engine: embed, retrieve, rerank, DP, greedy assignment |
-| ✅ | Seed: 60 people, 90 items, 231 needs, 2,310 scored pairs — longest chain 13 holders |
+| ✅ | Seed: 60 people, 90 items, 231 needs, 2,310 scored pairs |
 | ✅ | `/network` board: live DP, remove-a-person, recomputes in ~10 ms |
 | 🔨 | Relay surface: need composer, answer card, handoffs, shelf |
 | 🔨 | Pricing: config + docs done; into the DP objective after Pivot 3 |
@@ -85,6 +85,8 @@ spinner.
 
 | | |
 |---|---|
+| [SETUP.md](SETUP.md) | **Getting the services running** — Supabase, Resend, Backboard, Snowflake |
+| [TODO.md](TODO.md) | What's done, what isn't, what's blocked |
 | [HANDOFF.md](HANDOFF.md) | **Start here if you are new to this repo.** What is real vs mocked, landmines, next steps |
 | [docs/PROJECT.md](docs/PROJECT.md) | Problem, pricing, engine, screens, data model, build plan, pitch + judge Q&A |
 | [docs/DESIGN.md](docs/DESIGN.md) | Visual system — tokens, type, components, screens, a11y |
