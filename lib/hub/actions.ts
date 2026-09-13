@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { USER_COOKIE } from "./dev-login";
 import { getCurrentUser } from "./session";
 import { resetPlanCache } from "./matching";
@@ -24,13 +25,21 @@ export async function loginAction(userId: string, email: string) {
   });
 }
 
-export type CreateListingResult =
-  | { status: "error"; message: string }
-  | { status: "ok"; id: string; title: string; expiresAt: string | null };
+type ParsedListingFields = {
+  title: string;
+  description: string;
+  category: Category;
+  offerType: OfferType;
+  condition: Condition;
+  priceCents: number | null;
+  expiresAt: string | null;
+};
 
-export async function createListing(_prev: CreateListingResult, formData: FormData): Promise<CreateListingResult> {
+// Shared by createListing and updateListing so the two forms can't drift
+// out of sync on validation.
+function parseListingFields(formData: FormData): ParsedListingFields | { error: string } {
   const title = String(formData.get("title") ?? "").trim();
-  if (!title) return { status: "error", message: "Give it a title." };
+  if (!title) return { error: "Give it a title." };
 
   const category = String(formData.get("category")) as Category;
   const offerType = String(formData.get("offerType")) as OfferType;
@@ -41,11 +50,23 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
   const priceRaw = formData.get("price");
   const priceCents = needsPrice && priceRaw ? Math.round(Number(priceRaw) * 100) : null;
   if (needsPrice && (priceCents === null || Number.isNaN(priceCents))) {
-    return { status: "error", message: "Enter a price." };
+    return { error: "Enter a price." };
   }
 
   const expiresAtLocal = formData.get("expiresAt");
   const expiresAt = typeof expiresAtLocal === "string" && expiresAtLocal ? `${expiresAtLocal}:00-04:00` : null;
+
+  return { title, description, category, offerType, condition, priceCents, expiresAt };
+}
+
+export type CreateListingResult =
+  | { status: "error"; message: string }
+  | { status: "ok"; id: string; title: string; expiresAt: string | null };
+
+export async function createListing(_prev: CreateListingResult, formData: FormData): Promise<CreateListingResult> {
+  const fields = parseListingFields(formData);
+  if ("error" in fields) return { status: "error", message: fields.error };
+  const { title, description, category, offerType, condition, priceCents, expiresAt } = fields;
 
   const user = await getCurrentUser();
 
@@ -95,4 +116,40 @@ export async function removeListing(listingId: string, _formData: FormData) {
   revalidatePath("/");
   revalidatePath("/posts");
   revalidatePath(`/listings/${listingId}`);
+}
+
+export type UpdateListingResult = { status: "error"; message: string } | { status: "idle" };
+
+export async function updateListing(
+  listingId: string,
+  _prev: UpdateListingResult,
+  formData: FormData,
+): Promise<UpdateListingResult> {
+  const user = await getCurrentUser();
+  const listing = listings.find((l) => l.id === listingId);
+  if (!listing || listing.sellerId !== user.id) {
+    return { status: "error", message: "You can't edit this listing." };
+  }
+  if (listing.status !== "available") {
+    return { status: "error", message: "This listing can no longer be edited." };
+  }
+
+  const fields = parseListingFields(formData);
+  if ("error" in fields) return { status: "error", message: fields.error };
+
+  listing.title = fields.title;
+  listing.description = fields.description;
+  listing.kind = fields.title.split(" ")[0] || listing.kind;
+  listing.category = fields.category;
+  listing.offerType = fields.offerType;
+  listing.priceCents = fields.priceCents;
+  listing.condition = fields.condition;
+  listing.expiresAt = fields.expiresAt;
+
+  resetPlanCache();
+  revalidatePath("/");
+  revalidatePath("/posts");
+  revalidatePath(`/listings/${listingId}`);
+
+  redirect("/posts");
 }

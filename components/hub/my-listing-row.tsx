@@ -2,6 +2,7 @@ import Link from "next/link";
 import { removeListing } from "@/lib/hub/actions";
 import type { MyListing } from "@/lib/hub/data";
 import { categoryLabel, conditionLabel, formatPrice } from "@/lib/hub/format";
+import { PencilIcon } from "./icons";
 import { Countdown, Thumb } from "./ui";
 
 const statusLabel = {
@@ -39,14 +40,23 @@ export function MyListingRow({ listing }: { listing: MyListing }) {
         </div>
       </Link>
       {live && (
-        <form action={removeListing.bind(null, listing.id)} className="pb-3 pl-3 sm:pl-4">
-          <button
-            type="submit"
-            className="text-[13px] font-medium text-ink-2 underline underline-offset-[3px] hover:text-signal"
+        <div className="flex items-center gap-5 pb-3 pl-3 sm:pl-4">
+          <Link
+            href={`/posts/${listing.id}/edit`}
+            className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-2 underline underline-offset-[3px] hover:text-ink"
           >
-            Remove this listing
-          </button>
-        </form>
+            <PencilIcon className="size-3.5" />
+            Edit
+          </Link>
+          <form action={removeListing.bind(null, listing.id)}>
+            <button
+              type="submit"
+              className="text-[13px] font-medium text-ink-2 underline underline-offset-[3px] hover:text-signal"
+            >
+              Remove this listing
+            </button>
+          </form>
+        </div>
       )}
     </li>
   );
