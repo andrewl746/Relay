@@ -412,6 +412,7 @@ export const listings: Listing[] = [
     pickupArea: "Sunview St",
     expiresAt: "2026-09-14T09:30:00-04:00",
     createdAt: "2026-09-12T19:00:00-04:00",
+    photoUrl: "/photos/bean-bag-chair.webp",
   }),
   listing({
     id: "l-folding-table",
@@ -426,6 +427,7 @@ export const listings: Listing[] = [
     pickupArea: "Columbia St W",
     expiresAt: null,
     createdAt: "2026-09-10T18:30:00-04:00",
+    photoUrl: "/photos/folding-table.webp",
   }),
   listing({
     id: "l-shoe-rack",
@@ -440,6 +442,7 @@ export const listings: Listing[] = [
     pickupArea: "Mackenzie King Village",
     expiresAt: "2026-09-17T12:00:00-04:00",
     createdAt: "2026-09-12T15:30:00-04:00",
+    photoUrl: "/photos/shoe-rack.webp",
   }),
 
   // School materials
@@ -456,6 +459,7 @@ export const listings: Listing[] = [
     pickupArea: "Lester St",
     expiresAt: "2026-09-15T12:00:00-04:00",
     createdAt: "2026-09-12T10:00:00-04:00",
+    photoUrl: "/photos/physics-textbook.webp",
   }),
   listing({
     id: "l-exam-calculator",
@@ -470,6 +474,7 @@ export const listings: Listing[] = [
     pickupArea: "Columbia St W",
     expiresAt: null,
     createdAt: "2026-09-11T12:00:00-04:00",
+    photoUrl: "/photos/exam-calculator.webp",
   }),
   listing({
     id: "l-binders",
@@ -484,6 +489,7 @@ export const listings: Listing[] = [
     pickupArea: "Mackenzie King Village",
     expiresAt: "2026-09-17T12:00:00-04:00",
     createdAt: "2026-09-12T15:40:00-04:00",
+    photoUrl: "/photos/binders.webp",
   }),
 
   // Kitchen
@@ -500,6 +506,7 @@ export const listings: Listing[] = [
     pickupArea: "Sunview St",
     expiresAt: "2026-09-14T09:30:00-04:00",
     createdAt: "2026-09-12T19:10:00-04:00",
+    photoUrl: "/photos/rice-cooker.webp",
   }),
   listing({
     id: "l-instant-pot",
@@ -514,6 +521,7 @@ export const listings: Listing[] = [
     pickupArea: "King St N",
     expiresAt: null,
     createdAt: "2026-09-11T14:00:00-04:00",
+    photoUrl: "/photos/instant-pot.webp",
   }),
   listing({
     id: "l-pots-pans",
@@ -528,6 +536,7 @@ export const listings: Listing[] = [
     pickupArea: "Village 1",
     expiresAt: "2026-09-14T18:00:00-04:00",
     createdAt: "2026-09-12T20:00:00-04:00",
+    photoUrl: "/photos/pots-pans.webp",
   }),
 
   // Electronics
@@ -544,6 +553,7 @@ export const listings: Listing[] = [
     pickupArea: "Mackenzie King Village",
     expiresAt: "2026-09-17T12:00:00-04:00",
     createdAt: "2026-09-12T15:50:00-04:00",
+    photoUrl: "/photos/keyboard-mouse.webp",
   }),
   listing({
     id: "l-printer",
@@ -558,6 +568,7 @@ export const listings: Listing[] = [
     pickupArea: "King St N",
     expiresAt: null,
     createdAt: "2026-09-10T11:00:00-04:00",
+    photoUrl: "/photos/printer.webp",
   }),
   listing({
     id: "l-projector",
@@ -572,6 +583,7 @@ export const listings: Listing[] = [
     pickupArea: "Columbia St W",
     expiresAt: null,
     createdAt: "2026-09-09T20:00:00-04:00",
+    photoUrl: "/photos/projector.webp",
   }),
 
   // Hygiene
@@ -588,6 +600,7 @@ export const listings: Listing[] = [
     pickupArea: "Village 1",
     expiresAt: "2026-09-14T18:00:00-04:00",
     createdAt: "2026-09-12T20:10:00-04:00",
+    photoUrl: "/photos/shower-caddy.webp",
   }),
   listing({
     id: "l-toiletries",
@@ -602,6 +615,7 @@ export const listings: Listing[] = [
     pickupArea: "Lester St",
     expiresAt: "2026-09-15T12:00:00-04:00",
     createdAt: "2026-09-12T10:15:00-04:00",
+    photoUrl: "/photos/toiletries.webp",
   }),
   listing({
     id: "l-hair-clippers",
@@ -616,6 +630,7 @@ export const listings: Listing[] = [
     pickupArea: "King St N",
     expiresAt: null,
     createdAt: "2026-09-11T09:00:00-04:00",
+    photoUrl: "/photos/hair-clippers.webp",
   }),
 
   // Other
@@ -632,6 +647,7 @@ export const listings: Listing[] = [
     pickupArea: "Columbia St W",
     expiresAt: null,
     createdAt: "2026-09-10T09:00:00-04:00",
+    photoUrl: "/photos/suitcase.webp",
   }),
   listing({
     id: "l-bike",
@@ -646,6 +662,7 @@ export const listings: Listing[] = [
     pickupArea: "Columbia St W",
     expiresAt: null,
     createdAt: "2026-09-12T08:30:00-04:00",
+    photoUrl: "/photos/bike.webp",
   }),
   listing({
     id: "l-tent",
@@ -660,6 +677,7 @@ export const listings: Listing[] = [
     pickupArea: "King St N",
     expiresAt: null,
     createdAt: "2026-09-09T15:00:00-04:00",
+    photoUrl: "/photos/tent.webp",
   }),
   listing({
     id: "l-tower-fan",
@@ -674,6 +692,7 @@ export const listings: Listing[] = [
     pickupArea: "King St N",
     expiresAt: null,
     createdAt: "2026-09-12T13:00:00-04:00",
+    photoUrl: "/photos/tower-fan.webp",
   }),
   listing({
     id: "l-yoga-mat",
@@ -688,6 +707,7 @@ export const listings: Listing[] = [
     pickupArea: "Mackenzie King Village",
     expiresAt: "2026-09-17T12:00:00-04:00",
     createdAt: "2026-09-12T16:00:00-04:00",
+    photoUrl: "/photos/yoga-mat.webp",
   }),
 ];
 
