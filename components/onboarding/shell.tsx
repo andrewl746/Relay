@@ -7,14 +7,19 @@ export function OnboardingShell({
   title,
   description,
   children,
+  width = "narrow",
 }: {
   step: 1 | 2 | 3;
   title: string;
   description?: string;
   children: ReactNode;
+  /** "wide" for the interest grid; forms stay narrow and readable. */
+  width?: "narrow" | "wide";
 }) {
   return (
-    <div className="gh-card p-6 sm:p-8">
+    <div
+      className={`gh-card mx-auto p-6 sm:p-8 ${width === "wide" ? "max-w-[900px]" : "max-w-[480px]"}`}
+    >
       <ol className="mb-6 flex items-center">
         {STEPS.map((label, i) => {
           const n = i + 1;

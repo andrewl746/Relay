@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { Belt } from '@/components/motion/belt'
 import { Conveyor, Crate, Stamp } from '@/components/motion/box'
 
 export const metadata = {
@@ -27,6 +28,26 @@ const STEPS = [
     body: 'We already know who needs it after you, so the next handoff is arranged before you even have it.',
     color: 'var(--kand-red)',
   },
+]
+
+const BELT_A: { name: string; price: string; unit?: string }[] = [
+  { name: 'Power drill', price: '$4', unit: '/day' },
+  { name: 'Carpet cleaner', price: '$12', unit: '/day' },
+  { name: 'Step ladder', price: '$5', unit: '/day' },
+  { name: 'Projector', price: '$8', unit: '/day' },
+  { name: 'Hand truck', price: '$8', unit: '/day' },
+  { name: 'Sewing machine', price: '$5', unit: '/day' },
+  { name: 'Air mattress', price: '$5', unit: '/day' },
+]
+
+const BELT_B: { name: string; price: string; unit?: string }[] = [
+  { name: 'Mini fridge', price: '$45' },
+  { name: 'Big suitcase', price: '$3', unit: '/day' },
+  { name: 'Brita filter', price: '$12' },
+  { name: 'Stand mixer', price: '$6', unit: '/day' },
+  { name: 'Desk lamp', price: '$8' },
+  { name: 'Camping stove', price: '$6', unit: '/day' },
+  { name: 'Kettle + toaster', price: '$20' },
 ]
 
 const BORROW = [
@@ -112,6 +133,14 @@ export default function LandingPage() {
             Free to join with your university email.
           </p>
         </div>
+      </section>
+
+      {/* The belt: what is actually moving around a building right now. Two
+          rows running opposite ways so the hero has motion without anything
+          blinking or sliding in on scroll. */}
+      <section aria-label="Things students are lending right now" className="relative z-10 space-y-3 pb-16">
+        <Belt items={BELT_A} direction="left" seconds={42} />
+        <Belt items={BELT_B} direction="right" seconds={50} />
       </section>
 
       {/* How it works */}
