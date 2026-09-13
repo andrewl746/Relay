@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/brand/relay-stamp-primary-reversed-crop.png">
+  <img src="public/brand/relay-stamp-primary-ink-crop.png" width="296" alt="Relay stamp: Sharing is caring.">
+</picture>
+
 # Relay
 
 **You need a drill for one Saturday afternoon.** Someone four doors down owns one, isn't
@@ -88,6 +93,7 @@ spinner.
 | [HANDOFF.md](HANDOFF.md) | **Start here if you are new to this repo.** What is real vs mocked, landmines, next steps |
 | [docs/PROJECT.md](docs/PROJECT.md) | Problem, pricing, engine, screens, data model, build plan, pitch + judge Q&A |
 | [docs/DESIGN.md](docs/DESIGN.md) | Visual system — tokens, type, components, screens, a11y |
+| [docs/BRAND.md](docs/BRAND.md) | Logo files in `public/brand/` — which lockup goes where, clear space, icon cuts |
 | [PIVOTS.md](PIVOTS.md) | **Live.** One entry per pivot. Adaptability is 30 of 100 points |
 
 ## Run

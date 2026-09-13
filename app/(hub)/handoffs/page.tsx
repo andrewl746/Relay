@@ -1,89 +1,97 @@
 import Link from "next/link";
-import { btnTertiary, EmptyState, PageShell, PageTitle } from "@/components/hub/ui";
-import { getHandoffs, type HandoffDetail } from "@/lib/hub/data";
-import { formatDay, formatTimeRange } from "@/lib/hub/format";
-import { getCurrentUser } from "@/lib/hub/session";
+import type { ReactNode } from "react";
+import { EmptyState, Notice, PageShell, PageTitle } from "@/components/hub/ui";
+import { Slip } from "@/components/relay/slip";
+import { dayLabel } from "@/lib/relay/dates";
+import { requireMe } from "@/lib/relay/me";
+import { slipsFor, type Slip as SlipData, type SlipKind } from "@/lib/relay/views";
 
 export const metadata = { title: "Handoffs" };
 
-export default async function HandoffsPage() {
-  const user = await getCurrentUser();
-  const { pickingUp, handingOff } = await getHandoffs(user.id);
+const GIVING: SlipKind[] = ["handoff", "return", "lend"];
+
+export default async function HandoffsPage({ searchParams }: PageProps<"/handoffs">) {
+  const me = await requireMe();
+  const booked = (await searchParams).booked;
+  const bookedId = Array.isArray(booked) ? booked[0] : booked;
+  const { due, done } = slipsFor(me);
+
+  const toGive = due.filter((s) => GIVING.includes(s.kind));
+  const toCollect = due.filter((s) => !GIVING.includes(s.kind));
+  const fresh = bookedId ? due.find((s) => s.kind === "pickup" && s.receiptId === bookedId) : undefined;
+  const linkClass = "font-semibold text-ink underline underline-offset-[3px]";
 
   return (
     <PageShell>
-      <PageTitle title="Handoffs" lede="Every pickup you’ve agreed to, with the time and place already set." />
+      <PageTitle title="Handoffs" lede="What you owe and when. Every slip names a date, a person and what changes hands." />
 
-      <div className="grid gap-12 lg:grid-cols-2">
-        <HandoffList
-          title="You’re picking up"
-          handoffs={pickingUp}
-          person={(h) => `From ${h.seller.name}`}
-          empty={
-            <EmptyState title="Nothing to pick up yet.">
-              <Link href="/" className={btnTertiary}>
-                Browse what’s leaving
-              </Link>
-            </EmptyState>
-          }
-        />
-        <HandoffList
-          title="You’re handing off"
-          handoffs={handingOff}
-          person={(h) => `To ${h.buyer.name}`}
-          empty={
-            <EmptyState title="Nobody has claimed your things yet.">
-              <Link href="/post" className={btnTertiary}>
-                Post something
-              </Link>
-            </EmptyState>
-          }
-        />
+      {fresh && (
+        <Notice>
+          <span className="font-semibold">Booked.</span> Collect it from {fresh.counterpart.label} on{" "}
+          <span className="data">{dayLabel(fresh.date)}</span>. You pay ${fresh.cost ?? 0} directly then; Relay never touches
+          the money.
+        </Notice>
+      )}
+
+      <div className="grid gap-x-10 gap-y-12 lg:grid-cols-2">
+        <Stack title="To give" slips={toGive} freshId={bookedId}>
+          <EmptyState title="Nothing to hand over.">
+            When someone books something on your shelf, or you borrow something, the handover lands here.{" "}
+            <Link href="/shelf" className={linkClass}>
+              Lend something
+            </Link>
+          </EmptyState>
+        </Stack>
+        <Stack title="To collect" slips={toCollect} freshId={bookedId}>
+          <EmptyState title="Nothing to pick up.">
+            Ask for what you need and book the answer.{" "}
+            <Link href="/" className={linkClass}>
+              What do you need?
+            </Link>
+          </EmptyState>
+        </Stack>
       </div>
+
+      {done.length > 0 && (
+        <section aria-labelledby="done-title" className="mt-14">
+          <h2 id="done-title" className="t-eyebrow border-b border-rule-strong pb-2 text-ink-2">
+            Done
+          </h2>
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            {done.map((slip) => (
+              <Slip key={slip.key} slip={slip} />
+            ))}
+          </div>
+        </section>
+      )}
     </PageShell>
   );
 }
 
-function HandoffList({
+function Stack({
   title,
-  handoffs,
-  person,
-  empty,
+  slips,
+  freshId,
+  children,
 }: {
   title: string;
-  handoffs: HandoffDetail[];
-  person: (h: HandoffDetail) => string;
-  empty: React.ReactNode;
+  slips: SlipData[];
+  freshId: string | undefined;
+  children: ReactNode;
 }) {
   return (
-    <section>
-      <h2 className="t-eyebrow border-b border-rule-strong pb-2 text-ink-2">{title}</h2>
-      {handoffs.length === 0 ? (
-        empty
+    <section aria-label={title}>
+      <h2 className="t-eyebrow border-b border-rule-strong pb-2 text-ink-2">
+        {title} <span className="data">{slips.length}</span>
+      </h2>
+      {slips.length === 0 ? (
+        children
       ) : (
-        <ul>
-          {handoffs.map((h) => (
-            <li key={h.id} className="border-b border-rule">
-              <Link
-                href={`/handoffs/${h.id}`}
-                className="group grid grid-cols-[7.5rem_1fr] gap-4 px-1 py-3 transition-colors duration-[90ms] hover:bg-paper-raised"
-              >
-                <span className="data">
-                  <span className="block text-[13px] text-ink-2">{formatDay(h.slot.startsAt)}</span>
-                  <span className="block font-semibold">{formatTimeRange(h.slot.startsAt, h.slot.endsAt)}</span>
-                </span>
-                <span className="min-w-0">
-                  <span className="t-listing block truncate text-[17px] group-hover:underline group-hover:underline-offset-[3px]">
-                    {h.listing.title}
-                  </span>
-                  <span className="block text-[13px] text-ink-2">
-                    {person(h)} · {h.slot.place}
-                  </span>
-                </span>
-              </Link>
-            </li>
+        <div className="mt-4 grid gap-4">
+          {slips.map((slip) => (
+            <Slip key={slip.key} slip={slip} fresh={slip.kind === "pickup" && slip.receiptId === freshId} />
           ))}
-        </ul>
+        </div>
       )}
     </section>
   );

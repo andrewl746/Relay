@@ -5,11 +5,11 @@ export default function NotFound() {
   return (
     <PageShell width="narrow">
       <PageTitle
-        title="That’s not on the board"
-        lede="It may have been claimed, or its deadline passed. Most things get posted in the last two weeks of term."
+        title="That isn’t here"
+        lede="It may be a receipt for someone else’s booking, or a link to a screen Relay doesn’t have any more."
       />
       <Link href="/" className={btnSecondary}>
-        Back to all listings
+        What do you need?
       </Link>
     </PageShell>
   );

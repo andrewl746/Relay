@@ -1,60 +1,30 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { SiteHeader } from "@/components/hub/site-header";
-import { getProfile } from "@/lib/onboarding/profile";
-import { SITE_NAME } from "@/lib/hub/site";
-import { createClient } from "@/lib/supabase/server";
-import { getSupabaseUser } from "@/lib/supabase/session";
-import "./hub.css";
-
-// Self-hosted rather than next/font/google. Google Fonts is fetched at build
-// time, and it timed out here and 500'd every route. More to the point, a demo
-// that reaches out to fonts.gstatic.com is a demo that dies on venue wifi.
-// Latin subset only, 133KB total.
-const archivo = localFont({
-  src: "../fonts/archivo-var.woff2",
-  variable: "--font-archivo",
-  weight: "100 900",
-  display: "swap",
-  // The wdth axis is the hierarchy channel — see docs/DESIGN.md §4.
-  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
-});
-
-const plex = localFont({
-  variable: "--font-plex",
-  display: "swap",
-  src: [
-    { path: "../fonts/plex-mono-400.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/plex-mono-500.woff2", weight: "500", style: "normal" },
-    { path: "../fonts/plex-mono-600.woff2", weight: "600", style: "normal" },
-  ],
-});
-
-export const metadata: Metadata = {
-  title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
-  description: "Hand your furniture and school stuff to the student arriving as you leave.",
-};
+import { requireMe } from "@/lib/relay/me";
+import { slipsFor } from "@/lib/relay/views";
 
 export default async function HubLayout({ children }: { children: ReactNode }) {
-  const supabaseUser = await getSupabaseUser();
-  if (supabaseUser) {
-    const supabase = await createClient();
-    const profile = await getProfile(supabase, supabaseUser.id);
-    if (!profile?.onboarding_completed) redirect("/onboarding/profile");
-  }
+  // Everything inside this group is for someone who has told Relay where and
+  // when they can meet. Anyone else is sent to /hello or /start first.
+  const me = await requireMe();
+  const { due } = slipsFor(me);
+  const soon = due.filter((s) => s.inDays <= 2).length;
 
   return (
-    <div className={`${archivo.variable} ${plex.variable} hub flex min-h-full flex-1 flex-col font-sans`}>
-      <SiteHeader />
+    <div className="flex min-h-full flex-1 flex-col">
+      <SiteHeader name={me.profile.name} due={soon} />
       <main className="flex-1">{children}</main>
       <footer className="border-t border-rule">
-        <div className="mx-auto flex max-w-[1120px] flex-wrap items-baseline justify-between gap-x-6 gap-y-2 px-4 py-6 text-[13px] text-ink-2 sm:px-6">
-          <p>{SITE_NAME} never handles money. Pay when you pick something up, never before you’ve seen it.</p>
-          <Link href="/chains" className="underline underline-offset-[3px] hover:text-ink">
-            Handoff chain engine
+        <div className="mx-auto flex max-w-[1120px] flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-6 text-[13px] text-ink-2 sm:px-6">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            {/* Plain wordmark: the footer rule is already the frame (docs/BRAND.md). */}
+            <Image src="/brand/relay-wordmark-plain.png" alt="" width={952} height={160} unoptimized className="h-3.5 w-auto" />
+            <p>Relay never handles money. You pay the owner directly, when you collect.</p>
+          </div>
+          <Link href="/network" className="underline underline-offset-[3px] hover:text-ink">
+            How the route is worked out
           </Link>
         </div>
       </footer>

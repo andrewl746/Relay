@@ -3,7 +3,7 @@ import type { Chain, Dataset, Item, Need, Person } from '../types.ts'
 import type { MatchTable } from '../match.ts'
 import { dataset, matches } from '../data.ts'
 import { assignAll, earnings, idleDays } from '../assign.ts'
-import { readRuntime } from './runtime.ts'
+import { readRuntime, type Profile } from './runtime.ts'
 
 /**
  * The single source of truth for every screen.
@@ -44,12 +44,28 @@ const EMPTY_CHAIN = (itemId: string): Chain => ({
  * change under us on every write, so caching would buy nothing and would serve
  * a stale board straight after someone posts something.
  */
+/**
+ * Lay what a person told Relay about themselves over what the corpus assumed,
+ * so the engine routes on where they actually live and when they can meet.
+ */
+function withProfile(person: Person, profile: Profile | undefined): Person {
+  if (!profile) return person
+  return {
+    ...person,
+    label: profile.name || person.label,
+    location: profile.neighbourhood || person.location,
+    pickupWindows: profile.pickupWindows.length ? profile.pickupWindows : person.pickupWindows,
+    awayFrom: profile.awayFrom ?? '',
+    awayUntil: profile.awayUntil ?? '',
+  }
+}
+
 export function snapshot(): Snapshot {
   const seed = dataset()
   const runtime = readRuntime()
 
   const data: Dataset = {
-    people: seed.people,
+    people: [...seed.people, ...runtime.people].map((p) => withProfile(p, runtime.profiles[p.id])),
     items: [...seed.items, ...runtime.items],
     needs: [...seed.needs, ...runtime.needs],
   }

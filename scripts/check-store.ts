@@ -44,7 +44,7 @@ try {
     }
   })
 
-  writeRuntime({ items: [], needs: [need], accepted: [], matches })
+  writeRuntime({ items: [], needs: [need], accepted: [], matches, people: [], profiles: {} })
 
   const rt = readRuntime()
   assert.equal(rt.needs.length, 1, 'need did not persist')

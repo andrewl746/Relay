@@ -1,65 +1,145 @@
 @import "tailwindcss";
 
+/*
+ * Paper and ink — docs/DESIGN.md §3 and §14.
+ *
+ * One committed light theme: a projector in a judging room is not the place to
+ * discover dark mode. Colour means exactly three things — seal is in use,
+ * signal is idle, amber is money — and nothing else gets any.
+ */
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 :root {
-  --chassis: #0D0E12;
-  --panel: #16181D;
-  --bezel: #2A2D35;
-  --text-primary: #E4E7EB;
-  --text-muted: #828896;
-  
-  --active-route: #FF5C00;
-  --secured: #00E5FF;
-  --alert: #FFE600;
-
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-ui: 'Inter', system-ui, sans-serif;
-  --font-data: 'JetBrains Mono', monospace;
+  --paper: #f2efe6;
+  --paper-raised: #fbf9f4;
+  --paper-sunk: #e7e2d6;
+  --ink: #1c1a15;
+  --ink-2: #57534a;
+  --ink-3: #8a8478;
+  --rule: rgba(28, 26, 21, 0.14);
+  --rule-strong: rgba(28, 26, 21, 0.3);
+  --seal: #2f5d3a;
+  --seal-fill: #3e7a4c;
+  --signal: #b83417;
+  --signal-fill: #c6371b;
+  --amber: #8a5a00;
+  --amber-fill: #e0a43a;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
 @theme inline {
-  --color-chassis: var(--chassis);
-  --color-panel: var(--panel);
-  --color-bezel: var(--bezel);
-  --color-text-primary: var(--text-primary);
-  --color-text-muted: var(--text-muted);
-  
-  --color-active-route: var(--active-route);
-  --color-secured: var(--secured);
-  --color-alert: var(--alert);
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-paper-sunk: var(--paper-sunk);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-seal: var(--seal);
+  --color-seal-fill: var(--seal-fill);
+  --color-signal: var(--signal);
+  --color-signal-fill: var(--signal-fill);
+  --color-amber: var(--amber);
+  --color-amber-fill: var(--amber-fill);
 
-  --font-display: var(--font-display);
-  --font-ui: var(--font-ui);
-  --font-data: var(--font-data);
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-mono: var(--font-plex), ui-monospace, monospace;
 
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --radius-1: 2px;
+  --radius-2: 4px;
 }
 
 body {
-  background: var(--chassis);
-  color: var(--text-primary);
-  font-family: var(--font-ui);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  font-variation-settings: "wdth" 100;
 }
 
-.data {
-  font-family: var(--font-data);
-  font-variant-numeric: tabular-nums;
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
 }
 
-.display-heading {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+@layer components {
+  /* every comparable number */
+  .data {
+    font-family: var(--font-plex), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* width as a hierarchy axis — DESIGN.md §4 */
+  .t-display {
+    font-variation-settings: "wdth" 115;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  .t-title {
+    font-variation-settings: "wdth" 105;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+  }
+
+  .t-item {
+    font-variation-settings: "wdth" 88;
+    font-weight: 600;
+  }
+
+  .t-eyebrow {
+    font-size: 11px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
 }
 
-/* Tactical input and focus styles */
-input, button, textarea {
-  outline: none;
+/* The stamp: the one imperfect mark in a system of straight rules. */
+.stamp {
+  display: inline-block;
+  transform: rotate(-1.5deg);
 }
-input:focus-visible, button:focus-visible, textarea:focus-visible {
-  box-shadow: 0 0 0 2px var(--chassis), 0 0 0 4px var(--active-route);
+
+@keyframes stamp-press {
+  from {
+    transform: scale(1.04) rotate(0deg);
+  }
+  to {
+    transform: scale(1) rotate(-1.5deg);
+  }
+}
+
+.stamp-press {
+  animation: stamp-press 120ms var(--ease) both;
+}
+
+/* The answer enters once. Nothing else animates on arrival. */
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.enter {
+  animation: enter 160ms var(--ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
 }

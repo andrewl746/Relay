@@ -1,23 +1,25 @@
 @import "tailwindcss";
 
-/* A dense, bordered, form-first system in the spirit of a developer-tool auth page —
-   distinct on purpose from the ledger system in app/(hub), since sign-in/onboarding
-   is a different job than browsing listings. */
+/* Sign-in and onboarding, on the same paper and ink as the rest of Relay
+   (docs/DESIGN.md). The --gh-* names and component classes are unchanged, so
+   none of the auth or onboarding components had to be touched. */
 :root {
-  --gh-canvas: #ffffff;
-  --gh-canvas-subtle: #f6f8fa;
-  --gh-canvas-inset: #eff2f5;
-  --gh-border: #d1d9e0;
-  --gh-border-muted: #d8dee4;
-  --gh-fg: #1f2328;
-  --gh-fg-muted: #59636e;
-  --gh-fg-subtle: #6e7781;
-  --gh-accent: #0969da;
-  --gh-accent-subtle: #ddf4ff;
-  --gh-success: #1a7f37;
-  --gh-success-subtle: #d8f5df;
-  --gh-danger: #cf222e;
-  --gh-danger-subtle: #ffebe9;
+  --gh-canvas: #fbf9f4;
+  --gh-canvas-subtle: #f2efe6;
+  --gh-canvas-inset: #e7e2d6;
+  --gh-border: rgba(28, 26, 21, 0.3);
+  --gh-border-muted: rgba(28, 26, 21, 0.14);
+  --gh-fg: #1c1a15;
+  --gh-fg-muted: #57534a;
+  --gh-fg-subtle: #8a8478;
+  /* No blue: actions are ink. */
+  --gh-accent: #1c1a15;
+  --gh-accent-subtle: #e7e2d6;
+  /* Seal means confirmed. */
+  --gh-success: #2f5d3a;
+  --gh-success-subtle: #e3ebe2;
+  --gh-danger: #b83417;
+  --gh-danger-subtle: #f6e6e0;
 }
 
 @theme inline {
@@ -40,40 +42,37 @@
 .gh {
   background: var(--gh-canvas-subtle);
   color: var(--gh-fg);
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 .gh :focus-visible {
-  outline: 2px solid var(--gh-accent);
-  outline-offset: -1px;
-  border-radius: 6px;
+  outline: 2px solid var(--gh-fg);
+  outline-offset: 2px;
 }
 
 @layer components {
   .gh-card {
     background: var(--gh-canvas);
     border: 1px solid var(--gh-border);
-    border-radius: 12px;
-    box-shadow: 0 1px 0 rgba(31, 35, 40, 0.04);
+    border-radius: 4px;
   }
 
   .gh-input {
     display: block;
     width: 100%;
-    border-radius: 6px;
-    border: 1px solid var(--gh-border);
-    background: var(--gh-canvas);
-    padding: 5px 12px;
-    font-size: 14px;
+    border: 0;
+    border-bottom: 1px solid var(--gh-border-muted);
+    border-radius: 2px 2px 0 0;
+    background: var(--gh-canvas-inset);
+    padding: 10px 12px;
+    font-size: 15px;
     color: var(--gh-fg);
-    box-shadow: inset 0 1px 0 rgba(208, 215, 222, 0.2);
   }
 
   .gh-input:focus-visible {
-    border-color: var(--gh-accent);
     outline: none;
-    box-shadow: 0 0 0 3px var(--gh-accent-subtle);
+    box-shadow: inset 0 -2px 0 var(--gh-fg);
   }
 
   .gh-input::placeholder {
@@ -82,13 +81,16 @@
 
   .gh-label {
     display: block;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gh-fg-muted);
+    margin-bottom: 8px;
   }
 
   .gh-hint {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--gh-fg-muted);
     margin-top: 6px;
   }
@@ -99,33 +101,33 @@
     justify-content: center;
     gap: 8px;
     width: 100%;
-    min-height: 34px;
+    min-height: 44px;
     padding: 5px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
+    border-radius: 2px;
+    font-size: 15px;
+    font-weight: 600;
     border: 1px solid var(--gh-border);
-    background: var(--gh-canvas-subtle);
+    background: transparent;
     color: var(--gh-fg);
-    transition: background-color 80ms ease;
+    transition: background-color 90ms ease;
   }
 
   .gh-btn:hover {
-    background: var(--gh-canvas-inset);
+    background: var(--gh-canvas);
   }
 
   .gh-btn-primary {
-    border-color: rgba(27, 31, 36, 0.15);
-    background: var(--gh-success);
-    color: #ffffff;
+    border-color: var(--gh-fg);
+    background: var(--gh-fg);
+    color: var(--gh-canvas-subtle);
   }
 
   .gh-btn-primary:hover {
-    background: #1a7f37;
+    background: #3a372f;
   }
 
   .gh-btn-primary:disabled {
-    background: #94d3a2;
+    background: var(--gh-fg-subtle);
     border-color: transparent;
     cursor: not-allowed;
   }
@@ -136,21 +138,23 @@
   }
 
   .gh-link {
-    color: var(--gh-accent);
-    font-weight: 500;
+    color: var(--gh-fg);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .gh-link:hover {
-    text-decoration: underline;
+    color: var(--gh-fg-muted);
   }
 
   .gh-flash-error {
     display: flex;
     gap: 8px;
-    border: 1px solid rgba(207, 34, 46, 0.4);
+    border: 1px solid var(--gh-danger);
     background: var(--gh-danger-subtle);
     color: var(--gh-danger);
-    border-radius: 6px;
+    border-radius: 2px;
     padding: 8px 12px;
     font-size: 13px;
   }
@@ -158,10 +162,10 @@
   .gh-flash-success {
     display: flex;
     gap: 8px;
-    border: 1px solid rgba(26, 127, 55, 0.3);
+    border: 1px solid var(--gh-success);
     background: var(--gh-success-subtle);
     color: var(--gh-success);
-    border-radius: 6px;
+    border-radius: 2px;
     padding: 8px 12px;
     font-size: 13px;
   }
