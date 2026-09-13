@@ -1,26 +1,28 @@
 import { DevLogin } from "@/components/hub/dev-login";
 import { PageShell, PageTitle } from "@/components/hub/ui";
-import { getUniversity, getUsers } from "@/lib/hub/data";
-import { moveLine } from "@/lib/hub/format";
+import { getUsers } from "@/lib/hub/data";
 import { getCurrentUser } from "@/lib/hub/session";
 
-export const metadata = { title: "Choose a student" };
+export const metadata = { title: "Authorization — Relay" };
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const next = (await searchParams).next;
-  const [users, university, current] = await Promise.all([getUsers(), getUniversity(), getCurrentUser()]);
+  const [users, current] = await Promise.all([getUsers(), getCurrentUser()]);
 
   return (
     <PageShell width="narrow">
-      <PageTitle
-        title="Choose a student"
-        lede="This is a demo, so there’s no password. Pick a student to see the app the way they would."
-      />
+      <div className="mb-8">
+        <h1 className="font-[family-name:var(--font-display)] text-[32px] font-bold tracking-[-0.03em] text-[var(--text-primary)]">
+          AUTHORIZE
+        </h1>
+        <p className="mt-2 text-[var(--text-muted)] max-w-[52ch]">
+          Select a user profile to access the routing system. You&apos;ll configure your university and location next.
+        </p>
+      </div>
       <DevLogin
         next={typeof next === "string" ? next : null}
         currentUserId={current.id}
-        domain={university.emailDomain}
-        users={users.map((u) => ({ id: u.id, name: u.name, email: u.email, detail: `${moveLine(u)} · ${u.note}` }))}
+        users={users.map((u) => ({ id: u.id, name: u.name, email: u.email, detail: `${u.home} · ${u.note}` }))}
       />
     </PageShell>
   );

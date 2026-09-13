@@ -16,6 +16,7 @@
     "reset": "node --experimental-strip-types scripts/reset.ts"
   },
   "dependencies": {
+    "backboard-sdk": "^1.5.16",
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8"

@@ -10,6 +10,7 @@ export type Person = {
   awayFrom: string
   /** ...until this one. */
   awayUntil: string
+  pickupWindows: ('morning' | 'afternoon' | 'evening')[]
 }
 
 /**
@@ -48,6 +49,7 @@ export type Need = {
   embedding: number[]
   needFrom: string
   needUntil: string
+  urgency: 'low' | 'medium' | 'high'
 }
 
 export type Dataset = {

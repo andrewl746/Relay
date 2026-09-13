@@ -1,20 +1,21 @@
 @import "tailwindcss";
 
-/* Tokens from docs/DESIGN.md §15, light theme only for now. */
+/* Industrial Premium tokens — mapped to old names so existing components adapt */
 :root {
-  --paper: #f2efe6;
-  --paper-raised: #fbf9f4;
-  --paper-sunk: #e7e2d6;
-  --ink: #1c1a15;
-  --ink-2: #57534a;
-  --ink-3: #8a8478;
-  --rule: rgba(28, 26, 21, 0.14);
-  --rule-strong: rgba(28, 26, 21, 0.3);
-  --signal: #b83417;
-  --signal-fill: #c6371b;
-  --amber: #8a5a00;
-  --amber-fill: #e0a43a;
-  --seal: #2f5d3a;
+  --paper: #0D0E12;
+  --paper-raised: #16181D;
+  --paper-sunk: #1E2028;
+  --ink: #E4E7EB;
+  --ink-2: #828896;
+  --ink-3: #5A5F6B;
+  --rule: rgba(42, 45, 53, 0.6);
+  --rule-strong: #2A2D35;
+  --signal: #FFE600;
+  --signal-fill: #FFE600;
+  --amber: #FF5C00;
+  --amber-fill: #FF5C00;
+  --seal: #00E5FF;
+  --seal-fill: #00E5FF;
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
@@ -32,8 +33,8 @@
   --color-amber: var(--amber);
   --color-seal: var(--seal);
 
-  --font-sans: var(--font-archivo), system-ui, sans-serif;
-  --font-mono: var(--font-plex), ui-monospace, monospace;
+  --font-sans: var(--font-ui), system-ui, sans-serif;
+  --font-mono: var(--font-data), ui-monospace, monospace;
 
   --radius-1: 2px;
   --radius-2: 4px;
@@ -44,35 +45,34 @@
   color: var(--ink);
   font-size: 15px;
   line-height: 1.55;
-  font-variation-settings: "wdth" 100;
 }
 
 .hub :focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--amber);
   outline-offset: 2px;
 }
 
 @layer components {
   .data {
-    font-family: var(--font-plex), ui-monospace, monospace;
+    font-family: var(--font-data), ui-monospace, monospace;
     font-variant-numeric: tabular-nums;
   }
 
   .t-display {
-    font-variation-settings: "wdth" 115;
+    font-family: var(--font-display), system-ui, sans-serif;
     font-weight: 700;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.03em;
   }
 
   .t-title {
-    font-variation-settings: "wdth" 105;
+    font-family: var(--font-display), system-ui, sans-serif;
     font-weight: 650;
     letter-spacing: -0.015em;
   }
 
   .t-listing {
-    font-variation-settings: "wdth" 88;
     font-weight: 600;
+    font-size: 14px;
   }
 
   .t-eyebrow {

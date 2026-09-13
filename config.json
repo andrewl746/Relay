@@ -18,6 +18,13 @@
     "Beechwood",
     "King St N"
   ],
+  "locationCoords": {
+    "Northdale": {"lat": 43.475, "lon": -80.536},
+    "Lester": {"lat": 43.471, "lon": -80.531},
+    "Sunnydale": {"lat": 43.483, "lon": -80.540},
+    "Beechwood": {"lat": 43.468, "lon": -80.546},
+    "King St N": {"lat": 43.480, "lon": -80.525}
+  },
   "ui": {
     "productName": "Relay",
     "tagline": "One of these on the street, not one in every room.",
@@ -33,7 +40,12 @@
   },
   "penalties": {
     "lambdaGapPerDay": 0.03,
-    "muDistance": 0.2
+    "muDistance": 0.2,
+    "urgencyMultipliers": {
+      "low": 1.0,
+      "medium": 1.2,
+      "high": 1.5
+    }
   },
   "constraints": {
     "maxIdleDays": 10,

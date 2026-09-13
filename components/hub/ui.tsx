@@ -4,15 +4,15 @@ import { countdown, type CountdownTier } from "@/lib/hub/format";
 import { BackIcon } from "./icons";
 
 export const btnPrimary =
-  "inline-flex min-h-11 items-center justify-center rounded-1 bg-ink px-5 text-[15px] font-semibold text-paper transition-colors duration-[90ms] hover:bg-ink/85 disabled:cursor-not-allowed disabled:bg-ink-3";
+  "inline-flex min-h-11 items-center justify-center rounded-[2px] bg-[var(--amber)] px-5 text-[15px] font-bold text-[#0D0E12] transition-all duration-75 hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40";
 
 export const btnSecondary =
-  "inline-flex min-h-11 items-center justify-center rounded-1 border border-rule-strong px-5 text-[15px] font-semibold text-ink transition-colors duration-[90ms] hover:bg-paper-raised";
+  "inline-flex min-h-11 items-center justify-center rounded-[2px] border border-rule-strong px-5 text-[15px] font-semibold text-ink transition-colors duration-75 hover:bg-paper-raised";
 
-export const btnTertiary = "font-semibold underline underline-offset-[3px] hover:text-ink-2";
+export const btnTertiary = "font-semibold text-ink-2 hover:text-ink underline underline-offset-[3px]";
 
 export const fieldClass =
-  "block w-full rounded-t-1 border-0 border-b border-rule bg-paper-sunk px-3 py-2.5 text-[15px] text-ink placeholder:text-ink-3 focus-visible:shadow-[inset_0_-2px_0_var(--ink)]";
+  "block w-full rounded-[2px] border border-rule-strong bg-paper-sunk px-3 py-2.5 text-[15px] text-ink placeholder:text-ink-3 focus:border-[var(--amber)]";
 
 export function PageShell({ children, width = "wide" }: { children: ReactNode; width?: "wide" | "narrow" }) {
   return (
@@ -48,7 +48,7 @@ export function Thumb({ word, size = "row" }: { word: string; size?: "row" | "he
   return (
     <div
       aria-hidden="true"
-      className={`grid shrink-0 place-items-center overflow-hidden bg-paper-sunk shadow-[inset_0_0_0_1px_var(--rule)] ${
+      className={`grid shrink-0 place-items-center overflow-hidden bg-paper-sunk border border-rule-strong ${
         size === "row" ? "size-16 sm:size-[76px]" : "aspect-[4/3] w-full"
       }`}
     >
@@ -63,7 +63,7 @@ const tierClass: Record<CountdownTier, string> = {
   open: "font-medium text-ink-2",
   soon: "font-semibold text-ink",
   today: "font-semibold text-signal",
-  final: "bg-signal-fill px-1 font-semibold text-paper",
+  final: "bg-signal-fill px-1 font-semibold text-[#0D0E12]",
   gone: "font-medium text-ink-3 line-through",
 };
 

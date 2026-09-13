@@ -142,6 +142,37 @@ export async function addNeed(input: {
   const [needFrom, needUntil] = checkWindow(input.needFrom, input.needUntil)
 
   const [embedding] = await getProvider().embed([text])
+  let urgency: 'low' | 'medium' | 'high' = 'medium';
+  try {
+    const { getBackboardClient, extractMetadataTool } = await import('../providers/backboard.ts');
+    const bb = getBackboardClient();
+    if (bb) {
+      // Create a temporary thread for extraction
+      const thread = await bb.createThread(`extract-${Date.now()}`);
+      const res = await bb.addMessage(thread.id, {
+        content: `Extract metadata from: "${text}"`,
+        // @ts-ignore - backboard-sdk simplified tools in 1.3.3
+        tools: [extractMetadataTool]
+      });
+      if ((res as any).toolCalls && (res as any).toolCalls.length > 0) {
+        const tc = (res as any).toolCalls.find((t: any) => t.function.name === 'extract_metadata');
+        if (tc && tc.function.parsedArguments) {
+          if (['low', 'medium', 'high'].includes(tc.function.parsedArguments.urgency)) {
+            urgency = tc.function.parsedArguments.urgency;
+          }
+        }
+      }
+      // Also persist the need as a memory for this user (assistantId mapped to personId for demo)
+      try {
+        await bb.addMemory(input.personId, { content: `User needs: ${text} from ${needFrom} to ${needUntil}` });
+      } catch (e) {
+        // Ignore memory errors if assistant doesn't exist
+      }
+    }
+  } catch (err) {
+    console.error('Backboard extraction failed, falling back to defaults', err);
+  }
+
   const need: Need = {
     id: `u-n-${Date.now().toString(36)}`,
     personId: input.personId,
@@ -149,6 +180,7 @@ export async function addNeed(input: {
     embedding,
     needFrom,
     needUntil,
+    urgency,
   }
 
   const pairs = await scoreAgainstItems(need)

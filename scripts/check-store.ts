@@ -27,6 +27,7 @@ try {
     embedding,
     needFrom: '2026-10-02',
     needUntil: '2026-10-05',
+    urgency: 'medium',
   }
 
   const ranked = dataset()

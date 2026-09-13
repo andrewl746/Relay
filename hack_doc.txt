@@ -1,0 +1,567 @@
+# Hacker’s Handbook
+
+# 👋 Welcome to PivotHacks
+
+Welcome to **PivotHacks** — a 12-hour hackathon built around one idea:
+
+> **Good builders know how to adapt.**
+> 
+
+You won’t receive the full challenge at the beginning.
+
+Instead, new information will be revealed throughout the day.
+
+Each reveal may change:
+
+- what you’re building
+- who you’re building for
+- what matters most
+- what constraints you’re working with
+- what direction your project should take
+
+The goal is not to perfectly predict what’s coming.
+
+The goal is to **build, adapt, make decisions, and keep moving.**
+
+By the end of the day, we want to see not just what you built — but how your idea evolved.
+
+---
+
+# 🔄 How PivotHacks Works
+
+There are **four Pivots** throughout the day.
+
+## 🎯 Pivot 1 — Your Starting Problem
+
+At 8:00 AM, each team receives its own problem statement.
+
+This is your starting point.
+
+You’ll have two hours to:
+
+- understand the problem
+- decide who you want to help
+- choose a direction
+- start building
+
+This is the only Pivot that is unique to your team.
+
+---
+
+## 🔄 Pivots 2, 3 & 4
+
+The remaining three Pivots are revealed to **every team at the same time**.
+
+Each one introduces new information that may force you to rethink part of your project.
+
+You may need to change:
+
+- your user
+- your product direction
+- your feature priorities
+- your technical approach
+- your assumptions
+- your scope
+
+A Pivot does **not** automatically mean rebuilding everything.
+
+Sometimes the best response is:
+
+- simplifying
+- removing something
+- changing how a feature works
+- changing your target user
+- reframing the product
+- keeping your current direction and clearly explaining why
+
+The strongest teams make **intentional decisions**.
+
+---
+
+# 🧠 What Counts as a Good Pivot?
+
+We are not judging you based on how many times you completely change your project.
+
+We care about whether you can answer:
+
+> **What changed, what did that mean for us, and what did we decide to do about it?**
+> 
+
+A good Pivot could be:
+
+- changing your entire idea
+- changing one major feature
+- removing unnecessary functionality
+- changing your user flow
+- introducing a new stakeholder
+- changing your technical implementation
+- narrowing your scope
+
+There is no single correct response.
+
+---
+
+# 🗓️ Day-of Schedule
+
+| Time | Event |
+| --- | --- |
+| **7:30 AM** | 🎤 Opening Ceremony |
+| **8:00 AM** | 💻 Hacking Begins + Pivot 1 |
+| **10:00 AM** | 🔄 Pivot 2 |
+| **12:00 PM** | 🔄 Pivot 3 |
+| **1:00 PM** | 🍕 Lunch |
+| **1:30 PM** | 💼 Co-op Panel Begins |
+| **2:30 PM** | 💼 Co-op Panel Ends |
+| **3:30 PM** | 📄 Resume Review |
+| **4:00 PM** | 🚨 Pivot 4 — Final Pivot |
+| **6:00 PM** | ♠️ Poker + Dinner |
+| **8:00 PM** | 💻 Hacking Ends |
+| **8:15 PM** | 🧑‍⚖️ Judging Begins |
+| **9:00 PM** | 🏆 Closing Ceremony |
+
+All side activities are optional.
+
+You are welcome to keep hacking during the Co-op Panel, Resume Review, Poker, or Dinner.
+
+---
+
+# 🏆 Prize Tracks
+
+There are **two prize tracks** at PivotHacks.
+
+You may compete for one or both.
+
+---
+
+# 🔄 Track 1: PivotHacks
+
+This is the main PivotHacks track.
+
+The focus is on how well your team:
+
+- responds to the Pivots
+- builds something functional
+- solves a clear problem
+- makes creative decisions
+- communicates your project
+
+## PivotHacks Track Rubric
+
+| Category | Maximum |
+| --- | --- |
+| 🔄 Adaptability & Pivot Response | **30** |
+| ⚙️ Technical Execution | **25** |
+| 💡 Problem & Solution | **20** |
+| ✨ Creativity & Ingenuity | **15** |
+| 🎤 Demo & Communication | **10** |
+| **TOTAL** | **100** |
+
+### What judges will care about most
+
+Judges want to understand:
+
+- where you started
+- what changed
+- which Pivot affected you most
+- what you changed because of it
+- what you intentionally decided not to change
+- why your final product looks the way it does
+
+A polished project is great.
+
+A polished project with a strong **adaptation story** is even better.
+
+---
+
+# ❄️ Track 2: Snowflake Challenge
+
+The Snowflake Track is a separate sponsor prize focused on building with Snowflake’s AI capabilities.
+
+Snowflake lets you access industry-leading LLMs through one platform and add AI features to your app through APIs.
+
+You can build things like:
+
+- RAG-powered chatbots
+- intelligent search
+- AI assistants
+- recommendation systems
+- document analysis tools
+- personalized experiences
+- AI-powered features inside a larger app
+- something completely different
+
+You’ll have access to a **special 120-day Snowflake student trial** and example resources for using the Snowflake REST API.
+
+---
+
+# ❄️ Snowflake Track Rubric
+
+| Category | Maximum |
+| --- | --- |
+| ❄️ Use of Snowflake | **30** |
+| 💡 Product Value | **25** |
+| ⚙️ Technical Execution | **20** |
+| ✨ Creativity | **15** |
+| 🎤 Demo & Communication | **10** |
+| **TOTAL** | **100** |
+
+### What judges will care about
+
+Judges will look for:
+
+- meaningful use of Snowflake
+- AI that actually improves the product
+- a functional implementation
+- a creative use case
+- a clear explanation of how Snowflake fits into your project
+
+Simply adding a basic chatbot at the end will not automatically make a strong Snowflake submission.
+
+The best Snowflake projects should make it obvious **why AI belongs in the product**.
+
+---
+
+# 🧮 Can You Win Both?
+
+Yes.
+
+The two tracks are judged separately.
+
+A team may:
+
+- compete only for the PivotHacks Track
+- compete for both
+- win PivotHacks
+- win Snowflake
+- potentially win both
+
+Using Snowflake does not give you extra points in the main PivotHacks rubric.
+
+---
+
+# 💼 Co-op Panel
+
+### 1:30 PM – 2:30 PM
+
+We know a lot of you are early in your Waterloo journey, so we’re bringing in upper-year students and industry professionals to talk about the stuff people actually want to know.
+
+Topics may include:
+
+- getting your first internship
+- WaterlooWorks
+- finding jobs outside WaterlooWorks
+- resumes
+- projects
+- standing out with limited experience
+- technical interviews
+- what recruiters notice
+- early career mistakes
+- what they wish they knew sooner
+
+Come with questions.
+
+Or stay locked in and keep hacking.
+
+Both are valid.
+
+---
+
+# 📄 Resume Review
+
+### 3:30 PM
+
+Bring your resume for quick feedback.
+
+We’ll focus on practical improvements like:
+
+- bullet points
+- project descriptions
+- formatting
+- clarity
+- technical experience
+- how your resume reads to recruiters
+
+No resume? No problem.
+
+You can also listen in and steal good advice.
+
+---
+
+# ♠️ Poker + Dinner
+
+### 6:00 PM
+
+Dinner + casual poker.
+
+This is your chance to:
+
+- eat
+- meet other hackers
+- take a break
+- play a few hands
+- talk to organizers
+- or continue coding through dinner like a menace
+
+---
+
+# 🎤 Judging Format
+
+Judging begins at **8:15 PM**.
+
+Each team will have approximately **3 minutes**.
+
+## 2 minutes — Pitch + Demo
+
+Your pitch should cover:
+
+1. **What problem did you start with?**
+2. **What did you decide to build?**
+3. **How did the Pivots change your project?**
+4. **What did you end up building?**
+5. **Why does it matter?**
+
+If you are competing in the Snowflake Track, also explain:
+
+- where Snowflake is used
+- what it powers
+- why you chose it
+
+---
+
+## 1 minute — Judge Questions
+
+Be ready for questions like:
+
+- Which Pivot affected your project the most?
+- What did you remove or deprioritize?
+- What changed from your original idea?
+- Why did you choose this technical approach?
+- What would you build next with more time?
+- What was the hardest decision your team made?
+- Where does Snowflake fit into your architecture?
+
+---
+
+# 🎤 Recommended Pitch Structure
+
+You only have two minutes.
+
+Do not spend 90 seconds explaining the problem.
+
+A strong structure:
+
+### 1. Starting Point
+
+“We started with…”
+
+### 2. Biggest Pivot
+
+“Then we learned…”
+
+### 3. Decision
+
+“So we changed…”
+
+### 4. Demo
+
+“This is what we ended up building…”
+
+### 5. Impact
+
+“And this is why it matters.”
+
+Think:
+
+> **We started here → we learned this → so we changed this → and this is where we ended up.**
+> 
+
+---
+
+# 🧑‍⚖️ Meet the Judges
+
+1. **Simon Ryu**
+2. **Raji RV**
+3. **Osher Ahn-Clifford**
+4. **Alan Zhang**
+5. **Anirudh Dabas**
+
+The final judging lineup may be updated leading up to the event.
+
+---
+
+# 🛠️ What You Need to Build
+
+Your submission should include a project that can be reasonably demonstrated during judging.
+
+This could be:
+
+- a web app
+- mobile app
+- AI product
+- developer tool
+- data product
+- hardware prototype
+- game
+- workflow
+- service
+- interactive prototype
+
+You do not need a production-ready product.
+
+We would much rather see a smaller working prototype than 15 unfinished features.
+
+---
+
+# 📦 Submission Checklist
+
+Before hacking ends, make sure your team has:
+
+- a working demo
+- a project name
+- a short description
+- your team members listed
+- your repository or project link
+- your Pivot story ready
+- your Snowflake Track status confirmed, if applicable
+
+Additional submission instructions will be shared during the event.
+
+---
+
+# ✅ Event Rules
+
+Please:
+
+- build your project during the hackathon
+- treat other hackers, organizers, judges, and guests respectfully
+- clearly disclose any major pre-existing code, templates, or projects you use
+- follow the rules and terms of any APIs or tools you use
+- keep your project appropriate for a student hackathon
+- submit before the deadline
+
+You may use:
+
+- open-source libraries
+- APIs
+- frameworks
+- AI coding tools
+- design tools
+- starter templates
+- public datasets
+
+Using tools is encouraged.
+
+Passing off an existing project as something built during PivotHacks is not.
+
+---
+
+# 🤖 Can We Use AI?
+
+Yes.
+
+You may use AI coding tools, LLMs, copilots, and other AI-assisted development tools.
+
+We care about:
+
+- what your team decided to build
+- how you adapted
+- your implementation
+- your understanding of the project
+- what you accomplished during the event
+
+Be prepared to explain your technical decisions.
+
+---
+
+# 👥 Teams
+
+Final team information will be added here before the event.
+
+If you do not already have a team, follow the team formation instructions shared by the organizers.
+
+---
+
+# 📍 Day-of Information
+
+## Venue
+
+**Builder's Club**
+
+Waterloo, Ontario
+
+---
+
+## Arrival
+
+Please arrive before the **7:30 AM Opening Ceremony**.
+
+Hacking begins at **8:00 AM**.
+
+---
+
+# 🍕 Food
+
+Food, snacks, and refreshments will be available throughout the day.
+
+Lunch is at **1:00 PM**.
+
+Dinner is at **6:00 PM**.
+
+---
+
+# 🔌 What to Bring
+
+We recommend bringing:
+
+- your laptop
+- laptop charger
+- phone charger
+- water bottle
+- headphones
+- resume if you want feedback
+- anything else you normally use while building
+
+---
+
+# 💬 Need Help?
+
+If you have questions during the event, find a PivotHacks organizer.
+
+Ask us about:
+
+- Pivots
+- judging
+- Snowflake
+- logistics
+- food
+- teams
+- submissions
+- literally anything going wrong
+
+We’ll point you in the right direction.
+
+---
+
+# 💜 One Last Thing
+
+PivotHacks is supposed to be challenging.
+
+Your original idea probably will not survive the day exactly as you imagined it.
+
+That is the point.
+
+Don’t obsess over having the perfect idea at 8:00 AM.
+
+Start.
+
+Build something.
+
+Learn.
+
+Change it.
+
+And keep going.
+
+We’re excited to see where you end up.
+
+**— The PivotHacks Team**
