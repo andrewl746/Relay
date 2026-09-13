@@ -8,7 +8,7 @@ export default function NotFound() {
         title="That’s not on the board"
         lede="It may have been claimed, or its deadline passed. Most things get posted in the last two weeks of term."
       />
-      <Link href="/" className={btnSecondary}>
+      <Link href="/browse" className={btnSecondary}>
         Back to all listings
       </Link>
     </PageShell>

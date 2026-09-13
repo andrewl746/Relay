@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getUnreadCount, getUniversity, getUsers } from "@/lib/hub/data";
 import { getCurrentUser } from "@/lib/hub/session";
@@ -20,8 +21,8 @@ export async function SiteHeader() {
   return (
     <header className="border-b border-rule-strong">
       <div className="mx-auto flex max-w-[1120px] flex-wrap items-center gap-x-3 px-4 sm:gap-x-6 sm:px-6 lg:flex-nowrap">
-        <Link href="/" className="flex min-h-14 items-baseline gap-2">
-          <span className="t-display text-[20px] whitespace-nowrap">{SITE_NAME}</span>
+        <Link href="/browse" className="flex min-h-14 items-center gap-2.5" aria-label={SITE_NAME}>
+          <Image src="/relay-black.png" alt={SITE_NAME} width={160} height={58} priority className="h-7 w-auto" />
           <span className="hidden text-[13px] font-medium text-ink-2 sm:inline">{university.shortName}</span>
         </Link>
 

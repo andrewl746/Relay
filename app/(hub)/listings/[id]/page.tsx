@@ -45,7 +45,7 @@ export default async function ListingPage({ params }: PageProps<"/listings/[id]"
 
   return (
     <PageShell>
-      <BackLink href="/">All listings</BackLink>
+      <BackLink href="/browse">All listings</BackLink>
 
       <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
         <Thumb word={listing.kind} size="hero" />

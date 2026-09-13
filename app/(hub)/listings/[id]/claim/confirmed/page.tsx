@@ -37,7 +37,7 @@ export default async function ConfirmedPage({ params, searchParams }: PageProps<
         <Link href="/handoffs" className={btnPrimary}>
           See my handoffs
         </Link>
-        <Link href="/" className={btnTertiary}>
+        <Link href="/browse" className={btnTertiary}>
           Keep browsing
         </Link>
       </div>

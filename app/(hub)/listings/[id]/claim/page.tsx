@@ -29,7 +29,7 @@ export default async function ClaimPage({ params }: PageProps<"/listings/[id]/cl
               : "Switch to another student at the top of the page to try the claim flow."
           }
         />
-        <Link href="/" className={btnSecondary}>
+        <Link href="/browse" className={btnSecondary}>
           Back to all listings
         </Link>
       </PageShell>

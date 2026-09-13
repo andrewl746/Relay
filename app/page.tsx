@@ -56,7 +56,7 @@ export default function LandingPage() {
           width={200}
           height={72}
           priority
-          className="h-14 w-auto"
+          className="h-9 w-auto"
         />
         <Link
           href="/login"

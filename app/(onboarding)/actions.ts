@@ -152,5 +152,5 @@ export async function completeOnboarding(_prev: ActionState, formData: FormData)
 
   if (error) return { status: "error", message: "Couldn't save that. Try again." };
 
-  redirect("/");
+  redirect("/browse");
 }
