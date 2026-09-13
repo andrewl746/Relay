@@ -4,6 +4,7 @@ export type Condition = "new" | "like-new" | "good" | "fair" | "bad";
 export type MoveStatus = "leaving" | "arriving" | "staying";
 export type PlaceKind = "seller" | "campus";
 export type ListingStatus = "available" | "claimed" | "removed";
+export type UrgencyTier = "not-urgent" | "urgent" | "very-urgent";
 
 export type University = {
   id: string;
@@ -44,6 +45,8 @@ export type Listing = {
   createdAt: string;
   /** Seller-uploaded photo (a resized JPEG data URL). Absent means show the placeholder. */
   photoUrl?: string | null;
+  /** From the SCREAM! meter on the post form. Only set when the deadline is within a week. */
+  urgency?: UrgencyTier | null;
 };
 
 export type TimeSlot = {

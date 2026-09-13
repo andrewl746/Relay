@@ -2,7 +2,10 @@
 
 import { useActionState, useState } from "react";
 import { saveProfileStep, type ActionState } from "@/app/(onboarding)/actions";
+import { btnPrimary, fieldClass } from "@/components/hub/ui";
+import { RESIDENCE_NOT_LISTED, residenceFromStreet, residencesFor } from "@/lib/onboarding/residences";
 import { getUniversity, type University } from "@/lib/onboarding/universities";
+import { errorClass, labelClass } from "./shell";
 import { UniversityCombobox } from "./university-combobox";
 
 const initialState: ActionState = { status: "idle" };
@@ -20,42 +23,51 @@ type Defaults = {
 
 export function ProfileForm({ defaults }: { defaults: Defaults }) {
   const [state, formAction, pending] = useActionState(saveProfileStep, initialState);
-  const [onCampus, setOnCampus] = useState(defaults.livingSituation === "on_campus");
+  const [living, setLiving] = useState(defaults.livingSituation);
   const [university, setUniversity] = useState<University | null>(
     defaults.universityId ? getUniversity(defaults.universityId) : null,
   );
 
+  const savedResidence = residenceFromStreet(defaults.universityId, defaults.street);
+  const [residenceId, setResidenceId] = useState(
+    savedResidence ?? (defaults.livingSituation === "on_campus" && defaults.street ? RESIDENCE_NOT_LISTED : ""),
+  );
+  const residences = residencesFor(university?.id);
+
+  // A typed address only belongs in the fields if it was typed in the first place.
+  const typedDefaults = savedResidence ? null : defaults;
+  const showAddressFields = living === "off_campus" || (living === "on_campus" && residenceId === RESIDENCE_NOT_LISTED);
+
   return (
     <form action={formAction} className="space-y-5">
       <div>
-        <label htmlFor="fullName" className="gh-label">
+        <label htmlFor="fullName" className={labelClass}>
           Full name
         </label>
-        <input
-          id="fullName"
-          name="fullName"
-          required
-          defaultValue={defaults.fullName ?? ""}
-          placeholder="Jordan Kim"
-          className="gh-input"
-        />
+        <input id="fullName" name="fullName" required defaultValue={defaults.fullName ?? ""} className={fieldClass} />
       </div>
 
-      <UniversityCombobox defaultUniversityId={defaults.universityId} onSelect={setUniversity} />
+      <UniversityCombobox
+        defaultUniversityId={defaults.universityId}
+        onSelect={(u) => {
+          if (u?.id !== university?.id) setResidenceId("");
+          setUniversity(u);
+        }}
+      />
 
       <fieldset>
-        <legend className="gh-label">Where are you living?</legend>
-        <div className="flex gap-4">
+        <legend className={labelClass}>Where are you living?</legend>
+        <div className="flex gap-5">
           {(["on_campus", "off_campus"] as const).map((value) => (
-            <label key={value} className="flex items-center gap-2 text-[14px]">
+            <label key={value} className="flex min-h-9 items-center gap-2 text-[15px] text-ink">
               <input
                 type="radio"
                 name="livingSituation"
                 value={value}
                 required
                 defaultChecked={defaults.livingSituation === value}
-                onChange={() => setOnCampus(value === "on_campus")}
-                className="size-4 accent-[var(--gh-accent)]"
+                onChange={() => setLiving(value)}
+                className="size-4 accent-[var(--accent)]"
               />
               {value === "on_campus" ? "On campus" : "Off campus"}
             </label>
@@ -63,108 +75,94 @@ export function ProfileForm({ defaults }: { defaults: Defaults }) {
         </div>
       </fieldset>
 
-      {/* Living on campus means the address is the university's, not something
-          to type. We still submit it so matching has real coordinates. */}
-      {onCampus ? (
+      {living === "on_campus" && (
         <div>
-          <span className="gh-label">Your address</span>
-          {university ? (
-            <div className="rounded-md border border-gh-border bg-gh-canvas-subtle px-3 py-3 text-[14px]">
-              <p className="font-semibold">{university.name}</p>
-              <p className="text-gh-fg-muted">
-                {university.campus.street}
-                <br />
-                {university.campus.city}, {university.campus.province}{" "}
-                {university.campus.postalCode}
-              </p>
-              <input type="hidden" name="street" value={university.campus.street} />
-              <input type="hidden" name="city" value={university.campus.city} />
-              <input type="hidden" name="province" value={university.campus.province} />
-              <input type="hidden" name="country" value={university.campus.country} />
-              <input type="hidden" name="postalCode" value={university.campus.postalCode} />
-            </div>
-          ) : (
-            <p className="text-[14px] text-gh-fg-muted">
-              Pick your university above and we&rsquo;ll use its campus address.
-            </p>
-          )}
+          <label htmlFor="residenceId" className={labelClass}>
+            Residence
+          </label>
+          <select
+            id="residenceId"
+            name="residenceId"
+            required
+            disabled={!university}
+            value={residenceId}
+            onChange={(e) => setResidenceId(e.currentTarget.value)}
+            className={`${fieldClass} disabled:cursor-not-allowed disabled:opacity-60`}
+          >
+            <option value="" disabled>
+              {university ? "Choose your residence" : "Choose your university first"}
+            </option>
+            {residences.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.name}
+              </option>
+            ))}
+            <option value={RESIDENCE_NOT_LISTED}>My residence isn&rsquo;t listed</option>
+          </select>
         </div>
-      ) : (
+      )}
+
+      {showAddressFields && (
         <>
-      <div>
-            <label htmlFor="street" className="gh-label">
+          <div>
+            <label htmlFor="street" className={labelClass}>
               Street address
             </label>
-            <input
-              id="street"
-              name="street"
-              required
-              defaultValue={defaults.street ?? ""}
-              placeholder="318 Lester St, unit 4"
-              className="gh-input"
-            />
+            <input id="street" name="street" required defaultValue={typedDefaults?.street ?? ""} className={fieldClass} />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="city" className="gh-label">
+              <label htmlFor="city" className={labelClass}>
                 City
               </label>
-              <input
-                id="city"
-                name="city"
-                required
-                defaultValue={defaults.city ?? ""}
-                placeholder="Waterloo"
-                className="gh-input"
-              />
+              <input id="city" name="city" required defaultValue={typedDefaults?.city ?? ""} className={fieldClass} />
             </div>
             <div>
-              <label htmlFor="province" className="gh-label">
+              <label htmlFor="province" className={labelClass}>
                 Province / State
               </label>
               <input
                 id="province"
                 name="province"
                 required
-                defaultValue={defaults.province ?? ""}
-                placeholder="ON"
-                className="gh-input"
+                defaultValue={typedDefaults?.province ?? ""}
+                className={fieldClass}
               />
             </div>
             <div>
-              <label htmlFor="country" className="gh-label">
+              <label htmlFor="country" className={labelClass}>
                 Country
               </label>
               <input
                 id="country"
                 name="country"
                 required
-                defaultValue={defaults.country ?? "Canada"}
-                placeholder="Canada"
-                className="gh-input"
+                defaultValue={typedDefaults?.country ?? "Canada"}
+                className={fieldClass}
               />
             </div>
             <div>
-              <label htmlFor="postalCode" className="gh-label">
+              <label htmlFor="postalCode" className={labelClass}>
                 Postal code
               </label>
+              {/* No Canadian postal code starts with Z, so this can't be anyone's. */}
               <input
                 id="postalCode"
                 name="postalCode"
                 required
-                defaultValue={defaults.postalCode ?? ""}
-                placeholder="N2L 3G1"
-                className="gh-input"
+                defaultValue={typedDefaults?.postalCode ?? ""}
+                placeholder="Z9X 4Y7"
+                className={fieldClass}
               />
             </div>
           </div>
         </>
       )}
 
-      {state.status === "error" && <p className="gh-flash-error">{state.message}</p>}
+      {state.status === "error" && <p className={errorClass}>{state.message}</p>}
 
-      <button type="submit" disabled={pending} className="gh-btn gh-btn-primary">
+      <button type="submit" disabled={pending} className={`${btnPrimary} w-full`}>
         {pending ? "Saving…" : "Next"}
       </button>
     </form>

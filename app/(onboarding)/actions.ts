@@ -1,16 +1,24 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isUniversityEmail } from "@/lib/hub/email";
 import { sendVerificationEmail } from "@/lib/onboarding/email";
 import { rememberWant } from "@/lib/providers/backboard";
 import { CODE_LENGTH, CODE_TTL_MINUTES, MAX_ATTEMPTS, generateCode, hashCode } from "@/lib/onboarding/otp";
 import { getProfile } from "@/lib/onboarding/profile";
+import { RESIDENCE_NOT_LISTED, residenceAddress } from "@/lib/onboarding/residences";
 import { getUniversity } from "@/lib/onboarding/universities";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseUser } from "@/lib/supabase/session";
 
-export type ActionState = { status: "idle" | "error" | "sent"; message?: string; devCode?: string };
+/**
+ * Setup runs in Parcel's corner on the site itself (components/onboarding/
+ * onboarding-corner.tsx), not on pages of its own. So a step that saves doesn't
+ * navigate anywhere: it refreshes the layout, and the corner reads the next step
+ * off the profile.
+ */
+export type ActionState = { status: "idle" | "error" | "sent" | "saved"; message?: string; devCode?: string };
 
 async function requireUser() {
   const authUser = await getSupabaseUser();
@@ -19,23 +27,41 @@ async function requireUser() {
   return { supabase, user: authUser };
 }
 
+/** Re-render the layout so Parcel's corner moves on to whatever step is next. */
+function nextStep(): ActionState {
+  revalidatePath("/", "layout");
+  return { status: "saved" };
+}
+
 export async function saveProfileStep(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const { supabase, user } = await requireUser();
 
   const fullName = String(formData.get("fullName") ?? "").trim();
   const universityId = String(formData.get("universityId") ?? "").trim();
   const livingSituation = String(formData.get("livingSituation") ?? "").trim();
-  const street = String(formData.get("street") ?? "").trim();
-  const city = String(formData.get("city") ?? "").trim();
-  const province = String(formData.get("province") ?? "").trim();
-  const country = String(formData.get("country") ?? "").trim();
-  const postalCode = String(formData.get("postalCode") ?? "").trim();
+  const residenceId = String(formData.get("residenceId") ?? "").trim();
 
   if (!fullName) return { status: "error", message: "Enter your name." };
   if (!getUniversity(universityId)) return { status: "error", message: "Choose a university from the list." };
   if (livingSituation !== "on_campus" && livingSituation !== "off_campus") {
     return { status: "error", message: "Choose whether you live on or off campus." };
   }
+
+  // A listed residence's address comes from our table, not the form.
+  const typed = livingSituation === "off_campus" || residenceId === RESIDENCE_NOT_LISTED;
+  if (!typed && !residenceId) return { status: "error", message: "Choose your residence." };
+  const address = typed
+    ? {
+        street: String(formData.get("street") ?? "").trim(),
+        city: String(formData.get("city") ?? "").trim(),
+        province: String(formData.get("province") ?? "").trim(),
+        country: String(formData.get("country") ?? "").trim(),
+        postalCode: String(formData.get("postalCode") ?? "").trim(),
+      }
+    : residenceAddress(universityId, residenceId);
+  if (!address) return { status: "error", message: "Choose a residence from the list." };
+  const { street, city, province, country, postalCode } = address;
+
   if (!street) return { status: "error", message: "Enter your street address." };
   if (!city) return { status: "error", message: "Enter your city." };
   if (!province) return { status: "error", message: "Enter your province or state." };
@@ -60,7 +86,7 @@ export async function saveProfileStep(_prev: ActionState, formData: FormData): P
 
   if (error) return { status: "error", message: "Couldn't save that. Try again." };
 
-  redirect("/onboarding/verify");
+  return nextStep();
 }
 
 export async function sendVerificationCode(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -134,8 +160,8 @@ export async function confirmVerificationCode(_prev: ActionState, formData: Form
 
   await supabase.from("email_verifications").update({ consumed_at: new Date().toISOString() }).eq("id", record.id);
 
-  // Re-verifying after a university change: back to settings, not through
-  // interests and wants a second time.
+  // Re-verifying after a university change: that's the whole job, not another
+  // pass through interests and wants.
   const profile = await getProfile(supabase, user.id);
   const reverify = Boolean(profile?.onboarding_completed);
   await supabase
@@ -143,7 +169,7 @@ export async function confirmVerificationCode(_prev: ActionState, formData: Form
     .update(reverify ? { university_email_verified: true } : { university_email_verified: true, onboarding_step: "interests" })
     .eq("id", user.id);
 
-  redirect(reverify ? "/settings" : "/onboarding/interests");
+  return nextStep();
 }
 
 export async function saveInterests(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -158,7 +184,18 @@ export async function saveInterests(_prev: ActionState, formData: FormData): Pro
 
   if (error) return { status: "error", message: "Couldn't save that. Try again." };
 
-  redirect("/onboarding/wants");
+  return nextStep();
+}
+
+/** The wishlist step's "Back to interests". Only moves accounts still setting up. */
+export async function backToInterests(): Promise<void> {
+  const { supabase, user } = await requireUser();
+  await supabase
+    .from("profiles")
+    .update({ onboarding_step: "interests" })
+    .eq("id", user.id)
+    .eq("onboarding_completed", false);
+  revalidatePath("/", "layout");
 }
 
 type WantInput = { text: string; maxPriceCents: number | null };
@@ -194,5 +231,5 @@ export async function finishWants(_prev: ActionState, formData: FormData): Promi
 
   if (error) return { status: "error", message: "Couldn't finish setup. Try again." };
 
-  redirect("/");
+  return nextStep();
 }

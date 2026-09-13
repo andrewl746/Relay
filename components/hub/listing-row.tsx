@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { BoardListing } from "@/lib/hub/data";
 import { categoryLabel, conditionLabel, formatPrice, isFinalCall, offerLabel } from "@/lib/hub/format";
+import { canBeUrgent, urgencyLabel } from "@/lib/hub/urgency";
 import { Countdown, Thumb } from "./ui";
 
 /**
@@ -16,6 +17,9 @@ import { Countdown, Thumb } from "./ui";
  */
 export function ListingRow({ listing }: { listing: BoardListing }) {
   const finalCall = listing.expiresAt !== null && isFinalCall(listing.expiresAt);
+  // "Not urgent" isn't worth a label; only flag the tiers that move it up.
+  const urgent =
+    listing.urgency && listing.urgency !== "not-urgent" && canBeUrgent(listing.expiresAt) ? listing.urgency : null;
 
   return (
     <li className="relative">
@@ -25,7 +29,7 @@ export function ListingRow({ listing }: { listing: BoardListing }) {
         className="group grid grid-cols-[auto_1fr] items-start gap-4 px-4 py-4 transition-colors duration-100 hover:bg-surface-2 sm:grid-cols-[auto_1fr_auto] sm:gap-5 sm:px-5"
       >
         <Thumb
-          word={listing.kind}
+          category={listing.category}
           photoUrl={listing.photoUrl}
           alt={listing.title}
           size="list"
@@ -33,8 +37,10 @@ export function ListingRow({ listing }: { listing: BoardListing }) {
         />
 
         <div className="min-w-0">
-          {listing.isMatch && (
-            <p className="mb-1 text-[13px] font-semibold text-accent">Matches your list</p>
+          {(listing.isMatch || urgent) && (
+            <p className="mb-1 text-[13px] font-semibold text-accent">
+              {[urgent && urgencyLabel[urgent], listing.isMatch && "Matches your list"].filter(Boolean).join(" · ")}
+            </p>
           )}
           <p className="line-clamp-2 text-[17px] leading-[1.3] font-semibold text-ink transition-colors duration-100 group-hover:text-accent">
             {listing.title}

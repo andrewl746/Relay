@@ -36,7 +36,8 @@ export function DevLogin({
         setLoading(true);
         try {
           await loginAction(userId, email);
-          router.push(safeNextPath(next) || "/onboarding");
+          // Demo students are seeded fully set up, so there's no setup to send them through.
+          router.push(safeNextPath(next));
           router.refresh();
         } catch {
           setLoading(false);

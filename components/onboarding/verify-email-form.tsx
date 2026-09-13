@@ -2,7 +2,9 @@
 
 import { useActionState } from "react";
 import { confirmVerificationCode, sendVerificationCode, type ActionState } from "@/app/(onboarding)/actions";
+import { btnPrimary, btnTertiary, fieldClass } from "@/components/hub/ui";
 import { CODE_LENGTH } from "@/lib/onboarding/otp";
+import { errorClass, hintClass, labelClass, successClass } from "./shell";
 
 const initialState: ActionState = { status: "idle" };
 
@@ -16,7 +18,7 @@ export function VerifyEmailForm({ defaultEmail, domain }: { defaultEmail: string
     return (
       <form action={sendAction} className="space-y-5">
         <div>
-          <label htmlFor="email" className="gh-label">
+          <label htmlFor="email" className={labelClass}>
             University email
           </label>
           <input
@@ -26,14 +28,14 @@ export function VerifyEmailForm({ defaultEmail, domain }: { defaultEmail: string
             required
             defaultValue={defaultEmail}
             placeholder={`you@${domain}`}
-            className="gh-input"
+            className={fieldClass}
           />
-          <p className="gh-hint">Use your @{domain} address so we can confirm you&rsquo;re a student there.</p>
+          <p className={hintClass}>Use your @{domain} address so we can confirm you&rsquo;re a student there.</p>
         </div>
 
-        {sendState.status === "error" && <p className="gh-flash-error">{sendState.message}</p>}
+        {sendState.status === "error" && <p className={errorClass}>{sendState.message}</p>}
 
-        <button type="submit" disabled={sendPending} className="gh-btn gh-btn-primary">
+        <button type="submit" disabled={sendPending} className={`${btnPrimary} w-full`}>
           {sendPending ? "Sending…" : "Verify"}
         </button>
       </form>
@@ -43,17 +45,17 @@ export function VerifyEmailForm({ defaultEmail, domain }: { defaultEmail: string
   return (
     <div className="space-y-5">
       {sendState.devCode ? (
-        <div className="gh-flash-error flex-col items-start gap-1">
+        <div className={`${errorClass} space-y-1`}>
           <p>We couldn&rsquo;t email this code (delivery isn&rsquo;t set up yet). Use this one instead:</p>
           <p className="text-lg font-semibold tracking-[0.2em]">{sendState.devCode}</p>
         </div>
       ) : (
-        <p className="gh-flash-success">Code sent to {sentTo}. Check your inbox.</p>
+        <p className={successClass}>Code sent to {sentTo}. Check your inbox.</p>
       )}
 
       <form action={confirmAction} className="space-y-5">
         <div>
-          <label htmlFor="code" className="gh-label">
+          <label htmlFor="code" className={labelClass}>
             Verification code
           </label>
           <input
@@ -66,20 +68,20 @@ export function VerifyEmailForm({ defaultEmail, domain }: { defaultEmail: string
             required
             autoFocus
             placeholder="000000"
-            className="gh-input text-center text-lg tracking-[0.3em]"
+            className={`${fieldClass} text-center text-lg tracking-[0.3em]`}
           />
         </div>
 
-        {confirmState.status === "error" && <p className="gh-flash-error">{confirmState.message}</p>}
+        {confirmState.status === "error" && <p className={errorClass}>{confirmState.message}</p>}
 
-        <button type="submit" disabled={confirmPending} className="gh-btn gh-btn-primary">
+        <button type="submit" disabled={confirmPending} className={`${btnPrimary} w-full`}>
           {confirmPending ? "Checking…" : "Confirm"}
         </button>
       </form>
 
       <form action={sendAction}>
         <input type="hidden" name="email" defaultValue={sentTo} />
-        <button type="submit" disabled={sendPending} className="gh-link text-[13px]">
+        <button type="submit" disabled={sendPending} className={`${btnTertiary} text-[14px]`}>
           Resend code
         </button>
       </form>

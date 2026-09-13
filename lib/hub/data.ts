@@ -1,4 +1,4 @@
-import { filterBoard, rankByUrgency, type BoardView } from "./feed";
+import { filterBoard, rankByUrgency, type BoardFilters, type BoardView } from "./feed";
 import { hybridSearch, hybridSearchMany, type SearchDoc, type SearchHit } from "./semantic";
 import { isGoneByTonight } from "./format";
 import { handoffs, listings, notifications, slots, university, users, wants } from "./mock-data";
@@ -44,7 +44,17 @@ function openListings() {
 
 export type BoardListing = Listing & { itemCount: number; isMatch: boolean; sellerName: string };
 
-export async function getBoard({ view, query, user }: { view: BoardView; query?: string; user: User }) {
+export async function getBoard({
+  view,
+  query,
+  filters,
+  user,
+}: {
+  view: BoardView;
+  query?: string;
+  filters?: BoardFilters;
+  user: User;
+}) {
   // Only things this person could actually collect count as a match on the
   // board. A listing that is gone before they land is a near miss, and putting
   // it under "Matches my list" would be a lie the rest of the app then has to
@@ -67,7 +77,7 @@ export async function getBoard({ view, query, user }: { view: BoardView; query?:
   // Search scores against the whole board, not just the current view, so the
   // embedding gates see a real distribution even when a filter leaves five
   // listings. See ./semantic.ts for how the tiers are decided.
-  const inView = filterBoard(open, view, undefined, { matchedIds, searchableText });
+  const inView = filterBoard(open, view, undefined, { matchedIds, searchableText, filters });
   let shown = inView;
   if (query?.trim()) {
     const hitIds = new Set((await hybridSearch(query, open.map(searchDoc))).map((h) => h.id));

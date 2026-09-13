@@ -37,7 +37,13 @@ export const SearchIcon = (p: IconProps) => (
   </Svg>
 );
 
-export const CloseIcon = (p: IconProps) => (
+export const FilterIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 6h16M7 12h10M10 18h4" />
+  </Svg>
+);
+
+export const CloseIcon =(p: IconProps) => (
   <Svg {...p}>
     <path d="M6 6l12 12M18 6 6 18" />
   </Svg>
