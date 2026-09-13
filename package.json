@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit",
     "check": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-provider.ts",
     "check:store": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/check-store.ts",
-    "reset": "node --experimental-strip-types -e \"import(process.cwd()+String.raw`/lib/relay/runtime.ts`).then(m=>{m.clearRuntime();console.log(\"runtime cleared\")})\""
+    "reset": "node --experimental-strip-types scripts/reset.ts"
   },
   "dependencies": {
     "next": "16.3.5",
