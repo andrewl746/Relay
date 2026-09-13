@@ -6,6 +6,7 @@ import { getProvider } from '../providers/index.ts'
 import { TOP_K } from '../match.ts'
 import { dataset, matches } from '../data.ts'
 import { config } from '../config.ts'
+import { extractNeedMetadata } from '../providers/backboard.ts'
 import { mutate, readRuntime, type AcceptedHop } from './runtime.ts'
 import type { Deal, Item, Need } from '../types.ts'
 
@@ -141,37 +142,19 @@ export async function addNeed(input: {
   const text = clean(input.text)
   const [needFrom, needUntil] = checkWindow(input.needFrom, input.needUntil)
 
-  const [embedding] = await getProvider().embed([text])
-  let urgency: 'low' | 'medium' | 'high' = 'medium';
-  try {
-    const { getBackboardClient, extractMetadataTool } = await import('../providers/backboard.ts');
-    const bb = getBackboardClient();
-    if (bb) {
-      // Create a temporary thread for extraction
-      const thread = await bb.createThread(`extract-${Date.now()}`);
-      const res = await bb.addMessage(thread.id, {
-        content: `Extract metadata from: "${text}"`,
-        // @ts-ignore - backboard-sdk simplified tools in 1.3.3
-        tools: [extractMetadataTool]
-      });
-      if ((res as any).toolCalls && (res as any).toolCalls.length > 0) {
-        const tc = (res as any).toolCalls.find((t: any) => t.function.name === 'extract_metadata');
-        if (tc && tc.function.parsedArguments) {
-          if (['low', 'medium', 'high'].includes(tc.function.parsedArguments.urgency)) {
-            urgency = tc.function.parsedArguments.urgency;
-          }
-        }
-      }
-      // Also persist the need as a memory for this user (assistantId mapped to personId for demo)
-      try {
-        await bb.addMemory(input.personId, { content: `User needs: ${text} from ${needFrom} to ${needUntil}` });
-      } catch (e) {
-        // Ignore memory errors if assistant doesn't exist
-      }
-    }
-  } catch (err) {
-    console.error('Backboard extraction failed, falling back to defaults', err);
-  }
+  // Extraction and embedding are independent, so don't pay for them serially.
+  // extractNeedMetadata never throws — it returns defaults when Backboard is
+  // unset or down, which is the only acceptable behaviour on a form submit.
+  const [[embedding], meta] = await Promise.all([
+    getProvider().embed([text]),
+    extractNeedMetadata(text),
+  ])
+  // Only urgency lands today. Backboard also returns the times of day the text
+  // mentions ("saturday morning" -> ["morning"]), but the DP reads
+  // pickupWindows off Person, not Need — availability is modelled per person,
+  // not per request. Wiring request-level windows means adding the field to
+  // Need and intersecting it in sharePickupWindow(); see TODO.md.
+  const { urgency } = meta
 
   const need: Need = {
     id: `u-n-${Date.now().toString(36)}`,
