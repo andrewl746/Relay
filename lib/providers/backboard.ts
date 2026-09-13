@@ -101,39 +101,36 @@ export async function extractNeedMetadata(text: string): Promise<NeedMetadata> {
     const assistantId = await assistantIdPromise
 
     const thread = await bb.createThread(assistantId)
-    const res: any = await bb.addMessage(thread.threadId, {
+    const res = await bb.addMessage(thread.threadId, {
       content: `Extract metadata from: "${text}"`,
     })
+    // Without `stream: true` this is a response object, never a generator.
+    if (!res || !('messages' in res)) return DEFAULTS
 
     // A run can come back 200 with status FAILED and a human-readable reason —
     // e.g. "free credit is reserved for Memory & RAG, so it can't cover LLM
     // chat". Surface that instead of silently returning defaults, which is how
     // the previous 422 went unnoticed for so long.
-    const failed = res?.messages?.find((m: any) => m?.status === 'FAILED')
+    const failed = res.messages?.find((m) => m?.status === 'FAILED')
     if (failed) {
       console.error('[backboard] run FAILED:', String(failed.content ?? '').slice(0, 200))
       return DEFAULTS
     }
 
-    const call = res?.toolCalls?.find(
-      (t: any) => t?.function?.name === 'extract_metadata',
-    )
-    const args =
+    const call = res.toolCalls?.find((t) => t?.function?.name === 'extract_metadata')
+    const args: Record<string, unknown> | undefined =
       call?.function?.parsedArguments ??
       (typeof call?.function?.arguments === 'string'
         ? JSON.parse(call.function.arguments)
-        : call?.function?.arguments)
+        : undefined)
 
     if (!args) return DEFAULTS
 
-    const urgency = ['low', 'medium', 'high'].includes(args.urgency)
-      ? args.urgency
-      : 'medium'
-    const windows = Array.isArray(args.pickupWindows)
-      ? args.pickupWindows.filter((w: string) =>
-          ['morning', 'afternoon', 'evening'].includes(w),
-        )
-      : []
+    const URGENCIES: NeedMetadata['urgency'][] = ['low', 'medium', 'high']
+    const WINDOWS: NeedMetadata['pickupWindows'] = ['morning', 'afternoon', 'evening']
+    const urgency = URGENCIES.find((u) => u === args.urgency) ?? 'medium'
+    const mentioned: unknown[] = Array.isArray(args.pickupWindows) ? args.pickupWindows : []
+    const windows = WINDOWS.filter((w) => mentioned.includes(w))
 
     return { urgency, pickupWindows: windows }
   } catch (err) {

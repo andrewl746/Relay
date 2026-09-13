@@ -3,7 +3,7 @@ import type { Chain, Dataset, Item, Need, Person } from '../types.ts'
 import type { MatchTable } from '../match.ts'
 import { dataset, matches } from '../data.ts'
 import { assignAll, earnings, idleDays } from '../assign.ts'
-import { readRuntime } from './runtime.ts'
+import { readRuntime, type Profile } from './runtime.ts'
 
 /**
  * The single source of truth for every screen.
@@ -20,6 +20,8 @@ export type Snapshot = {
   data: Dataset
   table: MatchTable
   chains: Chain[]
+  /** Booked needs -> the item they were booked on. The route keeps them there. */
+  pinned: Map<string, string>
   chainOf: (itemId: string) => Chain
   itemById: (id: string) => Item | undefined
   personById: (id: string) => Person | undefined
@@ -40,6 +42,22 @@ const EMPTY_CHAIN = (itemId: string): Chain => ({
 })
 
 /**
+ * Lay what a person told Relay about themselves over what the corpus assumed,
+ * so the engine routes on where they actually live and when they can meet.
+ */
+function withProfile(person: Person, profile: Profile | undefined): Person {
+  if (!profile) return person
+  return {
+    ...person,
+    label: profile.name || person.label,
+    location: profile.neighbourhood || person.location,
+    pickupWindows: profile.pickupWindows.length ? profile.pickupWindows : person.pickupWindows,
+    awayFrom: profile.awayFrom ?? '',
+    awayUntil: profile.awayUntil ?? '',
+  }
+}
+
+/**
  * Built per request. The DP is ~12ms over the whole network and runtime rows
  * change under us on every write, so caching would buy nothing and would serve
  * a stale board straight after someone posts something.
@@ -49,13 +67,15 @@ export function snapshot(): Snapshot {
   const runtime = readRuntime()
 
   const data: Dataset = {
-    people: seed.people,
+    people: [...seed.people, ...runtime.people].map((p) => withProfile(p, runtime.profiles[p.id])),
     items: [...seed.items, ...runtime.items],
     needs: [...seed.needs, ...runtime.needs],
   }
   const table: MatchTable = { ...matches(), ...runtime.matches }
 
-  const chains = assignAll(data, table, {})
+  // A booking pins its need to the item it was booked on (AssignOptions.pinned).
+  const pinned = new Map(runtime.accepted.map((a) => [a.needId, a.itemId]))
+  const chains = assignAll(data, table, { pinned })
   const byItem = new Map(chains.map((c) => [c.itemId, c]))
   const items = new Map(data.items.map((i) => [i.id, i]))
   const people = new Map(data.people.map((p) => [p.id, p]))
@@ -65,6 +85,7 @@ export function snapshot(): Snapshot {
     data,
     table,
     chains,
+    pinned,
     chainOf: (id) => byItem.get(id) ?? EMPTY_CHAIN(id),
     itemById: (id) => items.get(id),
     personById: (id) => people.get(id),
