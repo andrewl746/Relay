@@ -2,7 +2,13 @@ import { filterBoard, rankByUrgency, type BoardView } from "./feed";
 import { isGoneByTonight } from "./format";
 import { handoffs, listings, matches, notifications, slots, university, users, wants } from "./mock-data";
 import { plansFor, type Plan } from "./matching";
+import { createClient } from "../supabase/server";
 import type { Handoff, Listing, Match, TimeSlot, User, Want } from "./types";
+
+// Supabase auth ids are UUIDs; seeded demo users (dev login) use short ids
+// like "u-marcus". That difference is how we tell a real signed-in user's
+// data apart from the mock-data seed used by the dev-login demo path.
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 // Async on purpose: these signatures stay the same when mock data is replaced by real queries.
 
@@ -68,8 +74,28 @@ export async function getListing(id: string): Promise<ListingDetail | null> {
   };
 }
 
-export async function getWants(userId: string) {
-  return wants.filter((w) => w.userId === userId);
+export async function getWants(userId: string): Promise<Want[]> {
+  if (!UUID_RE.test(userId)) return wants.filter((w) => w.userId === userId);
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("wants")
+    .select("id, user_id, text, max_price_cents, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: true });
+  if (error || !data) return [];
+
+  return data.map((row) => ({
+    id: row.id,
+    userId: row.user_id,
+    text: row.text,
+    maxPriceCents: row.max_price_cents,
+    // Real users' wants aren't run through the matching/urgency pipeline
+    // yet (only the seeded demo users have authored matches), so this
+    // isn't consumed downstream — it exists only to satisfy the Want type.
+    neededBy: row.created_at,
+    fulfilled: false,
+  }));
 }
 
 export type MatchDetail = Match & { listing: Listing; wants: Want[]; plan: Plan };
