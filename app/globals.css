@@ -1,35 +1,113 @@
 @import "tailwindcss";
 
+/*
+ * Relay — corrugated kraft.
+ *
+ * The read: this app moves physical objects between people, and the logo is an
+ * open box. So the surface is packaging — kraft board, stencil ink, packing
+ * tape, shipping-label monospace.
+ *
+ * Not skeuomorphic. No photographic textures, no bevels, no drop shadows
+ * pretending to be lighting. The cardboard comes from four things only:
+ *   1. the kraft colour ramp
+ *   2. a faint corrugated flute pattern
+ *   3. hard-offset edges instead of blurred shadows (board has thickness)
+ *   4. type set like it was stencilled on a box
+ */
+
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 :root {
-  --chassis: #0D0E12;
-  --panel: #16181D;
-  --bezel: #2A2D35;
-  --text-primary: #E4E7EB;
-  --text-muted: #828896;
-  
-  --active-route: #FF5C00;
-  --secured: #00E5FF;
-  --alert: #FFE600;
+  /* kraft ramp — light board to fold-shadow */
+  --kraft-50: #F3EADB;   /* page ground */
+  --kraft-100: #E8DAC2;  /* raised panel, the box face */
+  --kraft-200: #D9C3A0;  /* inset / inside the box */
+  --kraft-300: #C4A87E;  /* corrugation, edges */
+  --kraft-400: #A88857;  /* fold shadow */
 
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-ui: 'Inter', system-ui, sans-serif;
-  --font-data: 'JetBrains Mono', monospace;
+  /* stencil ink */
+  --ink: #2B2118;
+  --ink-2: #6A5744;
+  --ink-3: #9C876A;      /* >=18.66px bold or non-text only — 2.9:1 */
+
+  --rule: rgba(43, 33, 24, 0.16);
+  --rule-strong: rgba(43, 33, 24, 0.38);
+
+  /*
+   * Kandinsky on kraft. Bauhaus primaries are what spot-colour printing on
+   * packaging actually looks like — one or two flat inks on brown board — so
+   * the palette and the material agree instead of fighting.
+   *
+   * Contrast measured against --kraft-50.
+   */
+  --kand-blue: #1B4F9C;    /* cobalt   — held, confirmed, in use     6.6:1 */
+  --kand-red: #C3352B;     /* vermilion— urgent, overdue, idle       4.6:1 */
+  --kand-yellow: #E8B923;  /* cadmium  — FILL ONLY (1.6:1 as text);
+                              ink on yellow is 8.5:1                       */
+  --kand-ink-blue: #12386F; /* deeper blue for small text on kraft   9.5:1 */
+
+  /* semantic aliases — colour still means state, never decoration */
+  --signal: var(--kand-red);
+  --amber: #8A5A00;        /* ochre for money TEXT; yellow is the fill      */
+  --seal: var(--kand-blue);
+
+  /* packing tape */
+  --tape: rgba(214, 186, 132, 0.62);
+  --tape-edge: rgba(168, 136, 87, 0.45);
+
+  --font-display: var(--font-archivo), system-ui, sans-serif;
+  --font-ui: var(--font-archivo), system-ui, sans-serif;
+  --font-data: var(--font-plex), ui-monospace, monospace;
+
+  /* board has thickness: a hard offset edge, never a blur */
+  --edge-1: 0 2px 0 var(--kraft-300);
+  --edge-2: 0 3px 0 var(--kraft-300), 0 6px 0 var(--kraft-400);
+
+  /* Legacy names from the tactical era. Some pages read these raw, not via
+     Tailwind, so they must resolve in :root and not only in @theme. */
+  --chassis: var(--kraft-50);
+  --panel: var(--kraft-100);
+  --bezel: var(--kraft-300);
+  --text-primary: var(--ink);
+  --text-muted: var(--ink-2);
+  --active-route: var(--signal);
+  --secured: var(--seal);
+  --alert: var(--amber);
+
+  --dur-snap: 90ms;
+  --dur-fold: 260ms;
+  --ease-box: cubic-bezier(0.34, 1.28, 0.64, 1); /* slight overshoot — weight */
 }
 
 @theme inline {
-  --color-chassis: var(--chassis);
-  --color-panel: var(--panel);
-  --color-bezel: var(--bezel);
-  --color-text-primary: var(--text-primary);
-  --color-text-muted: var(--text-muted);
-  
-  --color-active-route: var(--active-route);
-  --color-secured: var(--secured);
-  --color-alert: var(--alert);
+  --color-kraft-50: var(--kraft-50);
+  --color-kraft-100: var(--kraft-100);
+  --color-kraft-200: var(--kraft-200);
+  --color-kraft-300: var(--kraft-300);
+  --color-kraft-400: var(--kraft-400);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-signal: var(--signal);
+  --color-amber: var(--amber);
+  --color-seal: var(--seal);
+  --color-tape: var(--tape);
+  --color-kand-blue: var(--kand-blue);
+  --color-kand-red: var(--kand-red);
+  --color-kand-yellow: var(--kand-yellow);
+
+  /* legacy aliases so the tactical-era components keep resolving */
+  --color-chassis: var(--kraft-50);
+  --color-panel: var(--kraft-100);
+  --color-bezel: var(--kraft-300);
+  --color-text-primary: var(--ink);
+  --color-text-muted: var(--ink-2);
+  --color-active-route: var(--signal);
+  --color-secured: var(--seal);
+  --color-alert: var(--amber);
 
   --font-display: var(--font-display);
   --font-ui: var(--font-ui);
@@ -40,26 +118,135 @@ html {
 }
 
 body {
-  background: var(--chassis);
-  color: var(--text-primary);
+  background: var(--kraft-50);
+  color: var(--ink);
   font-family: var(--font-ui);
+  font-variation-settings: "wdth" 100;
 }
 
+/*
+ * Corrugation. A single repeating gradient at very low alpha — the flutes you
+ * see edge-on when you look into a box. Fixed attachment so it reads as the
+ * material the page is printed on rather than something that scrolls with it.
+ */
+.corrugated,
+body {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(168, 136, 87, 0.055) 0px,
+    rgba(168, 136, 87, 0.055) 1px,
+    transparent 1px,
+    transparent 7px
+  );
+  background-attachment: fixed;
+}
+
+/* A cardboard panel: kraft face, corrugated edge, real thickness. */
+.board {
+  background: var(--kraft-100);
+  border: 1px solid var(--kraft-300);
+  border-radius: var(--radius-md);
+  box-shadow: var(--edge-1);
+}
+.board-thick { box-shadow: var(--edge-2); }
+
+/*
+ * A strip of packing tape. Sits across a corner or a seam; deliberately a
+ * couple of degrees off-square, because nobody tapes a box straight.
+ */
+.tape {
+  position: relative;
+}
+.tape::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 84px;
+  height: 26px;
+  transform: translateX(-50%) rotate(-2.2deg);
+  background: var(--tape);
+  border-left: 1px solid var(--tape-edge);
+  border-right: 1px solid var(--tape-edge);
+  pointer-events: none;
+}
+
+/* Every comparable number. Shipping labels are monospaced for a reason. */
 .data {
   font-family: var(--font-data);
   font-variant-numeric: tabular-nums;
 }
 
-.display-heading {
+/* Stencilled on the side of a box: condensed, heavy, wide-tracked. */
+.display-heading,
+.stencil {
   font-family: var(--font-display);
+  font-variation-settings: "wdth" 112;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
+}
+.stencil-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
 }
 
-/* Tactical input and focus styles */
-input, button, textarea {
-  outline: none;
+/* Focus: a stencilled outline, never removed. */
+input, button, textarea, select { outline: none; }
+input:focus-visible,
+button:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  box-shadow: 0 0 0 2px var(--kraft-50), 0 0 0 4px var(--signal);
 }
-input:focus-visible, button:focus-visible, textarea:focus-visible {
-  box-shadow: 0 0 0 2px var(--chassis), 0 0 0 4px var(--active-route);
+
+/* ---- motion ------------------------------------------------------------ */
+/* Keyframes for the non-React surfaces; components/motion/box.tsx covers the
+   interactive ones. Both obey the reduced-motion block at the bottom. */
+
+@keyframes flap-open {
+  from { opacity: 0; transform: perspective(700px) rotateX(-72deg); }
+  to   { opacity: 1; transform: perspective(700px) rotateX(0deg); }
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes stamp {
+  0%   { transform: scale(1.18) rotate(-3deg); opacity: 0; }
+  60%  { transform: scale(0.97) rotate(-1.5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-1.5deg); opacity: 1; }
+}
+
+.anim-flap { animation: flap-open var(--dur-fold) var(--ease-box) both; transform-origin: top center; }
+.anim-slide { animation: slide-in var(--dur-fold) var(--ease-box) both; }
+.anim-stamp { animation: stamp 300ms var(--ease-box) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  body, .corrugated { background-attachment: scroll; }
+}
+
+/* A flat block of cadmium behind a phrase — a spot-colour hit, not a gradient. */
+.mark {
+  background: var(--kand-yellow);
+  box-shadow: 0 0 0 3px var(--kand-yellow);
+  color: var(--ink);
+}
+
+/* Bauhaus shapes. Decorative only, so they are aria-hidden at the call site. */
+.shape-circle { border-radius: 9999px; }
+.shape-tri {
+  width: 0; height: 0;
+  border-left: var(--tri, 28px) solid transparent;
+  border-right: var(--tri, 28px) solid transparent;
+  border-bottom: calc(var(--tri, 28px) * 1.7) solid currentColor;
 }
