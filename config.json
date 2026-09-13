@@ -11,9 +11,15 @@
     "2026-12-01",
     "2027-01-01"
   ],
-  "locations": ["Northdale", "Lester", "Sunnydale", "Beechwood", "King St N"],
+  "locations": [
+    "Northdale",
+    "Lester",
+    "Sunnydale",
+    "Beechwood",
+    "King St N"
+  ],
   "ui": {
-    "productName": "Chain",
+    "productName": "Relay",
     "tagline": "One of these on the street, not one in every room.",
     "itemNoun": "item",
     "itemNounPlural": "items",
@@ -21,7 +27,9 @@
     "needNounPlural": "needs",
     "handoffNoun": "handoff",
     "gapLabel": "days in storage",
-    "removeActionLabel": "remove this person"
+    "removeActionLabel": "remove this person",
+    "currency": "CAD",
+    "rateUnit": "day"
   },
   "penalties": {
     "lambdaGapPerDay": 0.03,
@@ -30,5 +38,35 @@
   "constraints": {
     "maxIdleDays": 10,
     "minMatchScore": 0.3
+  },
+  "pricing": {
+    "defaultRatePerDay": 4,
+    "_comment": "Owner-set daily rate. Relay displays and totals it; money is settled between the two people. Idle days are foregone revenue, which is what the DP already minimizes.",
+    "ratesByClass": {
+      "tools": 4,
+      "ladder": 5,
+      "moving": 8,
+      "cleaning": 12,
+      "guest": 5,
+      "party": 6,
+      "av": 8,
+      "garment": 5,
+      "travel": 3,
+      "outdoor": 6,
+      "bike": 3,
+      "climate": 5,
+      "office": 3,
+      "power": 2,
+      "safety": 2
+    }
+  },
+  "kinds": {
+    "supported": [
+      "thing"
+    ],
+    "reserved": [
+      "place"
+    ],
+    "_comment": "A place is an item that does not move: distance penalty 0, idle days are vacant days, rate is rent. The engine needs no change to route one. Not built."
   }
 }

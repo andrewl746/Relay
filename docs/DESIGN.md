@@ -1,840 +1,479 @@
 # Relay — Design Document
 
-**Companion:** [PROJECT.md](PROJECT.md) — product, scope, build plan, pitch.
-**Scope of this doc:** the visual system. Tokens, type, components, screens, motion, a11y,
-copy. Everything here is meant to be built, not admired.
+**Companion:** [PROJECT.md](PROJECT.md) — product, engine, pricing, build plan, pitch.
+**Scope:** the visual system. Tokens, type, components, screens, motion, a11y, copy.
+Everything here is meant to be built, not admired.
 
 ---
 
 ## 1. The idea
 
-> **A marketplace that looks like a departure board and reads like a well-typeset lease.**
+> **A schedule for objects. It should look like a timetable, not a storefront.**
 
-Relay is not a shopping app. Nothing here is being merchandised — every listing is
-*leaving*, on a date, at a price that is falling. The interface should feel like a
-**timetable and a set of documents**, because that is literally what the product is: windows
-of time, and the paperwork of handing something over.
+Relay is not a marketplace and must not look like one. Nothing is being merchandised —
+there is no browsing, no feed, no cart. The user asks for one thing and gets **one answer
+with a date on it**. The interface is a departure board and a set of small receipts.
 
-### What we are explicitly rejecting
+### Banned
 
-Every one of these is banned. If a screenshot contains one, it's wrong.
+If a screenshot contains one of these, it's wrong.
 
 | Banned | Why |
 |---|---|
 | Purple / indigo / blue-cyan gradients | The universal tell of an unconsidered project |
-| Gradient mesh blobs, glassmorphism, frosted panels | Decoration standing in for hierarchy |
-| `border-radius: 12px` on everything | Nothing in this product is soft. A lease isn't rounded |
-| Drop shadows as the hierarchy mechanism | We have rules, weight and paper tone. Use those |
-| Inter, or any default UI grotesque | It is the visual equivalent of not deciding |
+| Gradient blobs, glassmorphism, frosted panels | Decoration standing in for hierarchy |
+| `border-radius: 12px` on everything | Nothing here is soft. A schedule isn't rounded |
+| Drop shadows as the hierarchy mechanism | We have rules, weight and paper tone |
+| Inter, or any default UI grotesque | The visual equivalent of not deciding |
 | Emoji as interface icons | Fine in user content. Never in chrome |
-| Centered hero + two buttons + floating blob | Every landing page since 2021 |
-| Skeleton shimmer loaders | Sparkle for a wait we can just design honestly |
-| Star ratings, badge clusters, "✨ AI-powered" copy | Trust theatre |
-| Card grids with equal-weight cards | Our whole thesis is that listings are **not** equal — some are about to be thrown out |
+| A product-grid or card wall | There is no catalogue. There is one answer |
+| Skeleton shimmer | Sparkle for a wait that doesn't exist — everything here is ~10ms |
+| Star ratings, "✨ AI-powered" copy | Trust theatre |
 
-### What we're doing instead
+### Instead
 
-**Paper and ink.** A warm newsprint ground, near-black ink, hairline rules. The chrome is
+**Paper and ink.** Warm newsprint ground, near-black ink, hairline rules. Chrome is
 achromatic — **colour is a semantic channel, never decoration.**
 
-**Colour means exactly three things:**
+**Colour means exactly three things**, and they map onto what the engine already computes:
 
-| Colour | Meaning | Used for |
+| Colour | Meaning | Where |
 |---|---|---|
-| **Signal** (red-orange) | time running out | countdowns ≤24h, final call, expiry |
-| **Amber** | money moving | price-decay rungs, scheduled drops |
-| **Seal** (green) | executed, confirmed | completed handoffs, both-party confirmations |
+| **Seal** (green) | **in use** — the thing is with someone who needed it | held spans, confirmed handoffs |
+| **Signal** (red) | **idle** — it's in a closet, and that's the cost | gaps, unbooked stretches, overdue |
+| **Amber** | **money** — rates, earnings, what's owed | daily rate, term earnings, cost of a hop |
 
-Everything else — every button, every filter, every nav item — is ink on paper. A screen
-with no urgency on it has **no colour on it at all**, and that's what makes the red mean
-something when it appears.
+Everything else — nav, buttons, filters, forms — is ink on paper. A screen with nothing
+idle and nothing owed has almost no colour on it, and that's what makes red mean something.
 
-**Data is monospaced.** Every number a user compares — price, countdown, dimensions, dates,
-coverage % — is IBM Plex Mono with tabular figures, so columns align and digits don't jitter
-as they tick. Prose numbers stay in the text face.
+**Data is monospaced.** Every number a user compares — rate, cost, dates, days, score — is
+mono with tabular figures, so columns align and digits don't jitter. Prose numbers stay in
+the text face.
 
-**Rows, not cards.** The feed is a ledger. Rows compare on a single axis; cards imply equal
-weight and hide the ranking. See §7.
+**One committed light theme.** No dark mode for the hackathon. *A projector in a judging
+room is not the place to discover the demo machine was set to dark* — this decision is
+already in `globals.css` and we're keeping it. Tokens are structured so dark is a later
+addition, not a retrofit.
 
 ---
 
 ## 2. Principles
 
-1. **Time is the loudest thing on screen.** Before price, before photo, before title. If a
-   user learns one fact from a row, it's *when this disappears*.
-2. **Colour is information.** Three meanings, no decoration. A calm screen is a correct screen.
-3. **Density is respect.** These users are scanning 40 listings in 3 minutes on a phone
-   between classes. Whitespace that costs a row costs a match.
-4. **Documents, not dashboards.** Condition reports, manifests, and provenance chains should
-   look like things you'd print and hand to a landlord — because you will.
-5. **The interface should look cheap to trust.** Slick reads as commercial and commercial
-   reads as scam in a peer market. Plain, typeset, honest.
-6. **Nothing moves unless something changed.** No scroll-triggered reveals, no ambient
-   motion. Movement is a signal, and we have few enough signals to keep it that way.
+1. **The answer is the interface.** One question in, one answer out. If a screen makes the
+   user choose from a list, it has failed at its job.
+2. **Always show what happens next.** Every object on screen that has a future should say
+   what it is. *"You pass it to Wes on Sunday"* is the product.
+3. **Colour is information.** Three meanings, no decoration.
+4. **Receipts, not dashboards.** A handoff is a small agreement between two people. It
+   should look like something you'd screenshot and send them.
+5. **Density is respect.** A first-year checking this between classes on a phone.
+6. **Nothing moves unless something changed.** Movement is a signal and we have few.
 
 ---
 
 ## 3. Colour
 
-### Light — "paper"
-
 | Token | Hex | Role | Contrast on `--paper` |
 |---|---|---|---|
 | `--paper` | `#F2EFE6` | page ground, warm newsprint | — |
-| `--paper-raised` | `#FBF9F4` | sheets, modals, the one elevated surface | — |
-| `--paper-sunk` | `#E7E2D6` | photo wells, inputs, inset areas | — |
+| `--paper-raised` | `#FBF9F4` | the answer card, sheets | — |
+| `--paper-sunk` | `#E7E2D6` | inputs, timeline troughs | — |
 | `--ink` | `#1C1A15` | primary text | **15.2:1** |
-| `--ink-2` | `#57534A` | secondary text, meta | **6.7:1** |
+| `--ink-2` | `#57534A` | secondary, meta | **6.7:1** |
 | `--ink-3` | `#8A8478` | tertiary — **≥18.66px bold or non-text only** | 3.2:1 |
-| `--rule` | `rgba(28,26,21,.14)` | hairlines between rows | — |
-| `--rule-strong` | `rgba(28,26,21,.30)` | section dividers, stamped boxes | — |
-| `--signal` | `#B83417` | **time** — text on paper | **5.2:1** |
-| `--signal-fill` | `#C6371B` | final-call fills, paper text on top | 5.2:1 inverted |
+| `--rule` | `rgba(28,26,21,.14)` | hairlines | — |
+| `--rule-strong` | `rgba(28,26,21,.30)` | dividers, stamped boxes | — |
+| `--seal` | `#2F5D3A` | **in use** — text | **6.6:1** |
+| `--seal-fill` | `#3E7A4C` | held spans on the timeline | — |
+| `--signal` | `#B83417` | **idle** — text | **5.2:1** |
+| `--signal-fill` | `#C6371B` | gap spans, paper text on top | 5.2:1 inverted |
 | `--amber` | `#8A5A00` | **money** — text | **5.2:1** |
-| `--amber-fill` | `#E0A43A` | decay rung markers, fills only | — |
-| `--seal` | `#2F5D3A` | **confirmed** | **6.6:1** |
+| `--amber-fill` | `#E0A43A` | rate markers, fills only | — |
 
-### Dark — "night board"
+Ratios are measured, not estimated. `--ink-3` is the only token that fails normal-text AA
+and it is restricted accordingly.
 
-Not an inversion. A departure board after midnight: still warm, still paper-grained, ink and
-ground swapped, signals brightened to survive the dark ground.
-
-| Token | Hex | Contrast on `--paper` |
-|---|---|---|
-| `--paper` | `#151410` | — |
-| `--paper-raised` | `#201E18` | — |
-| `--paper-sunk` | `#0F0E0A` | — |
-| `--ink` | `#EDE9DE` | **15.4:1** |
-| `--ink-2` | `#A8A296` | **7.4:1** |
-| `--ink-3` | `#6F6A5F` | 3.5:1 — large/non-text only |
-| `--rule` | `rgba(237,233,222,.16)` | — |
-| `--rule-strong` | `rgba(237,233,222,.32)` | — |
-| `--signal` | `#FF6B4A` | **6.6:1** |
-| `--amber` | `#E8A33D` | **8.7:1** |
-| `--seal` | `#6FB37E` | **7.9:1** |
-
-> **Rule:** never define a colour only inside a media query. Every token gets its light value
-> on bare `:root`, then is *redefined* for dark. See §15.
-
-### Where colour is forbidden
-
-Navigation · buttons · filter chips (unresolved) · links · form fields · avatars · category
-tags · empty states. All ink.
+**Where colour is forbidden:** nav · buttons · form fields · person names · locations ·
+empty states. All ink.
 
 ---
 
 ## 4. Typography
 
-Two families. One of them does a job nobody expects.
-
-### The families
+Two families. One does a job nobody expects.
 
 **Archivo** — variable, weights 100–900, **width axis 62–125%**. Free on Google Fonts.
-**IBM Plex Mono** — 400/500/600, tabular figures by default.
+**IBM Plex Mono** — 400/500/600, tabular figures.
 
-### The distinctive move: width as a hierarchy axis
+### Width as a hierarchy axis
 
-Most interfaces build hierarchy from size and weight alone. We add **width**, from a single
+Most interfaces build hierarchy from size and weight alone. We add **width**, from one
 variable font:
 
 ```
-  wdth 115%   ▸  display        EVERYTHING HERE IS LEAVING
-  wdth 105%   ▸  page titles    Sublets · Fall 2025
+  wdth 115%   ▸  display        WHAT DO YOU NEED?
+  wdth 105%   ▸  page titles    Your shelf
   wdth 100%   ▸  body, UI       the workhorse
-  wdth  88%   ▸  listing titles IKEA MICKE desk, 142cm, white
+  wdth  88%   ▸  item names     power drill — black&decker, bits in the case
 ```
 
-Condensed listing titles are doing real work — they're how a classified ad fits a whole
-object into one line — and the extra characters per row are worth actual matches. It's one
-font file and it reads as deliberate, which is the entire point.
+Item text is user-written, long, and lowercase ("suitcase. pickup king st n"). Condensed
+lets a real description sit on one line without truncation, which matters because the
+phrasing *is* the data the matcher saw.
 
 ### Scale
 
 | Role | Family | Size / LH | Weight | Width | Tracking |
 |---|---|---|---|---|---|
-| Display | Archivo | `clamp(34px, 5.5vw, 54px)` / 1.02 | 700 | 115% | −0.025em |
-| H1 | Archivo | 28 / 1.15 | 650 | 105% | −0.015em |
-| H2 | Archivo | 20 / 1.25 | 600 | 100% | −0.01em |
-| **Listing title** | Archivo | 17 / 1.25 | 600 | **88%** | 0 |
+| Display | Archivo | `clamp(32px, 5vw, 48px)` / 1.05 | 700 | 115% | −0.025em |
+| H1 | Archivo | 26 / 1.15 | 650 | 105% | −0.015em |
+| H2 | Archivo | 19 / 1.25 | 600 | 100% | −0.01em |
+| **Item name** | Archivo | 16 / 1.3 | 600 | **88%** | 0 |
 | Body | Archivo | 15 / 1.55 | 400 | 100% | 0 |
 | Meta | Archivo | 13 / 1.4 | 500 | 100% | 0.01em |
-| Eyebrow / label | Archivo | 11 / 1 | 700 | 100% | **0.14em**, uppercase |
+| Eyebrow | Archivo | 11 / 1 | 700 | 100% | **0.14em**, uppercase |
 | **Data** | Plex Mono | 14 / 1.2 | 500 | — | 0 |
-| **Data large** | Plex Mono | 22 / 1 | 600 | — | −0.01em |
-| Data display | Plex Mono | 32 / 1 | 600 | — | −0.02em |
+| Data large | Plex Mono | 22 / 1 | 600 | — | −0.01em |
+| Data display | Plex Mono | 34 / 1 | 600 | — | −0.02em |
 
-### Rules
-
-- **Every comparable number is Plex Mono with `font-variant-numeric: tabular-nums`.** Price,
-  countdown, dimensions, coverage %, dates, report numbers. Non-negotiable: a countdown in
-  proportional figures visibly jitters every second and it looks broken.
-- Prose numbers ("four terms", "3 roommates") stay in Archivo.
-- **Uppercase only** for eyebrows and labels ≤11px, always with 0.14em tracking. Never for
-  headlines, never for buttons.
-- Sentence case everywhere else. No Title Case Buttons.
-- Max measure 68ch for body copy.
+**Rules.** Every comparable number is Plex Mono + `tabular-nums`: rate, cost, dates, days,
+match score, earnings. Prose numbers ("six people", "four doors down") stay in Archivo.
+Uppercase only for eyebrows ≤11px with 0.14em tracking. Sentence case everywhere else.
+Max measure 68ch.
 
 ```tsx
-// app/layout.tsx — Next 16 / next-font
-import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from 'next/font/google'
 
-const archivo = Archivo({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  axes: ["wdth"],              // unlocks 62–125%; weight is included by default
-});
-
-const plex = IBM_Plex_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-});
+const archivo = Archivo({ variable: '--font-sans', subsets: ['latin'], axes: ['wdth'] })
+const plex = IBM_Plex_Mono({ variable: '--font-mono', subsets: ['latin'], weight: ['400','500','600'] })
 ```
 
 ---
 
 ## 5. Space, rules, radius, elevation
 
-**Space** — 4px base: `4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96`. Nothing between.
+Space — 4px base: `4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96`.
 
-**Radius** — and this alone kills the template look:
+Radius — this alone kills the template look:
 
 ```
---r-0: 0      thumbnails, fills, stamps, the term bar
+--r-0: 0      timeline bars, spans, stamps
 --r-1: 2px    buttons, inputs, chips
---r-2: 4px    sheets and modals only
+--r-2: 4px    the answer card, sheets
 ```
 
-**Nothing is rounder than 4px. Ever.**
+**Nothing is rounder than 4px.**
 
-**Rules over shadows.** Hierarchy comes from hairlines, type weight, and paper tone. Exactly
-two shadows exist in the entire system:
+**Rules over shadows.** Exactly two shadows exist:
 
 ```
 --shadow-sheet: 0 8px 24px -8px rgba(28,26,21,.28);   /* dropdowns, modals */
 /* and: none */
 ```
 
-A `box-shadow` on a listing row is a bug.
+A `box-shadow` on a list row is a bug.
 
-**Borders:** `1px solid var(--rule)` between rows · `1px solid var(--rule-strong)` for
-stamped boxes and manifests · `2px solid var(--ink)` for the one primary button on a screen.
-
-**Grid:** content max 1120px. Feed at ≥1024px is `1fr 320px` — ledger + sidebar (filters,
-your wants). Below that, single column, 16px gutters, full-bleed rows.
+**Grid:** content max 900px for the answer flow, 1240px for `/network`. Single column on
+mobile, 16px gutters.
 
 ---
 
-## 6. The countdown — the most-repeated element in the app
+## 6. The answer card — the core component
 
-Four tiers. Colour is the *second* signal; the words carry it alone.
-
-| Tier | When | Rendering | Colour |
-|---|---|---|---|
-| **Open** | > 7 days | `14 Dec` · Plex Mono 14/500 | `--ink-3` |
-| **Soon** | 24h – 7d | `3d 04h` · Plex Mono 14/600 | `--ink` |
-| **Today** | < 24h | `TODAY · 18:00` · Plex Mono 14/600 | `--signal` |
-| **Final** | < 3h | `FINAL 2h 11m` · inverted block, 2px padding, `--r-0` | paper on `--signal-fill` |
-| **Gone** | past | `GONE` · strikethrough | `--ink-3` |
-
-**Never colour-only.** Tier is legible in greyscale from the words and the weight — which is
-also what makes it work for the ~8% of male users with a colour vision deficiency, on the
-one element they read most.
-
-**Implementation trap** (also in PROJECT.md §9): the server emits an **ISO timestamp**; the
-client computes the remainder. A rendered `2d 14h` must never enter a cached response.
+The product. Everything else supports it.
 
 ```
-Open      14 Dec
-Soon      3d 04h
-Today     TODAY · 18:00
-Final     ███ FINAL 2h 11m ███
-Gone      G̶O̶N̶E̶
+┌─────────────────────────────────────────────────────────────┐
+│  ┌──────────────┐                                           │
+│  │ ✓ AVAILABLE  │                          $4 /day          │
+│  └──────────────┘                          $16 for 4 days   │
+│                                                             │
+│  Aditi S.  ·  Beechwood  ·  4 min walk                      │
+│                                                             │
+│  power drill — black&decker, bits are in the case.          │
+│  ive used it maybe twice. northdale                         │
+│                                                             │
+│  Thu Oct 2  ──────────────────────────►  Sun Oct 5          │
+│                                                             │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  ▸  You hand it to Wes Z. on Sunday Oct 5             │  │
+│  └───────────────────────────────────────────────────────┘  │
+│                                                             │
+│  matches on drill, same tools class              0.768      │
+│                                                             │
+│             [  BOOK IT  ]     not this one →                │
+└─────────────────────────────────────────────────────────────┘
 ```
+
+**Anatomy:**
+
+1. **Availability stamp** — `--seal`, 1.5px `--rule-strong` box, `--r-0`, rotated −1.5°.
+   The rotation is the one imperfect thing in a system of straight rules; it reads as a
+   physical mark, not a platform badge.
+2. **Price block, top right** — rate in `--amber` mono, total cost below in Data large.
+   Right-aligned. The total is what they actually care about.
+3. **Person · place · walk time** — ink. Never a map, never an avatar.
+4. **The item's own words**, Archivo 88%, `--ink-2`. Unedited, typos intact. It's what the
+   matcher saw and it's more trustworthy than a cleaned-up title.
+5. **The window** — mono dates, a rule between them with an arrowhead. Not a date picker.
+6. **The next-hop band** — `--paper-sunk`, 1px `--rule-strong`, full width. **This is the
+   line no competitor can print.** It gets its own box precisely because it's the thesis.
+7. **The reason string + score** — the model's honest output, `--ink-3` mono, small. Do not
+   dress it up, do not hide it.
+8. **One primary button.** "not this one" is a text link, not a second button.
+
+**States:** no match → see §10. Idle-risk variant → the next-hop band is replaced by
+*"Nobody's asked for it after you — it goes back to Aditi"* in `--ink-2`, no colour.
 
 ---
 
-## 7. The ledger row — the core unit
+## 7. The chain strip
 
-Not a card. A row. Rows compare on one axis, and comparison is the job.
+Inline, compact, ~full width × 28px. A shrunk relative of `/network`'s timeline. Appears
+under an item on `/shelf` and inside the expanded answer.
 
 ```
-┌──────────────────────────────────────────────────────────────────────────────┐
-│ ┌────────┐  IKEA MICKE desk, 142cm, white              $45  →  $28          │
-│ │        │  DESK · good · 142×50×75cm                  ◆──◆──●──○  amber    │
-│ │ photo  │  ▸ E2 Village · 700m                                              │
-│ │ 76×76  │  ├──────────■■■■■■■──────────┤              TODAY · 18:00        │
-│ └────────┘  Aug 25            Jan 05                   ↑ signal, mono       │
-└──────────────────────────────────────────────────────────────────────────────┘
-   ↑ 0 radius,     ↑ Archivo 88% width, 17/600         ↑ right rail, all mono
-     paper-sunk      meta in 13/500 ink-2                and right-aligned
-     well
+  Sep 1                                                        Jan 1
+  ├──▓▓▓▓▓──░░░──▓▓▓▓▓▓▓▓──░░──▓▓▓▓──▓▓▓▓▓▓──░░░░░──▓▓▓──────────┤
+     Ugo    7d   Wes        Otto    Ben      Luca   12d   Cleo
+                 ▲ you
 ```
 
-**Anatomy, left to right:**
-
-1. **Thumbnail** — 76×76 desktop / 64×64 mobile. `--r-0`. Sits in a `--paper-sunk` well with
-   a 1px inner rule. Square crop, no filter, no overlay.
-2. **Title** — Archivo `wdth 88%`, 17/600, one line, ellipsis. Condensed so a real object
-   description fits.
-3. **Meta line** — category · condition · dimensions. 13/500, `--ink-2`, `·` separated.
-4. **Location** — neighbourhood + fuzzed distance. Never an address.
-5. **Term bar** (§8) — inline, 160px, the overlap shaded. This is the row's signature.
-6. **Right rail** — price (with the decay ladder beneath it) over the countdown. Mono,
-   tabular, right-aligned so every row's digits form a column.
-
-**Row states:**
-
-| State | Treatment |
-|---|---|
-| Default | `--paper` |
-| Hover | `--paper-raised`, 90ms |
-| **Matches your wants** | 2px `--ink` left edge + `MATCH` eyebrow. Not a coloured background |
-| **Final call** | 2px `--signal-fill` left edge, countdown inverted |
-| Claimed | 55% opacity, `CLAIMED` eyebrow, still visible — never hidden |
-| Gone | 40% opacity, title struck through |
-
-**Hard rule: no `box-shadow`, no radius, no background tint on a row.** Separation is a
-`1px solid var(--rule)` bottom border and nothing else.
+- Held spans: `--seal-fill`. Gaps: `--signal-fill`. Trough: `--paper-sunk`. All `--r-0`.
+- Handoff points: 1px full-height `--ink` tick.
+- **Gaps ≥5 days get a label** (`7d idle`) in `--signal`, mono 10px. Shorter gaps stay
+  unlabelled — the colour is enough and labels would collide.
+- **Your own hop gets a `▲ you` marker** in `--ink`. On `/shelf` this is what makes a chain
+  personal rather than abstract.
+- Scale is honestly proportional to real time. A 7-day gap and a 12-day gap must differ.
 
 ---
 
-## 8. Term bar & exchange zone — the signature component
+## 8. Handoff slip
 
-The single most distinctive thing in the interface, and the visual form of PROJECT.md §7.3.
-Nothing else in any student marketplace looks like this.
-
-**Inline (in a row)** — 160×20px, one bar:
+A small agreement between two people. Should look screenshot-able, because it will be.
 
 ```
-├──────────■■■■■■■■■■■■■■──────┤
-Aug 25                      Jan 05
+╔═══════════════════════════════════════════════╗
+║  HAND OFF BY                                  ║
+║  Sunday Oct 5                                 ║
+╠═══════════════════════════════════════════════╣
+║  power drill — black&decker                   ║
+║  to  Wes Z.  ·  King St N                     ║
+║                                               ║
+║  you paid  $16   ·   4 days   ·   Oct 2–5     ║
+╠═══════════════════════════════════════════════╣
+║        [ CONFIRM HANDED OFF ]                 ║
+╚═══════════════════════════════════════════════╝
 ```
 
-**Expanded (listing detail)** — two bars plus the zone between them:
-
-```
-  THEIR PLACE IS FREE
-  ├────────────────────────────────────────┤
-  Aug 25                                Jan 05
-
-  YOUR TERM
-        ├──────────────────────────────┤
-      Sep 03                        Dec 20
-
-  EXCHANGE ZONE
-        ███████████████████████████████
-        Sep 03 ────────────────── Dec 20
-
-        ┌───────────────────────────────────┐
-        │  100% COVER · 108 days            │
-        │  Their place is free 25 days      │
-        │  longer than you need it.         │
-        └───────────────────────────────────┘
-```
-
-**Construction:**
-- Bars are 8px tall, `--r-0`, `--paper-sunk` ground with a 1px `--rule-strong` outline.
-- Available span: solid `--ink-2`.
-- **Exchange zone: solid `--ink`**, the darkest thing in the component. It's the answer.
-- Gaps (`gap_head` / `gap_tail`) render in `--signal` with a **label in words** —
-  *"starts 6 days after you arrive"* — because a red sliver alone is not an explanation.
-- Endpoints in Plex Mono 11, `--ink-3`.
-- Today's position: a 1px full-height `--ink` tick, no label.
-
-**Coverage readout** — the number is the point:
-
-| Coverage | Label | Treatment |
-|---|---|---|
-| ≥98% | `100% COVER` | `--ink`, boxed in `--rule-strong` |
-| 85–98% | `92% · starts 6d late` | `--ink`, gap called out in `--signal` |
-| 50–85% | `64% PARTIAL` | `--ink-2` |
-| <50% | `31%` | `--ink-3` |
-
-**Scale honestly.** Bar width is proportional to real elapsed time across the union of both
-windows. A 4-month window and a 12-month lease must not render the same length — the whole
-component is a lie if they do.
+- `--paper-raised`, 1px `--rule-strong`, `--r-2`.
+- The date is the largest thing on it — Data display, `--ink`.
+- **Overdue** → the date turns `--signal` and the eyebrow reads `HAND OFF BY · 2 DAYS LATE`.
+  Never a red banner, never a modal. The number carries it.
+- Confirmed → the whole slip drops to 55% opacity with a `--seal` check. It stays visible;
+  it's a receipt.
 
 ---
 
-## 9. The other signature components
+## 9. Earnings readout & rate input
 
-### 9.1 Decay ladder
-
-Price movement, inline, ~120×16px. Not a chart widget — a rule with ticks.
-
-```
-$60      $40      $25     free
-◆────────◆────────●───────○
-                  ↑ now
-```
-
-- Passed rungs: `--ink-3`, hollow.
-- Current rung: solid `--amber-fill` dot, price in `--amber`.
-- Future rungs: `--ink-3` outline, price in `--ink-3`.
-- Under it, when a drop is imminent: `↓ $25 in 4h` in `--amber`, Plex Mono 13.
-
-The **next drop is the hook** (PROJECT.md §7.5). Give it room.
-
-### 9.2 Bundle manifest
-
-The one place that deliberately breaks the ledger, because contrast *is* emphasis.
+**Earnings** (`/shelf`, per item). No charts — four bars of unrelated units would be worse
+than a number column.
 
 ```
-╔══════════════════════════════════════════════════════════╗
-║  WHOLE ROOM · 217 Erb St W, Room 2                       ║
-║  Sep 01 — Dec 19 · furnished · sublet                    ║
-╠══════════════════════════════════════════════════════════╣
-║  ☑  Room, private, 11×10                    rent   $680/mo ║
-║  ☑  IKEA MICKE desk, 142cm                  sale     $45 ║
-║  ☑  Desk chair, black                       sale     $20 ║
-║  ☑  Double mattress + frame                 sale    $120 ║
-║  ☑  Mini fridge                             rent   $15/mo ║
-║  ☑  Floor lamp                              sale     $10 ║
-╠══════════════════════════════════════════════════════════╣
-║  BUNDLE          $1,240        parts total  $1,510       ║
-║  You save $270 and you don't rent a van.                 ║
-╠══════════════════════════════════════════════════════════╣
-║            [  CLAIM THE WHOLE ROOM  ]                    ║
-╚══════════════════════════════════════════════════════════╝
+  YOUR DRILL
+
+  $149        earned this term
+  6           people
+  0           days in a closet
+  $4 /day     your rate          [edit]
 ```
 
-- `--paper-raised`, 1px `--rule-strong` border, `--r-2`.
-- Item rows are mono, right-aligned prices, tabular — it must read as an **inventory
-  manifest**, because that's what it is.
-- The `rent` / `sale` column is plain text, not a badge. Badges are noise.
-- Struck-through parts total in `--ink-3`; bundle price in `--ink`, Data display 32px.
+Figures Data display, `--amber` for money, `--ink` for counts, `--signal` if closet-days
+> 0. Labels `--ink-2` meta.
 
-### 9.3 Condition report — the carbon copy
-
-Two columns, timestamped, both signatures. Should look like something you'd print.
+**Rate input** — the one place a user touches money.
 
 ```
-┌─────────────────────────────────┬─────────────────────────────────┐
-│ MOVE-IN                         │ MOVE-OUT                        │
-│ Sep 03 2025 · 14:22             │ Dec 19 2025 · 10:05             │
-│ ┌────┐┌────┐┌────┐┌────┐        │ ┌────┐┌────┐┌────┐┌────┐        │
-│ │kitc││bath││bed ││main│        │ │kitc││bath││bed ││main│        │
-│ └────┘└────┘└────┘└────┘        │ └────┘└────┘└────┘└────┘        │
-│ scuff on L wall, tap drips      │ scuff unchanged, tap fixed      │
-│                                 │                                 │
-│ ✓ Maya K.      ✓ Dev R.         │ ✓ Maya K.      ✓ Dev R.         │
-└─────────────────────────────────┴─────────────────────────────────┘
-  REPORT #RLY-8842-F25 · both parties hold an identical copy
+  YOUR RATE
+  ┌─────────┐
+  │ $  4    │ /day       suggested $4 for tools
+  └─────────┘
+  A drill like this earns about $150 a term.
 ```
 
-- Checkmarks in `--seal` — the only green in the app, and it means *executed*.
-- `unconfirmed` state: the missing signature line renders as a `--signal` rule with the
-  words **"not confirmed by the other party."** Loud on purpose.
-- Report number in Plex Mono, letterspaced. It's an artifact; give it a serial.
-- Print stylesheet is not optional here — this is the page someone hands a landlord.
-
-### 9.4 Provenance chain
-
-```
-  DESK · IKEA MICKE, white
-  ┌──┐   ┌──┐   ┌──┐   ┌──┐
-  │F23│──│W24│──│S25│──│F25│
-  └──┘   └──┘   └──┘   └──┘
-  Maya K. Dev R. Priya S.  you?
-          ·      (rented)
-
-  4 terms · 3 hands · ~28 kg kept out of landfill
-```
-
-Term boxes in Plex Mono 11, 1px `--rule-strong`, `--r-0`, connected by a 1px rule. The final
-box is dashed with `you?` in `--ink-3`. Diversion figure in `--ink-2` with an *estimate*
-footnote — don't overclaim a number you made up from a category table.
-
-### 9.5 Wants checklist
-
-A notepad, not a form.
-
-```
-  YOUR LIST · Fall 2025 · Waterloo
-
-  ☑  P̶l̶a̶c̶e̶,̶ ̶S̶e̶p̶ ̶3̶ ̶–̶ ̶D̶e̶c̶ ̶2̶0̶,̶ ̶u̶n̶d̶e̶r̶ ̶$̶8̶0̶0̶     matched Sep 1
-  ☐  Desk                     under $60    ● 3 matches
-  ☐  Desk chair               under $40    ○ none yet
-  ☐  Mini fridge, to rent     under $20/mo ● 1 match
-  ☐  Floor lamp               under $15    ○ none yet
-  ┊
-  +  add something
-```
-
-Filled items strike through and drop to the bottom in `--ink-3`. Match count is a filled dot
-in `--ink` (unread) or hollow `--ink-3` (seen). The `┊` continuation and the dotted `+ add`
-row keep it feeling like a list you keep, not a form you submit.
-
-### 9.6 Verified stamp
-
-Rubber stamp, not a blue check. 1.5px `--rule-strong` box, `--r-0`, rotated **−1.5°**,
-Archivo 10/700 uppercase 0.14em.
-
-```
-┌───────────────┐
-│ ✓ UWATERLOO   │   verified 3 mo ago
-└───────────────┘
-```
-
-Listing verification (lease proof, PROJECT.md §7.9) uses the same stamp reading
-`LEASE ON FILE`. The rotation is the whole joke — it's the one imperfect thing in a system
-of straight rules, and it reads as a physical mark rather than a platform badge.
-
-### 9.7 Slot picker — exchange options
-
-Replaces the blank chat box (PROJECT.md §7.12). The buyer never types; they pick.
-
-```
-  HOW TO GET IT
-
-  ○ Public campus spot     SLC lower atrium          ← default
-  ○ Pickup at Maya's       address unlocks on accept
-  ○ Delivery               +$10, within 3km
-
-  ┌──────┐┌──────┐┌──────┐┌──────┐
-  │ Sat  ││ Sat  ││ Sun  ││ Sun  │     slots Maya already set
-  │ 10am ││ 2pm  ││ 11am ││ 4pm  │
-  └──────┘└──────┘└──────┘└──────┘
-
-  ┌────────────────────────────────────────┐
-  │  Sat Dec 20 · 2:00pm · SLC lower atrium│
-  │  Maya K. and you. Bring a friend.      │
-  └────────────────────────────────────────┘
-             [  CONFIRM HANDOFF  ]
-```
-
-- Slot tiles: 1px `--rule`, `--r-1`, 64×56, Plex Mono. Selected = `--ink` fill, paper text.
-- Sold-out / passed slots: `--ink-3`, struck, not removed — seeing three taken slots is
-  social proof that the seller is real.
-- The confirmation box is `--paper-raised` with a 1px `--rule-strong` border. **It states a
-  date, a time, and a place in words** — never "Handoff scheduled ✓".
-- Public-spot option is **pre-selected by default** for `thing` listings. Safety is the
-  default, not a warning.
-
-### 9.8 Mode indicator
-
-The feed says which mode it's in (PROJECT.md §4). One line under the display headline —
-not a toggle, not a banner.
-
-```
-  Marketplace mode      41 listings · Waterloo
-  ─────────────────────────────────────────────
-  CLEARING · ends Dec 19     41 listings · 6 gone by tonight
-```
-
-Marketplace mode: all ink, calm. Clearing mode: the eyebrow goes `--signal`, and the count
-line gains the "gone by tonight" clause. **The mode is legible from colour temperature
-alone** — a calm screen means nothing's urgent, which is the whole colour thesis (§1).
-
-### 9.9 Impact readout
-
-PROJECT.md §7.13. Mono, tabular, no charts, no progress rings, no green.
-
-```
-  WATERLOO · FALL 2025
-
-  312        items diverted
-  4.1 t      kept out of landfill      (estimated)
-  $18,400    saved
-  41         rooms subletted instead of sitting empty
-```
-
-Figures in Data display 32px, labels in `--ink-2` meta. The `(estimated)` note is required
-— see PROJECT.md §7.11 on not presenting category weights as measured. A bar chart here
-would be four bars of unrelated units; a number column is honest and reads faster.
-
-### 9.10 Buttons & fields
-
-- **Primary:** `--ink` fill, `--paper` text, `--r-1`, 44px tall, Archivo 15/600. **One per
-  screen.**
-- **Secondary:** 1px `--rule-strong`, transparent, `--ink` text.
-- **Tertiary:** text + 1px underline offset 3px.
-- **Destructive:** secondary shape, `--signal` text. Never a red fill — red is time.
-- **Fields:** `--paper-sunk`, no border, 1px `--rule` bottom only, `--r-1` top corners. Focus
-  = 2px `--ink` bottom rule + 2px offset focus ring. Labels above, 11px eyebrow.
-- **Chips:** 1px `--rule`, `--r-1`, 28px. Active = `--ink` fill, paper text. No colour.
+Mono, `--paper-sunk`, bottom rule only. The suggestion comes from
+`config.json → pricing.ratesByClass`. **Never auto-fill silently** — show the suggestion as
+text beside an editable field, so the number is theirs.
 
 ---
 
-## 10. Photography & empty states
+## 10. Need composer & empty states
 
-- Square crop, `--r-0`, on a `--paper-sunk` well with a 1px inner rule. **No filters, no
-  overlays, no gradient scrims.** These are phone photos of a desk in a bedroom and dressing
-  them up reads as dishonest.
-- Aspect: 1:1 in rows, 4:3 in detail, 16:9 for the one room hero.
-- **No photo** → the category word set in Archivo `wdth 115%`, 700, `--ink-3` on
-  `--paper-sunk`, optically centred. A word, not a grey camera icon.
-- Interior photos get the §11.4 consent checkbox at upload.
-
-**Empty states are copy, not illustration.** No spot illustrations, no mascot.
+The input is plain language, not a form. That's load-bearing: the matcher reads free text,
+so a category dropdown would throw away the signal it runs on.
 
 ```
-  Nothing in Desks right now.
+  WHAT DO YOU NEED?
 
-  Want one? Add it to your list and we'll tell you
-  the moment someone posts — most desks show up
-  in the last two weeks of term.
+  ┌─────────────────────────────────────────────────────┐
+  │ need a drill saturday, hanging some shelves         │
+  └─────────────────────────────────────────────────────┘
 
-  [ Add desk to my list ]
+  from  [ Oct 2 ]   to  [ Oct 5 ]        [ FIND IT ]
+
+  people usually write like: "carpet cleaner before my
+  inspection, 2 days" · "air mattress, friend visiting"
 ```
+
+One textarea, two native `<input type="date">`, one button. The examples are real seed
+phrasings — they teach the input format by showing it.
+
+**No match** — copy, never illustration:
+
+```
+  Nobody near you has a drill free that weekend.
+
+  Two people have one free the week after —
+  Oct 9–12 and Oct 11–15.
+
+  [ Ask for Oct 9–12 instead ]     [ Post it anyway ]
+```
+
+Always offer the nearest real alternative with its actual dates. "No results found" is
+never acceptable when the engine knows exactly which windows almost worked.
 
 ---
 
-## 11. Motion
+## 11. `/network` — restyling the existing board
 
-Little, and only when something changed.
+`app/board.tsx` works. Don't rebuild it; re-token it. In priority order:
 
-| Token | Value | Use |
-|---|---|---|
-| `--dur-state` | 90ms | hover, focus, chip toggle |
-| `--dur-enter` | 160ms | rows entering, tooltips |
-| `--dur-sheet` | 240ms | modals, drawers |
-| `--ease` | `cubic-bezier(.2,.7,.3,1)` | everything except countdowns |
+1. **Swap the palette** to tokens — `bg-emerald-500` → `--seal-fill`, `bg-rose-500` →
+   `--signal-fill`, `bg-sky-200` → `--paper-sunk` with a 1px `--rule`, neutrals → ink scale.
+   Straight substitution, ~15 minutes, and it's most of the visual gain.
+2. **Mono every number** — scores, day counts, dates, the ms readout.
+3. **`--r-0` on all spans.** Rounded timeline bars misrepresent the data at small widths.
+4. **Add money** to the summary line, since that's now the story:
+   `34/90 earning · $5,056 this term · 9,716 idle days = $38,864 left on the table`.
+5. Item shelf chips → 1px `--rule`, `--r-1`, active = `--ink` fill.
 
-- **Countdown:** digits update on a `linear` tick. **Split-flap animation only on a tier
-  change** (Soon → Today → Final): a single 240ms vertical flip. Once, not continuously —
-  a board that flaps constantly is a toy.
-- **Claim:** a stamp press. `scale(1.06) → 1` over 120ms, settling with a 1.5° rotation on
-  the seal. The one piece of delight in the app, on the one action that matters.
-- **Price drop:** the current rung dot slides one position, 160ms. No confetti.
-- **Banned:** scroll-triggered reveals, parallax, ambient looping, skeleton shimmer, page
-  transitions.
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  /* all durations → 1ms; split-flap becomes an instant swap */
-  /* countdowns tick per minute instead of per second */
-}
-```
-
-That last line matters: a per-second countdown is itself motion, and for a
-vestibular-sensitive user a page full of them is hostile.
+Keep: the layout, the item-bar-above-people-rows ordering (fixed in Pivot 2 for a reason),
+the `×` remove control, the live recompute readout. **The `recomputed in 10.1ms` line is a
+feature** — it's the proof the DP is live. Give it mono and `--ink-2`, don't hide it.
 
 ---
 
-## 12. Voice & copy
+## 12. Motion, accessibility, copy
 
-Plain, specific, a little dry. Copy is where "not slop" actually shows — more than any
-colour choice.
+**Motion.** `--dur-state: 90ms` · `--dur-enter: 160ms` · `--dur-sheet: 240ms` · ease
+`cubic-bezier(.2,.7,.3,1)`.
+
+- The answer card enters once, 160ms, opacity + 4px rise. Nothing else animates on arrival.
+- Booking = a stamp press: `scale(1.04) → 1` over 120ms. The one piece of delight, on the
+  one action that matters.
+- **Banned:** scroll reveals, parallax, ambient loops, shimmer, page transitions.
+- `prefers-reduced-motion: reduce` → all durations 1ms.
+
+**Accessibility.**
+- Body text ≥4.5:1; `--ink-3` only ≥18.66px bold or non-text. §3 ratios are measured.
+- **Idle/held is never colour alone** — the chain strip labels gaps in words, the slip
+  states the date, the readout names "days in a closet."
+- Focus: 2px `--ink` ring, 2px offset, everywhere. Never `outline: none`.
+- Targets ≥44×44.
+- The chain strip needs a text equivalent: *"Held by six people. Idle 7 days in October and
+  12 days in December."*
+- Label every field; never placeholder-as-label. The composer's placeholder is an example,
+  and it has a visible label above it.
+
+**Copy.** Plain, specific, slightly dry. This is where "not slop" actually shows.
 
 | Don't | Do |
 |---|---|
-| 🎉 Your listing is live! | **Listed.** Gone by Sat 12pm unless someone claims it. |
-| Oops! Something went wrong | Couldn't save that photo. Try again? |
-| Amazing deals near you ✨ | 41 things leaving campus this week |
-| Sold! | Claimed by Dev R. Meet at MC lobby, Sat 11am. |
-| No results found | Nothing in Desks right now. Add it to your list and we'll ping you. |
-| Price reduced! | $60 → $40 at 6pm today. Then free at midnight. |
-| Verified user ✅ | Verified uwaterloo.ca · 3 months ago |
-| Complete your profile to unlock features | You need a school email to claim things. Takes 30 seconds. |
-| 92% match | 92% cover — starts 6 days after you arrive |
+| 🎉 Match found! | Aditi has one. Thu–Sun, $16. |
+| Oops! Something went wrong | Couldn't save that. Try again? |
+| Browse available items near you | Nobody near you has a drill free that weekend. |
+| Item returned successfully ✅ | Handed off to Wes, Oct 5. |
+| Maximize your earnings! | Your drill earned $149 this term. |
+| 92% match | matches on drill, same tools class · 0.768 |
+| Payment processing | You pay Aditi $16 directly. Relay never touches the money. |
 
-**Rules**
-- Never exclamatory. No emoji in chrome.
-- **Always name the date.** "Soon" is not a time; "Saturday noon" is.
-- State consequences plainly: *"the decay clock keeps running while you hold this."*
-- Errors say what failed and what to do. Never "an error occurred."
-- Safety copy is specific and unhedged: *"Relay never handles money. Never send a deposit
-  before you've seen the place."*
-- Numbers in copy: use the word for small counts in prose ("four terms"), digits in any
-  comparable data.
+Never exclamatory. No emoji in chrome. **Always name the date** — "soon" is not a time,
+"Sunday Oct 5" is. Errors say what failed and what to do.
 
 ---
 
 ## 13. Screens
 
-### 13.1 Feed — the departure board
-
 ```
-┌────────────────────────────────────────────────────────────────────┐
-│ RELAY          Waterloo ▾        Sublets  Furniture  My list   ⊙   │
-├────────────────────────────────────────────────────────────────────┤
-│                                                                    │
-│  EVERYTHING HERE IS LEAVING                                        │
-│  41 listings · 6 gone by tonight                                   │
-│                                                                    │
-│  [All] [Sublets] [Desks] [Matches my term] [Under $50] [Free]      │
-├────────────────────────────────────────────────────────────────────┤
-│  FINAL CALL — 3 items                                              │
-│  ██ [img]  Double mattress + frame       $0 free   FINAL 2h 11m   │
-│  ██ [img]  Desk chair, black             $10→$0    FINAL 2h 40m   │
-├────────────────────────────────────────────────────────────────────┤
-│  ▌ MATCH  [img]  Room, 217 Erb St W      $680/mo   TODAY · 18:00  │
-│                  sublet · furnished · 700m                         │
-│                  ├────■■■■■■■■■■■■────┤  100% cover                │
-│    [img]  IKEA MICKE desk, 142cm         $45→$28   3d 04h         │
-│    [img]  Mini fridge, to rent           $15/mo    5d 12h         │
-│    [img]  Room in shared, 4-person       $540/mo   14 Dec         │
-└────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│  RELAY            need  ·  handoffs (2)  ·  shelf  ·  network │
+│                                              you: Priya S. ▾  │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│   WHAT DO YOU NEED?                                          │
+│   ┌────────────────────────────────────────────────────┐     │
+│   │ need a drill saturday, hanging some shelves        │     │
+│   └────────────────────────────────────────────────────┘     │
+│   from [Oct 2]  to [Oct 5]              [ FIND IT ]           │
+│                                                              │
+│   ┌──────────────── the answer card, §6 ───────────────┐     │
+│   └────────────────────────────────────────────────────┘     │
+└──────────────────────────────────────────────────────────────┘
 ```
 
-Display headline is the only oversized type on the page. The count line does the work a
-subtitle usually fakes. No hero image, no gradient, no illustration.
+Display headline is the only oversized type. No hero image, no gradient, no illustration.
+The nav badge on `handoffs` is a plain mono count in `--ink`, `--signal` only when overdue.
 
-### 13.2 Listing detail — `place`
+`/handoffs` — two stacks, `TO GIVE` then `TO COLLECT`, slips in date order, overdue first.
+`/shelf` — your items, each: name, rate, earnings readout (§9), chain strip (§7).
+`/network` — §11.
 
-```
-┌────────────────────────────────────────────────────────────────────┐
-│ ← back                                                             │
-│ ┌──────────────────────────┐  Room, 217 Erb St W                  │
-│ │                          │  SUBLET · FURNISHED · 1 of 4          │
-│ │      photo 16:9          │                                       │
-│ │                          │  $680 /mo        TODAY · 18:00        │
-│ └──────────────────────────┘  ◆────◆────●───○  ↓ $610 in 4h       │
-│ [▫][▫][▫][▫]                                                      │
-│                               THEIR PLACE IS FREE                  │
-│                               ├──────────────────────────┤         │
-│                               YOUR TERM                            │
-│                                   ├──────────────────┤             │
-│                               ┌──────────────────────────┐         │
-│                               │ 100% COVER · 108 days    │         │
-│                               └──────────────────────────┘         │
-│                                                                    │
-│                               ┌───────────────┐  ┌──────────────┐ │
-│                               │ ✓ UWATERLOO   │  │ LEASE ON FILE│ │
-│                               └───────────────┘  └──────────────┘ │
-│                               Maya K. · 4 handoffs · verified 3mo  │
-│                                                                    │
-│                               [   CLAIM THIS ROOM   ]              │
-│                               [ Ask a question ]                   │
-├────────────────────────────────────────────────────────────────────┤
-│  Landlord consent: OBTAINED                                        │
-│  Deposit expected: $680, paid directly to Maya. Relay never        │
-│  handles money — never send one before you've seen the place.      │
-├────────────────────────────────────────────────────────────────────┤
-│  Comes with 5 things →  [manifest]                                 │
-└────────────────────────────────────────────────────────────────────┘
-```
-
-The safety band is ink on `--paper-sunk`, always present on `place`, never dismissible, never
-a red alert box. Permanent and calm reads as policy; red reads as an edge case.
-
-### 13.3 Mobile feed (375px)
-
-```
-┌──────────────────────────┐
-│ RELAY   Waterloo ▾    ⊙  │
-├──────────────────────────┤
-│ EVERYTHING HERE          │
-│ IS LEAVING               │
-│ 41 · 6 gone tonight      │
-│ [All][Sublets][Match]→   │
-├──────────────────────────┤
-│ ██ ┌──┐ Double mattress  │
-│    │▫▫│ $0 free          │
-│    └──┘ FINAL 2h 11m     │
-├──────────────────────────┤
-│ ▌  ┌──┐ Room, 217 Erb    │
-│    │▫▫│ sublet·furn·700m │
-│    └──┘ ├──■■■■■──┤ 100% │
-│         $680/mo          │
-│         TODAY · 18:00    │
-└──────────────────────────┘
-```
-
-Thumb 64px, term bar full row width beneath the meta, price and countdown stacked right. The
-row stays a row — it never becomes a card.
+**Mobile (375px):** everything is already single-column. The answer card goes full-bleed
+with 16px gutters; the price block moves below the person line rather than floating right;
+the chain strip scrolls horizontally inside its own `overflow-x:auto` container — the page
+body never scrolls sideways.
 
 ---
 
-## 14. Responsive & accessibility
+## 14. Tokens — `app/globals.css`
 
-**Breakpoints:** `<640` single column · `640–1023` single column, wider gutters ·
-`≥1024` ledger + 320px sidebar · `≥1280` cap content at 1120px.
-
-**Accessibility — the non-negotiables:**
-
-- Body text ≥ 4.5:1; `--ink-3` only at ≥18.66px bold or for non-text. Ratios in §3 are
-  measured, not estimated.
-- **Urgency is never colour alone** — the words carry it (§6).
-- Focus: 2px `--ink` ring, 2px offset, on every interactive element. Never `outline: none`.
-- Targets ≥44×44px, including the filter chips.
-- `prefers-reduced-motion` handled properly, including countdown cadence (§11).
-- Countdowns use `aria-live="off"` with an accessible label that states the **absolute
-  time** — a screen reader announcing a ticking number every second is unusable.
-- Photo wells get real alt text from the listing title, not "image".
-- The term bar needs a text equivalent: *"Available Aug 25 to Jan 5. Covers 100% of your
-  term."*
-- Forms: label every field, never placeholder-as-label.
-
----
-
-## 15. Tokens — paste into `app/globals.css`
-
-Replaces the existing file. Follows the `@theme inline` pattern already in the repo
-(Tailwind v4).
+Extends the existing file; keeps its committed-light-theme decision.
 
 ```css
 @import "tailwindcss";
 
+html { color-scheme: light; }
+
 :root {
-  /* ground */
   --paper: #F2EFE6;
   --paper-raised: #FBF9F4;
   --paper-sunk: #E7E2D6;
 
-  /* ink */
   --ink: #1C1A15;
   --ink-2: #57534A;
   --ink-3: #8A8478;
   --rule: rgba(28, 26, 21, .14);
   --rule-strong: rgba(28, 26, 21, .30);
 
-  /* semantic — time, money, executed. nothing else gets colour */
+  /* in use · idle · money — nothing else gets colour */
+  --seal: #2F5D3A;
+  --seal-fill: #3E7A4C;
   --signal: #B83417;
   --signal-fill: #C6371B;
   --amber: #8A5A00;
   --amber-fill: #E0A43A;
-  --seal: #2F5D3A;
 
-  /* geometry */
   --r-0: 0px;
   --r-1: 2px;
   --r-2: 4px;
   --shadow-sheet: 0 8px 24px -8px rgba(28, 26, 21, .28);
 
-  /* motion */
   --dur-state: 90ms;
   --dur-enter: 160ms;
   --dur-sheet: 240ms;
   --ease: cubic-bezier(.2, .7, .3, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #151410;
-    --paper-raised: #201E18;
-    --paper-sunk: #0F0E0A;
-    --ink: #EDE9DE;
-    --ink-2: #A8A296;
-    --ink-3: #6F6A5F;
-    --rule: rgba(237, 233, 222, .16);
-    --rule-strong: rgba(237, 233, 222, .32);
-    --signal: #FF6B4A;
-    --signal-fill: #FF6B4A;
-    --amber: #E8A33D;
-    --amber-fill: #E8A33D;
-    --seal: #6FB37E;
-    --shadow-sheet: 0 8px 24px -8px rgba(0, 0, 0, .6);
-  }
-}
-
-:root[data-theme="dark"] {
-  --paper: #151410;
-  --paper-raised: #201E18;
-  --paper-sunk: #0F0E0A;
-  --ink: #EDE9DE;
-  --ink-2: #A8A296;
-  --ink-3: #6F6A5F;
-  --rule: rgba(237, 233, 222, .16);
-  --rule-strong: rgba(237, 233, 222, .32);
-  --signal: #FF6B4A;
-  --signal-fill: #FF6B4A;
-  --amber: #E8A33D;
-  --amber-fill: #E8A33D;
-  --seal: #6FB37E;
-  --shadow-sheet: 0 8px 24px -8px rgba(0, 0, 0, .6);
 }
 
 @theme inline {
@@ -844,11 +483,12 @@ Replaces the existing file. Follows the `@theme inline` pattern already in the r
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
+  --color-seal: var(--seal);
+  --color-seal-fill: var(--seal-fill);
   --color-signal: var(--signal);
   --color-signal-fill: var(--signal-fill);
   --color-amber: var(--amber);
   --color-amber-fill: var(--amber-fill);
-  --color-seal: var(--seal);
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -865,16 +505,13 @@ body {
   font-variation-settings: "wdth" 100;
 }
 
-/* every comparable number, everywhere */
-.data {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-variant-numeric: tabular-nums;
-}
+/* every comparable number */
+.data { font-family: var(--font-mono), ui-monospace, monospace; font-variant-numeric: tabular-nums; }
 
 /* width as a hierarchy axis — §4 */
 .t-display { font-variation-settings: "wdth" 115; font-weight: 700; letter-spacing: -.025em; }
 .t-title   { font-variation-settings: "wdth" 105; font-weight: 650; letter-spacing: -.015em; }
-.t-listing { font-variation-settings: "wdth"  88; font-weight: 600; }
+.t-item    { font-variation-settings: "wdth"  88; font-weight: 600; }
 .t-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -888,49 +525,36 @@ body {
 
 ---
 
-## 16. Build order for the design
+## 15. Build order
 
-12 hours. Not everything here ships. **In priority order — stop when the clock runs out:**
+Not everything ships. **Stop when the clock runs out.**
 
-| # | Build | Why it's here |
+| # | Build | Why here |
 |---|---|---|
-| 1 | **Tokens + fonts** (§15) | 20 minutes, and it's the entire difference between "designed" and "template" |
-| 2 | **Ledger row** (§7) | The app is mostly this component |
-| 3 | **Countdown** (§6) | The thesis, on screen, in every row |
-| 4 | **Term bar, inline + expanded** (§8) | The thing nobody else has. **Do not cut this** |
-| 5 | **Feed layout** (§13.1) | Display headline, count line, filter chips |
-| 6 | **Listing detail** (§13.2) | Including the safety band |
-| 7 | **Decay ladder** (§9.1) | Small, high-impact, sells the pricing idea instantly |
-| — | | **← if the clock dies here, the demo still lands** |
-| 8 | **Slot picker** (§9.7) | Small, and it is the last beat of the demo |
-| 9 | Bundle manifest (§9.2) | The best transaction, but the feed tells the story without it |
-| 10 | Wants checklist (§9.5) | |
-| 11 | Verified stamp (§9.6) | 10 minutes, disproportionate charm |
-| 12 | Impact readout (§9.9) | Pure numbers, 15 min — and it is the answer to a "new stakeholder" pivot |
-| 13 | Condition report (§9.3) | Highest product value, lowest demo value in 2 minutes |
-| 14 | Provenance chain (§9.4) | Pure garnish — real if sustainability becomes the pivot |
-
-**Dark mode is free** if you use the tokens from hour one and expensive if you retrofit it at
-hour ten. Use the tokens.
+| 1 | **Tokens + fonts** (§14) | 45 min, and it's the whole difference between "designed" and "template" |
+| 2 | **Answer card** (§6) | The product |
+| 3 | **Need composer** (§10) | The only way to reach the answer card |
+| 4 | **Re-token `/network`** (§11) | ~15 min of substitution for most of the visual gain |
+| 5 | **Handoff slip** (§8) | Makes the chain an obligation |
+| — | | **← cut line. The demo lands here** |
+| 6 | Chain strip (§7) | Beautiful, and `/network` already tells the story |
+| 7 | Earnings readout (§9) | Sells the supply side — build if `/shelf` exists |
+| 8 | No-match state (§10) | Only if the demo path can hit it |
 
 ---
 
-## 17. Review checklist
+## 16. Review checklist
 
-Before calling any screen done:
-
-- [ ] Is there any colour on screen that isn't time, money, or confirmation?
-- [ ] Any `border-radius` above 4px?
-- [ ] Any `box-shadow` that isn't a dropdown or modal?
+- [ ] Any colour on screen that isn't **in use**, **idle**, or **money**?
+- [ ] Any `border-radius` above 4px? Any `box-shadow` outside a dropdown?
 - [ ] Is every comparable number mono and tabular?
-- [ ] Does every urgency state read correctly in greyscale?
-- [ ] Is there exactly one primary button?
-- [ ] Does it work at 375px without a card grid appearing?
-- [ ] Does a screen with nothing urgent on it have **no colour at all**?
-- [ ] Any copy with an exclamation mark or an emoji in the chrome?
+- [ ] Does every item with a future say **what happens to it next**?
 - [ ] Does every date appear as an actual date, not "soon"?
-- [ ] Focus rings on everything? Reduced-motion honoured?
-- [ ] Would you believe this was built by a person who has rented an apartment?
+- [ ] Exactly one primary button per screen?
+- [ ] Does it work at 375px without the page scrolling sideways?
+- [ ] Focus rings everywhere? Reduced motion honoured?
+- [ ] Any exclamation mark or emoji in the chrome?
+- [ ] Would you believe a person who has actually borrowed something built this?
 
 ---
 
