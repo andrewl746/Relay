@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { getProfile } from "@/lib/onboarding/profile";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
@@ -25,7 +24,6 @@ export async function GET(request: Request) {
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.redirect(new URL("/login?error=no_user", url.origin));
 
-  const profile = await getProfile(supabase, user.id);
-  const destination = profile?.onboarding_completed ? "/" : "/onboarding/profile";
-  return NextResponse.redirect(new URL(destination, url.origin));
+  // Everyone lands on the board. Unfinished setup continues in Parcel's corner there.
+  return NextResponse.redirect(new URL("/", url.origin));
 }

@@ -12,7 +12,7 @@ const initialState: ActionState = { status: "idle" };
 /**
  * A grid of boxes, not a list of checkboxes. Picking interests is a browsing
  * decision, so it should look like looking at things — each tile carries its
- * own stencil art and the whole set fills the width.
+ * own stencil art. It lives in Parcel's corner, so it's always two columns.
  *
  * The input stays a real checkbox (visually hidden, not removed) so the form
  * posts normally and keyboard + screen-reader behaviour is unchanged.
@@ -29,13 +29,13 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
       <fieldset>
         <legend className="sr-only">What are you looking for?</legend>
 
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3">
           {INTERESTS.map((interest, i) => {
             const on = picked.includes(interest.id);
             return (
               <label
                 key={interest.id}
-                className={`group anim-flap relative flex cursor-pointer flex-col gap-3 rounded-md border p-4 transition-[border-color,background-color,box-shadow] duration-100 hover:shadow-[var(--lift)] sm:p-5 ${
+                className={`group anim-flap relative flex cursor-pointer flex-col gap-3 rounded-md border p-3 transition-[border-color,background-color,box-shadow] duration-100 hover:shadow-[var(--lift)] ${
                   on
                     ? "border-accent bg-accent-tint"
                     : "border-border bg-surface hover:border-border-strong"
@@ -64,7 +64,7 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
                 </span>
 
                 <span
-                  className={`h-16 w-16 transition-colors sm:h-20 sm:w-20 ${
+                  className={`h-12 w-12 transition-colors ${
                     on ? "text-accent" : "text-ink-3 group-hover:text-ink-2"
                   }`}
                 >
