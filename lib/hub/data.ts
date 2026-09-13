@@ -197,7 +197,7 @@ export async function getMatches(user: User): Promise<MatchDetail[]> {
         wantIds: covered.map((w) => w.id),
         score: Math.max(...hits.map((h) => HIT_SCORE[h.via])),
         reason: matchReason(covered, hits),
-      }),
+      }, covered),
     );
     plans = [...authored, ...searched].sort((a, b) => b.rank - a.rank);
   }
