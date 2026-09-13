@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isUniversityEmail } from "@/lib/hub/email";
 import { sendVerificationEmail } from "@/lib/onboarding/email";
@@ -9,13 +10,25 @@ import { getUniversity } from "@/lib/onboarding/universities";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseUser } from "@/lib/supabase/session";
 
-export type ActionState = { status: "idle" | "error" | "sent"; message?: string; devCode?: string };
+/**
+ * Setup runs in Parcel's corner on the site itself (components/onboarding/
+ * onboarding-corner.tsx), not on pages of its own. So a step that saves doesn't
+ * navigate anywhere: it refreshes the layout, and the corner reads the next step
+ * off the profile.
+ */
+export type ActionState = { status: "idle" | "error" | "sent" | "saved"; message?: string; devCode?: string };
 
 async function requireUser() {
   const authUser = await getSupabaseUser();
   if (!authUser) redirect("/login");
   const supabase = await createClient();
   return { supabase, user: authUser };
+}
+
+/** Re-render the layout so Parcel's corner moves on to whatever step is next. */
+function nextStep(): ActionState {
+  revalidatePath("/", "layout");
+  return { status: "saved" };
 }
 
 export async function saveProfileStep(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -59,7 +72,7 @@ export async function saveProfileStep(_prev: ActionState, formData: FormData): P
 
   if (error) return { status: "error", message: "Couldn't save that. Try again." };
 
-  redirect("/onboarding/verify");
+  return nextStep();
 }
 
 export async function sendVerificationCode(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -133,8 +146,8 @@ export async function confirmVerificationCode(_prev: ActionState, formData: Form
 
   await supabase.from("email_verifications").update({ consumed_at: new Date().toISOString() }).eq("id", record.id);
 
-  // Re-verifying after a university change: back to settings, not through
-  // interests and wants a second time.
+  // Re-verifying after a university change: that's the whole job, not another
+  // pass through interests and wants.
   const profile = await getProfile(supabase, user.id);
   const reverify = Boolean(profile?.onboarding_completed);
   await supabase
@@ -142,7 +155,7 @@ export async function confirmVerificationCode(_prev: ActionState, formData: Form
     .update(reverify ? { university_email_verified: true } : { university_email_verified: true, onboarding_step: "interests" })
     .eq("id", user.id);
 
-  redirect(reverify ? "/settings" : "/onboarding/interests");
+  return nextStep();
 }
 
 export async function saveInterests(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -157,7 +170,18 @@ export async function saveInterests(_prev: ActionState, formData: FormData): Pro
 
   if (error) return { status: "error", message: "Couldn't save that. Try again." };
 
-  redirect("/onboarding/wants");
+  return nextStep();
+}
+
+/** The wishlist step's "Back to interests". Only moves accounts still setting up. */
+export async function backToInterests(): Promise<void> {
+  const { supabase, user } = await requireUser();
+  await supabase
+    .from("profiles")
+    .update({ onboarding_step: "interests" })
+    .eq("id", user.id)
+    .eq("onboarding_completed", false);
+  revalidatePath("/", "layout");
 }
 
 type WantInput = { text: string; maxPriceCents: number | null };
@@ -188,5 +212,5 @@ export async function finishWants(_prev: ActionState, formData: FormData): Promi
 
   if (error) return { status: "error", message: "Couldn't finish setup. Try again." };
 
-  redirect("/");
+  return nextStep();
 }

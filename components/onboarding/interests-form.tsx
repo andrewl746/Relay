@@ -10,7 +10,7 @@ const initialState: ActionState = { status: "idle" };
 /**
  * A grid of boxes, not a list of checkboxes. Picking interests is a browsing
  * decision, so it should look like looking at things — each tile carries its
- * own stencil art and the whole set fills the width.
+ * own stencil art. It lives in Parcel's corner, so it's always two columns.
  *
  * The input stays a real checkbox (visually hidden, not removed) so the form
  * posts normally and keyboard + screen-reader behaviour is unchanged.
@@ -27,13 +27,13 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
       <fieldset>
         <legend className="sr-only">What are you looking for?</legend>
 
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3">
           {INTERESTS.map((interest, i) => {
             const on = picked.includes(interest.id);
             return (
               <label
                 key={interest.id}
-                className={`group anim-flap relative flex cursor-pointer flex-col gap-3 rounded-[4px] border p-4 transition-[transform,border-color,background-color] duration-100 hover:-translate-y-[2px] sm:p-5 ${
+                className={`group anim-flap relative flex cursor-pointer flex-col gap-3 rounded-[4px] border p-3 transition-[transform,border-color,background-color] duration-100 hover:-translate-y-[2px] ${
                   on
                     ? "border-[var(--kand-red)] bg-[var(--kraft-100)]"
                     : "border-[var(--kraft-300)] bg-[var(--kraft-50)] hover:border-[var(--kraft-400)]"
@@ -65,7 +65,7 @@ export function InterestsForm({ defaultInterests }: { defaultInterests: string[]
                 </span>
 
                 <span
-                  className={`h-16 w-16 transition-colors sm:h-20 sm:w-20 ${
+                  className={`h-12 w-12 transition-colors ${
                     on ? "text-[var(--kand-red)]" : "text-[var(--kraft-400)] group-hover:text-[var(--ink-2)]"
                   }`}
                 >
