@@ -73,14 +73,27 @@ export async function getBoard({
   const inView = filterBoard(open, view, mode ?? "any", { matchedIds });
   let shown = inView;
   let semantic = false;
+  let searched = false;
+
   if (query?.trim()) {
+    searched = true;
     const terms = searchTerms(query);
     const hits = await semanticHits(
       query,
       inView.map((l) => ({ id: l.id, text: searchableText(l) })),
     );
     semantic = hits.size > 0;
-    shown = inView.filter((l) => matchesTerms(searchableText(l), terms) || hits.has(l.id));
+
+    // A literal match is the words the student actually typed, so it outranks
+    // anything the vectors merely found similar. Everything else is ordered by
+    // how well it answers the question — never by deadline, which would bury
+    // the best answer under whatever happens to expire soonest.
+    const relevance = (l: BoardListing) =>
+      (matchesTerms(searchableText(l), terms) ? 1 : 0) + (hits.get(l.id) ?? 0);
+
+    shown = inView
+      .filter((l) => relevance(l) > 0)
+      .sort((a, b) => relevance(b) - relevance(a));
   }
 
   const deadlines = open.flatMap((l) => {
@@ -89,7 +102,9 @@ export async function getBoard({
   });
 
   return {
-    ...rankByUrgency(shown),
+    // Searching answers a question; browsing answers "what is about to be
+    // thrown out". Only the second one wants a deadline ordering.
+    ...(searched ? { finalCall: [] as BoardListing[], rest: shown } : rankByUrgency(shown)),
     semantic,
     total: open.length,
     goneTonight: deadlines.filter(isGoneByTonight).length,

@@ -34,6 +34,11 @@ import { embed as minilm } from "./embed";
  * The cuts are per-model because the two score on different scales. Results
  * are unioned with the lexical hits, never substituted for them, so turning
  * the model off can only remove results — it can't break search.
+ *
+ * Scores come back with the ids, not just membership: a search is answering a
+ * question, so the caller has to be able to order by how well each listing
+ * answers it. Ordering search results by deadline instead buries the best
+ * answer under whatever happens to expire soonest.
  */
 
 /** Measured on the real board: correct hits 0.32-0.68, noise under 0.25. */
@@ -44,8 +49,8 @@ const FALLBACK = { relative: 0.5, floor: 0.12 };
 export async function semanticHits(
   query: string,
   items: { id: string; text: string }[],
-): Promise<Set<string>> {
-  if (items.length === 0 || !query.trim()) return new Set();
+): Promise<Map<string, number>> {
+  if (items.length === 0 || !query.trim()) return new Map();
 
   const texts = items.map((i) => i.text);
 
@@ -61,7 +66,7 @@ export async function semanticHits(
     // provider did — no key, rate limit, network — the lexical half still
     // answered, so log it and return nothing.
     console.warn(`[search] ${providerName()} embed failed, lexical only:`, err);
-    return new Set();
+    return new Map();
   }
 }
 
@@ -69,11 +74,11 @@ function select(
   items: { id: string }[],
   vectors: number[][],
   { relative, floor }: { relative: number; floor: number },
-): Set<string> {
+): Map<string, number> {
   const [q, ...rest] = vectors;
   const scored = items.map((item, i) => ({ id: item.id, score: cosine(q, rest[i]) }));
   const best = Math.max(...scored.map((s) => s.score));
-  if (best < floor) return new Set();
+  if (best < floor) return new Map();
   const cut = Math.max(best * relative, floor);
-  return new Set(scored.filter((s) => s.score >= cut).map((s) => s.id));
+  return new Map(scored.filter((s) => s.score >= cut).map((s) => [s.id, s.score]));
 }

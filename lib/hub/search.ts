@@ -35,9 +35,17 @@ const SYNONYMS: string[][] = [
   ["pot", "pan", "saucepan", "stockpot"],
 ];
 
-/** Query words too common to be worth matching on. */
+/**
+ * Query words too common to be worth matching on.
+ *
+ * Spoken and typed queries are padded with these ("something to help me build
+ * a…"), and because every remaining token has to match, one filler word is
+ * enough to reject a listing that otherwise answers the question perfectly.
+ */
 const NOISE = new Set([
   "a", "an", "the", "for", "my", "some", "any", "need", "want", "looking", "i", "to", "of", "in", "with",
+  "something", "anything", "help", "me", "get", "find", "that", "can", "use", "using", "please", "is", "it",
+  "on", "and", "or", "am", "be", "do", "so",
 ]);
 
 /**
@@ -56,8 +64,24 @@ export function searchTerms(query: string): string[][] {
     });
 }
 
-/** Does this text satisfy every term group? (AND across groups, OR within one.) */
+/**
+ * Does this text satisfy every term group? (AND across groups, OR within one.)
+ *
+ * A term has to start a word, but may run into one: "build" should find
+ * "building", while "light" must not find "highlighting" — which is exactly
+ * how a biology textbook used to turn up in a search for a lamp.
+ */
 export function matchesTerms(text: string, terms: string[][]): boolean {
   const haystack = text.toLowerCase();
-  return terms.every((group) => group.some((w) => haystack.includes(w)));
+  return terms.every((group) => group.some((w) => startsWord(haystack, w)));
+}
+
+function startsWord(haystack: string, word: string): boolean {
+  let from = 0;
+  for (;;) {
+    const at = haystack.indexOf(word, from);
+    if (at === -1) return false;
+    if (at === 0 || !/[a-z0-9]/.test(haystack[at - 1])) return true;
+    from = at + 1;
+  }
 }
