@@ -16,7 +16,7 @@ export const users: User[] = [
     home: "Moving in from Vancouver",
     destination: "Phillip St",
     moveStatus: "arriving",
-    moveDate: "2026-09-15T09:00:00-04:00",
+    moveDate: "2026-09-15T18:05:00-04:00",
     note: "2B Software Engineering",
   },
   {
@@ -27,7 +27,7 @@ export const users: User[] = [
     home: "318 Lester St",
     destination: null,
     moveStatus: "leaving",
-    moveDate: "2026-09-15T14:00:00-04:00",
+    moveDate: "2026-09-15T23:05:00-04:00",
     note: "Co-op term in Toronto",
   },
   {
@@ -38,7 +38,7 @@ export const users: User[] = [
     home: "Moving in from Mississauga",
     destination: "Village 1",
     moveStatus: "arriving",
-    moveDate: "2026-09-14T14:00:00-04:00",
+    moveDate: "2026-09-14T23:05:00-04:00",
     note: "1A Biomedical Engineering",
   },
   {
@@ -49,7 +49,7 @@ export const users: User[] = [
     home: "Village 1",
     destination: null,
     moveStatus: "leaving",
-    moveDate: "2026-09-14T20:00:00-04:00",
+    moveDate: "2026-09-15T05:05:00-04:00",
     note: "Co-op term in Ottawa",
   },
   {
@@ -60,7 +60,7 @@ export const users: User[] = [
     home: "Sunview St",
     destination: null,
     moveStatus: "leaving",
-    moveDate: "2026-09-14T10:00:00-04:00",
+    moveDate: "2026-09-14T19:05:00-04:00",
     note: "Co-op term in Calgary",
   },
   {
@@ -71,7 +71,7 @@ export const users: User[] = [
     home: "Mackenzie King Village",
     destination: null,
     moveStatus: "leaving",
-    moveDate: "2026-09-17T20:00:00-04:00",
+    moveDate: "2026-09-18T05:05:00-04:00",
     note: "Co-op term in San Francisco",
   },
   {
@@ -108,7 +108,7 @@ function listing(seed: ListingSeed): Listing {
     isBundle: false,
     parentId: null,
     status: "available",
-    createdAt: "2026-09-10T12:00:00-04:00",
+    createdAt: "2026-09-10T21:05:00-04:00",
     ...seed,
   };
 }
@@ -118,7 +118,7 @@ const inPriyasRoom = {
   category: "furniture",
   offerType: "sale",
   pickupArea: "Lester St",
-  expiresAt: "2026-09-15T12:00:00-04:00",
+  expiresAt: "2026-09-15T21:05:00-04:00",
   parentId: "l-priya-room",
 } as const;
 
@@ -135,8 +135,8 @@ export const listings: Listing[] = [
     priceCents: null,
     condition: "good",
     pickupArea: "Sunview St",
-    expiresAt: "2026-09-13T13:30:00-04:00",
-    createdAt: "2026-09-12T21:30:00-04:00",
+    expiresAt: "2026-09-14T00:05:00-04:00",
+    createdAt: "2026-09-13T06:35:00-04:00",
   }),
   listing({
     id: "l-lab-coat",
@@ -150,8 +150,8 @@ export const listings: Listing[] = [
     priceCents: 1500,
     condition: "good",
     pickupArea: "Village 1",
-    expiresAt: "2026-09-13T18:00:00-04:00",
-    createdAt: "2026-09-12T09:30:00-04:00",
+    expiresAt: "2026-09-14T03:05:00-04:00",
+    createdAt: "2026-09-12T18:35:00-04:00",
   }),
   listing({
     id: "l-floor-lamp",
@@ -164,8 +164,8 @@ export const listings: Listing[] = [
     priceCents: null,
     condition: "good",
     pickupArea: "Sunview St",
-    expiresAt: "2026-09-13T20:00:00-04:00",
-    createdAt: "2026-09-12T18:00:00-04:00",
+    expiresAt: "2026-09-14T05:05:00-04:00",
+    createdAt: "2026-09-13T03:05:00-04:00",
   }),
   listing({
     id: "l-bookshelf",
@@ -179,8 +179,8 @@ export const listings: Listing[] = [
     priceCents: null,
     condition: "fair",
     pickupArea: "Sunview St",
-    expiresAt: "2026-09-14T09:00:00-04:00",
-    createdAt: "2026-09-11T20:15:00-04:00",
+    expiresAt: "2026-09-14T18:05:00-04:00",
+    createdAt: "2026-09-12T05:20:00-04:00",
   }),
   listing({
     id: "l-calculator",
@@ -194,8 +194,8 @@ export const listings: Listing[] = [
     priceCents: 6000,
     condition: "like-new",
     pickupArea: "Village 1",
-    expiresAt: "2026-09-14T16:00:00-04:00",
-    createdAt: "2026-09-11T10:00:00-04:00",
+    expiresAt: "2026-09-15T01:05:00-04:00",
+    createdAt: "2026-09-11T19:05:00-04:00",
   }),
   listing({
     id: "l-priya-room",
@@ -209,9 +209,9 @@ export const listings: Listing[] = [
     priceCents: 14000,
     condition: "good",
     pickupArea: "Lester St",
-    expiresAt: "2026-09-15T12:00:00-04:00",
+    expiresAt: "2026-09-15T21:05:00-04:00",
     isBundle: true,
-    createdAt: "2026-09-13T08:45:00-04:00",
+    createdAt: "2026-09-13T17:50:00-04:00",
   }),
   listing({ ...inPriyasRoom, id: "l-priya-desk", title: "IKEA Micke desk, white", kind: "Desk", priceCents: 4500, condition: "good" }),
   listing({ ...inPriyasRoom, id: "l-priya-chair", title: "Mesh desk chair", kind: "Chair", priceCents: 3000, condition: "good" }),
@@ -233,8 +233,8 @@ export const listings: Listing[] = [
     priceCents: 3500,
     condition: "good",
     pickupArea: "Mackenzie King Village",
-    expiresAt: "2026-09-16T10:00:00-04:00",
-    createdAt: "2026-09-12T15:00:00-04:00",
+    expiresAt: "2026-09-16T19:05:00-04:00",
+    createdAt: "2026-09-13T00:05:00-04:00",
   }),
   listing({
     id: "l-biology",
@@ -247,8 +247,8 @@ export const listings: Listing[] = [
     priceCents: 4000,
     condition: "good",
     pickupArea: "Mackenzie King Village",
-    expiresAt: "2026-09-16T10:00:00-04:00",
-    createdAt: "2026-09-12T15:10:00-04:00",
+    expiresAt: "2026-09-16T19:05:00-04:00",
+    createdAt: "2026-09-13T00:15:00-04:00",
   }),
   listing({
     id: "l-desk-converter",
@@ -261,8 +261,8 @@ export const listings: Listing[] = [
     priceCents: 5000,
     condition: "like-new",
     pickupArea: "Mackenzie King Village",
-    expiresAt: "2026-09-17T18:00:00-04:00",
-    createdAt: "2026-09-12T15:20:00-04:00",
+    expiresAt: "2026-09-18T03:05:00-04:00",
+    createdAt: "2026-09-13T00:25:00-04:00",
   }),
   listing({
     id: "l-mini-fridge",
@@ -276,7 +276,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "King St N",
     expiresAt: null,
-    createdAt: "2026-09-13T09:00:00-04:00",
+    createdAt: "2026-09-13T18:05:00-04:00",
   }),
   listing({
     id: "l-monitor",
@@ -291,7 +291,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "Columbia St W",
     expiresAt: null,
-    createdAt: "2026-09-12T21:00:00-04:00",
+    createdAt: "2026-09-13T06:05:00-04:00",
   }),
   listing({
     id: "l-futon",
@@ -305,7 +305,7 @@ export const listings: Listing[] = [
     condition: "fair",
     pickupArea: "King St N",
     expiresAt: null,
-    createdAt: "2026-09-12T11:00:00-04:00",
+    createdAt: "2026-09-12T20:05:00-04:00",
   }),
   listing({
     id: "l-rolling-cart",
@@ -319,7 +319,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "King St N",
     expiresAt: null,
-    createdAt: "2026-09-12T08:00:00-04:00",
+    createdAt: "2026-09-12T17:05:00-04:00",
   }),
   listing({
     id: "l-office-chair",
@@ -333,7 +333,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "Columbia St W",
     expiresAt: null,
-    createdAt: "2026-09-11T17:30:00-04:00",
+    createdAt: "2026-09-12T02:35:00-04:00",
   }),
   listing({
     id: "l-drafting-kit",
@@ -347,7 +347,7 @@ export const listings: Listing[] = [
     condition: "like-new",
     pickupArea: "King St N",
     expiresAt: null,
-    createdAt: "2026-09-10T16:00:00-04:00",
+    createdAt: "2026-09-11T01:05:00-04:00",
   }),
   listing({
     id: "l-kitchen-table",
@@ -361,7 +361,7 @@ export const listings: Listing[] = [
     condition: "fair",
     pickupArea: "Columbia St W",
     expiresAt: null,
-    createdAt: "2026-09-08T13:00:00-04:00",
+    createdAt: "2026-09-08T22:05:00-04:00",
   }),
   listing({
     id: "l-whiteboard",
@@ -376,7 +376,7 @@ export const listings: Listing[] = [
     pickupArea: "Columbia St W",
     expiresAt: null,
     status: "claimed",
-    createdAt: "2026-09-09T19:00:00-04:00",
+    createdAt: "2026-09-10T04:05:00-04:00",
   }),
   listing({
     id: "l-bedside-table",
@@ -389,9 +389,9 @@ export const listings: Listing[] = [
     priceCents: 1000,
     condition: "good",
     pickupArea: "Lester St",
-    expiresAt: "2026-09-15T12:00:00-04:00",
+    expiresAt: "2026-09-15T21:05:00-04:00",
     status: "claimed",
-    createdAt: "2026-09-11T08:00:00-04:00",
+    createdAt: "2026-09-11T17:05:00-04:00",
   }),
 
   // A spread across every category and all four offer types. Renting and
@@ -410,8 +410,8 @@ export const listings: Listing[] = [
     priceCents: null,
     condition: "fair",
     pickupArea: "Sunview St",
-    expiresAt: "2026-09-14T09:30:00-04:00",
-    createdAt: "2026-09-12T19:00:00-04:00",
+    expiresAt: "2026-09-13T23:15:00-04:00",
+    createdAt: "2026-09-13T04:05:00-04:00",
     photoUrl: "/photos/bean-bag-chair.webp",
   }),
   listing({
@@ -426,7 +426,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "Columbia St W",
     expiresAt: null,
-    createdAt: "2026-09-10T18:30:00-04:00",
+    createdAt: "2026-09-11T03:35:00-04:00",
     photoUrl: "/photos/folding-table.webp",
   }),
   listing({
@@ -440,8 +440,8 @@ export const listings: Listing[] = [
     priceCents: 800,
     condition: "good",
     pickupArea: "Mackenzie King Village",
-    expiresAt: "2026-09-17T12:00:00-04:00",
-    createdAt: "2026-09-12T15:30:00-04:00",
+    expiresAt: "2026-09-13T23:10:00-04:00",
+    createdAt: "2026-09-13T00:35:00-04:00",
     photoUrl: "/photos/shoe-rack.webp",
   }),
 
@@ -457,8 +457,8 @@ export const listings: Listing[] = [
     priceCents: 3500,
     condition: "good",
     pickupArea: "Lester St",
-    expiresAt: "2026-09-15T12:00:00-04:00",
-    createdAt: "2026-09-12T10:00:00-04:00",
+    expiresAt: "2026-09-13T20:25:00-04:00",
+    createdAt: "2026-09-12T19:05:00-04:00",
     photoUrl: "/photos/physics-textbook.webp",
   }),
   listing({
@@ -473,7 +473,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "Columbia St W",
     expiresAt: null,
-    createdAt: "2026-09-11T12:00:00-04:00",
+    createdAt: "2026-09-11T21:05:00-04:00",
     photoUrl: "/photos/exam-calculator.webp",
   }),
   listing({
@@ -487,8 +487,8 @@ export const listings: Listing[] = [
     priceCents: null,
     condition: "like-new",
     pickupArea: "Mackenzie King Village",
-    expiresAt: "2026-09-17T12:00:00-04:00",
-    createdAt: "2026-09-12T15:40:00-04:00",
+    expiresAt: "2026-09-17T21:05:00-04:00",
+    createdAt: "2026-09-13T00:45:00-04:00",
     photoUrl: "/photos/binders.webp",
   }),
 
@@ -504,8 +504,8 @@ export const listings: Listing[] = [
     priceCents: 1500,
     condition: "good",
     pickupArea: "Sunview St",
-    expiresAt: "2026-09-14T09:30:00-04:00",
-    createdAt: "2026-09-12T19:10:00-04:00",
+    expiresAt: "2026-09-13T20:20:00-04:00",
+    createdAt: "2026-09-13T04:15:00-04:00",
     photoUrl: "/photos/rice-cooker.webp",
   }),
   listing({
@@ -520,7 +520,7 @@ export const listings: Listing[] = [
     condition: "like-new",
     pickupArea: "King St N",
     expiresAt: null,
-    createdAt: "2026-09-11T14:00:00-04:00",
+    createdAt: "2026-09-11T23:05:00-04:00",
     photoUrl: "/photos/instant-pot.webp",
   }),
   listing({
@@ -534,8 +534,8 @@ export const listings: Listing[] = [
     priceCents: null,
     condition: "fair",
     pickupArea: "Village 1",
-    expiresAt: "2026-09-14T18:00:00-04:00",
-    createdAt: "2026-09-12T20:00:00-04:00",
+    expiresAt: "2026-09-13T23:20:00-04:00",
+    createdAt: "2026-09-13T05:05:00-04:00",
     photoUrl: "/photos/pots-pans.webp",
   }),
 
@@ -551,8 +551,8 @@ export const listings: Listing[] = [
     priceCents: 2000,
     condition: "like-new",
     pickupArea: "Mackenzie King Village",
-    expiresAt: "2026-09-17T12:00:00-04:00",
-    createdAt: "2026-09-12T15:50:00-04:00",
+    expiresAt: "2026-09-13T23:25:00-04:00",
+    createdAt: "2026-09-13T00:55:00-04:00",
     photoUrl: "/photos/keyboard-mouse.webp",
   }),
   listing({
@@ -567,7 +567,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "King St N",
     expiresAt: null,
-    createdAt: "2026-09-10T11:00:00-04:00",
+    createdAt: "2026-09-10T20:05:00-04:00",
     photoUrl: "/photos/printer.webp",
   }),
   listing({
@@ -582,7 +582,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "Columbia St W",
     expiresAt: null,
-    createdAt: "2026-09-09T20:00:00-04:00",
+    createdAt: "2026-09-10T05:05:00-04:00",
     photoUrl: "/photos/projector.webp",
   }),
 
@@ -598,8 +598,8 @@ export const listings: Listing[] = [
     priceCents: 600,
     condition: "good",
     pickupArea: "Village 1",
-    expiresAt: "2026-09-14T18:00:00-04:00",
-    createdAt: "2026-09-12T20:10:00-04:00",
+    expiresAt: "2026-09-13T23:30:00-04:00",
+    createdAt: "2026-09-13T05:15:00-04:00",
     photoUrl: "/photos/shower-caddy.webp",
   }),
   listing({
@@ -613,8 +613,8 @@ export const listings: Listing[] = [
     priceCents: null,
     condition: "new",
     pickupArea: "Lester St",
-    expiresAt: "2026-09-15T12:00:00-04:00",
-    createdAt: "2026-09-12T10:15:00-04:00",
+    expiresAt: "2026-09-13T23:35:00-04:00",
+    createdAt: "2026-09-12T19:20:00-04:00",
     photoUrl: "/photos/toiletries.webp",
   }),
   listing({
@@ -629,7 +629,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "King St N",
     expiresAt: null,
-    createdAt: "2026-09-11T09:00:00-04:00",
+    createdAt: "2026-09-11T18:05:00-04:00",
     photoUrl: "/photos/hair-clippers.webp",
   }),
 
@@ -646,7 +646,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "Columbia St W",
     expiresAt: null,
-    createdAt: "2026-09-10T09:00:00-04:00",
+    createdAt: "2026-09-10T18:05:00-04:00",
     photoUrl: "/photos/suitcase.webp",
   }),
   listing({
@@ -661,7 +661,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "Columbia St W",
     expiresAt: null,
-    createdAt: "2026-09-12T08:30:00-04:00",
+    createdAt: "2026-09-12T17:35:00-04:00",
     photoUrl: "/photos/bike.webp",
   }),
   listing({
@@ -676,7 +676,7 @@ export const listings: Listing[] = [
     condition: "good",
     pickupArea: "King St N",
     expiresAt: null,
-    createdAt: "2026-09-09T15:00:00-04:00",
+    createdAt: "2026-09-10T00:05:00-04:00",
     photoUrl: "/photos/tent.webp",
   }),
   listing({
@@ -691,7 +691,7 @@ export const listings: Listing[] = [
     condition: "like-new",
     pickupArea: "King St N",
     expiresAt: null,
-    createdAt: "2026-09-12T13:00:00-04:00",
+    createdAt: "2026-09-12T22:05:00-04:00",
     photoUrl: "/photos/tower-fan.webp",
   }),
   listing({
@@ -705,8 +705,8 @@ export const listings: Listing[] = [
     priceCents: null,
     condition: "good",
     pickupArea: "Mackenzie King Village",
-    expiresAt: "2026-09-17T12:00:00-04:00",
-    createdAt: "2026-09-12T16:00:00-04:00",
+    expiresAt: "2026-09-17T21:05:00-04:00",
+    createdAt: "2026-09-13T01:05:00-04:00",
     photoUrl: "/photos/yoga-mat.webp",
   }),
 ];
@@ -718,126 +718,126 @@ function slot(id: string, listingId: string, start: string, end: string, place: 
 }
 
 export const slots: TimeSlot[] = [
-  slot("s-room-1", "l-priya-room", "2026-09-14T18:00", "2026-09-14T19:00", lester, "seller"),
-  slot("s-room-2", "l-priya-room", "2026-09-15T10:00", "2026-09-15T11:00", lester, "seller"),
-  slot("s-room-3", "l-priya-room", "2026-09-15T11:00", "2026-09-15T12:00", lester, "seller"),
+  slot("s-room-1", "l-priya-room", "2026-09-15T03:05", "2026-09-15T04:05", lester, "seller"),
+  slot("s-room-2", "l-priya-room", "2026-09-15T19:05", "2026-09-15T20:05", lester, "seller"),
+  slot("s-room-3", "l-priya-room", "2026-09-15T20:05", "2026-09-15T21:05", lester, "seller"),
 
-  slot("s-mattress-1", "l-mattress", "2026-09-13T12:00", "2026-09-13T13:30", "Sunview St", "seller"),
+  slot("s-mattress-1", "l-mattress", "2026-09-13T21:05", "2026-09-13T22:35", "Sunview St", "seller"),
 
-  slot("s-coat-1", "l-lab-coat", "2026-09-13T16:00", "2026-09-13T16:30", "E7 atrium", "campus"),
-  slot("s-coat-2", "l-lab-coat", "2026-09-13T17:30", "2026-09-13T18:00", "Village 1 front desk", "seller"),
+  slot("s-coat-1", "l-lab-coat", "2026-09-14T01:05", "2026-09-14T01:35", "E7 atrium", "campus"),
+  slot("s-coat-2", "l-lab-coat", "2026-09-14T02:35", "2026-09-14T03:05", "Village 1 front desk", "seller"),
 
-  slot("s-lamp-1", "l-floor-lamp", "2026-09-13T13:00", "2026-09-13T14:00", "Sunview St", "seller"),
-  slot("s-lamp-2", "l-floor-lamp", "2026-09-13T18:00", "2026-09-13T20:00", "Sunview St", "seller"),
+  slot("s-lamp-1", "l-floor-lamp", "2026-09-13T22:05", "2026-09-13T23:05", "Sunview St", "seller"),
+  slot("s-lamp-2", "l-floor-lamp", "2026-09-14T03:05", "2026-09-14T05:05", "Sunview St", "seller"),
 
-  slot("s-shelf-1", "l-bookshelf", "2026-09-13T15:00", "2026-09-13T17:00", "Sunview St", "seller"),
-  slot("s-shelf-2", "l-bookshelf", "2026-09-14T08:00", "2026-09-14T09:00", "Sunview St", "seller"),
+  slot("s-shelf-1", "l-bookshelf", "2026-09-14T00:05", "2026-09-14T02:05", "Sunview St", "seller"),
+  slot("s-shelf-2", "l-bookshelf", "2026-09-14T17:05", "2026-09-14T18:05", "Sunview St", "seller"),
 
-  slot("s-calc-1", "l-calculator", "2026-09-14T12:00", "2026-09-14T12:30", "SLC main lobby", "campus"),
-  slot("s-calc-2", "l-calculator", "2026-09-14T15:30", "2026-09-14T16:00", "Dana Porter Library entrance", "campus"),
+  slot("s-calc-1", "l-calculator", "2026-09-14T21:05", "2026-09-14T21:35", "SLC main lobby", "campus"),
+  slot("s-calc-2", "l-calculator", "2026-09-15T00:35", "2026-09-15T01:05", "Dana Porter Library entrance", "campus"),
 
-  slot("s-poang-1", "l-poang", "2026-09-15T18:00", "2026-09-15T19:00", "Mackenzie King Village lobby", "seller"),
-  slot("s-poang-2", "l-poang", "2026-09-16T08:00", "2026-09-16T09:30", "Mackenzie King Village lobby", "seller"),
+  slot("s-poang-1", "l-poang", "2026-09-16T03:05", "2026-09-16T04:05", "Mackenzie King Village lobby", "seller"),
+  slot("s-poang-2", "l-poang", "2026-09-16T17:05", "2026-09-16T18:35", "Mackenzie King Village lobby", "seller"),
 
-  slot("s-bio-1", "l-biology", "2026-09-14T13:00", "2026-09-14T13:30", "SLC main lobby", "campus"),
-  slot("s-bio-2", "l-biology", "2026-09-15T13:00", "2026-09-15T13:30", "Davis Centre entrance", "campus"),
+  slot("s-bio-1", "l-biology", "2026-09-14T22:05", "2026-09-14T22:35", "SLC main lobby", "campus"),
+  slot("s-bio-2", "l-biology", "2026-09-15T22:05", "2026-09-15T22:35", "Davis Centre entrance", "campus"),
 
-  slot("s-conv-1", "l-desk-converter", "2026-09-16T17:00", "2026-09-16T18:00", "E7 atrium", "campus"),
-  slot("s-conv-2", "l-desk-converter", "2026-09-17T12:00", "2026-09-17T13:00", "E7 atrium", "campus"),
+  slot("s-conv-1", "l-desk-converter", "2026-09-17T02:05", "2026-09-17T03:05", "E7 atrium", "campus"),
+  slot("s-conv-2", "l-desk-converter", "2026-09-17T21:05", "2026-09-17T22:05", "E7 atrium", "campus"),
 
-  slot("s-fridge-1", "l-mini-fridge", "2026-09-15T18:00", "2026-09-15T19:00", "King St N", "seller"),
-  slot("s-fridge-2", "l-mini-fridge", "2026-09-17T18:00", "2026-09-17T19:00", "SLC main lobby", "campus"),
+  slot("s-fridge-1", "l-mini-fridge", "2026-09-16T03:05", "2026-09-16T04:05", "King St N", "seller"),
+  slot("s-fridge-2", "l-mini-fridge", "2026-09-18T03:05", "2026-09-18T04:05", "SLC main lobby", "campus"),
 
-  slot("s-monitor-1", "l-monitor", "2026-09-14T17:00", "2026-09-14T18:00", "Columbia St W", "seller"),
-  slot("s-monitor-2", "l-monitor", "2026-09-16T17:00", "2026-09-16T18:00", "Davis Centre entrance", "campus"),
+  slot("s-monitor-1", "l-monitor", "2026-09-15T02:05", "2026-09-15T03:05", "Columbia St W", "seller"),
+  slot("s-monitor-2", "l-monitor", "2026-09-17T02:05", "2026-09-17T03:05", "Davis Centre entrance", "campus"),
 
-  slot("s-futon-1", "l-futon", "2026-09-19T13:00", "2026-09-19T15:00", "King St N", "seller"),
-  slot("s-futon-2", "l-futon", "2026-09-20T13:00", "2026-09-20T15:00", "King St N", "seller"),
+  slot("s-futon-1", "l-futon", "2026-09-19T22:05", "2026-09-20T00:05", "King St N", "seller"),
+  slot("s-futon-2", "l-futon", "2026-09-20T22:05", "2026-09-21T00:05", "King St N", "seller"),
 
-  slot("s-cart-1", "l-rolling-cart", "2026-09-14T17:00", "2026-09-14T19:00", "King St N", "seller"),
+  slot("s-cart-1", "l-rolling-cart", "2026-09-15T02:05", "2026-09-15T04:05", "King St N", "seller"),
 
-  slot("s-chair-1", "l-office-chair", "2026-09-14T19:00", "2026-09-14T20:00", "Columbia St W", "seller"),
-  slot("s-chair-2", "l-office-chair", "2026-09-15T16:00", "2026-09-15T16:30", "Davis Centre entrance", "campus"),
+  slot("s-chair-1", "l-office-chair", "2026-09-15T04:05", "2026-09-15T05:05", "Columbia St W", "seller"),
+  slot("s-chair-2", "l-office-chair", "2026-09-16T01:05", "2026-09-16T01:35", "Davis Centre entrance", "campus"),
 
-  slot("s-kit-1", "l-drafting-kit", "2026-09-14T11:30", "2026-09-14T12:00", "Davis Centre entrance", "campus"),
+  slot("s-kit-1", "l-drafting-kit", "2026-09-14T20:35", "2026-09-14T21:05", "Davis Centre entrance", "campus"),
 
-  slot("s-table-1", "l-kitchen-table", "2026-09-19T10:00", "2026-09-19T12:00", "Columbia St W", "seller"),
+  slot("s-table-1", "l-kitchen-table", "2026-09-19T19:05", "2026-09-19T21:05", "Columbia St W", "seller"),
 
-  slot("s-board-1", "l-whiteboard", "2026-09-15T15:00", "2026-09-15T15:30", "SLC main lobby", "campus"),
+  slot("s-board-1", "l-whiteboard", "2026-09-16T00:05", "2026-09-16T00:35", "SLC main lobby", "campus"),
 
-  slot("s-bedside-1", "l-bedside-table", "2026-09-14T17:00", "2026-09-14T17:30", lester, "seller"),
+  slot("s-bedside-1", "l-bedside-table", "2026-09-15T02:05", "2026-09-15T02:35", lester, "seller"),
 
-  slot("s-beanbag-1", "l-bean-bag", "2026-09-13T17:00", "2026-09-13T19:00", "Sunview St", "seller"),
-  slot("s-beanbag-2", "l-bean-bag", "2026-09-14T08:00", "2026-09-14T09:00", "Sunview St", "seller"),
+  slot("s-beanbag-1", "l-bean-bag", "2026-09-14T02:05", "2026-09-14T04:05", "Sunview St", "seller"),
+  slot("s-beanbag-2", "l-bean-bag", "2026-09-14T17:05", "2026-09-14T18:05", "Sunview St", "seller"),
 
-  slot("s-table-lend-1", "l-folding-table", "2026-09-15T18:00", "2026-09-15T19:00", "Columbia St W", "seller"),
-  slot("s-table-lend-2", "l-folding-table", "2026-09-18T17:00", "2026-09-18T18:00", "Columbia St W", "seller"),
+  slot("s-table-lend-1", "l-folding-table", "2026-09-16T03:05", "2026-09-16T04:05", "Columbia St W", "seller"),
+  slot("s-table-lend-2", "l-folding-table", "2026-09-19T02:05", "2026-09-19T03:05", "Columbia St W", "seller"),
 
-  slot("s-shoe-1", "l-shoe-rack", "2026-09-15T18:00", "2026-09-15T19:00", "Mackenzie King Village lobby", "seller"),
-  slot("s-shoe-2", "l-shoe-rack", "2026-09-16T12:00", "2026-09-16T12:30", "E7 atrium", "campus"),
+  slot("s-shoe-1", "l-shoe-rack", "2026-09-16T03:05", "2026-09-16T04:05", "Mackenzie King Village lobby", "seller"),
+  slot("s-shoe-2", "l-shoe-rack", "2026-09-16T21:05", "2026-09-16T21:35", "E7 atrium", "campus"),
 
-  slot("s-physics-1", "l-physics-textbook", "2026-09-14T12:00", "2026-09-14T12:30", "SLC main lobby", "campus"),
-  slot("s-physics-2", "l-physics-textbook", "2026-09-15T10:00", "2026-09-15T11:00", lester, "seller"),
+  slot("s-physics-1", "l-physics-textbook", "2026-09-14T21:05", "2026-09-14T21:35", "SLC main lobby", "campus"),
+  slot("s-physics-2", "l-physics-textbook", "2026-09-15T19:05", "2026-09-15T20:05", lester, "seller"),
 
-  slot("s-casio-1", "l-exam-calculator", "2026-09-14T16:00", "2026-09-14T16:30", "Davis Centre entrance", "campus"),
-  slot("s-casio-2", "l-exam-calculator", "2026-09-16T12:00", "2026-09-16T12:30", "Dana Porter Library entrance", "campus"),
+  slot("s-casio-1", "l-exam-calculator", "2026-09-15T01:05", "2026-09-15T01:35", "Davis Centre entrance", "campus"),
+  slot("s-casio-2", "l-exam-calculator", "2026-09-16T21:05", "2026-09-16T21:35", "Dana Porter Library entrance", "campus"),
 
-  slot("s-binders-1", "l-binders", "2026-09-15T13:00", "2026-09-15T13:30", "Dana Porter Library entrance", "campus"),
-  slot("s-binders-2", "l-binders", "2026-09-16T18:00", "2026-09-16T19:00", "Mackenzie King Village lobby", "seller"),
+  slot("s-binders-1", "l-binders", "2026-09-15T22:05", "2026-09-15T22:35", "Dana Porter Library entrance", "campus"),
+  slot("s-binders-2", "l-binders", "2026-09-17T03:05", "2026-09-17T04:05", "Mackenzie King Village lobby", "seller"),
 
-  slot("s-rice-1", "l-rice-cooker", "2026-09-13T18:00", "2026-09-13T19:00", "Sunview St", "seller"),
-  slot("s-rice-2", "l-rice-cooker", "2026-09-14T08:30", "2026-09-14T09:15", "Sunview St", "seller"),
+  slot("s-rice-1", "l-rice-cooker", "2026-09-14T03:05", "2026-09-14T04:05", "Sunview St", "seller"),
+  slot("s-rice-2", "l-rice-cooker", "2026-09-14T17:35", "2026-09-14T18:20", "Sunview St", "seller"),
 
-  slot("s-ipot-1", "l-instant-pot", "2026-09-14T18:00", "2026-09-14T19:00", "King St N", "seller"),
-  slot("s-ipot-2", "l-instant-pot", "2026-09-17T12:00", "2026-09-17T12:30", "SLC main lobby", "campus"),
+  slot("s-ipot-1", "l-instant-pot", "2026-09-15T03:05", "2026-09-15T04:05", "King St N", "seller"),
+  slot("s-ipot-2", "l-instant-pot", "2026-09-17T21:05", "2026-09-17T21:35", "SLC main lobby", "campus"),
 
-  slot("s-pots-1", "l-pots-pans", "2026-09-13T19:00", "2026-09-13T20:00", "Village 1 front desk", "seller"),
-  slot("s-pots-2", "l-pots-pans", "2026-09-14T15:00", "2026-09-14T16:00", "Village 1 front desk", "seller"),
+  slot("s-pots-1", "l-pots-pans", "2026-09-14T04:05", "2026-09-14T05:05", "Village 1 front desk", "seller"),
+  slot("s-pots-2", "l-pots-pans", "2026-09-15T00:05", "2026-09-15T01:05", "Village 1 front desk", "seller"),
 
-  slot("s-keyboard-1", "l-keyboard-mouse", "2026-09-15T12:00", "2026-09-15T12:30", "E7 atrium", "campus"),
-  slot("s-keyboard-2", "l-keyboard-mouse", "2026-09-16T18:00", "2026-09-16T19:00", "Mackenzie King Village lobby", "seller"),
+  slot("s-keyboard-1", "l-keyboard-mouse", "2026-09-15T21:05", "2026-09-15T21:35", "E7 atrium", "campus"),
+  slot("s-keyboard-2", "l-keyboard-mouse", "2026-09-17T03:05", "2026-09-17T04:05", "Mackenzie King Village lobby", "seller"),
 
-  slot("s-printer-1", "l-printer", "2026-09-14T17:00", "2026-09-14T18:00", "King St N", "seller"),
-  slot("s-printer-2", "l-printer", "2026-09-16T17:00", "2026-09-16T18:00", "King St N", "seller"),
+  slot("s-printer-1", "l-printer", "2026-09-15T02:05", "2026-09-15T03:05", "King St N", "seller"),
+  slot("s-printer-2", "l-printer", "2026-09-17T02:05", "2026-09-17T03:05", "King St N", "seller"),
 
-  slot("s-projector-1", "l-projector", "2026-09-17T17:00", "2026-09-17T18:00", "Columbia St W", "seller"),
-  slot("s-projector-2", "l-projector", "2026-09-18T12:00", "2026-09-18T12:30", "Davis Centre entrance", "campus"),
+  slot("s-projector-1", "l-projector", "2026-09-18T02:05", "2026-09-18T03:05", "Columbia St W", "seller"),
+  slot("s-projector-2", "l-projector", "2026-09-18T21:05", "2026-09-18T21:35", "Davis Centre entrance", "campus"),
 
-  slot("s-caddy-1", "l-shower-caddy", "2026-09-13T19:00", "2026-09-13T20:00", "Village 1 front desk", "seller"),
-  slot("s-caddy-2", "l-shower-caddy", "2026-09-14T15:00", "2026-09-14T16:00", "Village 1 front desk", "seller"),
+  slot("s-caddy-1", "l-shower-caddy", "2026-09-14T04:05", "2026-09-14T05:05", "Village 1 front desk", "seller"),
+  slot("s-caddy-2", "l-shower-caddy", "2026-09-15T00:05", "2026-09-15T01:05", "Village 1 front desk", "seller"),
 
-  slot("s-toiletries-1", "l-toiletries", "2026-09-14T18:00", "2026-09-14T19:00", lester, "seller"),
-  slot("s-toiletries-2", "l-toiletries", "2026-09-15T10:00", "2026-09-15T11:00", lester, "seller"),
+  slot("s-toiletries-1", "l-toiletries", "2026-09-15T03:05", "2026-09-15T04:05", lester, "seller"),
+  slot("s-toiletries-2", "l-toiletries", "2026-09-15T19:05", "2026-09-15T20:05", lester, "seller"),
 
-  slot("s-clippers-1", "l-hair-clippers", "2026-09-15T19:00", "2026-09-15T20:00", "King St N", "seller"),
-  slot("s-clippers-2", "l-hair-clippers", "2026-09-19T11:00", "2026-09-19T12:00", "King St N", "seller"),
+  slot("s-clippers-1", "l-hair-clippers", "2026-09-16T04:05", "2026-09-16T05:05", "King St N", "seller"),
+  slot("s-clippers-2", "l-hair-clippers", "2026-09-19T20:05", "2026-09-19T21:05", "King St N", "seller"),
 
-  slot("s-suitcase-1", "l-suitcase", "2026-09-16T19:00", "2026-09-16T20:00", "Columbia St W", "seller"),
-  slot("s-suitcase-2", "l-suitcase", "2026-09-19T10:00", "2026-09-19T11:00", "Columbia St W", "seller"),
+  slot("s-suitcase-1", "l-suitcase", "2026-09-17T04:05", "2026-09-17T05:05", "Columbia St W", "seller"),
+  slot("s-suitcase-2", "l-suitcase", "2026-09-19T19:05", "2026-09-19T20:05", "Columbia St W", "seller"),
 
-  slot("s-bike-1", "l-bike", "2026-09-14T17:30", "2026-09-14T18:30", "Columbia St W", "seller"),
-  slot("s-bike-2", "l-bike", "2026-09-15T16:00", "2026-09-15T16:30", "Davis Centre entrance", "campus"),
+  slot("s-bike-1", "l-bike", "2026-09-15T02:35", "2026-09-15T03:35", "Columbia St W", "seller"),
+  slot("s-bike-2", "l-bike", "2026-09-16T01:05", "2026-09-16T01:35", "Davis Centre entrance", "campus"),
 
-  slot("s-tent-1", "l-tent", "2026-09-17T18:00", "2026-09-17T19:00", "King St N", "seller"),
-  slot("s-tent-2", "l-tent", "2026-09-20T13:00", "2026-09-20T14:00", "King St N", "seller"),
+  slot("s-tent-1", "l-tent", "2026-09-18T03:05", "2026-09-18T04:05", "King St N", "seller"),
+  slot("s-tent-2", "l-tent", "2026-09-20T22:05", "2026-09-20T23:05", "King St N", "seller"),
 
-  slot("s-fan-1", "l-tower-fan", "2026-09-14T18:30", "2026-09-14T19:30", "King St N", "seller"),
-  slot("s-fan-2", "l-tower-fan", "2026-09-15T12:00", "2026-09-15T12:30", "SLC main lobby", "campus"),
+  slot("s-fan-1", "l-tower-fan", "2026-09-15T03:35", "2026-09-15T04:35", "King St N", "seller"),
+  slot("s-fan-2", "l-tower-fan", "2026-09-15T21:05", "2026-09-15T21:35", "SLC main lobby", "campus"),
 
-  slot("s-yoga-1", "l-yoga-mat", "2026-09-15T18:00", "2026-09-15T19:00", "Mackenzie King Village lobby", "seller"),
-  slot("s-yoga-2", "l-yoga-mat", "2026-09-16T12:00", "2026-09-16T12:30", "E7 atrium", "campus"),
+  slot("s-yoga-1", "l-yoga-mat", "2026-09-16T03:05", "2026-09-16T04:05", "Mackenzie King Village lobby", "seller"),
+  slot("s-yoga-2", "l-yoga-mat", "2026-09-16T21:05", "2026-09-16T21:35", "E7 atrium", "campus"),
 ];
 
-const marcusArrives = "2026-09-15T09:00:00-04:00";
-const sofiaArrives = "2026-09-14T14:00:00-04:00";
+const marcusArrives = "2026-09-15T18:05:00-04:00";
+const sofiaArrives = "2026-09-14T23:05:00-04:00";
 
 // When a thing is actually needed, which is not the same as when someone
 // lands. Marcus wants his room usable by the weekend; Sofia's first chem lab
 // is Wednesday morning and her math tutorial is Thursday.
-const marcusSettled = "2026-09-18T20:00:00-04:00";
-const sofiaFirstLab = "2026-09-16T08:30:00-04:00";
-const sofiaTutorial = "2026-09-17T13:00:00-04:00";
-const classesStart = "2026-09-21T08:30:00-04:00";
+const marcusSettled = "2026-09-19T05:05:00-04:00";
+const sofiaFirstLab = "2026-09-16T17:35:00-04:00";
+const sofiaTutorial = "2026-09-17T22:05:00-04:00";
+const classesStart = "2026-09-21T17:35:00-04:00";
 
 type WantSeed = Omit<Want, "fulfilled"> & { fulfilled?: boolean };
 
@@ -971,7 +971,7 @@ export const handoffs: Handoff[] = [
     slotId: "s-board-1",
     buyerId: "u-marcus",
     sellerId: "u-jordan",
-    createdAt: "2026-09-12T20:05:00-04:00",
+    createdAt: "2026-09-13T05:10:00-04:00",
   },
   {
     id: "h-bedside",
@@ -979,7 +979,7 @@ export const handoffs: Handoff[] = [
     slotId: "s-bedside-1",
     buyerId: "u-sofia",
     sellerId: "u-priya",
-    createdAt: "2026-09-13T09:20:00-04:00",
+    createdAt: "2026-09-13T18:25:00-04:00",
   },
 ];
 
@@ -990,7 +990,7 @@ export const notifications: UserNotification[] = [
     kind: "match",
     text: "Priya Raman’s room covers four things on your list: desk, chair, lamp and fridge. Gone by Tue Sep 15, 12pm.",
     href: "/listings/l-priya-room",
-    createdAt: "2026-09-13T08:47:00-04:00",
+    createdAt: "2026-09-13T17:52:00-04:00",
     read: false,
   },
   {
@@ -999,7 +999,7 @@ export const notifications: UserNotification[] = [
     kind: "match",
     text: "A mini fridge for rent matches “Small fridge for my room”. $25 for the term.",
     href: "/listings/l-mini-fridge",
-    createdAt: "2026-09-13T09:02:00-04:00",
+    createdAt: "2026-09-13T18:07:00-04:00",
     read: false,
   },
   {
@@ -1008,7 +1008,7 @@ export const notifications: UserNotification[] = [
     kind: "handoff",
     text: "Whiteboard from Jordan Kim. Meet at the SLC main lobby, Tue Sep 15 at 3pm.",
     href: "/handoffs/h-whiteboard",
-    createdAt: "2026-09-12T20:05:00-04:00",
+    createdAt: "2026-09-13T05:10:00-04:00",
     read: true,
   },
   {
@@ -1017,7 +1017,7 @@ export const notifications: UserNotification[] = [
     kind: "claim",
     text: "Claimed by Sofia Martins: bedside table. She’s picking it up at your place tomorrow at 5pm.",
     href: "/handoffs/h-bedside",
-    createdAt: "2026-09-13T09:20:00-04:00",
+    createdAt: "2026-09-13T18:25:00-04:00",
     read: false,
   },
   {
@@ -1026,7 +1026,7 @@ export const notifications: UserNotification[] = [
     kind: "match",
     text: "Your room matched an incoming student’s list. Gone by Tue Sep 15, 12pm unless someone claims it.",
     href: "/listings/l-priya-room",
-    createdAt: "2026-09-13T08:47:00-04:00",
+    createdAt: "2026-09-13T17:52:00-04:00",
     read: true,
   },
   {
@@ -1035,7 +1035,7 @@ export const notifications: UserNotification[] = [
     kind: "match",
     text: "A TI-84 Plus CE matches “Graphing calculator for first-year math”. Gone by tomorrow at 4pm.",
     href: "/listings/l-calculator",
-    createdAt: "2026-09-12T11:00:00-04:00",
+    createdAt: "2026-09-12T20:05:00-04:00",
     read: false,
   },
   {
@@ -1044,7 +1044,7 @@ export const notifications: UserNotification[] = [
     kind: "handoff",
     text: "Bedside table from Priya Raman. Meet at 318 Lester St, unit 4, tomorrow at 5pm.",
     href: "/handoffs/h-bedside",
-    createdAt: "2026-09-13T09:20:00-04:00",
+    createdAt: "2026-09-13T18:25:00-04:00",
     read: true,
   },
   {
@@ -1053,7 +1053,7 @@ export const notifications: UserNotification[] = [
     kind: "claim",
     text: "Claimed by Marcus Chen: whiteboard. Meet at the SLC main lobby, Tue Sep 15 at 3pm.",
     href: "/handoffs/h-whiteboard",
-    createdAt: "2026-09-12T20:05:00-04:00",
+    createdAt: "2026-09-13T05:10:00-04:00",
     read: false,
   },
   {
@@ -1062,7 +1062,7 @@ export const notifications: UserNotification[] = [
     kind: "reminder",
     text: "Your lab coat is gone by today at 6pm and nobody has claimed it yet.",
     href: "/listings/l-lab-coat",
-    createdAt: "2026-09-13T10:00:00-04:00",
+    createdAt: "2026-09-13T19:05:00-04:00",
     read: false,
   },
 ];
