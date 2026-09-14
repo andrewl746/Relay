@@ -33,7 +33,7 @@ npm run dev
 
 http://localhost:4287
 
-| | |
+|cmd|Purpose|
 |---|---|
 | `npm run seed` | regenerate `data/seed.json`: deterministic |
 | `npm run pipeline` | embed + rerank → `data/dataset.json`, `data/matches.json` |
@@ -44,7 +44,7 @@ Requires Node 22, project passes `--experimental-strip-types` for Node < 22.18.
 
 ## Stack
 
-| | |
+|Tech|Description|
 |---|---|
 | **Next.js 16** · React 19 · TypeScript | Rendered on server, obviously |
 | **Tailwind v4** | Theming |
