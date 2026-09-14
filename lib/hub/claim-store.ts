@@ -2,6 +2,9 @@ import { cache } from "react";
 import { createClient } from "../supabase/server";
 import type { HubClaim } from "@/lib/relay/runtime";
 
+/** A claim plus the buyer's name as it was at claim time. See 0008_names.sql. */
+export type NamedClaim = HubClaim & { buyerName: string | null };
+
 /**
  * Hub claims, in Supabase.
  *
@@ -20,18 +23,20 @@ type Row = {
   slot_id: string;
   buyer_id: string;
   created_at: string;
+  buyer_name: string | null;
 };
 
-const toClaim = (r: Row): HubClaim => ({
+const toClaim = (r: Row): NamedClaim => ({
   id: r.id,
   listingId: r.listing_id,
   slotId: r.slot_id,
   buyerId: r.buyer_id,
   createdAt: r.created_at,
+  buyerName: r.buyer_name,
 });
 
 /** Every claim. Never throws: an unreachable database must not empty the board. */
-export const allClaims = cache(async (): Promise<HubClaim[]> => {
+export const allClaims = cache(async (): Promise<NamedClaim[]> => {
   try {
     const supabase = await createClient();
     const { data, error } = await supabase.from("claims").select("*");
@@ -48,7 +53,7 @@ export const allClaims = cache(async (): Promise<HubClaim[]> => {
  * a double submit is a no-op rather than a second handoff, which is what the
  * old `already` check was reaching for before it raced.
  */
-export async function saveClaim(claim: HubClaim): Promise<void> {
+export async function saveClaim(claim: NamedClaim): Promise<void> {
   try {
     const supabase = await createClient();
     const { error } = await supabase.from("claims").upsert(
@@ -58,6 +63,7 @@ export async function saveClaim(claim: HubClaim): Promise<void> {
         slot_id: claim.slotId,
         buyer_id: claim.buyerId,
         created_at: claim.createdAt,
+        buyer_name: claim.buyerName,
       },
       { onConflict: "listing_id,buyer_id", ignoreDuplicates: true },
     );

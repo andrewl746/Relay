@@ -169,6 +169,7 @@ export async function createListing(_prev: CreateListingResult, formData: FormDa
     photoUrl,
     // Dropped server-side too if the deadline is more than a week out.
     urgency: parseUrgency(formData.get("urgency"), expiresAt),
+    sellerName: user.name,
   };
 
   const saved = await saveListing(newListing);

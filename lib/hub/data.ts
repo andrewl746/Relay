@@ -5,9 +5,8 @@ import { handoffs, notifications, slots, university, users, wants } from "./mock
 import { allListings } from "./listing-store";
 import { evaluate, plansFor, type Plan } from "./matching";
 import { createClient } from "../supabase/server";
-import { allClaims } from "./claim-store";
+import { allClaims, type NamedClaim } from "./claim-store";
 import type { Handoff, Listing, Match, TimeSlot, User, Want } from "./types";
-import type { HubClaim } from "@/lib/relay/runtime";
 
 // Supabase auth ids are UUIDs; seeded demo users (dev login) use short ids
 // like "u-marcus". That difference is how we tell a real signed-in user's
@@ -26,6 +25,36 @@ export async function getUsers() {
 
 export async function getUser(id: string) {
   return users.find((u) => u.id === id) ?? null;
+}
+
+/**
+ * The person behind an id, for someone who may not be in the seed.
+ *
+ * Only seeded demo accounts live in `users`. A real account is a Supabase uuid
+ * that is in no array here, and profiles are self-readable by RLS
+ * (0001_init.sql), so nobody else can look their name up. What we have instead
+ * is the name recorded at the moment they acted — on the listing when they
+ * posted, on the claim when they claimed (0008_names.sql).
+ *
+ * Not knowing someone's name must never mean the listing or handoff does not
+ * exist. createListing pushes real posters into `users`, but that array is
+ * per-process: it holds on one dev server and is empty on the next serverless
+ * instance, which is exactly when this fallback has to carry.
+ */
+function personFor(id: string, name?: string | null, home = ""): User {
+  return (
+    users.find((u) => u.id === id) ?? {
+      id,
+      name: name || "A student",
+      email: "",
+      universityId: university.id,
+      home,
+      destination: null,
+      moveStatus: "staying",
+      moveDate: null,
+      note: "",
+    }
+  );
 }
 
 function childrenOf(all: Listing[], listingId: string) {
@@ -69,7 +98,7 @@ export async function getBoard({
     ...l,
     itemCount: childrenOf(all, l.id).length,
     isMatch: matchedIds.has(l.id),
-    sellerName: users.find((u) => u.id === l.sellerId)?.name ?? "A student",
+    sellerName: personFor(l.sellerId, l.sellerName).name,
   }));
 
   const searchableText = (l: BoardListing) =>
@@ -114,11 +143,10 @@ export type ListingDetail = Listing & { seller: User; slots: TimeSlot[]; items: 
 export async function getListing(id: string): Promise<ListingDetail | null> {
   const all = await allListings();
   const listing = all.find((l) => l.id === id);
-  const seller = listing && users.find((u) => u.id === listing.sellerId);
-  if (!listing || !seller) return null;
+  if (!listing) return null;
   return {
     ...listing,
-    seller,
+    seller: personFor(listing.sellerId, listing.sellerName, listing.pickupArea),
     slots: slots
       .filter((s) => s.listingId === id)
       .sort((a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt)),
@@ -233,12 +261,28 @@ export async function getReachableMatches(user: User): Promise<MatchDetail[]> {
 
 export type HandoffDetail = Handoff & { listing: Listing; slot: TimeSlot; buyer: User; seller: User };
 
-function withDetail(all: Listing[], h: Handoff): HandoffDetail | null {
+/**
+ * A handoff is missing only when the THING is missing.
+ *
+ * This used to require buyer and seller to both resolve out of the seeded users
+ * array and returned null otherwise, which meant a real account claiming
+ * something recorded the claim, landed on the confirmation, then opened
+ * /handoffs and found it empty: its own uuid was not in the seed, so its own
+ * handoff was discarded as nonexistent. Not knowing someone's name is not the
+ * same as the handoff not existing — the listing and the pickup slot are what
+ * actually have to be there.
+ */
+function withDetail(all: Listing[], h: Handoff, names: Map<string, string>): HandoffDetail | null {
   const listing = all.find((l) => l.id === h.listingId);
   const slot = slots.find((s) => s.id === h.slotId);
-  const buyer = users.find((u) => u.id === h.buyerId);
-  const seller = users.find((u) => u.id === h.sellerId);
-  return listing && slot && buyer && seller ? { ...h, listing, slot, buyer, seller } : null;
+  if (!listing || !slot) return null;
+  return {
+    ...h,
+    listing,
+    slot,
+    buyer: personFor(h.buyerId, names.get(h.buyerId)),
+    seller: personFor(h.sellerId, names.get(h.sellerId)),
+  };
 }
 
 /**
@@ -248,7 +292,7 @@ function withDetail(all: Listing[], h: Handoff): HandoffDetail | null {
  * keyed to demo user ids — so a real signed-in user (a Supabase UUID) claimed
  * something, landed on the confirmation, opened Handoffs and found it empty.
  */
-function runtimeHandoffs(all: Listing[], claims: HubClaim[]): Handoff[] {
+function runtimeHandoffs(all: Listing[], claims: NamedClaim[]): Handoff[] {
   return claims.flatMap((c) => {
     const listing = all.find((l) => l.id === c.listingId);
     if (!listing) return [];
@@ -263,11 +307,23 @@ function runtimeHandoffs(all: Listing[], claims: HubClaim[]): Handoff[] {
   });
 }
 
+/**
+ * Names for people who are not in the seed: recorded on the claim when they
+ * claimed, and on the listing when they posted. See lib/hub/data#personFor.
+ */
+function nameMap(listings: Listing[], claims: NamedClaim[]): Map<string, string> {
+  const names = new Map<string, string>();
+  for (const l of listings) if (l.sellerName) names.set(l.sellerId, l.sellerName);
+  for (const c of claims) if (c.buyerName) names.set(c.buyerId, c.buyerName);
+  return names;
+}
+
 export async function getHandoffs(userId: string) {
   const [listings, claims] = await Promise.all([allListings(), allClaims()]);
+  const names = nameMap(listings, claims);
   const mine = [...handoffs, ...runtimeHandoffs(listings, claims)]
     .filter((h) => h.buyerId === userId || h.sellerId === userId)
-    .map((h) => withDetail(listings, h))
+    .map((h) => withDetail(listings, h, names))
     .filter((h): h is HandoffDetail => h !== null)
     .sort((a, b) => Date.parse(a.slot.startsAt) - Date.parse(b.slot.startsAt));
   return {
@@ -279,7 +335,7 @@ export async function getHandoffs(userId: string) {
 export async function getHandoff(id: string) {
   const [listings, claims] = await Promise.all([allListings(), allClaims()]);
   const h = [...handoffs, ...runtimeHandoffs(listings, claims)].find((x) => x.id === id);
-  return h ? withDetail(listings, h) : null;
+  return h ? withDetail(listings, h, nameMap(listings, claims)) : null;
 }
 
 export async function getNotifications(userId: string) {

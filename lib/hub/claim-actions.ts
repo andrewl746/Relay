@@ -35,6 +35,7 @@ export async function claimListing(formData: FormData) {
     slotId,
     buyerId: user.id,
     createdAt: new Date().toISOString(),
+    buyerName: user.name,
   });
 
   revalidatePath("/", "layout");

@@ -47,6 +47,12 @@ export type Listing = {
   photoUrl?: string | null;
   /** From the SCREAM! meter on the post form. Only set when the deadline is within a week. */
   urgency?: UrgencyTier | null;
+  /**
+   * The poster's name, recorded when they post. Real accounts are not in the
+   * seeded users array and RLS keeps profiles self-readable, so this is the only
+   * way anyone else can render who posted it. See 0008_names.sql.
+   */
+  sellerName?: string | null;
 };
 
 export type TimeSlot = {

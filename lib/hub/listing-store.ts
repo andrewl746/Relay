@@ -40,6 +40,7 @@ type Row = {
   created_at: string;
   photo_url: string | null;
   urgency: string | null;
+  seller_name: string | null;
 };
 
 function toListing(r: Row): Listing {
@@ -62,6 +63,7 @@ function toListing(r: Row): Listing {
     createdAt: r.created_at,
     photoUrl: r.photo_url,
     urgency: (r.urgency as Listing["urgency"]) ?? null,
+    sellerName: r.seller_name,
   };
 }
 
@@ -85,6 +87,7 @@ function toRow(l: Listing): Row {
     created_at: l.createdAt,
     photo_url: l.photoUrl ?? null,
     urgency: l.urgency ?? null,
+    seller_name: l.sellerName ?? null,
   };
 }
 
