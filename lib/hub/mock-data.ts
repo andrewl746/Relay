@@ -24,7 +24,7 @@ export const users: User[] = [
     name: "Priya Raman",
     email: "p3raman@uwaterloo.ca",
     universityId: "uw",
-    home: "318 Lester St",
+    home: "318 St. Jerome's",
     destination: null,
     moveStatus: "leaving",
     moveDate: "2026-09-15T23:05:00-04:00",
@@ -57,7 +57,7 @@ export const users: User[] = [
     name: "Daniel Osei",
     email: "d4osei@uwaterloo.ca",
     universityId: "uw",
-    home: "Sunview St",
+    home: "Village 1",
     destination: null,
     moveStatus: "leaving",
     moveDate: "2026-09-14T19:05:00-04:00",
@@ -117,7 +117,7 @@ const inPriyasRoom = {
   sellerId: "u-priya",
   category: "furniture",
   offerType: "sale",
-  pickupArea: "Lester St",
+  pickupArea: "St. Jerome's",
   expiresAt: "2026-09-15T21:05:00-04:00",
   parentId: "l-priya-room",
 } as const;
@@ -134,7 +134,7 @@ export const listings: Listing[] = [
     offerType: "free",
     priceCents: null,
     condition: "good",
-    pickupArea: "Sunview St",
+    pickupArea: "Village 1",
     expiresAt: "2026-09-14T00:05:00-04:00",
     createdAt: "2026-09-13T06:35:00-04:00",
   }),
@@ -163,7 +163,7 @@ export const listings: Listing[] = [
     offerType: "free",
     priceCents: null,
     condition: "good",
-    pickupArea: "Sunview St",
+    pickupArea: "Village 1",
     expiresAt: "2026-09-14T05:05:00-04:00",
     createdAt: "2026-09-13T03:05:00-04:00",
   }),
@@ -178,7 +178,7 @@ export const listings: Listing[] = [
     offerType: "free",
     priceCents: null,
     condition: "fair",
-    pickupArea: "Sunview St",
+    pickupArea: "Village 1",
     expiresAt: "2026-09-14T18:05:00-04:00",
     createdAt: "2026-09-12T05:20:00-04:00",
   }),
@@ -208,7 +208,7 @@ export const listings: Listing[] = [
     offerType: "sale",
     priceCents: 14000,
     condition: "good",
-    pickupArea: "Lester St",
+    pickupArea: "St. Jerome's",
     expiresAt: "2026-09-15T21:05:00-04:00",
     isBundle: true,
     createdAt: "2026-09-13T17:50:00-04:00",
@@ -388,7 +388,7 @@ export const listings: Listing[] = [
     offerType: "sale",
     priceCents: 1000,
     condition: "good",
-    pickupArea: "Lester St",
+    pickupArea: "St. Jerome's",
     expiresAt: "2026-09-15T21:05:00-04:00",
     status: "claimed",
     createdAt: "2026-09-11T17:05:00-04:00",
@@ -409,7 +409,7 @@ export const listings: Listing[] = [
     offerType: "free",
     priceCents: null,
     condition: "fair",
-    pickupArea: "Sunview St",
+    pickupArea: "Village 1",
     expiresAt: "2026-09-13T23:15:00-04:00",
     createdAt: "2026-09-13T04:05:00-04:00",
     photoUrl: "/photos/bean-bag-chair.webp",
@@ -456,7 +456,7 @@ export const listings: Listing[] = [
     offerType: "sale",
     priceCents: 3500,
     condition: "good",
-    pickupArea: "Lester St",
+    pickupArea: "St. Jerome's",
     expiresAt: "2026-09-13T20:25:00-04:00",
     createdAt: "2026-09-12T19:05:00-04:00",
     photoUrl: "/photos/physics-textbook.webp",
@@ -503,7 +503,7 @@ export const listings: Listing[] = [
     offerType: "sale",
     priceCents: 1500,
     condition: "good",
-    pickupArea: "Sunview St",
+    pickupArea: "Village 1",
     expiresAt: "2026-09-13T20:20:00-04:00",
     createdAt: "2026-09-13T04:15:00-04:00",
     photoUrl: "/photos/rice-cooker.webp",
@@ -612,7 +612,7 @@ export const listings: Listing[] = [
     offerType: "free",
     priceCents: null,
     condition: "new",
-    pickupArea: "Lester St",
+    pickupArea: "St. Jerome's",
     expiresAt: "2026-09-13T23:35:00-04:00",
     createdAt: "2026-09-12T19:20:00-04:00",
     photoUrl: "/photos/toiletries.webp",
@@ -711,7 +711,7 @@ export const listings: Listing[] = [
   }),
 ];
 
-const lester = "318 Lester St, unit 4";
+const lester = "318 St. Jerome's, unit 4";
 
 function slot(id: string, listingId: string, start: string, end: string, place: string, placeKind: TimeSlot["placeKind"]): TimeSlot {
   return { id, listingId, startsAt: `${start}:00-04:00`, endsAt: `${end}:00-04:00`, place, placeKind };
@@ -722,16 +722,16 @@ export const slots: TimeSlot[] = [
   slot("s-room-2", "l-priya-room", "2026-09-15T19:05", "2026-09-15T20:05", lester, "seller"),
   slot("s-room-3", "l-priya-room", "2026-09-15T20:05", "2026-09-15T21:05", lester, "seller"),
 
-  slot("s-mattress-1", "l-mattress", "2026-09-13T21:05", "2026-09-13T22:35", "Sunview St", "seller"),
+  slot("s-mattress-1", "l-mattress", "2026-09-13T21:05", "2026-09-13T22:35", "Village 1", "seller"),
 
   slot("s-coat-1", "l-lab-coat", "2026-09-14T01:05", "2026-09-14T01:35", "E7 atrium", "campus"),
   slot("s-coat-2", "l-lab-coat", "2026-09-14T02:35", "2026-09-14T03:05", "Village 1 front desk", "seller"),
 
-  slot("s-lamp-1", "l-floor-lamp", "2026-09-13T22:05", "2026-09-13T23:05", "Sunview St", "seller"),
-  slot("s-lamp-2", "l-floor-lamp", "2026-09-14T03:05", "2026-09-14T05:05", "Sunview St", "seller"),
+  slot("s-lamp-1", "l-floor-lamp", "2026-09-13T22:05", "2026-09-13T23:05", "Village 1", "seller"),
+  slot("s-lamp-2", "l-floor-lamp", "2026-09-14T03:05", "2026-09-14T05:05", "Village 1", "seller"),
 
-  slot("s-shelf-1", "l-bookshelf", "2026-09-14T00:05", "2026-09-14T02:05", "Sunview St", "seller"),
-  slot("s-shelf-2", "l-bookshelf", "2026-09-14T17:05", "2026-09-14T18:05", "Sunview St", "seller"),
+  slot("s-shelf-1", "l-bookshelf", "2026-09-14T00:05", "2026-09-14T02:05", "Village 1", "seller"),
+  slot("s-shelf-2", "l-bookshelf", "2026-09-14T17:05", "2026-09-14T18:05", "Village 1", "seller"),
 
   slot("s-calc-1", "l-calculator", "2026-09-14T21:05", "2026-09-14T21:35", "SLC main lobby", "campus"),
   slot("s-calc-2", "l-calculator", "2026-09-15T00:35", "2026-09-15T01:05", "Dana Porter Library entrance", "campus"),
@@ -767,8 +767,8 @@ export const slots: TimeSlot[] = [
 
   slot("s-bedside-1", "l-bedside-table", "2026-09-15T02:05", "2026-09-15T02:35", lester, "seller"),
 
-  slot("s-beanbag-1", "l-bean-bag", "2026-09-14T02:05", "2026-09-14T04:05", "Sunview St", "seller"),
-  slot("s-beanbag-2", "l-bean-bag", "2026-09-14T17:05", "2026-09-14T18:05", "Sunview St", "seller"),
+  slot("s-beanbag-1", "l-bean-bag", "2026-09-14T02:05", "2026-09-14T04:05", "Village 1", "seller"),
+  slot("s-beanbag-2", "l-bean-bag", "2026-09-14T17:05", "2026-09-14T18:05", "Village 1", "seller"),
 
   slot("s-table-lend-1", "l-folding-table", "2026-09-16T03:05", "2026-09-16T04:05", "Columbia St W", "seller"),
   slot("s-table-lend-2", "l-folding-table", "2026-09-19T02:05", "2026-09-19T03:05", "Columbia St W", "seller"),
@@ -785,8 +785,8 @@ export const slots: TimeSlot[] = [
   slot("s-binders-1", "l-binders", "2026-09-15T22:05", "2026-09-15T22:35", "Dana Porter Library entrance", "campus"),
   slot("s-binders-2", "l-binders", "2026-09-17T03:05", "2026-09-17T04:05", "Mackenzie King Village lobby", "seller"),
 
-  slot("s-rice-1", "l-rice-cooker", "2026-09-14T03:05", "2026-09-14T04:05", "Sunview St", "seller"),
-  slot("s-rice-2", "l-rice-cooker", "2026-09-14T17:35", "2026-09-14T18:20", "Sunview St", "seller"),
+  slot("s-rice-1", "l-rice-cooker", "2026-09-14T03:05", "2026-09-14T04:05", "Village 1", "seller"),
+  slot("s-rice-2", "l-rice-cooker", "2026-09-14T17:35", "2026-09-14T18:20", "Village 1", "seller"),
 
   slot("s-ipot-1", "l-instant-pot", "2026-09-15T03:05", "2026-09-15T04:05", "King St N", "seller"),
   slot("s-ipot-2", "l-instant-pot", "2026-09-17T21:05", "2026-09-17T21:35", "SLC main lobby", "campus"),
@@ -1042,7 +1042,7 @@ export const notifications: UserNotification[] = [
     id: "n-sofia-bedside",
     userId: "u-sofia",
     kind: "handoff",
-    text: "Bedside table from Priya Raman. Meet at 318 Lester St, unit 4, tomorrow at 5pm.",
+    text: "Bedside table from Priya Raman. Meet at 318 St. Jerome's, unit 4, tomorrow at 5pm.",
     href: "/handoffs/h-bedside",
     createdAt: "2026-09-13T18:25:00-04:00",
     read: true,

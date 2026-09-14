@@ -39,7 +39,7 @@ const PLACES: Record<string, Point> = {
 
 /**
  * Resolve a free-text place to a point. Addresses in this data are written the
- * way a person would type them — "318 Lester St, unit 4", "Village 1 front
+ * way a person would type them — "318 St. Jerome's, unit 4", "Village 1 front
  * desk" — so match on the landmark keyword rather than parsing an address.
  */
 export function locate(place: string | null | undefined): Point | null {

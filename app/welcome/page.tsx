@@ -149,9 +149,8 @@ export default function LandingPage() {
 
         <div className="anim-slide" style={{ animationDelay: "90ms" }}>
           <p className="mx-auto mt-7 max-w-[520px] text-[18px] leading-relaxed text-ink-2">
-            You need a wrench for one Saturday afternoon. Buying one costs $60
-            and then it lives in your closet forever. Someone four doors down
-            already has one - and they can borrow it to you for {" "}
+            You need a wrench for one Saturday afternoon. Buying one costs $25
+            and then it lives in your closet forever. Someone on campus has one - and they can borrow it to you for {" "}
             <strong className="mark font-semibold">$2 a day</strong>.
           </p>
 
@@ -165,7 +164,7 @@ export default function LandingPage() {
           </div>
 
           <p className="mt-4 text-[13px] text-ink-2">
-            Free to join with your university email.
+            Free to join for university students.
           </p>
         </div>
       </section>

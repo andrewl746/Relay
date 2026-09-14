@@ -29,7 +29,7 @@ export function PickupMap({
   const km = walkKm(from, to);
   const area = toLabel ?? to.split(",")[0];
 
-  // Scope the query to the city so "Sunview St" doesn't land in another country.
+  // Scope the query to the city so "Village 1" doesn't land in another country.
   const place = `${to}, Waterloo, Ontario`;
 
   return (
@@ -47,7 +47,14 @@ export function PickupMap({
         />
       ) : (
         <div className="flex h-[280px] flex-col items-center justify-center gap-2 bg-surface-2 px-6 text-center">
-          <svg aria-hidden viewBox="0 0 24 24" className="size-8 text-ink-3" fill="none" stroke="currentColor" strokeWidth="1.7">
+          <svg
+            aria-hidden
+            viewBox="0 0 24 24"
+            className="size-8 text-ink-3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+          >
             <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z" />
             <circle cx="12" cy="10" r="2.6" />
           </svg>

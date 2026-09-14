@@ -22,7 +22,7 @@ export function MyListingRow({ listing }: { listing: MyListing }) {
       <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-0.5 ${live ? "bg-ink" : "bg-ink-3"}`} />
       <Link
         href={`/listings/${listing.id}`}
-        className={`group flex items-center gap-3 py-3 pr-1 pl-3 transition-colors duration-[90ms] hover:bg-paper-raised sm:gap-4 sm:pl-4 ${
+        className={`group flex items-center gap-3 px-3 py-3 transition-colors duration-[90ms] hover:bg-paper-raised sm:gap-4 sm:px-4 ${
           live ? "" : "opacity-70"
         }`}
       >
